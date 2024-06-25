@@ -171,7 +171,7 @@ export const SCHEMAS = {
  */
 
 /**
- *  @typedef {{pass: boolean, description: string, info: string}} PolicyItem
+ *  @typedef {{pass: boolean | null, description: string, info: string}} PolicyItem
  */
 
 export class PolicyResponse {

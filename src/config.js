@@ -11,7 +11,8 @@ const SCHEMA = {
     retrieverUserAgent: {
       doc: "The user agent to use for retriever requests.",
       format: "String",
-      default: "MDN-HTTP-Observatory/1.0",
+      default:
+        "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:129.0) Gecko/20100101 Firefox/129.0 Observatory/129.0",
       env: "RETRIEVER_USER_AGENT",
     },
     corsOrigin: {

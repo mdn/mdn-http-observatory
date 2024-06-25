@@ -164,6 +164,11 @@ export function hydrateTests(tests) {
     const fatPolicy = new PolicyResponse(
       tests["content-security-policy"].policy
     );
+    // dynamicStrict exception, set pass=null if false
+    if (fatPolicy.strictDynamic.pass === false) {
+      fatPolicy.strictDynamic.pass = null;
+    }
+
     tests["content-security-policy"].policy = fatPolicy;
   }
   // For some tests whose pass flag is "not applicable", we

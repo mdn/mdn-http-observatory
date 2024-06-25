@@ -1,0 +1,33 @@
+{
+  "name": "MDN Observatory",
+  "short_name": "Obsi",
+  "description": "MDN HTTP Observatory checks certain security relevant headers of the current web site.",
+  "homepage_url": "https://github.com/mdn/mdn-http-observatory",
+  "version": "1.0.0",
+  "manifest_version": 3,
+  "default_locale": "en",
+  "permissions": ["activeTab", "webNavigation", "tabs", "storage"],
+  "host_permissions": ["<all_urls>"],
+  "content_security_policy": {
+    "extension_pages": "script-src 'self'; object-src 'self'; connect-src *;"
+  },
+  "icons": {
+    "16": "img/16x16.png",
+    "24": "img/24x24.png",
+    "32": "img/32x32.png",
+    "128": "img/128x128.png"
+  },
+  "action": {
+    "default_icon": {
+      "16": "img/16x16.png",
+      "24": "img/24x24.png",
+      "32": "img/32x32.png"
+    },
+    "default_title": "MDN Observatory",
+    "default_popup": "popup.html"
+  },
+  "background": {
+    "scripts": ["lib/browser-polyfill.min.js", "background.js"],
+    "type": "module"
+  }
+}

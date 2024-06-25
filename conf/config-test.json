@@ -1,0 +1,10 @@
+{
+  "database": {
+    "database": "observatory_test",
+    "user": "postgres"
+  },
+  "api": {
+    "enableLogging": false,
+    "cooldown": 3
+  }
+}

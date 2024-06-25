@@ -1,0 +1,56 @@
+{
+  "name": "obsi",
+  "version": "1.0.0",
+  "description": "",
+  "main": "src/index.js",
+  "engines": {
+    "node": ">=20.0.0",
+    "npm": ">=9.0.0"
+  },
+  "scripts": {
+    "start": "node src/api/index.js",
+    "dev": "nodemon src/api/index.js",
+    "test": "CONFIG_FILE=conf/config-test.json mocha",
+    "test:nodb": "CONFIG_FILE=conf/config-test.json SKIP_DB_TESTS=1 mocha",
+    "test:compare": "CONFIG_FILE=conf/config-test.json COMPARE_RESULT_TESTS=1 mocha test/compare-results.test.js",
+    "scan": "node src/cli/index.js",
+    "updateHsts": "node src/retrieve-hsts.js",
+    "refreshMaterializedViews": "node src/maintenance/index.js",
+    "migrate": "node -e 'import(\"./src/database/migrate.js\").then( m => m.migrateDatabase() )'"
+  },
+  "type": "module",
+  "author": "",
+  "license": "MPL-2.0",
+  "devDependencies": {
+    "@faker-js/faker": "^8.4.1",
+    "@supercharge/promise-pool": "^3.2.0",
+    "chai": "^5.1.0",
+    "json-schema-to-jsdoc": "^1.1.1",
+    "mocha": "^10.3.0",
+    "nodemon": "^3.1.0"
+  },
+  "dependencies": {
+    "@fastify/cors": "^8.0.0",
+    "@fastify/helmet": "^11.1.1",
+    "@fastify/postgres": "^5.2.2",
+    "@fastify/static": "^7.0.3",
+    "axios": "^1.6.7",
+    "axios-cookiejar-support": "^5.0.0",
+    "change-case": "^5.4.4",
+    "commander": "^12.0.0",
+    "convict": "^6.2.4",
+    "dayjs": "^1.11.10",
+    "fastify": "^4.26.2",
+    "fastify-simple-form": "^3.0.0",
+    "http-cookie-agent": "^6.0.1",
+    "ip": "^2.0.1",
+    "jsdom": "^24.0.0",
+    "pg": "^8.11.5",
+    "pg-format": "^1.0.4",
+    "pg-pool": "^3.6.2",
+    "postgrator": "^7.2.0",
+    "postgrator-cli": "^7.0.0",
+    "tldts": "^6.1.13",
+    "tough-cookie": "^4.1.3"
+  }
+}

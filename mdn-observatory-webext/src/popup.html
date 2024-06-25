@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="css/style.css" />
+    <title>Obsi</title>
+    <script src="lib/browser-polyfill.min.js"></script>
+  </head>
+  <body>
+    <style>
+      @font-face {
+        font-family: "Inter";
+        src: url("./assets/fonts/Inter-Bold.ttf") format("truetype");
+        font-weight: 700;
+        font-style: normal;
+      }
+      @font-face {
+        font-family: "Inter";
+        src: url("./assets/fonts/Inter-Regular.ttf") format("truetype");
+        font-weight: 400;
+        font-style: normal;
+      }
+
+      h2 {
+        font-size: 1rem;
+        font-family: Inter, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
+          "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
+          sans-serif;
+      }
+      #grade {
+        font-family: "Times New Roman", Times, serif;
+        font-weight: bold;
+        color: green;
+        width: 10rem;
+        height: 10rem;
+        border: 2px solid green;
+        font-size: 6rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+    </style>
+    <h2>MDN Observatory</h2>
+
+    <div id="grade"></div>
+    <script type="module" src="popup.js"></script>
+  </body>
+</html>

@@ -1,0 +1,39 @@
+# run unit tests
+name: build-and-test
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main, wip-andi]
+  pull_request:
+    branches: [main]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:16
+        env:
+          POSTGRES_USER: observatory
+          POSTGRES_PASSWORD: observatory
+          POSTGRES_DB: observatory
+        ports:
+          - 5432:5432
+        options: --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5
+
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20.x"
+      - name: Install dependencies
+        run: "npm install"
+      - name: Run tests
+        run: npm test
+        env:
+          PGDATABASE: observatory
+          PGHOST: localhost
+          PGUSER: observatory
+          PGPASSWORD: observatory

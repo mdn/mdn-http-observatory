@@ -1,0 +1,1070 @@
+# ibsgroup.org # gives a 409 error on redirect target, different from python
+# i.test.airtel.in #  redirect shenanigans, browser lands on google
+# hotrodders.com # another 409 problem
+
+# local.local.space
+
+# larger differences
+# helpdeskportal.stoneridge.com
+# gitlab-forge.din.developpement-durable.gouv.fr
+# focusfanatics.com
+# evoxforums.com
+# en.mon.gov.pl
+# ec2-3-108-74-125.ap-south-1.compute.amazonaws.com
+# dacgroup.com
+# custody-it.sgmarkets.com
+# costulessdirect.com
+# copts-united.com
+# collapsible.systems
+# ci.janesville.wi.us
+# cdac.in
+# cadillacforums.com
+# bluesnap.com
+# autoguide.com
+# atv.com
+# arkansasspineandpain.com
+# abtexas.com
+# 9i345.kdchjgoqgp.buzz
+
+
+# OK for various reasons
+# afternic.com # Cookies are different because of additional requests
+# al.airtel.in # Some user-agent shenanigans going on, basically no cookies are set
+# amentum.com # REFERRER POLICY fixed +  x-xss-protection now missing
+# abtexas.com # different but ok CERT
+# gucci.com # old code cannot cope
+# keolis-lyon-oxy.easyvista.com # multi redirect cookie shenanigans
+# ikhwanweb.com # set PHPSESSION on http redirect, nowhere else
+# m.airtel.in # bug in python, new version is right with max-age=0
+# iap-pba.infosysapps.com # new one is right, http gives 502
+
+
+# admin.airtel-advantage.airtel.in
+# amentum.com
+# albogasio.space
+# al.airtel.in
+# armscor.co.za
+# barrettdistribution.com
+# chrisc.com
+# cohengrieb.com
+# cityofeugene-apps-qualif.easyvista.com
+# cooke.easyvista.com
+# cooke-qualif-apps.easyvista.com
+# cornerbakerycafe.com
+# crcindustries.easyvista.com
+# crcindustries-qualif.easyvista.com
+# crcindustries-qualif-apps.easyvista.com
+# coushatta-qualif-apps.easyvista.com
+# depop.com
+# ebigthailand.com
+# du-bist-grieche.de
+# dshs-wa-gov-apps-qualif.easyvista.com
+# drybar.com
+# dotfoods-qualif-apps.easyvista.com
+# dlt.airtel.in
+# garlandtx-qualif-apps.easyvista.com
+# help-bo.acc-groupe.com
+# ecln2.din.developpement-durable.gouv.fr
+# esbint.airtel.in
+# www.pandoli365.com
+# ktm.com
+# mcclabel.com
+# acornwaste.co.uk
+# www.spiegel.de
+# 0-190.eu-west-1.compute.sprintrelaystore.com
+# 194-16-1-168.customer.telia.com
+# 9i345.kdchjgoqgp.buzz
+# 4ad.com
+# a-just.beta.gouv.fr
+# aaas.org
+# abc.com.py
+# abcya.com
+# abogadosperu.com
+# above.com
+# activitypub.agates.io
+# activitypub.cryptography.dog
+# adequity.fr
+# admintest.businessnetsolutions.net
+# ai-sys.com
+# aireserv.com
+# al-binaa.com
+# alhaya.ps # COOKIE NOT LISTED - python bug, cookies are set for a subdomain and should be ignored
+# aachen-kostroma.de # REDIRECT DESTINATION
+# altoro.testfire.net # REDIRECT DESTINATION
+# admin.us.stage.protect.kainossmart.com # REDIRECT
+# addassets.airtel.in # CORS
+# developer.mozilla.org
+# acosta.com # COOKIES
+# abrigo.com # COOKIE NOT LISTED - because it gets set on the redirect response - fixed
+# allervie.com # COOKIE NOT LISTED
+# alliancews.com # COOKIE NOT LISTED
+# ammyy.com # COOKIE NOT LISTED
+# afghanplay.com # CERT
+# 91.206.93.158.sslip.io # NO CONNECTION
+# addon-dev.ace.teliacompany.net # NO CONNECTION
+# a1-67.akam.net # NO CONNECTION
+# a11-67.akam.net # NO CONNECTION
+# a18-67.akam.net # NO CONNECTION
+# a22-67.akam.net # NO CONNECTION
+# a28-67.akam.net # NO CONNECTION
+# a4-67.akam.net # NO CONNECTION
+# a6-67.akam.net # NO CONNECTION
+# admin.airtel-advantage.airtel.in # NO CONNECTION
+# adserver.airtel.in # NO CONNECTION
+# airteluc1.airtel.in # NO CONNECTION
+# airteluc2.airtel.in # NO CONNECTION
+# alpha.airtel.in # NO CONNECTION
+# adjustingalternatives.com # CERT
+# al3abm.com
+# alanxelmundo.com
+# albogasio.space
+# allclear.sgmarkets.com
+# allduniv.ac.in
+# amwins.com
+# andersen.com
+# andersonmurison.com
+# angouleme.itserver.fr
+# announcements-api.advantagetvs.com
+# anti-maidan.com
+# anz.co.nz
+# api.teliasmartconnect.com
+# app.airtel.in
+# appisis.din.developpement-durable.gouv.fr
+# appleleisuregroup.com
+# apply.tvscredit.com
+# aramcoupdc.dev.onwingspan.com
+# archive.beggars.com
+# arisemauritania.com
+# arkansasspineandpain.com
+# armscor.co.za
+# arsenalcu.com
+# artribune.com
+# as7law.com
+# ascatsm.com
+# aspenhospital.org
+# assetservicing.sgmarkets.com
+# at-eorder.telia.se
+# at.solutions.sgcib.com
+# athena-gmbh.de
+# athensorthopedicclinic.com
+# atlantis.aws.telia.dk
+# attorneymiller.com
+# attreno.fr
+# atv.com
+# auchan-ea-apps.easyvista.com
+# audioconference.airtel.in
+# austintexas.gov
+# autobid.de
+# autoguide.com
+# avantdill.site
+# avention.com
+# azcentralcu.org
+# backup.cyberlynx.com
+# bankjerusalem.co.il
+# bannch.com
+# bark-ottawa.com
+# barrettdistribution.com
+# bcci.mjunction.in
+# bchmed.org
+# be-nl.medical.canon
+# beep.town
+# beichthaus.com
+# bellacor.com
+# berkeleyendocrine.com
+# beta.syciplaw.com
+# beth.ns.cloudflare.com
+# bgr.com
+# billing-v2.sgmarkets.com
+# bluesnap.com
+# bma.org.uk
+# bmtconsultsweb.myusmobi.com
+# bna.com
+# bo1003.com
+# boat.com
+# bonnie.ns.cloudflare.com
+# bookme-s.ccs.teliacompany.net
+# bootstrapdocs.com
+# bucknell.edu
+# business.airtel.in
+# buyer-uat.airtel.in
+# buyer.airtel.in
+# bwscivilforum-nl.jaqur.co.ma
+# c2c-online.co.uk
+# caa-selfhelp-qualif.easyvista.com
+# cadillacforums.com
+# cairn.din.developpement-durable.gouv.fr
+# californiamaids.com
+# callservice.gosoft.co.th
+# cardacquiring.sgmarkets.com
+# cartalyst.com
+# cashpayboard.sgmarkets.com
+# catholichealthcareservices.org
+# cau.sasemar.es
+# cdac.in
+# cdg14.fr
+# cdg50.fr
+# cdt.sgmarkets.com
+# cellularoutfitter.com
+# certibiocide.din.developpement-durable.gouv.fr
+# changemanagementgc.godrej.com
+# chess.no
+# chessclub.com
+# chikaranomoto.com
+# chimerarevo.com
+# chin.ns.cloudflare.com
+# chinacdc.cn
+# chrisc.com
+# ci.janesville.wi.us
+# citienterprisesltd.yolasite.com
+# cityofeugene-apps-qualif.easyvista.com
+# cityofrochester.gov
+# citysprint.co.uk
+# clan.com
+# claranet.com
+# clariad.com
+# clicksgroup.co.za
+# clientkpi.sgmarkets.com
+# clientsubscriptionlist.sgmarkets.com
+# cloud.solix.com
+# coastonefinancialgroup.com
+# code.org
+# codekarate.com
+# cody.ns.cloudflare.com
+# cohengrieb.com
+# coleman-rayner.com
+# collapsible.systems
+# collection.airtel.in
+# comchristchurch.org
+# comdalo.logement.gouv.fr
+# comnetmarketing.com
+# company.shopltk.com
+# confirmation.sgmarkets.com
+# connect-munich.kpit.com
+# connectionsacademy.com
+# consulting.tatasteel.com
+# cooke-apps.easyvista.com
+# cooke-qualif-apps.easyvista.com
+# cooke.easyvista.com
+# copts-united.com
+# cornerbakerycafe.com
+# corp.comparenetworks.com
+# corporatecards.sgmarkets.com
+# corrections.vic.gov.au
+# costulessdirect.com
+# coushatta-qualif-apps.easyvista.com
+# cpanel.designhq.ie
+# cpcva.com
+# cpid.airtel.in
+# cprofit.sgmarkets.com
+# craftsman-book.com
+# craneco.com
+# crcindustries-apps.easyvista.com
+# crcindustries-qualif-apps.easyvista.com
+# crcindustries-qualif.easyvista.com
+# crcindustries-selfhelp.easyvista.com
+# crcindustries.easyvista.com
+# creditportfolio.sgmarkets.com
+# creditriskevents.sgmarkets.com
+# crm.airtel.in
+# crossassetfinancing.sgmarkets.com
+# crossborder.sgmarkets.com
+# csarko.sh
+# csdental.easyvista.com
+# csx.com
+# cultura-selfhelp.easyvista.com
+# custody-it.sgmarkets.com
+# custody-one.sgmarkets.com
+# customerportal.reinz.com
+# cyberlynx.com
+# cybersansar.com
+# cygateviscom.com
+# dacgroup.com
+# daher-selfhelp.easyvista.com
+# daryo.uz
+# datadoghq.com
+# dbi-apps.easyvista.com
+# dbi-qualif-apps.easyvista.com
+# dbi-qualif.easyvista.com
+# dbi.easyvista.com
+# ddos-pr.airtelsecure.airtel.in
+# de.medical.canon
+# declaration-cstmd.din.developpement-durable.gouv.fr
+# delsur.com.ve
+# demo-www.namestudiodeveloper.com
+# demo.videolive.airtel.in
+# depop.com
+# dergz.com
+# designrelease.godrej.com
+# dev.shop.geo.de
+# diagnostiqueurs.din.developpement-durable.gouv.fr
+# did.ie
+# digi-api1.airtel.in
+# digianalytics.airtel.in
+# digital-lyric.unil.ch
+# digitalextremes.com
+# distributorportal.airtel.in
+# divisionsbc.ca
+# dlt.airtel.in
+# dmv.virginia.gov
+# dnow-apps.easyvista.com
+# dnow-selfhelp.easyvista.com
+# dnow.easyvista.com
+# donotcall.gov.au
+# dotfoods-qualif-apps.easyvista.com
+# dragonbyte-tech.com
+# drtuber.com
+# drybar.com
+# dshs-wa-gov-apps-qualif.easyvista.com
+# dshs-wa-gov-selfhelp.easyvista.com
+# dsl-hkibng12-50dd2b-35.dhcp.inet.fi
+# dsl-hkibng12-50dd2c-71.dhcp.inet.fi
+# dsl-jklbng11-54fb2c-255.dhcp.inet.fi
+# dsl-tkubng11-567221-247.dhcp.inet.fi
+# dsl-trebng22-54f93a-112.dhcp.inet.fi
+# du-bist-grieche.de
+# dudes.keinpfusch.net
+# durex.com.cn
+# e-channelnews.com
+# e.playwithafriend.com
+# eaglevalemedical.com.au
+# earthlogic.com
+# eastridingofyorkshireccg.nhs.uk
+# easyvista.sasemar.es
+# ebigthailand.com
+# ec2-13-234-248-107.ap-south-1.compute.amazonaws.com
+# ec2-13-50-118-25.eu-north-1.compute.amazonaws.com
+# ec2-13-51-93-56.eu-north-1.compute.amazonaws.com
+# ec2-16-16-119-109.eu-north-1.compute.amazonaws.com
+# ec2-3-108-74-125.ap-south-1.compute.amazonaws.com
+# ecln2.din.developpement-durable.gouv.fr
+# ecole.sog.din.developpement-durable.gouv.fr
+# edgewoodcentre.com
+# edmontonstatebank.com
+# edwards.com
+# eiresystems.com
+# elearning.nust.na
+# elections.il.gov
+# elionp00406598.koduleht.elion.ee
+# emdub2b.airtel.in
+# empire.ca
+# en.mon.gov.pl
+# enc92-apps.easyvista.com
+# enc92-bo.easyvista.com
+# engen.co.za
+# enterpriseregistration.secdatacom.dk
+# entnwa.com
+# epayments.sparksoft-demo.com
+# equifax.com.au
+# eremnews.com
+# eroprofile.com
+# erpsitdmz.airtel.in
+# esbint.airtel.in
+# esp-doc-wa-selfhelp.easyvista.com
+# essex.police.uk
+# etaxdeal.com
+# eurazeo-apps.easyvista.com
+# ev3.net
+# evoxforums.com
+# ewallet2.airtel.in
+# excellon.com
+# face.din.developpement-durable.gouv.fr
+# fcci-selfhelp.easyvista.com
+# fd.org
+# feature-cam-1134-web-applicati-ba61c5.dev.eesii.com
+# fedi.jamsharp.net
+# fedi.linus.dev
+# fello.se
+# fems.portalkia.es
+# fidelidade-selfhelp.easyvista.com
+# firstlutheranalexandria.com
+# flashscore.com
+# flavormosaic.com
+# fltlog.godrej.com
+# focusfanatics.com
+# footballaustralia.com.au
+# ford-staging.onwingspan.com
+# fortisnetlease.com
+# founderhyve.com
+# fp.dev.infosysapps.com
+# fpcu-selfhelp.easyvista.com
+# ftp-ftp.jaqur.co.ma
+# ftp-restrict.jaqur.co.ma
+# garlandtx-qualif-apps.easyvista.com
+# gcschool.org
+# geltrude.com
+# gestao-hacorm.easyvista.com
+# gestao-hlman.easyvista.com
+# get.gotomypc.com
+# ghc911-apps.easyvista.com
+# ghc911-qualif-apps.easyvista.com
+# ghc911-qualif.easyvista.com
+# ghc911.easyvista.com
+# ghcscw.com
+# gi-apps.easyvista.com
+# gitlab-forge.din.developpement-durable.gouv.fr
+# glencore.onwingspan.com
+# glico.com
+# gllmr.fr
+# globalswitch.com
+# globetax.com
+# go.cyberlynx.com
+# godrejbamboobicycle.com
+# goldmoney.com
+# golfclubkuerten.de.w01e9abd.kasserver.com
+# gpam.easyvista.com
+# gqrgm.com
+# graceprimarycare.net
+# grafana.common-services.telia.io
+# grandnancy-selfhelp.easyvista.com
+# grange-apps.easyvista.com
+# grange.easyvista.com
+# gravityforms.com
+# groupe-eiffage-selfhelp-qualif-migr.easyvista.com
+# gucci.com
+# guildwars2.com
+# gujarat.bsnl.co.in
+# gunmagwarehouse.com
+# hacorm.easyvista.com
+# hamiltonhospital.org
+# harvestgroupllc.com
+# hduhb.nhs.wales
+# healthengine.com.au
+# heaven-developer.jaqur.co.ma
+# help-bo.acc-groupe.com
+# helpdeskportal.stoneridge.com
+# helpme.acc-groupe.com
+# hffy.com
+# himbo.life
+# hlman.easyvista.com
+# holleycsd.org
+# holonet.social
+# hotrodders.com
+# hotscripts.com
+# humberside.police.uk
+# hydropol.vtiger.com
+# i.test.airtel.in
+# iap-pba.infosysapps.com
+# iapws.com
+# ibsgroup.org
+# ibtimes.co.uk
+# icemortgagetechnology.com
+# iceporn.com
+# igrejaboaviagem.org.br
+# ikhwanweb.com
+# ilex.co.za
+# imanet.org
+# img.b33p.net
+# imgartists.com
+# immigrantsolidarity.org
+# ims.airtel.in
+# indie.ns.cloudflare.com
+# infyspringboard.uk.dev.onwingspan.com
+# insights.kpit.com
+# intap.infosysapps.com
+# intune.gtm.sbicard.org
+# investni.com
+# ioshealthsystems.com
+# iow.gov.uk
+# isnot.online
+# ispeed.airtel.in
+# itprotoday.com
+# jabalgypsum.ir
+# jaeilit.tistory.com
+# jhs-qualif-apps.easyvista.com
+# jim.ns.cloudflare.com
+# jobstreet.com.ph
+# josephbranthospital.ca
+# jsco.net
+# jsrnotes05.tatasteel.com
+# k-a-globalmanagement.com
+# k-bobs.com
+# k2.vtiger.com
+# kallusopraments.com
+# katestube.com
+# kayii.goe.land
+# kcpublicschools.org
+# kdc-one-apps.easyvista.com
+# kdc-one.easyvista.com
+# kedgebs-selfhelp.easyvista.com
+# kelloggsfamilyrewards.com
+# kencogroup-apps.easyvista.com
+# kencogroup.easyvista.com
+# kennebunksavings.com
+# keolis-lyon-oxy.easyvista.com
+# kiut.uz
+# klinikkompass.de
+# knowledge.verisign-grs.net
+# konnect.airtel.in
+# kontrolfreek.com
+# kpu.go.id
+# krispykreme.com
+# ktm.com
+# kun.uz
+# l2inc.com
+# labair.developpement-durable.gouv.fr
+# lakeland-apps.easyvista.com
+# lakeland-selfhelp.easyvista.com
+# lakeland.easyvista.com
+# lapostemobile.evselfhelp.com
+# lboro.ac.uk
+# lcb.wa.gov
+# lcbo.com
+# ld0766.com
+# learningdisability.social
+# leaubm-apps.easyvista.com
+# leaubm.easyvista.com
+# letsencrypt.org
+# letstrip.uz
+# lewispalmer.org
+# lexingtonregional.org
+# lfr95.com
+# lg.airtel.in
+# lincare.com
+# lipstickalley.com
+# littleanthonysdiner.com
+# lmc.edu
+# lobby.airtel.in
+# login.tv.telia.dk
+# lookbook.nu
+# lrscholarship.org
+# lsslibraries.com
+# lync-india-ws.tatasteel.com
+# lyonscg.com
+# lzgd.com.cn
+# m.airtel.in
+# m.enterprise.airtel.in
+# mac-forums.com
+# mail.skanova.net
+# mail.tatasteel.com
+# maispb.com.br
+# makeupalley.com
+# manchestereveningnews.co.uk
+# marcumsupport-qualif.easyvista.com
+# masonite-qualif.easyvista.com
+# masto.blasters.fr
+# mastodon.ap-msk.com
+# mastodon.demonoftheday.eu
+# mastodon.pandoli365.com
+# matadordirect.com
+# matadorrecords.com
+# matrixappliedtech.com
+# matrixnac.com
+# matrixpdm.com
+# matrixservice.com
+# matrixservicecompany.com
+# mattmcwilliams.com
+# maunakearesidences.com
+# mavienumerique-qualif.cnes.fr
+# mcclabel.com
+# mcgrathlex.com
+# mchc.com
+# me-perpignan.mgcloud.fr
+# meeting.videolive.airtel.in
+# mef.gob.pe
+# menulog.com.au
+# merchantscap.com
+# mfa.go.ke
+# mgdis-tar-nonregpatch.mgdis.ovh
+# mgp.fr
+# mgs.edu
+# mhacademy.dev.onwingspan.com
+# michelle.ns.cloudflare.com
+# midamerican.coop
+# midfirst.com
+# midland-memorial.com
+# millelacs.mn.gov
+# mindbodyonline.com
+# minefi.easyvista.com
+# ministryhelps.com
+# mk-search-index-vlan.mehrkanal.net
+# mmorpg.com
+# mobile-user-2e84bc-199.dhcp.inet.fi
+# mobile-user-2e84be-46.dhcp.inet.fi
+# mobile-user-c1d2e2-50.dhcp.inet.fi
+# mobilesalesapi.godrej.com
+# moderntrade.airtel.in
+# monitor.smo.dnv.com
+# montecito.bank
+# mosaic.com
+# mothering.com
+# motorcycle.com
+# movatiathletic.com
+# mrgadget.ci
+# msoid.tvsmotor.com
+# mstaml.com
+# mupol.es
+# muslimmatch.com
+# mvd.kg
+# mwcobgyn.com
+# my.dolezal.one
+# myfxcm.com
+# mysql.ujjivansfb.in
+# mystory.dnv.com
+# myworkspace-uat.dnv.com
+# myworkspace.dnv.com
+# na.citiprepaid.com
+# nadra.gov.pk
+# naomi.ns.cloudflare.com
+# napletonrental.com
+# napolibern.com
+# nationaloil.co.ke
+# navihealth.com
+# ncaks.com
+# nchmd.org
+# ndedev-s3.godrej.com
+# nekton.social
+# netia.pl
+# nextcloud.pjotrs.nl
+# nginx.org
+# nia.ns.cloudflare.com
+# niceweekend.tantosvago.it
+# ninjacam.com
+# noctua.social
+# northbergen.k12.nj.us
+# northerntrust.com
+# northeurope.develop.onecompute.dnv.com
+# nos-metiers-back.nexity.group
+# nos-metiers.nexity.group
+# nps.airtel.in
+# nrtllc.com
+# ns-1054.awsdns-03.org
+# ns-1285.awsdns-32.org
+# ns-1307.awsdns-35.org
+# ns-1538.awsdns-00.co.uk
+# ns-1657.awsdns-15.co.uk
+# ns-1888.awsdns-44.co.uk
+# ns-468.awsdns-58.com
+# ns-70.awsdns-08.com
+# ns-826.awsdns-39.net
+# ns-889.awsdns-47.net
+# nsa.airtel.in
+# nwn.no
+# nyra.com
+# ocbc.com
+# occuspace.com
+# octave2.developpement-durable.gouv.fr
+# od1performerstheatreschool.vtiger.com
+# okta.com
+# omen.cs.uni-magdeburg.de
+# omnihotels.com
+# on24.com
+# onagre.din.developpement-durable.gouv.fr
+# oneidacsd.org
+# onsite.teliacompany.net
+# openapifiles.airtel.in
+# opentermsarchive.org
+# oppenfiber.se
+# oqapi.fr
+# orcid.org
+# order.motion-tm.de
+# orionfoundation.masto.host
+# ornlfcu.com
+# orthi.logement.gouv.fr
+# osmose2.din.developpement-durable.gouv.fr
+# ottobockcare.com
+# ouac.on.ca
+# outlook.office.com
+# owncast.privateger.me
+# oxper.airtel.in
+# paramount.com
+# partage-tg.dev.numlab.fr
+# partners.cloudflare.com
+# paskell.social
+# passport.airtel.in
+# paydigi.airtel.in
+# pb.sgmarkets.com
+# pbnation.com
+# pbswesternreserve.org
+# pc.fsu.edu
+# pdx.sh
+# perezhilton.com
+# petersburg-va.org
+# petguide.com
+# phonero.com
+# photofed.world
+# phpcodechecker.com
+# pilotfishtechnology.com
+# pirate4x4.com
+# piscinadeentropia.es
+# pitcompliance.tvsmotor.com
+# pixelfed.anthropi.st
+# pjotrs.nl
+# pl.pube.tk
+# plainecommune-portail-apps.easyvista.com
+# plainecommune-services.easyvista.com
+# planview.com
+# play-staging.telia.lt
+# pleroma.cyber.gent
+# pluat.tvscredit.com
+# pmi.org
+# polandftp.jaqur.co.ma
+# pornvideoxo.com
+# portal.dashboard.airtel-advantage.airtel.in
+# portlandjetport.org
+# powayusd.com
+# powerball.com
+# preprod-sb.telia.no
+# preprod.aigle.din.developpement-durable.gouv.fr
+# prod-cm-www.tvsmotor.com
+# projectleadership.net
+# propak-qualif-apps.easyvista.com
+# propak-qualif.easyvista.com
+# provisioning.dev.iqairint.com
+# provisioning.iqairint.com
+# provisioning.staging.iqairint.com
+# proxy1.us.stage.protect.kainossmart.com
+# psn-dev.godrej.com
+# pt.stage.mb.telia.no
+# purse.io
+# pussy.org
+# qt.boots.com
+# r.ap-south-1.awstrack.me
+# rabobankamerica.com
+# rakuten.tw
+# rcgroups.com
+# rdc.com
+# redfish.us-west-2.amazonaws.com
+# redpathmining-selfhelp.easyvista.com
+# redtube.com
+# registre-vtc.developpement-durable.gouv.fr
+# rem-selfhelp.easyvista.com
+# remote.doddaccountants.co.uk
+# rentavilla.com
+# revenue.airtel.in
+# revenue.pa.gov
+# rexall.ca
+# rheinmetall.com
+# richlandcountyrecreation.com
+# rivercitybank.com
+# rockwellautomation.com
+# rondoutbank.com
+# rosti.social
+# roughtraderecords.com
+# roxana-selfhelp.easyvista.com
+# rpls.application.developpement-durable.gouv.fr
+# rpmservicing.com
+# rsa-al.gov
+# s3ns-qualif-apps.easyvista.com
+# s3ns-qualif.easyvista.com
+# sadakim.vn
+# sage.fr
+# salemcoop.com
+# samhy.din.developpement-durable.gouv.fr
+# santarosaconsulting.com
+# sapicms.infosys-platforms.com
+# sarinarusso.com
+# sasshoes.com
+# savencia-selfhelp.easyvista.com
+# sc.pima.gov
+# sca.health
+# scientificgames.com
+# score-radar.com
+# scriptingcg3-apps.easyvista.com
+# scriptingcg3.easyvista.com
+# sdaccounting.com
+# secureportal.airtel.in
+# selfway.interway.fr
+# selfy.din.developpement-durable.gouv.fr
+# seller.autoglass.com.br
+# sellercenter.mrgadget.ci
+# senecaniagaracasino.com
+# sephora.com.br
+# serp.co
+# server-108-156-120-26.ord56.r.cloudfront.net
+# server-108-156-120-31.ord56.r.cloudfront.net
+# server-13-33-252-11.den50.r.cloudfront.net
+# server-13-33-252-125.den50.r.cloudfront.net
+# server-18-245-96-72.yto50.r.cloudfront.net
+# server-18-245-96-73.yto50.r.cloudfront.net
+# serviceadm.com
+# servicedesk-sm.globaz.ch
+# servicedesk.maxamcorp.com
+# services.cholarisk.com
+# seveso3.din.developpement-durable.gouv.fr
+# sgcmedia2.vtiger.com
+# sgmail.tvsmotor.com
+# sh0ping.su
+# shadi.com
+# shakteekoshrewards.tatasteel.com
+# shakteekoshrewardsadmin.tatasteel.com
+# shapeways.com
+# sharon.k12.pa.us
+# sharon.ns.cloudflare.com
+# shop.tatasteel.com
+# shriramlife.com
+# signalnine.net
+# similarsitesearch.com
+# simplex.live
+# sip.airtel.in
+# sitau.din.developpement-durable.gouv.fr
+# sites.vtiger.com
+# sjcd-apps.easyvista.com
+# sjcd-qualif-apps.easyvista.com
+# sjcd-qualif.easyvista.com
+# sjcd.easyvista.com
+# skunkwerks.ca
+# smartapi.airtel.in
+# smh.com.au
+# sndgoal.airtel.in
+# social.action0.com
+# social.di20.de
+# social.jjgadgets.tech
+# social.net.ua
+# social.pigelet.org
+# social.scootygals.com
+# social.ursaoskius.com
+# solo.ee
+# solution-selfhelp.easyvista.com
+# sonomu.club
+# sourcis.com
+# speedtestggn1.airtel.in
+# spie-ics-selfhelp.easyvista.com
+# spie-qualif.easyvista.com
+# spiegel.de
+# splunk-hec-se.tslogging.teliacompany.net
+# sports-tech.com
+# spot.murena.io
+# spurlock.social
+# spybux.com
+# srb-qa.ms.tatasteel.com
+# srtvecache9p.tv.telia.lt
+# staging.plusfraichemaville.fr
+# standardbank.co.za
+# steigerwaldt.com
+# stg.chikaranomoto.com
+# stores.airtel.in
+# strtrade.com
+# student.kirovgma.ru
+# support.asendia.com
+# supportbo.vinci-autoroutes.com
+# sutter.courts.ca.gov
+# swest.k12.in.us
+# sycotec.eu
+# tailte.ie
+# talk.stayas.one
+# tanner.ns.cloudflare.com
+# tatakalinganagar.in
+# tataplay.com
+# taylorbowls.com
+# tcbk.com
+# tech.senpiper.com
+# techsupportforum.com
+# teclacenter.com.br
+# tecnolab.com.ar
+# teh.entar.net
+# telia.zone
+# teliacompany.it
+# teliacompany.lu
+# teliaevent.se
+# teliamobiz.dk
+# teliaoperator.se
+# teliaplay-pilot.dk
+# teliasonera4g.com
+# teliawholesale.se
+# terrena-apps.easyvista.com
+# test-dmztc-p.prd-os.arkea.com
+# test.videolive.airtel.in
+
+test2018.tatatinplate.com
+tfgllc.com
+tfl.gov.uk
+the.beta.kure.app
+theage.digitaleditions.com.au
+thebrownfirm.net
+thechronicle.com.au
+thefrisky.com
+thegaslighttheatre.com
+thetruthaboutcars.com
+thoth3126.com.br
+thyssenkrupp.com
+tiddyhonkers.com
+tiemart.com
+tierradigna.org
+tm3681.btow4x8mj073vgqvknq1.buzz
+tmdirectory.airtel.in
+tmh.org
+tnctrackertest-s3.godrej.com
+todoinstagram.com
+townepark.com
+tracemateplus.airtel.in
+tractor.com
+tradeedgedemo.evoncloud.com
+traditionalbank.com
+training.solix.com
+traispeedap1.myspeed.tsp.airtel.in
+traispeedcgr1.myspeed.tsp.airtel.in
+traispeedchv1.myspeed.tsp.airtel.in
+traispeedgmt1.myspeed.tsp.airtel.in
+traispeedjai1.myspeed.tsp.airtel.in
+traispeedjbl1.myspeed.tsp.airtel.in
+traispeedjor1.myspeed.tsp.airtel.in
+traispeedkgp1.myspeed.tsp.airtel.in
+traispeedkrd1.myspeed.tsp.airtel.in
+traispeedpun1.myspeed.tsp.airtel.in
+traispeedrai1.myspeed.tsp.airtel.in
+traispeedtar1.myspeed.tsp.airtel.in
+traispeedupl1.myspeed.tsp.airtel.in
+traispeedvjw1.myspeed.tsp.airtel.in
+translink.ca
+travis-ci.com
+treasurecoastlexus.com
+trillian.im
+trinityhealthmichigan.org
+troet.elmoecho.de
+truepanther.com
+trustetc.com
+tseapp15.eu.tatasteel.com
+tslappsqa.tatasteel.co.in
+tslcompdb.tatasteel.co.in
+tslnoc.tatasteel.com
+u.airtel.in
+u15216873.pwww.webhosting.telia.com
+u81006051.pwww.webhosting.telia.com
+u90708123.pwww.webhosting.telia.com
+uae.artize.com
+ualmiles.com
+ubik-qualif-apps.easyvista.com
+udemy.com
+uk.trustpilot.com
+unaseguros-apps.easyvista.com
+unaseguros.easyvista.com
+unifiedconferencing.airtel.in
+uregina.ca
+us.flyasiana.com
+us.mamamio.com
+usac.org
+usacycling.org
+usms.com
+utorrent.com
+vec.virginia.gov
+ventelo.com
+venus.din.developpement-durable.gouv.fr
+verisign.cc
+verity.org
+versiobeta.somcomunitatenergetica.cat
+verticalscope.com
+vick.ns.cloudflare.com
+videoiq.airtel.in
+villagehealthmartpharm.com
+ville.gatineau.qc.ca
+vin.ns.cloudflare.com
+vincentvein.com
+vis3-eufrf.od2.vtiger.com
+vitechacademy.pfqa.onwingspan.com
+vni.lv
+vniitruda.ru
+vodafone.com.tr
+vodafone.motion-tm.de
+voya.com
+vpn-ilg.verisign.com
+vtfishandwildlife.com
+vts.godrej.com
+vw.com.tr
+vwvortex.com
+wabash.edu
+wallstreet-online.de
+wallywine.com
+washingtoncountycda.org
+washingtonexaminer.com
+webb.reinz.com
+webconf.numerique.gouv.fr
+webhostingtalk.com
+werockyourweb.com
+wesizwe.co.za
+west-midlands.police.uk
+westcoastmaids.com
+wethinkintegrated.com
+whatgreatskin.com
+whoi.edu
+whqr.org
+wienerlinien.at
+windhaveninvestments.com
+wisteria.cafe
+wolfspeed.com
+world-check.com
+worthingtonsteel-selfhelp.easyvista.com
+writersincharge.com
+ww1.filmey.com
+www.83747446.net
+www.americaneagle.com.kw
+www.asap.com.tw
+www.au.iap.infosysapps.com
+www.baselifescience.com
+www.bison-fute.gouv.fr
+www.bristolairport.co.uk
+www.centreofthecell.org
+www.cfd.societegenerale.com
+www.changemanagementgcdev.godrej.com
+www.chikaranomoto.com
+www.cht.com.tw
+www.co.kern.ca.us
+www.cossystems.com
+www.crawco.com
+www.cuit.edu.cn
+www.cygatecdn.com
+www.debenhams.com.kw
+www.demarches-simplifiees.fr
+www.digimate.airtel.in
+www.digivoice.airtel.in
+www.dres-fuchs.de
+www.dsgcp.com
+www.dwa.gov.za
+www.everstonecapital.com
+www.everstonegroup.com
+www.fireshadows.com
+www.gamesacorp.com
+www.handytick.de
+www.horizonte.at
+www.iqsmsorc.airtel.in
+www.jaquar.org
+www.jtbcorp.jp
+www.keesler.af.mil
+www.kgh.nhs.uk
+www.kiut.uz
+www.kms.godrej.com
+www.konnect.airtel.in
+www.letsencrypt.org
+www.lg.airtel.in
+www.logitel.de
+www.london-fire.gov.uk
+www.luxgreen.de
+www.mittele.dk
+www.morgenpost.de
+www.nationaltrustcollections.org.uk
+www.nexity.group
+www.nikonusa.com
+www.occuspace.com
+www.openssl.org
+www.phiadukt.de
+www.registerfreetoday.org
+www.revenue.airtel.in
+www.rumahpantaianthony.com
+www.scerus.com
+www.shop.inmicsnebula.fi
+www.sit2adfsfarm.godrej.com
+www.site.fr
+www.spiraxsarco.com
+www.sportausbildung.com
+www.teliauk.com
+www.thmz.com
+www.tracemateplus.airtel.in
+www.tvsmotors.com.np
+www.veiviser.telia.no
+www.verisignidentityprotection.com
+www.verizsign.com
+www.versusarthritis.org
+www.videoiq.airtel.in
+www.votrenouvelleentreprise.com
+www.web.internet.telia.com
+www.weldingndtlogbooktest.godrej.com
+www.xn--eckah1d4owbb5072i.net
+www.xn--pckwbri2nxa.com
+www.xn--rtz38f4wb.net
+www.xn--xysy2m5xsdsx.com
+www.zeroinfra-dev.ramboll.com
+www4.telia.fi
+x.com
+x1consulting.com
+x6c25.lk7cttpimrd217tbkvu2.buzz
+xbabe.com
+xylem.emagia.com

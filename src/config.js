@@ -1,0 +1,127 @@
+import convict from "convict";
+
+const SCHEMA = {
+  retriever: {
+    sameSite: {
+      doc: "Appear to be [SameSite] for cookies.",
+      format: "String",
+      default: "lax",
+      env: "SAME_SITE",
+    },
+    retrieverUserAgent: {
+      doc: "The user agent to use for retriever requests.",
+      format: "String",
+      default: "MDN-HTTP-Observatory/1.0",
+      env: "RETRIEVER_USER_AGENT",
+    },
+    corsOrigin: {
+      doc: "The CORS origin to use for CORS origin retriever requests.",
+      format: "String",
+      default: "https://http-observatory.security.mozilla.org",
+      env: "CORS_ORIGIN",
+    },
+    abortTimeout: {
+      doc: "The overall timeout for a request, in ms",
+      format: "Number",
+      default: 10000,
+      env: "ABORT_TIMEOUT",
+    },
+    clientTimeout: {
+      doc: "The timeout once the request has been sent, in ms",
+      format: "Number",
+      default: 9000,
+      env: "CLIENT_TIMEOUT",
+    },
+  },
+  database: {
+    database: {
+      doc: "The name of the database to use",
+      format: "String",
+      default: "httpobservatory",
+      env: "PGDATABASE",
+    },
+    host: {
+      doc: "The database server hostname",
+      format: "String",
+      default: "localhost",
+      env: "PGHOST",
+    },
+    user: {
+      doc: "Database username",
+      format: "String",
+      default: "postgres",
+      env: "PGUSER",
+    },
+    pass: {
+      doc: "Database password",
+      format: "String",
+      default: "",
+      sensitive: true,
+      env: "PGPASSWORD",
+    },
+    port: {
+      doc: "The port of the database service",
+      format: "port",
+      default: 5432,
+      env: "PGPORT",
+    },
+    sslmode: {
+      doc: "Database SSL mode",
+      format: "Boolean",
+      default: false,
+      env: "PGSSLMODE",
+    },
+  },
+  api: {
+    allowVerboseStatsFromPublic: {
+      doc: "Allow verbose stats from public",
+      format: "Boolean",
+      default: false,
+      env: "HTTPOBS_ALLOW_VERBOSE_STATS_FROM_PUBLIC",
+    },
+    cooldown: {
+      doc: "Cached result time for API V2, defaults to 1 minute",
+      format: "nat",
+      default: 60,
+      env: "HTTPOBS_API_COOLDOWN",
+    },
+    port: {
+      doc: "The port to bind to",
+      format: "Number",
+      default: 8080,
+      env: "HTTPOBS_API_PORT",
+    },
+    propagateExceptions: {
+      doc: "Propagate API Exceptions",
+      format: "Boolean",
+      default: false,
+      env: "HTTPOBS_PROPAGATE_EXCEPTIONS",
+    },
+    enableLogging: {
+      doc: "Enable server logging",
+      format: "Boolean",
+      default: true,
+      env: "HTTPOBS_ENABLE_LOGGING",
+    },
+  },
+};
+
+/**
+ *
+ * @param {string} configFile
+ * @returns
+ */
+export function load(configFile) {
+  const configuration = convict(SCHEMA);
+  try {
+    if (configFile) {
+      configuration.loadFile(configFile);
+    }
+    configuration.validate({ allowed: "strict" });
+    return configuration.getProperties();
+  } catch (e) {
+    throw new Error(`error reading config: ${e}`);
+  }
+}
+
+export const CONFIG = load(process.env["CONFIG_FILE"]);

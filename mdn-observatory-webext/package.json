@@ -1,0 +1,50 @@
+{
+  "name": "mdn-observatory",
+  "description": "Checking http-level security and grading a site",
+  "version": "0.0.1",
+  "homepage": "http://chrome.google.com/webstore",
+  "author": "ENTER YOUR NAME HERE",
+  "repository": {
+    "type": "git",
+    "url": "ENTER GIT REPO URL"
+  },
+  "type": "module",
+  "scripts": {
+    "start": "xt-build -e dev -w",
+    "start:firefox": "xt-build -e dev -p firefox -w",
+    "build": "node bundle.js"
+  },
+  "babel": {
+    "presets": [
+      "@babel/preset-env"
+    ]
+  },
+  "eslintIgnore": [
+    "test/**/*"
+  ],
+  "devDependencies": {
+    "esbuild": "0.20.2",
+    "esbuild-plugin-polyfill-node": "^0.3.0",
+    "extension-cli": "latest"
+  },
+  "xtdocs": {
+    "source": {
+      "include": [
+        "README.md",
+        "src"
+      ]
+    }
+  },
+  "xtbuild": {
+    "js_bundles": [
+      {
+        "name": "obsi",
+        "src": "./src/**/*.js"
+      }
+    ]
+  },
+  "dependencies": {
+    "deasync": "^0.1.29",
+    "obsi": "file:.."
+  }
+}

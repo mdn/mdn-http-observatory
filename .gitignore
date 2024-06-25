@@ -1,0 +1,8 @@
+node_modules/
+.env
+conf/config.json
+api-examples.http
+mdn-observatory-webext/dist
+.DS_Store
+compare_output.txt
+load-script.js

@@ -1,0 +1,17 @@
+.github
+.git
+.vscode
+.idea
+mdn-observatory-webext
+test
+node_modules
+npm-debug.log
+Dockerfile
+.dockerignore
+.env
+conf/config.json
+api-examples.http
+.DS_Store
+.editorconfig
+.gitignore
+.prettierrc.json

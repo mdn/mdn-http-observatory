@@ -184,10 +184,10 @@ describeOrSkip("API V2", function () {
       method: "GET",
       url: "/api/v2/analyze?host=httpbin.org",
     });
-    assert.equal(response.statusCode, 404);
+    // we do scan that host
+    assert.equal(response.statusCode, 200);
     const r = JSON.parse(response.body);
     assert.isObject(r);
-    assert.equal(r.error, "not-found");
   }).timeout(6000);
 
   it("responds to GET /analyze of an ip address", async function () {

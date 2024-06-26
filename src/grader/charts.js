@@ -156,10 +156,10 @@ export const SCORE_TABLE = new Map([
     Expectation.CspImplementedWithUnsafeEval,
     {
       description: `<p>
-      Content Security Policy (CSP) implemented, but allows <code>'unsafe-eval'</code> and allows forms to be submitted to any source. This includes <code>'unsafe-inline'</code> or <code>data:</code> inside <code>script-src</code>, overly broad sources such as <code>https:</code> inside <code>object-src</code> or <code>script-src</code>, or not restricting the sources for <code>object-src</code> or <code>script-src</code>.
+      Content Security Policy (CSP) implemented, but allows <code>'unsafe-eval'</code> and allows forms to be submitted to any source.
       </p>`,
       modifier: -10,
-      recommendation: `<p>Set the header to <code>default default-src</code>.</p>`,
+      recommendation: `<p>First remove the use of <code>eval()</code> from the codebase and once completed, remove <code>'unsafe-eval'</code> from the CSP header.</p>`,
     },
   ],
   [

@@ -1,7 +1,6 @@
 import { CONFIG } from "../config.js";
 import format from "pg-format";
 import { ALGORITHM_VERSION } from "../types.js";
-import dayjs from "dayjs";
 import pg from "pg";
 
 const { Pool } = pg;
@@ -246,152 +245,10 @@ export async function selectScan(pool, scanId) {
   return result.rows[0];
 }
 
-// /**
-//  * - this is deprecated
-//  * @param {Pool} pool
-//  * @param {boolean} verbose
-//  * @returns {Promise<import("../types.js").ScannerStatisticsResult>}
-//  */
-
-// export async function selectScanScannerStatistics(pool, verbose = false) {
-//   const queries = [
-//     // Get the grade distribution across all latest scans for all sites
-//     pool.query("SELECT * FROM grade_distribution", []),
-//     // Get the grade distribution across all scans for all sites
-//     pool.query("SELECT * FROM grade_distribution_all_scans", []),
-//     // And the summation of grade differences
-//     pool.query(
-//       "SELECT * FROM scan_score_difference_distribution_summation",
-//       []
-//     ),
-//     // And the total number of scans
-//     pool.query("SELECT id, start_time FROM scans ORDER BY id DESC LIMIT 1", []),
-//   ];
-//   // Get the recent scan count
-//   queries.push(
-//     pool.query(
-//       `SELECT DATE_TRUNC('hour', end_time) AS hour, COUNT(*) as num_scans
-//           FROM scans
-//           WHERE (end_time < DATE_TRUNC('hour', NOW()))
-//             AND (end_time >= DATE_TRUNC('hour', NOW()) - INTERVAL '24 hours')
-//           GROUP BY hour
-//           ORDER BY hour DESC`,
-//       []
-//     )
-//   );
-//   // This is rather expensive, taking a few seconds on prod data
-//   // TODO: Put the scanner stats query into a mat view
-//   if (verbose) {
-//     // Get the scanner stats
-//     queries.push(
-//       pool.query(
-//         "SELECT state, COUNT(*) as quantity FROM scans GROUP BY state;",
-//         []
-//       )
-//     );
-//   }
-
-// const res = await Promise.all(queries);
-// const gradeDistribution = res[0].rows.reduce((acc, { grade, count }) => {
-//   acc[grade] = count;
-//   return acc;
-// }, {});
-// const gradeDistributionAllScans = res[1].rows.reduce(
-//   (acc, { grade, count }) => {
-//     acc[grade] = parseInt(count);
-//     return acc;
-//   },
-//   {}
-// );
-// const scanScoreDifferenceDistributionSummation = res[2].rows.reduce(
-//   (acc, { difference, num_sites }) => {
-//     acc[difference] = parseInt(num_sites);
-//     return acc;
-//   },
-//   {}
-// );
-
-// // this is a tad hacky, ordering by primary key to get the latest one
-// const mostRecentScanDateTime = res[3].rows[0].start_time;
-// // this is even more hacks, just assumes that the primary key is
-// // a linear monotonic value starting with 1
-// const scanCount = res[3].rows[0].id;
-
-// /** @type {import("../types.js").NumberMap} */
-// let recentScans = {};
-// /** @type {import("../types.js").NumberMap} */
-// let states = {};
-
-// recentScans = res[4].rows.reduce((acc, { hour, num_scans }) => {
-//   acc[dayjs(hour).format("YYYY-MM-DD hh:mm:ss")] = parseInt(num_scans);
-//   return acc;
-// }, {});
-
-// if (verbose) {
-//   states = res[5].rows.reduce((acc, { state, quantity }) => {
-//     acc[state] = quantity;
-//     return acc;
-//   }, {});
-// }
-
-//   return {
-//     grade_distribution: gradeDistribution,
-//     grade_distribution_all_scans: gradeDistributionAllScans,
-//     scan_score_difference_distribution_summation:
-//       scanScoreDifferenceDistributionSummation,
-//     most_recent_scan_datetime: mostRecentScanDateTime,
-//     recent_scans: recentScans,
-//     scan_count: scanCount,
-//     states: states,
-//   };
-// }
-
-// /**
-//  *
-//  * @param {Pool} pool
-//  * @param {number} numScans
-//  * @param {number} minScore
-//  * @param {number} maxScore
-//  * @returns {Promise<import("../types.js").StringMap>}
-//  */
-// export async function selectScanRecentFinishedScans(
-//   pool,
-//   numScans = 10,
-//   minScore = 0,
-//   maxScore = 100
-// ) {
-//   const result = await pool.query(
-//     `SELECT sites.domain as domain, s2.grade as grade
-//     FROM
-//       (
-//         SELECT DISTINCT ON (s1.site_id) s1.site_id, s1.grade, s1.end_time
-//         FROM
-//           (
-//             SELECT site_id, grade, end_time
-//             FROM scans
-//               WHERE state = $1
-//               AND NOT hidden
-//               AND score >= $2
-//               AND score <= $3
-//               ORDER BY end_time
-//               DESC LIMIT $4
-//           ) s1
-//           ORDER BY s1.site_id, s1.end_time DESC
-//       ) s2
-//       INNER JOIN sites ON (sites.id = s2.site_id)
-//       ORDER BY s2.end_time DESC LIMIT $5`,
-//     [ScanState.FINISHED, minScore, maxScore, numScans * 2, numScans]
-//   );
-//   return result.rows.reduce((acc, row) => {
-//     acc[row.domain] = row.grade;
-//     return acc;
-//   }, {});
-// }
-
 /**
  * Returns the most recent scan that has finished successfully
  * inside a window back in time in seconds, which defaults to
- * api.cachedResultTime seconds.
+ * api.cachedResultTime seconds. Unused.
  * @param {Pool} pool
  * @param {number} siteId
  * @param {number} recentInSeconds
@@ -420,12 +277,17 @@ export async function selectScanRecentScan(
  * @param {string} host
  * @returns {Promise<ScanRow | undefined>}
  */
-export async function selectScanLatestScanByHost(pool, host) {
+export async function selectScanLatestScanByHost(
+  pool,
+  host,
+  maxAge = CONFIG.api.cacheTimeForGet
+) {
   const result = await pool.query(
     `SELECT scans.*
       FROM scans
       JOIN sites ON scans.site_id = sites.id
       WHERE sites.domain = $1
+      AND start_time >= NOW() - INTERVAL '${maxAge} seconds'
       AND state = $2
       ORDER BY scans.start_time DESC
       LIMIT 1`,

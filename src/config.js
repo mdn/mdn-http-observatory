@@ -81,10 +81,16 @@ const SCHEMA = {
       env: "HTTPOBS_ALLOW_VERBOSE_STATS_FROM_PUBLIC",
     },
     cooldown: {
-      doc: "Cached result time for API V2, defaults to 1 minute",
+      doc: "Cached result time for API V2, in Seconds. Defaults to 1 minute",
       format: "nat",
       default: 60,
       env: "HTTPOBS_API_COOLDOWN",
+    },
+    cacheTimeForGet: {
+      doc: "Maximum scan age a GET request returns before initiating a new scan, in seconds. Defaults to 24 hours.",
+      format: "nat",
+      default: 86400,
+      env: "HTTPOBS_API_GET_CACHE",
     },
     port: {
       doc: "The port to bind to",

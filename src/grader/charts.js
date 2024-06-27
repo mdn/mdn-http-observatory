@@ -62,37 +62,40 @@ export const TEST_TITLES = {
 export const TEST_TOPIC_LINKS = new Map([
   [
     "content-security-policy",
-    "/en-US/docs/Web/Security/Practical_implementation/CSP",
+    "/en-US/docs/Web/Security/Practical_implementation_guides/CSP",
   ],
-  ["cookies", "/en-US/docs/Web/Security/Practical_implementation/Cookies"],
+  [
+    "cookies",
+    "/en-US/docs/Web/Security/Practical_implementation_guides/Cookies",
+  ],
   [
     "cross-origin-resource-policy",
-    "/en-US/docs/Web/Security/Practical_implementation_guides/CORP",
+    "/en-US/docs/Web/Security/Practical_implementation_guides_guides/CORP",
   ],
   [
     "cross-origin-resource-sharing",
-    "/en-US/docs/Web/Security/Practical_implementation/CORS",
+    "/en-US/docs/Web/Security/Practical_implementation_guides/CORS",
   ],
   [
     "redirection",
-    "/en-US/docs/Web/Security/Practical_implementation/TLS#http_redirections",
+    "/en-US/docs/Web/Security/Practical_implementation_guides/TLS#http_redirections",
   ],
   [
     "referrer-policy",
-    "/en-US/docs/Web/Security/Practical_implementation/Referrer_policy",
+    "/en-US/docs/Web/Security/Practical_implementation_guides/Referrer_policy",
   ],
   [
     "strict-transport-security",
-    "/en-US/docs/Web/Security/Practical_implementation/TLS#http_strict_transport_security",
+    "/en-US/docs/Web/Security/Practical_implementation_guides/TLS#http_strict_transport_security",
   ],
   ["subresource-integrity", "/en-US/docs/Web/Security/Subresource_Integrity"],
   [
     "x-content-type-options",
-    "/en-US/docs/Web/Security/Practical_implementation/MIME_types",
+    "/en-US/docs/Web/Security/Practical_implementation_guides/MIME_types",
   ],
   [
     "x-frame-options",
-    "/en-US/docs/Web/Security/Practical_implementation/Clickjacking",
+    "/en-US/docs/Web/Security/Practical_implementation_guides/Clickjacking",
   ],
   // inactive, for historic records
   ["contribute", "/en-US/"],

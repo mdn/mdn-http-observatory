@@ -70,7 +70,7 @@ export const TEST_TOPIC_LINKS = new Map([
   ],
   [
     "cross-origin-resource-policy",
-    "/en-US/docs/Web/Security/Practical_implementation_guides_guides/CORP",
+    "/en-US/docs/Web/Security/Practical_implementation_guides/CORP",
   ],
   [
     "cross-origin-resource-sharing",

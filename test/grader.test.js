@@ -28,7 +28,7 @@ describe("Grader", () => {
     const res = getTopicLink("cookies");
     assert.include(
       res,
-      "/en-US/docs/Web/Security/Practical_implementation/Cookies"
+      "/en-US/docs/Web/Security/Practical_implementation_guides/Cookies"
     );
   });
 

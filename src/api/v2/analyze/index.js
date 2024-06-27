@@ -97,11 +97,7 @@ async function executeScan(pool, hostname) {
  * @returns {Promise<any>}
  */
 async function scanOrReturnRecent(fastify, pool, hostname, age) {
-  let scanRow = await selectScanLatestScanByHost(
-    pool,
-    hostname,
-    CONFIG.api.cacheTimeForGet
-  );
+  let scanRow = await selectScanLatestScanByHost(pool, hostname, age);
   if (!scanRow) {
     // do a rescan
     fastify.log.info("Rescanning because no recent scan could be found");

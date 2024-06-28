@@ -1,9 +1,19 @@
-import { BaseOutput, Expectation, Requests } from "../../types.js";
+import { BaseOutput, Requests } from "../../types.js";
+import { Expectation } from "../../types.js";
 import { contentSecurityPolicyTest } from "./csp.js";
 
 export class XFrameOptionsOutput extends BaseOutput {
   /** @type {string | null} */
   data = null;
+  static name = "x-frame-options";
+  static title = "X-Frame-Options";
+  static possibleResults = [
+    Expectation.XFrameOptionsImplementedViaCsp,
+    Expectation.XFrameOptionsSameoriginOrDeny,
+    Expectation.XFrameOptionsAllowFromOrigin,
+    Expectation.XFrameOptionsNotImplemented,
+    Expectation.XFrameOptionsHeaderInvalid,
+  ];
 
   /**
    *
@@ -11,8 +21,6 @@ export class XFrameOptionsOutput extends BaseOutput {
    */
   constructor(expectation) {
     super(expectation);
-    this.name = "x-frame-options";
-    this.title = "X-Frame-Options";
   }
 }
 

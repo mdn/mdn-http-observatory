@@ -1,8 +1,17 @@
-import { BaseOutput, Expectation, Requests } from "../../types.js";
+import { BaseOutput, Requests } from "../../types.js";
+import { Expectation } from "../../types.js";
 
 export class CorsOutput extends BaseOutput {
   /** @type {string | null} */
   data = null;
+  static name = "cross-origin-resource-sharing";
+  static title = "Cross Origin Resource Sharing (CORS)";
+  static possibleResults = [
+    Expectation.CrossOriginResourceSharingNotImplemented,
+    Expectation.CrossOriginResourceSharingImplementedWithPublicAccess,
+    Expectation.CrossOriginResourceSharingImplementedWithRestrictedAccess,
+    Expectation.CrossOriginResourceSharingImplementedWithUniversalAccess,
+  ];
 
   /**
    *
@@ -10,8 +19,6 @@ export class CorsOutput extends BaseOutput {
    */
   constructor(expectation) {
     super(expectation);
-    this.name = "cross-origin-resource-sharing";
-    this.title = "Cross Origin Resource Sharing (CORS)";
   }
 }
 

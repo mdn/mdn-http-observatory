@@ -1,4 +1,5 @@
-import { Requests, Expectation, BaseOutput } from "../../types.js";
+import { Requests, BaseOutput } from "../../types.js";
+import { Expectation } from "../../types.js";
 import { isHstsPreloaded } from "../hsts.js";
 export class StrictTransportSecurityOutput extends BaseOutput {
   /** @type {string | null} */
@@ -8,15 +9,23 @@ export class StrictTransportSecurityOutput extends BaseOutput {
   maxAge = null;
   preload = false;
   preloaded = false;
-
+  static name = "strict-transport-security";
+  static title = "Strict Transport Security (HSTS)";
+  static possibleResults = [
+    Expectation.HstsPreloaded,
+    Expectation.HstsImplementedMaxAgeAtLeastSixMonths,
+    Expectation.HstsImplementedMaxAgeLessThanSixMonths,
+    Expectation.HstsNotImplemented,
+    Expectation.HstsHeaderInvalid,
+    Expectation.HstsNotImplementedNoHttps,
+    Expectation.HstsInvalidCert,
+  ];
   /**
    *
    * @param {Expectation} expectation
    */
   constructor(expectation) {
     super(expectation);
-    this.name = "strict-transport-security";
-    this.title = "Strict Transport Security (HSTS)";
   }
 }
 

@@ -1,6 +1,7 @@
 import { createServer } from "../src/api/server.js";
 import { assert } from "chai";
-import { ALGORITHM_VERSION, Expectation } from "../src/types.js";
+import { Expectation } from "../src/types.js";
+import { ALGORITHM_VERSION } from "../src/constants.js";
 import { migrateDatabase } from "../src/database/migrate.js";
 import {
   createPool,

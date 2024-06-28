@@ -54,9 +54,11 @@ export class BaseOutput {
   /** @type {number | null} */
   scoreModifier = 0;
   /** @type {string} */
-  name;
+  static name = "base";
   /** @type {string} */
-  title;
+  static title = "Base";
+  /** @type {Expectation[]} */
+  static possibleResults = [];
 
   /**
    *
@@ -176,9 +178,6 @@ export const Expectation = {
   // REFERRER POLICY
 
   ReferrerPolicyPrivate: "referrer-policy-private",
-  ReferrerPolicyOrigin: "referrer-policy-origin",
-  ReferrerPolicyOriginWhenCrossOrigin:
-    "referrer-policy-origin-when-cross-origin",
   ReferrerPolicyUnsafe: "referrer-policy-unsafe",
   ReferrerPolicyNotImplemented: "referrer-policy-not-implemented",
   ReferrerPolicyHeaderInvalid: "referrer-policy-header-invalid",

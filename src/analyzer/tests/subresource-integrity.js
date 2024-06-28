@@ -1,4 +1,5 @@
-import { BaseOutput, Expectation, HTML_TYPES, Requests } from "../../types.js";
+import { BaseOutput, HTML_TYPES, Requests } from "../../types.js";
+import { Expectation } from "../../types.js";
 import { JSDOM } from "jsdom";
 import { parse } from "tldts";
 import { onlyIfWorse } from "../utils.js";
@@ -6,6 +7,18 @@ import { onlyIfWorse } from "../utils.js";
 export class SubresourceIntegrityOutput extends BaseOutput {
   /** @type {import("../../types.js").ScriptMap} */
   data;
+  static name = "subresource-integrity";
+  static title = "Subresource Integrity";
+  static possibleResults = [
+    Expectation.SriImplementedAndAllScriptsLoadedSecurely,
+    Expectation.SriImplementedAndExternalScriptsLoadedSecurely,
+    Expectation.SriNotImplementedResponseNotHtml,
+    Expectation.SriNotImplementedButNoScriptsLoaded,
+    Expectation.SriNotImplementedButAllScriptsLoadedFromSecureOrigin,
+    Expectation.SriNotImplementedButExternalScriptsLoadedSecurely,
+    Expectation.SriImplementedButExternalScriptsNotLoadedSecurely,
+    Expectation.SriNotImplementedAndExternalScriptsNotLoadedSecurely,
+  ];
 
   /**
    *
@@ -14,8 +27,6 @@ export class SubresourceIntegrityOutput extends BaseOutput {
   constructor(expectation) {
     super(expectation);
     this.data = {};
-    this.name = "subresource-integrity";
-    this.title = "Subresource Integrity";
   }
 }
 

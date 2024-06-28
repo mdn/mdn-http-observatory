@@ -1,16 +1,13 @@
 import { createServer } from "../src/api/server.js";
 import { assert } from "chai";
-import { ALGORITHM_VERSION, Expectation } from "../src/types.js";
+import { ALGORITHM_VERSION } from "../src/constants.js";
 import { migrateDatabase } from "../src/database/migrate.js";
 import {
   createPool,
   refreshMaterializedViews,
 } from "../src/database/repository.js";
-import { insertSeeds } from "./helpers/db.js";
-import { GRADES } from "../src/grader/charts.js";
 import { EventEmitter } from "events";
-import { CONFIG } from "../src/config.js";
-import { NUM_TESTS } from "../src/scanner/index.js";
+import { NUM_TESTS } from "../src/constants.js";
 
 const pool = createPool();
 EventEmitter.defaultMaxListeners = 20;
@@ -278,5 +275,28 @@ describeOrSkip("API V2", function () {
     assert.equal(responseJson.length, 1);
     assert.equal(responseJson[0].grade, grade);
     assert.equal(responseJson[0].count, 1);
+  });
+
+  it("responds to GET /recommendation_matrix", async function () {
+    const app = await createServer();
+    const response = await app.inject({
+      method: "GET",
+      url: `/api/v2/recommendation_matrix`,
+    });
+    assert.equal(response.statusCode, 200);
+    const responseJson = JSON.parse(response.body);
+    assert.equal(responseJson.length, NUM_TESTS);
+    for (const entry of responseJson) {
+      assert.isString(entry.name);
+      assert.isString(entry.title);
+      assert.isString(entry.mdnLink);
+      assert.isArray(entry.results);
+      for (const result of entry.results) {
+        assert.isString(result.name);
+        assert.isNumber(result.scoreModifier);
+        assert.isString(result.description);
+        assert.isString(result.recommendation);
+      }
+    }
   });
 });

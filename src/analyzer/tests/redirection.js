@@ -1,4 +1,5 @@
-import { BaseOutput, Expectation, Requests } from "../../types.js";
+import { BaseOutput, Requests } from "../../types.js";
+import { Expectation } from "../../types.js";
 import { isHstsPreloaded } from "../hsts.js";
 
 export class RedirectionOutput extends BaseOutput {
@@ -9,6 +10,18 @@ export class RedirectionOutput extends BaseOutput {
   route = [];
   /** @type {number | null} */
   statusCode = null;
+  static name = "redirection";
+  static title = "Redirection";
+  static possibleResults = [
+    Expectation.RedirectionAllRedirectsPreloaded,
+    Expectation.RedirectionToHttps,
+    Expectation.RedirectionNotNeededNoHttp,
+    Expectation.RedirectionOffHostFromHttp,
+    Expectation.RedirectionNotToHttpsOnInitialRedirection,
+    Expectation.RedirectionNotToHttps,
+    Expectation.RedirectionMissing,
+    Expectation.RedirectionInvalidCert,
+  ];
 
   /**
    *
@@ -16,8 +29,6 @@ export class RedirectionOutput extends BaseOutput {
    */
   constructor(expectation) {
     super(expectation);
-    this.name = "redirection";
-    this.title = "Redirection";
   }
 }
 

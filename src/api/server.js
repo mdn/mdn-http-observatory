@@ -6,6 +6,7 @@ import helmet from "@fastify/helmet";
 import analyzeApiV2 from "./v2/analyze/index.js";
 import scanApiV2 from "./v2/scan/index.js";
 import statsApiV2 from "./v2/stats/index.js";
+import recommendationMatrixApiV2 from "./v2/recommendations/index.js";
 import globalErrorHandler from "./global-error-handler.js";
 import pool from "@fastify/postgres";
 import { poolOptions } from "../database/repository.js";
@@ -62,6 +63,7 @@ export async function createServer() {
     server.register(analyzeApiV2, { prefix: "/api/v2" }),
     server.register(scanApiV2, { prefix: "/api/v2" }),
     server.register(statsApiV2, { prefix: "/api/v2" }),
+    server.register(recommendationMatrixApiV2, { prefix: "/api/v2" }),
   ]);
 
   ["SIGINT", "SIGTERM"].forEach((signal) => {

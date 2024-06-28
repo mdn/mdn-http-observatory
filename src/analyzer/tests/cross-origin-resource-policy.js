@@ -1,10 +1,20 @@
-import { BaseOutput, Expectation, Requests } from "../../types.js";
+import { BaseOutput, Requests } from "../../types.js";
+import { Expectation } from "../../types.js";
 
 export class CrossOriginResourcePolicyOutput extends BaseOutput {
   /** @type {string | null} */
   data = null;
   http = false;
   meta = false;
+  static name = "cross-origin-resource-policy";
+  static title = "Cross Origin Resource Policy";
+  static possibleResults = [
+    Expectation.CrossOriginResourcePolicyNotImplemented,
+    Expectation.CrossOriginResourcePolicyImplementedWithSameOrigin,
+    Expectation.CrossOriginResourcePolicyImplementedWithSameSite,
+    Expectation.CrossOriginResourcePolicyImplementedWithCrossOrigin,
+    Expectation.CrossOriginResourcePolicyHeaderInvalid,
+  ];
 
   /**
    *
@@ -12,8 +22,6 @@ export class CrossOriginResourcePolicyOutput extends BaseOutput {
    */
   constructor(expectation) {
     super(expectation);
-    this.name = "cross-origin-resource-policy";
-    this.title = "Cross Origin Resource Policy";
   }
 }
 

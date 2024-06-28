@@ -1,9 +1,18 @@
-import { Requests, Expectation, BaseOutput } from "../../types.js";
+import { Requests, BaseOutput } from "../../types.js";
+import { Expectation } from "../../types.js";
 export class ReferrerOutput extends BaseOutput {
   /** @type {string | null} */
   data = null;
   http = false;
   meta = false;
+  static name = "referrer-policy";
+  static title = "Referrer Policy";
+  static possibleResults = [
+    Expectation.ReferrerPolicyPrivate,
+    Expectation.ReferrerPolicyNotImplemented,
+    Expectation.ReferrerPolicyUnsafe,
+    Expectation.ReferrerPolicyHeaderInvalid,
+  ];
 
   /**
    *
@@ -11,8 +20,6 @@ export class ReferrerOutput extends BaseOutput {
    */
   constructor(expectation) {
     super(expectation);
-    this.name = "referrer-policy";
-    this.title = "Referrer Policy";
   }
 }
 

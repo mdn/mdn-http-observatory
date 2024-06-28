@@ -1,7 +1,8 @@
-import { Requests, Expectation, BaseOutput } from "../../types.js";
+import { Requests, BaseOutput } from "../../types.js";
+import { Expectation } from "../../types.js";
 import { onlyIfWorse } from "../utils.js";
 import { strictTransportSecurityTest } from "./strict-transport-security.js";
-import { CookieJar, Cookie } from "tough-cookie";
+import { Cookie } from "tough-cookie";
 
 // See: https://github.com/mozilla/http-observatory/issues/282 for the heroku-session-affinity insanity
 const COOKIES_TO_DELETE = ["heroku-session-affinity"];
@@ -28,12 +29,24 @@ export class CookiesOutput extends BaseOutput {
   // Store whether or not we saw SameSite cookies, if cookies were set
   /** @type {boolean | null} */
   sameSite = null;
+  static name = "cookies";
+  static title = "Cookies";
+  static possibleResults = [
+    Expectation.CookiesSecureWithHttponlySessionsAndSamesite,
+    Expectation.CookiesSecureWithHttponlySessions,
+    Expectation.CookiesNotFound,
+    Expectation.CookiesWithoutSecureFlagButProtectedByHsts,
+    Expectation.CookiesSessionWithoutSecureFlagButProtectedByHsts,
+    Expectation.CookiesWithoutSecureFlag,
+    Expectation.CookiesSamesiteFlagInvalid,
+    Expectation.CookiesAnticsrfWithoutSamesiteFlag,
+    Expectation.CookiesSessionWithoutHttponlyFlag,
+    Expectation.CookiesSessionWithoutSecureFlag,
+  ];
 
   /** @param {Expectation} expectation */
   constructor(expectation) {
     super(expectation);
-    this.name = "cookies";
-    this.title = "Cookies";
   }
 }
 

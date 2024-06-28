@@ -1,16 +1,13 @@
 import { createServer } from "../src/api/server.js";
 import { assert } from "chai";
-import { ALGORITHM_VERSION, Expectation } from "../src/types.js";
+import { ALGORITHM_VERSION } from "../src/constants.js";
 import { migrateDatabase } from "../src/database/migrate.js";
 import {
   createPool,
   refreshMaterializedViews,
 } from "../src/database/repository.js";
-import { insertSeeds } from "./helpers/db.js";
-import { GRADES } from "../src/grader/charts.js";
 import { EventEmitter } from "events";
-import { CONFIG } from "../src/config.js";
-import { NUM_TESTS } from "../src/scanner/index.js";
+import { NUM_TESTS } from "../src/constants.js";
 
 const pool = createPool();
 EventEmitter.defaultMaxListeners = 20;
@@ -79,6 +76,7 @@ describeOrSkip("API V2", function () {
 
     const tests = responseJson.tests;
     assert.isObject(tests);
+    console.log(tests);
     assert.equal(Object.keys(tests).length, NUM_TESTS);
     const test = tests[Object.keys(tests)[0]];
     assert.isString(test.expectation);

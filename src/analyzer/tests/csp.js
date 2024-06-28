@@ -1,5 +1,6 @@
 import { CONTENT_SECURITY_POLICY } from "../../headers.js";
-import { Requests, Expectation, Policy, BaseOutput } from "../../types.js";
+import { Requests, Policy, BaseOutput } from "../../types.js";
+import { Expectation } from "../../types.js";
 import { parseCsp } from "../cspParser.js";
 
 const DANGEROUSLY_BROAD = new Set([
@@ -32,15 +33,25 @@ export class CspOutput extends BaseOutput {
   /** @type {Policy | null} */
   policy = null;
   numPolicies = 0;
-
+  static name = "content-security-policy";
+  static title = "Content Security Policy (CSP)";
+  static possibleResults = [
+    Expectation.CspImplementedWithNoUnsafeDefaultSrcNone,
+    Expectation.CspImplementedWithNoUnsafe,
+    Expectation.CspImplementedWithUnsafeInlineInStyleSrcOnly,
+    Expectation.CspImplementedWithInsecureSchemeInPassiveContentOnly,
+    Expectation.CspImplementedWithUnsafeEval,
+    Expectation.CspImplementedWithUnsafeInline,
+    Expectation.CspImplementedWithInsecureScheme,
+    Expectation.CspHeaderInvalid,
+    Expectation.CspNotImplemented,
+  ];
   /**
    *
    * @param {Expectation} expectation
    */
   constructor(expectation) {
     super(expectation);
-    this.name = "content-security-policy";
-    this.title = "Content Security Policy (CSP)";
   }
 }
 

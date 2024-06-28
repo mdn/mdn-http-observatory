@@ -97,6 +97,15 @@ const scanQuery = {
   },
 };
 
+const scanResponse = {
+  title: "scanResponse",
+  type: "object",
+  properties: {
+    scan: scan,
+    tests: tests,
+  },
+};
+
 const gradeDistributionResponse = {
   type: "array",
   items: {
@@ -109,12 +118,29 @@ const gradeDistributionResponse = {
   },
 };
 
-const scanResponse = {
-  title: "scanResponse",
-  type: "object",
-  properties: {
-    scan: scan,
-    tests: tests,
+const recommendationMatrixResponse = {
+  type: "array",
+  items: {
+    type: "object",
+    properties: {
+      name: { type: "string" },
+      title: { type: "string" },
+      mdnLink: { type: "string" },
+      results: {
+        type: "array",
+        items: {
+          type: "object",
+          properties: {
+            name: { type: "string" },
+            scoreModifier: { type: "integer" },
+            description: { type: "string" },
+            recommendation: { type: "string" },
+          },
+          required: ["name", "scoreModifier", "description", "recommendation"],
+        },
+      },
+    },
+    required: ["name", "title", "mdnLink", "results"],
   },
 };
 
@@ -143,6 +169,12 @@ export const SCHEMAS = {
   gradeDistribution: {
     response: {
       200: gradeDistributionResponse,
+    },
+  },
+
+  recommendationMatrix: {
+    response: {
+      200: recommendationMatrixResponse,
     },
   },
 };

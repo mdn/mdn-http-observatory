@@ -1,6 +1,6 @@
 import { CONFIG } from "../config.js";
 import format from "pg-format";
-import { ALGORITHM_VERSION } from "../types.js";
+import { ALGORITHM_VERSION } from "../constants.js";
 import pg from "pg";
 
 const { Pool } = pg;

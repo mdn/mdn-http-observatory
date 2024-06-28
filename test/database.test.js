@@ -1,4 +1,3 @@
-import { CONFIG } from "../src/config.js";
 import { assert } from "chai";
 import {
   createPool,
@@ -14,7 +13,7 @@ import {
   selectTestResults,
   updateScanState,
 } from "../src/database/repository.js";
-import { ALGORITHM_VERSION } from "../src/types.js";
+import { ALGORITHM_VERSION } from "../src/constants.js";
 import { faker } from "@faker-js/faker";
 import { migrateDatabase } from "../src/database/migrate.js";
 import { insertSeeds } from "./helpers/db.js";

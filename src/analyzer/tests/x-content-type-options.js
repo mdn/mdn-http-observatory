@@ -1,8 +1,16 @@
-import { BaseOutput, Expectation, Requests } from "../../types.js";
+import { BaseOutput, Requests } from "../../types.js";
+import { Expectation } from "../../types.js";
 
 export class XContentTypeOptionsOutput extends BaseOutput {
   /** @type {string | null} */
   data = null;
+  static name = "x-content-type-options";
+  static title = "X-Content-Type-Options";
+  static possibleResults = [
+    Expectation.XContentTypeOptionsNosniff,
+    Expectation.XContentTypeOptionsHeaderInvalid,
+    Expectation.XContentTypeOptionsNotImplemented,
+  ];
 
   /**
    *
@@ -10,8 +18,6 @@ export class XContentTypeOptionsOutput extends BaseOutput {
    */
   constructor(expectation) {
     super(expectation);
-    this.name = "x-content-type-options";
-    this.title = "X-Content-Type-Options";
   }
 }
 

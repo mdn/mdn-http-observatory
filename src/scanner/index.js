@@ -1,13 +1,3 @@
-import { cookiesTest } from "../analyzer/tests/cookies.js";
-import { crossOriginResourceSharingTest } from "../analyzer/tests/cors.js";
-import { crossOriginResourcePolicyTest } from "../analyzer/tests/cross-origin-resource-policy.js";
-import { contentSecurityPolicyTest } from "../analyzer/tests/csp.js";
-import { redirectionTest } from "../analyzer/tests/redirection.js";
-import { referrerPolicyTest } from "../analyzer/tests/referrer-policy.js";
-import { strictTransportSecurityTest } from "../analyzer/tests/strict-transport-security.js";
-import { subresourceIntegrityTest } from "../analyzer/tests/subresource-integrity.js";
-import { xContentTypeOptionsTest } from "../analyzer/tests/x-content-type-options.js";
-import { xFrameOptionsTest } from "../analyzer/tests/x-frame-options.js";
 import { MINIMUM_SCORE_FOR_EXTRA_CREDIT } from "../grader/charts.js";
 import {
   getGradeAndLikelihoodForScore,
@@ -15,22 +5,9 @@ import {
   getScoreModifier,
 } from "../grader/grader.js";
 import { retrieve } from "../retriever/retriever.js";
-import { ALGORITHM_VERSION } from "../types.js";
-
-const allTests = [
-  contentSecurityPolicyTest,
-  cookiesTest,
-  crossOriginResourceSharingTest,
-  redirectionTest,
-  referrerPolicyTest,
-  strictTransportSecurityTest,
-  subresourceIntegrityTest,
-  xContentTypeOptionsTest,
-  xFrameOptionsTest,
-  crossOriginResourcePolicyTest,
-];
-
-export const NUM_TESTS = allTests.length;
+import { ALGORITHM_VERSION } from "../constants.js";
+import { NUM_TESTS } from "../constants.js";
+import { ALL_TESTS } from "../constants.js";
 
 /**
  * @typedef {Object} Options
@@ -61,7 +38,7 @@ export async function scan(hostname, options) {
 
   // Run all the tests on the result
   /**  @type {Output[]} */
-  const results = allTests.map((test) => {
+  const results = ALL_TESTS.map((test) => {
     return test.apply(this, [r]);
   });
 
@@ -98,7 +75,7 @@ export async function scan(hostname, options) {
   const final = getGradeAndLikelihoodForScore(score);
 
   const tests = results.reduce((obj, result) => {
-    const name = result.name;
+    const name = result.constructor.name;
     obj[name] = result;
     return obj;
   }, /** @type {TestMap} */ ({}));

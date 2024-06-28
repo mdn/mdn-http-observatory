@@ -219,7 +219,7 @@ export const SCORE_TABLE = new Map([
     Expectation.CookiesSecureWithHttponlySessionsAndSamesite,
     {
       description: `<p>
-        All cookies use the Secure flag, session cookies use the HttpOnly flag, and cross-origin restrictions are in place via the SameSite flag.
+        All cookies use the <code>Secure</code> flag, session cookies use the <code>HttpOnly</code> flag, and cross-origin restrictions are in place via the <code>SameSite</code> flag.
         </p>`,
       modifier: 5,
       recommendation: ``,
@@ -229,7 +229,7 @@ export const SCORE_TABLE = new Map([
     Expectation.CookiesSecureWithHttponlySessions,
     {
       description: `<p>
-        All cookies use the Secure flag and all session cookies use the HttpOnly flag.
+        All cookies use the <code>Secure</code> flag and all session cookies use the <code>HttpOnly</code> flag.
         </p>`,
       modifier: 0,
       recommendation: `<p>
@@ -251,7 +251,7 @@ export const SCORE_TABLE = new Map([
     Expectation.CookiesWithoutSecureFlagButProtectedByHsts,
     {
       description: `<p>
-        Cookies set without using the Secure flag, but transmission over HTTP prevented by HSTS.
+        Cookies set without using the <code>Secure</code> flag, but transmission over HTTP prevented by HSTS.
         </p>`,
       modifier: -5,
       recommendation: `<p>
@@ -263,7 +263,7 @@ export const SCORE_TABLE = new Map([
     Expectation.CookiesSessionWithoutSecureFlagButProtectedByHsts,
     {
       description: `<p>
-        Session cookie set without the Secure flag, but transmission over HTTP prevented by HSTS.
+        Session cookie set without the <code>Secure</code> flag, but transmission over HTTP prevented by HSTS.
         </p>`,
       modifier: -10,
       recommendation: `<p>
@@ -275,7 +275,7 @@ export const SCORE_TABLE = new Map([
     Expectation.CookiesWithoutSecureFlag,
     {
       description: `<p>
-      Cookies set without using the Secure flag or set over HTTP.
+      Cookies set without using the <code>Secure</code> flag or set over HTTP.
       </p>`,
       modifier: -20,
       recommendation: `<p>
@@ -287,7 +287,7 @@ export const SCORE_TABLE = new Map([
     Expectation.CookiesSamesiteFlagInvalid,
     {
       description: `<p>
-        Cookies use SameSite flag, but set to something other than Strict or <code>Lax</code>
+        Cookies use <code>SameSite</code> flag, but set to something other than <code>Strict</code> or <code>Lax</code>
         </p>`,
       modifier: -20,
       recommendation: `<p>
@@ -311,7 +311,7 @@ export const SCORE_TABLE = new Map([
     Expectation.CookiesSessionWithoutHttponlyFlag,
     {
       description: `<p>
-      Session cookie set without using the HttpOnly flag.
+      Session cookie set without using the <code>HttpOnly</code> flag.
       </p>`,
       modifier: -30,
       recommendation: `<p>
@@ -472,7 +472,7 @@ export const SCORE_TABLE = new Map([
     Expectation.ReferrerPolicyPrivate,
     {
       description: `<p>
-        Referrer-Policy header set to <code>'no-referrer'</code>, <code>'same-origin'</code>, <code>'strict-origin'</code> or <code>'strict-origin-when-cross-origin'</code>.
+        <code>Referrer-Policy</code> header set to <code>no-referrer</code>, <code>same-origin</code>, <code>strict-origin</code> or <code>strict-origin-when-cross-origin</code>.
         </p>`,
       modifier: 5,
       recommendation: `<p class="obs-none">None<p>`,
@@ -482,7 +482,7 @@ export const SCORE_TABLE = new Map([
     Expectation.ReferrerPolicyNotImplemented,
     {
       description: `<p>
-      Referrer-Policy header not implemented.
+      <code>Referrer-Policy</code> header not implemented.
       </p>`,
       modifier: 0,
       recommendation: `<p>
@@ -494,7 +494,7 @@ export const SCORE_TABLE = new Map([
     Expectation.ReferrerPolicyUnsafe,
     {
       description: `<p>
-        Referrer-Policy header set unsafely to <code>'origin'</code>, <code>'origin-when-cross-origin'</code>, <code>'unsafe-url'</code> or <code>'no-referrer-when-downgrade'</code>.
+        <code>Referrer-Policy</code> header set unsafely to <code>origin</code>, <code>origin-when-cross-origin</code>, <code>unsafe-url</code> or <code>no-referrer-when-downgrade</code>.
         </p>`,
       modifier: -5,
       recommendation: `<p>
@@ -506,7 +506,7 @@ export const SCORE_TABLE = new Map([
     Expectation.ReferrerPolicyHeaderInvalid,
     {
       description: `<p>
-      Referrer-Policy header cannot be recognized.
+      <code>Referrer-Policy</code> header cannot be recognized.
       </p>`,
       modifier: -5,
       recommendation: `<p>
@@ -530,7 +530,7 @@ export const SCORE_TABLE = new Map([
     Expectation.HstsImplementedMaxAgeAtLeastSixMonths,
     {
       description: `<p>
-        HTTP Strict Transport Security (HSTS) header set to a minimum of six months (15768000).
+        <code>Strict-Transport-Security</code> header set to a minimum of six months (15768000).
         </p>`,
       modifier: 0,
       recommendation: `<p>
@@ -542,7 +542,7 @@ export const SCORE_TABLE = new Map([
     Expectation.HstsImplementedMaxAgeLessThanSixMonths,
     {
       description: `<p>
-      HTTP Strict Transport Security (HSTS) header set to less than six months (15768000).
+      <code>Strict-Transport-Security</code> header set to less than six months (15768000).
       </p>`,
       modifier: -10,
       recommendation: `<p>
@@ -554,7 +554,7 @@ export const SCORE_TABLE = new Map([
     Expectation.HstsNotImplemented,
     {
       description: `<p>
-      HTTP Strict Transport Security (HSTS) header not implemented.
+      <code>Strict-Transport-Security</code> header not implemented.
       </p>`,
       modifier: -20,
       recommendation: `<p>
@@ -566,7 +566,7 @@ export const SCORE_TABLE = new Map([
     Expectation.HstsHeaderInvalid,
     {
       description: `<p>
-        HTTP Strict Transport Security (HSTS) header cannot be recognized
+        <code>Strict-Transport-Security</code> header cannot be recognized
         </p>`,
       modifier: -20,
       recommendation: `<p>
@@ -578,7 +578,7 @@ export const SCORE_TABLE = new Map([
     Expectation.HstsNotImplementedNoHttps,
     {
       description: `<p>
-        HTTP Strict Transport Security (HSTS) header cannot be set for sites not available over HTTPS.
+        <code>Strict-Transport-Security</code> header cannot be set for sites not available over HTTPS.
        </p>`,
       modifier: -20,
       recommendation: `<p>
@@ -590,7 +590,7 @@ export const SCORE_TABLE = new Map([
     Expectation.HstsInvalidCert,
     {
       description: `<p>
-      HTTP Strict Transport Security (HSTS) header cannot be set, as site contains an invalid certificate chain.
+      <code>Strict-Transport-Security</code> header cannot be set, as site contains an invalid certificate chain.
       </p>`,
       modifier: -20,
       recommendation: `<p>
@@ -624,7 +624,7 @@ export const SCORE_TABLE = new Map([
     Expectation.SriNotImplementedResponseNotHtml,
     {
       description: `<p>
-      Subresource Integrity (SRI) is only needed for html resources.
+      Subresource Integrity (SRI) is only needed for HTML resources.
       </p>`,
       modifier: 0,
       recommendation: ``,
@@ -803,7 +803,7 @@ export const SCORE_TABLE = new Map([
     Expectation.CrossOriginResourcePolicyImplementedWithCrossOrigin,
     {
       description: `<p>
-      Cross Origin Resource Policy (CORP) implemented, but allows cross-origin resources sharing by default.
+      Cross Origin Resource Policy (CORP) implemented, but allows cross-origin resource sharing by default.
       </p>`,
       modifier: 0,
       recommendation: ``,
@@ -833,7 +833,7 @@ export const SCORE_TABLE = new Map([
     Expectation.CrossOriginResourcePolicyNotImplemented,
     {
       description: `<p>
-      Cross Origin Resource Policy (CORP) not implemented (defaults to cross-origin).
+      Cross Origin Resource Policy (CORP) is not implemented (defaults to cross-origin).
       </p>`,
       modifier: 0,
       recommendation: ``,

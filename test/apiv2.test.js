@@ -76,7 +76,6 @@ describeOrSkip("API V2", function () {
 
     const tests = responseJson.tests;
     assert.isObject(tests);
-    console.log(tests);
     assert.equal(Object.keys(tests).length, NUM_TESTS);
     const test = tests[Object.keys(tests)[0]];
     assert.isString(test.expectation);
@@ -276,5 +275,28 @@ describeOrSkip("API V2", function () {
     assert.equal(responseJson.length, 1);
     assert.equal(responseJson[0].grade, grade);
     assert.equal(responseJson[0].count, 1);
+  });
+
+  it("responds to GET /recommendation_matrix", async function () {
+    const app = await createServer();
+    const response = await app.inject({
+      method: "GET",
+      url: `/api/v2/recommendation_matrix`,
+    });
+    assert.equal(response.statusCode, 200);
+    const responseJson = JSON.parse(response.body);
+    assert.equal(responseJson.length, NUM_TESTS);
+    for (const entry of responseJson) {
+      assert.isString(entry.name);
+      assert.isString(entry.title);
+      assert.isString(entry.mdnLink);
+      assert.isArray(entry.results);
+      for (const result of entry.results) {
+        assert.isString(result.name);
+        assert.isNumber(result.scoreModifier);
+        assert.isString(result.description);
+        assert.isString(result.recommendation);
+      }
+    }
   });
 });

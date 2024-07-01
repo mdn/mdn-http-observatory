@@ -833,7 +833,7 @@ export const SCORE_TABLE = new Map([
     Expectation.CrossOriginResourcePolicyNotImplemented,
     {
       description: `<p>
-      Cross Origin Resource Policy (CORP) is not implemented (defaults to cross-origin).
+      Cross Origin Resource Policy (CORP) is not implemented (defaults to <code>cross-origin</code>).
       </p>`,
       modifier: 0,
       recommendation: ``,

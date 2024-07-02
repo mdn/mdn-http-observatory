@@ -1,5 +1,8 @@
 import { CookiesOutput, cookiesTest } from "./analyzer/tests/cookies.js";
-import { crossOriginResourceSharingTest } from "./analyzer/tests/cors.js";
+import {
+  CorsOutput,
+  crossOriginResourceSharingTest,
+} from "./analyzer/tests/cors.js";
 import {
   CrossOriginResourcePolicyOutput,
   crossOriginResourcePolicyTest,
@@ -46,7 +49,7 @@ export const ALL_TESTS = [
 export const ALL_RESULTS = [
   CspOutput,
   CookiesOutput,
-  CrossOriginResourcePolicyOutput,
+  CorsOutput,
   RedirectionOutput,
   ReferrerOutput,
   StrictTransportSecurityOutput,

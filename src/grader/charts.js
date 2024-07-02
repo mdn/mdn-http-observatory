@@ -213,6 +213,18 @@ export const SCORE_TABLE = new Map([
       </p>`,
     },
   ],
+  [
+    Expectation.CspNotImplementedButReportingEnabled,
+    {
+      description: `<p>
+      Content Security Policy (CSP) reporting implemented only, with <code>Content-Security-Policy-Report-Only</code> header.
+      </p>`,
+      modifier: -25,
+      recommendation: `<p>
+      Implement an enforced policy, see <a href="/en-US/docs/Web/HTTP/CSP">MDN's Content Security Policy (CSP) documentation</a>.
+      </p>`,
+    },
+  ],
 
   // Cookies
   [

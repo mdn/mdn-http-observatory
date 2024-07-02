@@ -104,6 +104,8 @@ export const Expectation = {
   CspImplementedWithInsecureScheme: "csp-implemented-with-insecure-scheme",
   CspHeaderInvalid: "csp-header-invalid",
   CspNotImplemented: "csp-not-implemented",
+  CspNotImplementedButReportingEnabled:
+    "csp-not-implemented-but-reporting-enabled",
 
   // SUBRESOURCE INTEGRITY
 

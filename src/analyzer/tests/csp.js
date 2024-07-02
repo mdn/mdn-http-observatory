@@ -1,4 +1,7 @@
-import { CONTENT_SECURITY_POLICY } from "../../headers.js";
+import {
+  CONTENT_SECURITY_POLICY,
+  CONTENT_SECURITY_POLICY_REPORT_ONLY,
+} from "../../headers.js";
 import { Requests, Policy, BaseOutput } from "../../types.js";
 import { Expectation } from "../../types.js";
 import { parseCsp } from "../cspParser.js";
@@ -45,6 +48,7 @@ export class CspOutput extends BaseOutput {
     Expectation.CspImplementedWithInsecureScheme,
     Expectation.CspHeaderInvalid,
     Expectation.CspNotImplemented,
+    Expectation.CspNotImplementedButReportingEnabled,
   ];
   /**
    *
@@ -102,7 +106,16 @@ export function contentSecurityPolicyTest(
   }
 
   if (csp.size === 0) {
-    output.result = Expectation.CspNotImplemented;
+    const httpCspReportOnly =
+      // @ts-ignore
+      response.headers.get(CONTENT_SECURITY_POLICY_REPORT_ONLY) ?? null;
+    const equivCspReportOnly =
+      response.httpEquiv.get(CONTENT_SECURITY_POLICY_REPORT_ONLY) ?? [];
+    if (httpCspReportOnly || equivCspReportOnly.length) {
+      output.result = Expectation.CspNotImplementedButReportingEnabled;
+    } else {
+      output.result = Expectation.CspNotImplemented;
+    }
     return output;
   }
 

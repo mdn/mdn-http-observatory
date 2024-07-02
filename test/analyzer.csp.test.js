@@ -456,4 +456,19 @@ describe("Content Security Policy", () => {
       );
     }
   });
+
+  it("report only", async () => {
+    const requests = emptyRequests();
+    setHeader(
+      requests.responses.auto,
+      "Content-Security-Policy-Report-Only",
+      "default-src 'none'; report-to /_/csp-reports"
+    );
+    const result = contentSecurityPolicyTest(requests);
+
+    assert.equal(
+      result["result"],
+      Expectation.CspNotImplementedButReportingEnabled
+    );
+  });
 });

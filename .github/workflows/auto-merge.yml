@@ -1,10 +1,24 @@
-name: "auto-merge"
-on: [pull_request_target]
+name: auto-merge
+
+on:
+  pull_request_target:
+    branches:
+      - main
 
 jobs:
   auto-merge:
-    uses: mdn/workflows/.github/workflows/auto-merge.yml@main
-    with:
-      target-repo: "mdn/mdn-http-observatory"
-    secrets:
-      GH_TOKEN: ${{ secrets.GH_TOKEN }}
+    runs-on: ubuntu-latest
+    if: github.actor == 'dependabot[bot]'
+
+    steps:
+      - name: Dependabot metadata
+        id: dependabot-metadata
+        uses: dependabot/fetch-metadata@v2
+        with:
+          github-token: ${{ secrets.AUTOMERGE_TOKEN }}
+
+      - name: Squash and merge
+        if: ${{ steps.dependabot-metadata.outputs.update-type == 'version-update:semver-minor' || steps.dependabot-metadata.outputs.update-type == 'version-update:semver-patch' }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.AUTOMERGE_TOKEN }}
+        run: gh pr comment ${{ github.event.pull_request.html_url }} --body "@dependabot squash and merge"

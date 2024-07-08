@@ -35,7 +35,7 @@
     "@fastify/postgres": "^5.2.2",
     "@fastify/static": "^7.0.4",
     "axios": "^1.6.7",
-    "axios-cookiejar-support": "^5.0.0",
+    "axios-cookiejar-support": "^5.0.2",
     "change-case": "^5.4.4",
     "commander": "^12.1.0",
     "convict": "^6.2.4",

@@ -44,7 +44,7 @@
     ]
   },
   "dependencies": {
-    "deasync": "^0.1.29",
+    "deasync": "^0.1.30",
     "obsi": "file:.."
   }
 }

@@ -40,7 +40,7 @@
     "commander": "^12.1.0",
     "convict": "^6.2.4",
     "dayjs": "^1.11.11",
-    "fastify": "^4.26.2",
+    "fastify": "^4.28.1",
     "fastify-simple-form": "^3.0.0",
     "http-cookie-agent": "^6.0.1",
     "ip": "^2.0.1",

@@ -51,6 +51,6 @@
     "postgrator": "^7.2.0",
     "postgrator-cli": "^7.0.0",
     "tldts": "^6.1.13",
-    "tough-cookie": "^4.1.3"
+    "tough-cookie": "^4.1.4"
   }
 }

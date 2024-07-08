@@ -22,5 +22,5 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.AUTOMERGE_TOKEN }}
         run: |
-          gh pr review ${{ github.event.pull_request.html_url }} --approve"
+          gh pr review ${{ github.event.pull_request.html_url }} --approve
           gh pr comment ${{ github.event.pull_request.html_url }} --body "@dependabot squash and merge"

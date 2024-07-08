@@ -34,10 +34,6 @@ export async function createServer() {
     setupFastifyErrorHandler(server);
   }
 
-  server.get("/debug-sentry", function mainHandler(req, res) {
-    throw new Error("My first Sentry error!");
-  });
-
   // @ts-ignore
   server.register(simpleFormPlugin);
   await server.register(cors, {

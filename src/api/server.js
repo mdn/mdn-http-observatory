@@ -2,6 +2,8 @@ import Fastify from "fastify";
 import simpleFormPlugin from "fastify-simple-form";
 import cors from "@fastify/cors";
 import helmet from "@fastify/helmet";
+import { init as initSentry, setupFastifyErrorHandler } from "@sentry/node";
+
 // import analyzeApiV1 from "./v1/analyze/index.js";
 import analyzeApiV2 from "./v2/analyze/index.js";
 import scanApiV2 from "./v2/scan/index.js";
@@ -12,6 +14,13 @@ import pool from "@fastify/postgres";
 import { poolOptions } from "../database/repository.js";
 import { CONFIG } from "../config.js";
 
+
+if (CONFIG.sentry.dsn) {
+  initSentry({
+    dsn: CONFIG.sentry.dsn,
+  });
+}
+
 /**
  * Creates a Fastify server instance
  * @returns {Promise<import("fastify").FastifyInstance>}
@@ -20,6 +29,10 @@ export async function createServer() {
   const server = Fastify({
     logger: CONFIG.api.enableLogging,
   });
+
+  if (CONFIG.sentry.dsn) {
+    setupFastifyErrorHandler(server);
+  }
 
   // @ts-ignore
   server.register(simpleFormPlugin);

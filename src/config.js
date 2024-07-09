@@ -111,6 +111,14 @@ const SCHEMA = {
       env: "HTTPOBS_ENABLE_LOGGING",
     },
   },
+  sentry: {
+    dsn: {
+      doc: "The Sentry data source name (DSN) to use for error reporting.",
+      format: "String",
+      default: "",
+      env: "SENTRY_DSN",
+    }
+  }
 };
 
 /**

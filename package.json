@@ -24,7 +24,7 @@
   "devDependencies": {
     "@faker-js/faker": "^8.4.1",
     "@supercharge/promise-pool": "^3.2.0",
-    "chai": "^5.1.0",
+    "chai": "^5.1.1",
     "json-schema-to-jsdoc": "^1.1.1",
     "mocha": "^10.6.0",
     "nodemon": "^3.1.4"

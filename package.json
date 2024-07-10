@@ -1,5 +1,5 @@
 {
-  "name": "obsi",
+  "name": "@mdn/mdn-http-observatory",
   "version": "1.0.0",
   "description": "",
   "main": "src/index.js",

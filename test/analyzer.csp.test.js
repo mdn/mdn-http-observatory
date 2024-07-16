@@ -13,6 +13,7 @@ describe("Content Security Policy", () => {
     assert.equal(result["numPolicies"], 0);
     assert.isFalse(result["pass"]);
   });
+
   {
     const values = [
       "  ",
@@ -37,6 +38,7 @@ describe("Content Security Policy", () => {
       });
     }
   }
+
   it("insecure scheme broad and unsafe", async () => {
     const values = [
       "default-src 'none'; script-src https://*",
@@ -456,7 +458,6 @@ describe("Content Security Policy", () => {
       );
     }
   });
-
   it("report only", async () => {
     const requests = emptyRequests();
     setHeader(
@@ -470,5 +471,21 @@ describe("Content Security Policy", () => {
       result["result"],
       Expectation.CspNotImplementedButReportingEnabled
     );
+  });
+  it("ignore frame-anchestors in http-equiv", async () => {
+    let requests = emptyRequests(
+      "test_parse_http_equiv_headers_not_allowed.html"
+    );
+    let result = contentSecurityPolicyTest(requests);
+    assert.equal(result["result"], Expectation.CspNotImplemented);
+    assert.isFalse(result["pass"]);
+    setHeader(
+      requests.responses.auto,
+      "Content-Security-Policy",
+      "frame-anchestors 'none'"
+    );
+    result = contentSecurityPolicyTest(requests);
+    assert.equal(result["result"], Expectation.CspImplementedWithUnsafeInline);
+    assert.isFalse(result["pass"]);
   });
 });

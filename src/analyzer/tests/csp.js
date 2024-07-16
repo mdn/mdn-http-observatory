@@ -4,7 +4,7 @@ import {
 } from "../../headers.js";
 import { Requests, Policy, BaseOutput } from "../../types.js";
 import { Expectation } from "../../types.js";
-import { parseCsp } from "../cspParser.js";
+import { parseCsp, parseCspMeta } from "../cspParser.js";
 
 const DANGEROUSLY_BROAD = new Set([
   "ftp:",
@@ -89,12 +89,12 @@ export function contentSecurityPolicyTest(
   output.numPolicies =
     equivCspHeader.length + (httpCspHeader?.split(",").length || 0);
 
-  //    * @typedef { Map < string, Set < string >>} CspMap
-
   /** @type {Map<string, Set<string>>} */
   let csp;
   /** @type {Map<string, Set<string>>} */
   let httpHeaderOnlyCsp;
+  /** @type {Map<string, Set<string>>} */
+  let metaCsp;
 
   try {
     csp = parseCsp(
@@ -105,24 +105,33 @@ export function contentSecurityPolicyTest(
     return output;
   }
 
-  if (csp.size === 0) {
+  try {
+    httpHeaderOnlyCsp = parseCsp([httpCspHeader]);
+  } catch (e) {
+    httpHeaderOnlyCsp = new Map();
+  }
+
+  try {
+    metaCsp = parseCspMeta(equivCspHeader);
+  } catch (e) {
+    metaCsp = new Map();
+  }
+
+  // We sum up the header and meta (filtered for validity) sizes,
+  // so a single meta tag with a disallowed directive comes out
+  // as csp-not-implemented
+  if (httpHeaderOnlyCsp.size + metaCsp.size === 0) {
+    // Content-Security-Policy-Report-Only is only allowed in headers, not in meta tags
+    // see https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Security-Policy-Report-Only
     const httpCspReportOnly =
       // @ts-ignore
       response.headers.get(CONTENT_SECURITY_POLICY_REPORT_ONLY) ?? null;
-    const equivCspReportOnly =
-      response.httpEquiv.get(CONTENT_SECURITY_POLICY_REPORT_ONLY) ?? [];
-    if (httpCspReportOnly || equivCspReportOnly.length) {
+    if (httpCspReportOnly) {
       output.result = Expectation.CspNotImplementedButReportingEnabled;
     } else {
       output.result = Expectation.CspNotImplemented;
     }
     return output;
-  }
-
-  try {
-    httpHeaderOnlyCsp = parseCsp([httpCspHeader]);
-  } catch (e) {
-    httpHeaderOnlyCsp = new Map();
   }
 
   output.policy = new Policy();
@@ -133,6 +142,8 @@ export function contentSecurityPolicyTest(
 
   // Get the various directives we look at
   const base_uri = csp.get("base-uri") || new Set(["*"]);
+  // frame-ancherstors can only be set via header, not via http-equiv meta tag
+  // see https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Security-Policy/frame-ancestors
   const frame_ancestors =
     httpHeaderOnlyCsp.get("frame-ancestors") || new Set(["*"]);
   const form_action = csp.get("form-action") || new Set(["*"]);

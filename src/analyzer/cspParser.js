@@ -2,6 +2,26 @@ const compareString = Intl.Collator("en").compare;
 
 const SHORTEST_DIRECTIVE = "img-src";
 const SHORTEST_DIRECTIVE_LENGTH = SHORTEST_DIRECTIVE.length - 1; // the shortest policy accepted by the CSP test
+const DIRECTIVES_DISALLOWED_IN_META = [
+  "frame-ancestors",
+  "report-uri",
+  "sandbox",
+];
+
+/**
+ * Parse CSP from meta tags, weeding out directives
+ * only allowed in headers.
+ * See https://html.spec.whatwg.org/#attr-meta-http-equiv-content-security-policy
+ * @param {string[]} cspList
+ * @returns {Map<string, Set<string>>}
+ */
+export function parseCspMeta(cspList) {
+  const ret = parseCsp(cspList);
+  for (const directive of DIRECTIVES_DISALLOWED_IN_META) {
+    ret.delete(directive);
+  }
+  return ret;
+}
 
 /**
  *

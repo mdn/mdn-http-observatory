@@ -57,4 +57,11 @@ describe("X-Frame-Options", () => {
     assert.equal(result.result, Expectation.XFrameOptionsImplementedViaCsp);
     assert.isTrue(result.pass);
   });
+
+  it("does not obey x-frame-options in meta equiv tags", function () {
+    reqs = emptyRequests("test_parse_http_equiv_headers_x_frame_options.html");
+    const result = xFrameOptionsTest(reqs);
+    assert.equal(result.result, Expectation.XFrameOptionsNotImplemented);
+    assert.isFalse(result.pass);
+  });
 });

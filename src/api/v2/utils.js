@@ -43,7 +43,7 @@ export function isIp(hostname) {
  * @throws {InvalidHostNameIpError | InvalidHostNameError}
  */
 export async function validHostname(hostname) {
-  // rewmove any trailing dot
+  // remove any trailing dot
   hostname = hostname.replace(/\.$/, "");
   if (
     !hostname.includes(".") ||

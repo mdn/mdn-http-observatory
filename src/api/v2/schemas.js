@@ -222,8 +222,8 @@ export class PolicyResponse {
   /** @typedef {PolicyItem} */
   insecureBaseUri = {
     pass: false,
-    description: `<p> Restricts use of the <code>&lt;base&gt;</code> tag by using <code>base-uri 'none'</code>, <code>base-uri 'self'</code>, or specific origins.</p>`,
-    info: `<p>The <code>base</code> tag can be used to trick your site intoloading scripts from untrusted origins.</p>`,
+    description: `<p>Restricts use of the <code>&lt;base&gt;</code> tag by using <code>base-uri 'none'</code>, <code>base-uri 'self'</code>, or specific origins.</p>`,
+    info: `<p>The <code>&lt;base&gt;</code> tag can be used to trick your site into loading scripts from untrusted origins.</p>`,
   };
   /** @typedef {PolicyItem} */
   insecureFormAction = {
@@ -235,7 +235,7 @@ export class PolicyResponse {
   insecureSchemeActive = {
     pass: false,
     description: `<p>Blocks loading of active content over HTTP or FTP</p>`,
-    info: `<p> Loading JavaScript or plugins can allow a man-in-the-middle to execute arbitrary code or your website. Restricting your policy and changing links to HTTPS can help prevent this.</p>`,
+    info: `<p>Loading JavaScript or plugins can allow a man-in-the-middle to execute arbitrary code or your website. Restricting your policy and changing links to HTTPS can help prevent this.</p>`,
   };
   /** @typedef {PolicyItem} */
   insecureSchemePassive = {
@@ -252,7 +252,7 @@ export class PolicyResponse {
   /** @typedef {PolicyItem} */
   unsafeEval = {
     pass: false,
-    description: `<p>Blocks execution of JavaScript's <code>eval()</code> function by not allowing <code>'unsafe-eval'</code> inside  <code>script-src</code></p>`,
+    description: `<p>Blocks execution of JavaScript's <code>eval()</code> function by not allowing <code>'unsafe-eval'</code> inside <code>script-src</code></p>`,
     info: `<p>Blocking the use of JavaScript's <code>eval()</code> function can help prevent the execution of untrusted code.</p>`,
   };
   /** @typedef {PolicyItem} */
@@ -270,8 +270,8 @@ export class PolicyResponse {
   /** @typedef {PolicyItem} */
   unsafeObjects = {
     pass: false,
-    description: `<p>Blocks execution of plug-ins, using <code>object-src</code>  restrictions</p>`,
-    info: `<p>Blocking the execution of plug-ins via  <code>object-src 'none'</code> or as inherited from  <code>default-src</code> can prevent attackers from loading Flash or Java in the context of your page.</p>`,
+    description: `<p>Blocks execution of plug-ins, using <code>object-src</code> restrictions</p>`,
+    info: `<p>Blocking the execution of plug-ins via <code>object-src 'none'</code> or as inherited from <code>default-src</code> can prevent attackers from loading Flash or Java in the context of your page.</p>`,
   };
 
   /**

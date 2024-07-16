@@ -43,10 +43,25 @@ export function isIp(hostname) {
  * @throws {InvalidHostNameIpError | InvalidHostNameError}
  */
 export async function validHostname(hostname) {
-  // No hostnames lacking a dot or something like localhost
+  // rewmove any trailing dot
+  hostname = hostname.replace(/\.$/, "");
   if (
     !hostname.includes(".") ||
-    hostname.includes("localhost") ||
+    hostname === "localhost" ||
+    // RFC 2606
+    hostname.endsWith(".test") ||
+    hostname.endsWith(".example") ||
+    hostname.endsWith(".invalid") ||
+    hostname.endsWith(".localhost") ||
+    // RFC 6761
+    hostname === "example.com" ||
+    hostname.endsWith(".example.com") ||
+    hostname === "example.net" ||
+    hostname.endsWith(".example.net") ||
+    hostname === "example.org" ||
+    hostname.endsWith(".example.org") ||
+    // RFC 6762
+    hostname.endsWith(".local") ||
     hostname === ""
   ) {
     throw new InvalidHostNameError();

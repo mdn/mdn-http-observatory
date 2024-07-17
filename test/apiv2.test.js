@@ -120,6 +120,33 @@ describeOrSkip("API V2", function () {
     assert.equal(responseJson.error, "invalid-hostname-lookup");
   });
 
+  it("refuses to analyze special domains", async function () {
+    const app = await createServer();
+    const hosts = [
+      "test",
+      "foo.test",
+      "example",
+      "foo.example",
+      "invalid",
+      "foo.invalid",
+      "localhost",
+      "foo.localhost",
+      "local",
+      "foo.local",
+      "foo.local.",
+    ];
+    for (const host of hosts) {
+      const response = await app.inject({
+        method: "POST",
+        url: `/api/v2/analyze?host=${encodeURIComponent(host)}`,
+      });
+      assert.equal(response.statusCode, 422);
+      assert(response.body);
+      const responseJson = JSON.parse(response.body);
+      assert.equal(responseJson.error, "invalid-hostname");
+    }
+  });
+
   it("responds to GET /analyze of a known host", async function () {
     const app = await createServer();
     // create a scan first

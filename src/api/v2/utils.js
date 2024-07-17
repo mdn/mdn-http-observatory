@@ -54,12 +54,13 @@ export async function validHostname(hostname) {
     hostname.endsWith(".invalid") ||
     hostname.endsWith(".localhost") ||
     // RFC 6761
-    hostname === "example.com" ||
-    hostname.endsWith(".example.com") ||
-    hostname === "example.net" ||
-    hostname.endsWith(".example.net") ||
-    hostname === "example.org" ||
-    hostname.endsWith(".example.org") ||
+    // We allow these as they are valid domains and may be useful.
+    // hostname === "example.com" ||
+    // hostname.endsWith(".example.com") ||
+    // hostname === "example.net" ||
+    // hostname.endsWith(".example.net") ||
+    // hostname === "example.org" ||
+    // hostname.endsWith(".example.org") ||
     // RFC 6762
     hostname.endsWith(".local") ||
     hostname === ""

@@ -1,4 +1,5 @@
 import fs from "fs";
+import path from "path";
 
 /**
  * @type {import("../types.js").Hsts | null}
@@ -12,7 +13,7 @@ export function hsts() {
   if (!hstsMap) {
     hstsMap = new Map(
       Object.entries(
-        JSON.parse(fs.readFileSync("conf/hsts-preload.json", "utf8"))
+        JSON.parse(fs.readFileSync(path.resolve(import.meta.dirname, "../../conf/hsts-preload.json"), "utf8"))
       )
     );
   }

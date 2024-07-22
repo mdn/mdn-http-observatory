@@ -281,7 +281,6 @@ export class Policy {
  * @prop {number} algorithmVersion
  * @prop {string | null} error
  * @prop {string} grade
- * @prop {string} likelihoodIndicator
  * @prop {StringMap} responseHeaders
  * @prop {number} score
  * @prop {number} testsFailed
@@ -349,10 +348,8 @@ export class Policy {
  * @property {number} tests_quantity
  * @property {string} [grade]
  * @property {number} [score]
- * @property {string} [likelihood_indicator]
  * @property {string} [error]
  * @property {StringMap} response_headers
- * @property {boolean} hidden
  * @property {number} [status_code]
  */
 

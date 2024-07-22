@@ -1,6 +1,6 @@
 import { MINIMUM_SCORE_FOR_EXTRA_CREDIT } from "../grader/charts.js";
 import {
-  getGradeAndLikelihoodForScore,
+  getGradeForScore,
   getScoreDescription,
   getScoreModifier,
 } from "../grader/grader.js";
@@ -72,7 +72,7 @@ export async function scan(hostname, options) {
       ? scoreWithExtraCredit
       : uncurvedScore;
 
-  const final = getGradeAndLikelihoodForScore(score);
+  const final = getGradeForScore(score);
 
   const tests = results.reduce((obj, result) => {
     const name = result.constructor.name;
@@ -85,7 +85,6 @@ export async function scan(hostname, options) {
       algorithmVersion: ALGORITHM_VERSION,
       grade: final.grade,
       error: null,
-      likelihoodIndicator: final.likelihoodIndicator,
       score: final.score,
       statusCode: statusCode,
       testsFailed: NUM_TESTS - testsPassed,

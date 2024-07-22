@@ -44,7 +44,7 @@ export async function insertSeeds(pool) {
         const grade = GRADE_CHART.get(Math.min(score, 100));
         const siteId = siteIds[i % siteIds.length];
         return pool.query(
-          `INSERT INTO scans (site_id, state, start_time, end_time, grade, score, tests_quantity, hidden, algorithm_version, status_code, likelihood_indicator)
+          `INSERT INTO scans (site_id, state, start_time, end_time, grade, score, tests_quantity, algorithm_version, status_code)
           VALUES ($1, 
             $2, 
             NOW() - INTERVAL '${(i + 1) * 2000} seconds', 
@@ -52,10 +52,8 @@ export async function insertSeeds(pool) {
             $3, 
             $4,
             9,
-            false, 
             $5,
-            200,
-            'LOW') RETURNING id`,
+            200) RETURNING id`,
           [siteId, ScanState.FINISHED, grade, score, ALGORITHM_VERSION]
         );
       })

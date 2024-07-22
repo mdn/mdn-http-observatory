@@ -25,7 +25,6 @@ describe("Scanner", () => {
 
     assert.equal(scanResult.scan.algorithmVersion, 4);
     assert.equal(scanResult.scan.grade, "A+");
-    assert.equal(scanResult.scan.likelihoodIndicator, "LOW");
     assert.equal(scanResult.scan.score, 125);
     assert.equal(scanResult.scan.testsFailed, 0);
     assert.equal(scanResult.scan.testsPassed, 10);
@@ -39,7 +38,6 @@ describe("Scanner", () => {
     const scanResult = await scan(domain);
     assert.equal(scanResult.scan.algorithmVersion, 4);
     assert.equal(scanResult.scan.grade, "B+");
-    assert.equal(scanResult.scan.likelihoodIndicator, "MEDIUM");
     assert.equal(scanResult.scan.score, 80);
     assert.equal(scanResult.scan.testsFailed, 1);
     assert.equal(scanResult.scan.testsPassed, 9);

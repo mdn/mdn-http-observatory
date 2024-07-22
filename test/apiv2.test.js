@@ -206,7 +206,7 @@ describeOrSkip("API V2", function () {
     const app = await createServer();
     const response = await app.inject({
       method: "GET",
-      url: "/api/v2/analyze?host=somethingorother1234.mozill.net",
+      url: "/api/v2/analyze?host=somethingorother1234.mozilla.net",
     });
     // we do scan that host
     assert.equal(response.statusCode, 422);
@@ -215,7 +215,7 @@ describeOrSkip("API V2", function () {
     assert.equal(r.error, "invalid-hostname-lookup");
     assert.equal(
       r.message,
-      "www.somethingorother1234.mozill.net can not be resolved"
+      "www.somethingorother1234.mozilla.net can not be resolved"
     );
   }).timeout(6000);
 

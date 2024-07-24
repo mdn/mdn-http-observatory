@@ -1,5 +1,5 @@
 {
-  "name": "mdn-observatory",
+  "name": "mdn-http-observatory",
   "description": "Checking http-level security and grading a site",
   "version": "0.0.1",
   "homepage": "http://chrome.google.com/webstore",
@@ -12,7 +12,8 @@
   "scripts": {
     "start": "xt-build -e dev -w",
     "start:firefox": "xt-build -e dev -p firefox -w",
-    "build": "node bundle.js"
+    "build": "node bundle.js",
+    "package": "xt-build -e dev"
   },
   "babel": {
     "presets": [
@@ -23,6 +24,7 @@
     "test/**/*"
   ],
   "devDependencies": {
+    "@types/firefox-webext-browser": "^120.0.4",
     "esbuild": "0.23.0",
     "esbuild-plugin-polyfill-node": "^0.3.0",
     "extension-cli": "latest"
@@ -38,13 +40,28 @@
   "xtbuild": {
     "js_bundles": [
       {
-        "name": "obsi",
-        "src": "./src/**/*.js"
+        "name": "background",
+        "src": "./src/background.js"
+      },
+      {
+        "name": "browser-polyfill",
+        "src": "./src/browser-polyfill.js"
+      },
+      {
+        "name": "popup",
+        "src": "./src/popup.js"
       }
+    ],
+    "assets": [
+      "./assets/**/*"
+    ],
+    "locales_dir": "./_locales/",
+    "locales_list": [
+      "en"
     ]
   },
   "dependencies": {
-    "deasync": "^0.1.30",
-    "obsi": "file:.."
+    "@mdn/mdn-http-observatory": "file:..",
+    "deasync": "^0.1.30"
   }
 }

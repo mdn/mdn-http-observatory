@@ -8,13 +8,13 @@
     "eslint:recommended"
   ],
   "globals": {
-    "document": false,
+    "document": true,
     "escape": false,
     "navigator": false,
     "unescape": false,
     "window": false,
     "describe": true,
-    "before": true,
+    "before": true, 
     "it": true,
     "expect": true,
     "sinon": true,

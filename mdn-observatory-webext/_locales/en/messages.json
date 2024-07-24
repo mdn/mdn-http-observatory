@@ -1,11 +1,11 @@
 {
-    "appName": {
-        "message": "MDN Observatory"
-    },
-    "appShortName": {
-        "message": "MDN Observatory"
-    },
-    "appDescription": {
-        "message": "Checking http-level security and grading a site"
-    }
+  "appName": {
+    "message": "HTTP Observatory"
+  },
+  "appShortName": {
+    "message": "HTTP Observatory"
+  },
+  "appDescription": {
+    "message": "Checking a site's web security and provide a grading"
+  }
 }

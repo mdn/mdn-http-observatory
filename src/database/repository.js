@@ -105,7 +105,6 @@ export async function insertTestResults(pool, siteId, scanId, scanResult) {
     const scoreModifier = t.scoreModifier;
     delete t.scoreModifier;
     delete t.scoreDescription;
-    delete t.name;
 
     return [
       siteId,

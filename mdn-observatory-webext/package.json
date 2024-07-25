@@ -25,6 +25,7 @@
   ],
   "devDependencies": {
     "@types/firefox-webext-browser": "^120.0.4",
+    "@types/node": "^20.14.12",
     "esbuild": "0.23.0",
     "esbuild-plugin-polyfill-node": "^0.3.0",
     "extension-cli": "latest"
@@ -62,6 +63,7 @@
   },
   "dependencies": {
     "@mdn/mdn-http-observatory": "file:..",
-    "deasync": "^0.1.30"
+    "deasync": "^0.1.30",
+    "sharp": "^0.33.4"
   }
 }

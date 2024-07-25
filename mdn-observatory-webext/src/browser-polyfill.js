@@ -1,3 +1,5 @@
+// @ts-nocheck
+/* eslint-disable no-undef */
 (function (a, b) {
   if ("function" == typeof define && define.amd)
     define("webextension-polyfill", ["module"], b);

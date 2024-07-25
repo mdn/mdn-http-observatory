@@ -1,5 +1,8 @@
 import fs from "fs";
-import path from "path";
+import path from "node:path";
+import { fileURLToPath } from "node:url";
+
+const dirname = path.dirname(fileURLToPath(import.meta.url));
 
 /**
  * @type {import("../types.js").Hsts | null}
@@ -11,10 +14,15 @@ let hstsMap = null;
  */
 export function hsts() {
   if (!hstsMap) {
+    const filePath = path.join(
+      dirname,
+      "..",
+      "..",
+      "conf",
+      "hsts-preload.json"
+    );
     hstsMap = new Map(
-      Object.entries(
-        JSON.parse(fs.readFileSync(path.resolve(import.meta.dirname, "../../conf/hsts-preload.json"), "utf8"))
-      )
+      Object.entries(JSON.parse(fs.readFileSync(filePath, "utf8")))
     );
   }
   return hstsMap;

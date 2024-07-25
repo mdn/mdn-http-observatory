@@ -21,13 +21,18 @@
     "16": "assets/img/16x16.png",
     "24": "assets/img/24x24.png",
     "32": "assets/img/32x32.png",
+    "64": "assets/img/64x64.png",
+    "96": "assets/img/96x96.png",
     "128": "assets/img/128x128.png"
   },
   "action": {
     "default_icon": {
       "16": "assets/img/16x16.png",
       "24": "assets/img/24x24.png",
-      "32": "assets/img/32x32.png"
+      "32": "assets/img/32x32.png",
+      "64": "assets/img/64x64.png",
+      "96": "assets/img/96x96.png",
+      "128": "assets/img/128x128.png"
     },
     "default_title": "MDN Observatory",
     "default_popup": "popup.html"

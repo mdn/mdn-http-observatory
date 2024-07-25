@@ -9,24 +9,14 @@ browser.webNavigation.onCompleted.addListener(async (details) => {
 
     let apiResult;
 
-    // check for a cached version
+    // Check for a cached version not too old.
     const cachedResult = await browser.storage.local.get(hostname);
     if (cachedResult[hostname]) {
       // check timestamp
       const ts = new Date(cachedResult[hostname].scan.scanned_at);
       const now = new Date();
-      console.log(
-        "CACHING",
-        cachedResult[hostname],
-        cachedResult[hostname].scan.scanned_at,
-        ts,
-        now,
-        CACHE_PERIOD_MS,
-        now.getTime() - ts.getTime()
-      );
-      // 24 hours
+
       if (now.getTime() - ts.getTime() < CACHE_PERIOD_MS) {
-        console.log("CACHED");
         apiResult = cachedResult[hostname];
       }
     }
@@ -70,17 +60,16 @@ browser.webNavigation.onCompleted.addListener(async (details) => {
  * @param {string} host
  */
 async function fetchApiResponse(host) {
-  try {
-    const apiUrl = `https://observatory-api.mdn.mozilla.net/api/v2/analyze?host=${encodeURIComponent(
-      host
-    )}`;
-    const res = await fetch(apiUrl, { method: "POST" });
-    const result = await res.json();
-    return result;
-  } catch (error) {
-    console.error("Fetch error:", error);
-    throw error;
+  const apiUrl = `https://observatory-api.mdn.mozilla.net/api/v2/analyze?host=${encodeURIComponent(
+    host
+  )}`;
+  const res = await fetch(apiUrl, { method: "POST" });
+  const result = await res.json();
+  if (res.status > 299) {
+    console.error(res.status, result);
+    throw new Error(result.message || result.error || "API fetch failed");
   }
+  return result;
 }
 
 /** @type {{ [key: string]: {timer: any, frameCount: number, direction: number} }} */
@@ -127,7 +116,7 @@ function stopAnimation(tabId) {
  * @param {browser.webNavigation._OnCompletedDetails} details
  */
 function handleError(error, details) {
-  console.error("Error:", error);
+  console.error(error);
   const iconPath = `assets/img/error.png`;
   browser.action.setIcon({ path: iconPath, tabId: details.tabId });
 }

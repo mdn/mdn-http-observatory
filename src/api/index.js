@@ -3,8 +3,6 @@ import { migrateDatabase } from "../database/migrate.js";
 import { createServer } from "./server.js";
 
 async function main() {
-  await migrateDatabase("max");
-
   const server = await createServer();
   try {
     await server.listen({

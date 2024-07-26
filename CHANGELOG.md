@@ -1,5 +1,19 @@
 # Changelog
 
+## [1.2.0](https://github.com/mdn/mdn-http-observatory/compare/v1.1.0...v1.2.0) (2024-07-26)
+
+
+### Features
+
+* **db:** cleanup ([ee1942e](https://github.com/mdn/mdn-http-observatory/commit/ee1942e99938ccfc8e0e1f9545d43ae7a2d80940))
+* **db:** remove auto-migrate from server startup ([#52](https://github.com/mdn/mdn-http-observatory/issues/52)) ([d43d626](https://github.com/mdn/mdn-http-observatory/commit/d43d6262c93217f9a87fa23f7eea18090e47ea9d))
+
+
+### Bug Fixes
+
+* **hsts:** resolve path for hsts-preload.json file ([0ea5178](https://github.com/mdn/mdn-http-observatory/commit/0ea51787d06094eeab5ba4a49f12fe4f6830cff9))
+* **hsts:** rework file path resolution ([#50](https://github.com/mdn/mdn-http-observatory/issues/50)) ([1b2e9ed](https://github.com/mdn/mdn-http-observatory/commit/1b2e9edfa107192327d632e41c638d4bff3c2354))
+
 ## [1.1.0](https://github.com/mdn/mdn-http-observatory/compare/v1.0.0...v1.1.0) (2024-07-22)
 
 

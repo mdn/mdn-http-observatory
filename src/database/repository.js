@@ -57,10 +57,8 @@ export const ScanState = {
  * @property {number} tests_quantity
  * @property {number | null} grade
  * @property {number | null} score
- * @property {string | null} likelihood_indicator
  * @property {string | null} error
  * @property {Object | null} response_headers
- * @property {boolean} hidden
  * @property {number | null} status_code
  */
 
@@ -68,15 +66,14 @@ export const ScanState = {
  *
  * @param {Pool} pool
  * @param {number} siteId
- * @param {boolean} hidden
  * @returns {Promise<ScanRow>}
  */
-export async function insertScan(pool, siteId, hidden = false) {
+export async function insertScan(pool, siteId) {
   const result = await pool.query(
-    `INSERT INTO scans (site_id, state, start_time, tests_quantity, hidden, algorithm_version)
-      VALUES ($1, $2, NOW(), 0, $3, $4)
+    `INSERT INTO scans (site_id, state, start_time, tests_quantity, algorithm_version)
+      VALUES ($1, $2, NOW(), 0, $3)
       RETURNING *`,
-    [siteId, ScanState.RUNNING, hidden, ALGORITHM_VERSION]
+    [siteId, ScanState.RUNNING, ALGORITHM_VERSION]
   );
   /** @type {ScanRow} */
   const row = result.rows["0"];
@@ -131,17 +128,16 @@ export async function insertTestResults(pool, siteId, scanId, scanResult) {
   const scan = scanResult.scan;
   const result = await pool.query(
     `UPDATE scans
-      SET (end_time, tests_failed, tests_passed, grade, score, likelihood_indicator,
+      SET (end_time, tests_failed, tests_passed, grade, score,
       state, response_headers, status_code, algorithm_version, tests_quantity, error) =
-      (NOW(), $1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11)
-      WHERE id = $12
+      (NOW(), $1, $2, $3, $4, $5, $6, $7, $8, $9, $10)
+      WHERE id = $11
       RETURNING *`,
     [
       scan.testsFailed,
       scan.testsPassed,
       scan.grade,
       scan.score,
-      scan.likelihoodIndicator,
       scan.score !== null ? ScanState.FINISHED : ScanState.FAILED,
       scan.responseHeaders,
       scan.statusCode,

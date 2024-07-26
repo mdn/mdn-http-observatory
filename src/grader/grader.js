@@ -1,35 +1,26 @@
 import { Expectation } from "../types.js";
-import {
-  GRADE_CHART,
-  LIKELIHOOD_INDICATOR_CHART,
-  SCORE_TABLE,
-  TEST_TOPIC_LINKS,
-} from "./charts.js";
+import { GRADE_CHART, SCORE_TABLE, TEST_TOPIC_LINKS } from "./charts.js";
 
 /**
- * @typedef {Object} GradeAndLikelihood
+ * @typedef {Object} GradeAndScore
  * @property {number} score
  * @property {string} grade
- * @property {string} likelihoodIndicator
  */
 
 /**
  *
  * @param {number} score - raw score based on all of the tests
- * @returns {GradeAndLikelihood} - normalized score, grade and likelihood_indicator
+ * @returns {GradeAndScore} - normalized score and grade
  */
-export function getGradeAndLikelihoodForScore(score) {
+export function getGradeForScore(score) {
   score = Math.max(score, 0);
 
   // If score>100, just use the grade for 100, otherwise round down to the nearest multiple of 5
   const grade = GRADE_CHART.get(Math.min(score - (score % 5), 100));
-  const likelihoodIndicator =
-    LIKELIHOOD_INDICATOR_CHART.get(grade.slice(0, 1)) ?? "UNKNOWN";
 
   return {
     score,
     grade,
-    likelihoodIndicator,
   };
 }
 

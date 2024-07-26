@@ -43,7 +43,7 @@ describeOrSkip("Database repository", function () {
 
   it("creates a scan record", async function () {
     const siteId = await ensureSite(pool, "www.mozilla.org");
-    const row = await insertScan(pool, siteId, false);
+    const row = await insertScan(pool, siteId);
     assert(row);
     assert.isNumber(row.id);
     assert.equal(row.state, "RUNNING");
@@ -54,9 +54,7 @@ describeOrSkip("Database repository", function () {
     assert.equal(row.tests_quantity, 0);
     assert.isNull(row.grade);
     assert.isNull(row.score);
-    assert.isNull(row.likelihood_indicator);
     assert.isNull(row.error);
-    assert.isFalse(row.hidden);
     assert.isNull(row.status_code);
   });
 
@@ -65,7 +63,6 @@ describeOrSkip("Database repository", function () {
       scan: {
         algorithmVersion: 4,
         grade: "B+",
-        likelihoodIndicator: "MEDIUM",
         score: 80,
         statusCode: 200,
         testsFailed: 1,
@@ -316,7 +313,7 @@ describeOrSkip("Database repository", function () {
       },
     };
     const siteId = await ensureSite(pool, "www.mozilla.org");
-    const scan = await insertScan(pool, siteId, false);
+    const scan = await insertScan(pool, siteId);
     const scanId = scan.id;
 
     const result = await insertTestResults(pool, siteId, scanId, scanResult);
@@ -325,8 +322,6 @@ describeOrSkip("Database repository", function () {
       "algorithm_version",
       "end_time",
       "grade",
-      "hidden",
-      "likelihood_indicator",
       "response_headers",
       "score",
       "start_time",
@@ -343,30 +338,30 @@ describeOrSkip("Database repository", function () {
     const siteId2 = await ensureSite(pool, "developer.mozilla.org");
     const siteId3 = await ensureSite(pool, "security.mozilla.org");
     await pool.query(
-      `INSERT INTO scans (site_id, state, start_time, end_time, tests_quantity, hidden, algorithm_version, grade, score)
-      VALUES ($1, $2, NOW() - INTERVAL '100 days', NOW() - INTERVAL '100 days', 0, $3, $4, $5, $6)
+      `INSERT INTO scans (site_id, state, start_time, end_time, tests_quantity, algorithm_version, grade, score)
+      VALUES ($1, $2, NOW() - INTERVAL '100 days', NOW() - INTERVAL '100 days', 0, $3, $4, $5)
       RETURNING *`,
-      [siteId1, ScanState.FINISHED, false, ALGORITHM_VERSION, "A", 95]
+      [siteId1, ScanState.FINISHED, ALGORITHM_VERSION, "A", 95]
     );
     await pool.query(
-      `INSERT INTO scans (site_id, state, start_time, end_time, tests_quantity, hidden, algorithm_version, grade, score)
-      VALUES ($1, $2, NOW() - INTERVAL '90 days', NOW() - INTERVAL '90 days', 0, $3, $4, $5, $6)
+      `INSERT INTO scans (site_id, state, start_time, end_time, tests_quantity, algorithm_version, grade, score)
+      VALUES ($1, $2, NOW() - INTERVAL '90 days', NOW() - INTERVAL '90 days', 0, $3, $4, $5)
       RETURNING *`,
-      [siteId2, ScanState.FINISHED, false, ALGORITHM_VERSION, "B", 85]
+      [siteId2, ScanState.FINISHED, ALGORITHM_VERSION, "B", 85]
     );
     // add an older entry with differing grade, this should be excluded because the newer one overrides this
     await pool.query(
-      `INSERT INTO scans (site_id, state, start_time, end_time, tests_quantity, hidden, algorithm_version, grade, score)
-      VALUES ($1, $2, NOW() - INTERVAL '100 days', NOW() - INTERVAL '100 days', 0, $3, $4, $5, $6)
+      `INSERT INTO scans (site_id, state, start_time, end_time, tests_quantity, algorithm_version, grade, score)
+      VALUES ($1, $2, NOW() - INTERVAL '100 days', NOW() - INTERVAL '100 days', 0, $3, $4, $5)
       RETURNING *`,
-      [siteId2, ScanState.FINISHED, false, ALGORITHM_VERSION, "C", 85]
+      [siteId2, ScanState.FINISHED, ALGORITHM_VERSION, "C", 85]
     );
     // add one outside the year look back range, it should not be reflected in the result
     await pool.query(
-      `INSERT INTO scans (site_id, state, start_time, end_time, tests_quantity, hidden, algorithm_version, grade, score)
-      VALUES ($1, $2, NOW() - INTERVAL '400 days', NOW() - INTERVAL '400 days', 0, $3, $4, $5, $6)
+      `INSERT INTO scans (site_id, state, start_time, end_time, tests_quantity, algorithm_version, grade, score)
+      VALUES ($1, $2, NOW() - INTERVAL '400 days', NOW() - INTERVAL '400 days', 0, $3, $4, $5)
       RETURNING *`,
-      [siteId3, ScanState.FINISHED, false, ALGORITHM_VERSION, "D", 65]
+      [siteId3, ScanState.FINISHED, ALGORITHM_VERSION, "D", 65]
     );
 
     // now run the mv refresh
@@ -390,7 +385,7 @@ describeOrSkip("Database repository", function () {
     await Promise.all(
       [...Array(10).keys()].map((i) => {
         return pool.query(
-          `INSERT INTO scans (site_id, state, start_time, end_time, grade, score, tests_quantity, hidden, algorithm_version)
+          `INSERT INTO scans (site_id, state, start_time, end_time, grade, score, tests_quantity, algorithm_version)
           VALUES ($1, 
             $2, 
             NOW() - INTERVAL '${(i + 1) * 20000}', 
@@ -398,7 +393,6 @@ describeOrSkip("Database repository", function () {
             'A', 
             100,
             9,
-            false, 
             $3) RETURNING *`,
           [siteId, ScanState.FINISHED, ALGORITHM_VERSION]
         );
@@ -415,7 +409,7 @@ describeOrSkip("Database repository", function () {
     await Promise.all(
       [...Array(50).keys()].map((i) => {
         return pool.query(
-          `INSERT INTO scans (site_id, state, start_time, end_time, grade, score, tests_quantity, hidden, algorithm_version)
+          `INSERT INTO scans (site_id, state, start_time, end_time, grade, score, tests_quantity, algorithm_version)
           VALUES ($1, 
             $2, 
             NOW() - INTERVAL '${(i + 1) * 20000}', 
@@ -423,7 +417,6 @@ describeOrSkip("Database repository", function () {
             'F', 
             0,
             9,
-            false, 
             $3) RETURNING *`,
           [
             otherIds[Math.floor(Math.random() * otherIds.length)],

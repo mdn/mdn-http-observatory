@@ -27,17 +27,6 @@ export const GRADE_CHART = new Map([
   [0, "F"],
 ]);
 
-/**
- * @type {Map<string, string>}
- * */
-export const LIKELIHOOD_INDICATOR_CHART = new Map([
-  ["A", "LOW"],
-  ["B", "MEDIUM"],
-  ["C", "MEDIUM"],
-  ["D", "MEDIUM"],
-  ["F", "MEDIUM"],
-]);
-
 export const MINIMUM_SCORE_FOR_EXTRA_CREDIT = 90;
 
 /**

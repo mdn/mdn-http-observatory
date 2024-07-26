@@ -1,6 +1,6 @@
 import { assert } from "chai";
 import {
-  getGradeAndLikelihoodForScore,
+  getGradeForScore,
   getRecommendation,
   getScoreDescription,
   getScoreModifier,
@@ -32,33 +32,29 @@ describe("Grader", () => {
     );
   });
 
-  it("gets the grade and likelihood", function () {
-    let res = getGradeAndLikelihoodForScore(100);
+  it("gets the grade", function () {
+    let res = getGradeForScore(100);
     assert.deepEqual(res, {
       score: 100,
       grade: "A+",
-      likelihoodIndicator: "LOW",
     });
 
-    res = getGradeAndLikelihoodForScore(0);
+    res = getGradeForScore(0);
     assert.deepEqual(res, {
       score: 0,
       grade: "F",
-      likelihoodIndicator: "MEDIUM",
     });
 
-    res = getGradeAndLikelihoodForScore(120);
+    res = getGradeForScore(120);
     assert.deepEqual(res, {
       score: 120,
       grade: "A+",
-      likelihoodIndicator: "LOW",
     });
 
-    res = getGradeAndLikelihoodForScore(-10);
+    res = getGradeForScore(-10);
     assert.deepEqual(res, {
       score: 0,
       grade: "F",
-      likelihoodIndicator: "MEDIUM",
     });
   });
 });

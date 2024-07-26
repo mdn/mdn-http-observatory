@@ -206,12 +206,17 @@ describeOrSkip("API V2", function () {
     const app = await createServer();
     const response = await app.inject({
       method: "GET",
-      url: "/api/v2/analyze?host=httpbin.org",
+      url: "/api/v2/analyze?host=somethingorother1234.mozilla.net",
     });
     // we do scan that host
-    assert.equal(response.statusCode, 200);
+    assert.equal(response.statusCode, 422);
     const r = JSON.parse(response.body);
     assert.isObject(r);
+    assert.equal(r.error, "invalid-hostname-lookup");
+    assert.equal(
+      r.message,
+      "www.somethingorother1234.mozilla.net can not be resolved"
+    );
   }).timeout(6000);
 
   it("responds to GET /analyze of an ip address", async function () {

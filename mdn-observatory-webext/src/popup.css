@@ -1,0 +1,174 @@
+@font-face {
+  font-family: "Inter";
+  src: url("/assets/fonts/Inter-Bold.ttf") format("truetype");
+  font-weight: 700;
+  font-style: normal;
+}
+@font-face {
+  font-family: "Inter";
+  src: url("/assets/fonts/Inter-Medium.ttf") format("truetype");
+  font-weight: 600;
+  font-style: normal;
+}
+@font-face {
+  font-family: "Inter";
+  src: url("/assets/fonts/Inter-Regular.ttf") format("truetype");
+  font-weight: 400;
+  font-style: normal;
+}
+
+html {
+  --error-bg: #ccc;
+  --error-border: #333;
+  --grade-a-bg: #d2fadd;
+  --grade-a-border: #017a37;
+  --grade-b-bg: #e8fad2;
+  --grade-b-border: #547a01;
+  --grade-c-bg: #faf8d2;
+  --grade-c-border: #7a7001;
+  --grade-d-bg: #fae8d2;
+  --grade-d-border: #a65001;
+  --grade-f-bg: #fad2d2;
+  --grade-f-border: #a00;
+}
+
+body {
+  font-size: 1rem;
+  font-family: Inter, "Helvetica Neue", Arial, Helvetica, sans-serif;
+  width: 27rem;
+  padding: 0.5rem 0 3rem 0;
+  margin: 0;
+  border: 1px solid red;
+}
+
+.visually-hidden {
+  border: 0 !important;
+  clip: rect(1px, 1px, 1px, 1px) !important;
+  -webkit-clip-path: inset(50%) !important;
+  clip-path: inset(50%) !important;
+  height: 1px !important;
+  margin: -1px !important;
+  overflow: hidden !important;
+  padding: 0 !important;
+  position: absolute !important;
+  white-space: nowrap !important;
+  width: 1px !important;
+}
+
+#result {
+  display: grid;
+  grid-template-areas: "logo header" "grade score" "grade learn-more";
+  grid-template-columns: 1fr 2fr;
+  grid-template-rows: 2fr 1fr 1fr;
+  /* background-color: grey; */
+  height: 100%;
+  width: 100%;
+}
+
+.logo {
+  grid-area: logo;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.header {
+  grid-area: header;
+  display: flex;
+  align-items: center;
+  /* justify-content: center; */
+}
+
+.grade-container {
+  grid-area: grade;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.data-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: start;
+  /* background-color: green; */
+  grid-area: score;
+}
+.learn-more {
+  /* background-color: magenta; */
+  grid-area: learn-more;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: start;
+}
+
+.data-item {
+  display: block;
+  font-weight: 600;
+}
+
+.data-item #score,
+.data-item #tests {
+  font-weight: normal;
+}
+
+.grade {
+  display: flex;
+  background-color: var(--grade-bg);
+  border: 1px solid var(--grade-border);
+  border-radius: 0.2em;
+  color: var(--grade-border);
+  display: inline-block;
+  font-size: 1.7rem;
+  font-weight: 700;
+  height: 5rem;
+  line-height: 5rem;
+  text-align: center;
+  width: 5rem;
+  cursor: pointer;
+}
+
+.grade-a {
+  --grade-bg: var(--grade-a-bg);
+  --grade-border: var(--grade-a-border);
+}
+.grade-b {
+  --grade-bg: var(--grade-b-bg);
+  --grade-border: var(--grade-b-border);
+}
+.grade-c {
+  --grade-bg: var(--grade-c-bg);
+  --grade-border: var(--grade-c-border);
+}
+.grade-d {
+  --grade-bg: var(--grade-d-bg);
+  --grade-border: var(--grade-d-border);
+}
+.grade-f {
+  --grade-bg: var(--grade-f-bg);
+  --grade-border: var(--grade-f-border);
+}
+
+#scanning {
+  background-color: yellow;
+}
+
+.button {
+  cursor: pointer;
+  font-family: Inter, sans-serif;
+  font-weight: normal;
+  font-size: 1rem;
+}
+
+#mdn-docs-logo {
+  height: 1.2rem;
+}
+
+.logo-m {
+  fill: #5a23d7;
+}
+.header h1 {
+  font-size: 1rem;
+  font-weight: 600;
+  color: #5a23d7;
+}

@@ -1,6 +1,8 @@
-# MDN Observatory
+# MDN Observatory Extension DEMO -- NOT FOR PRODUCTION
 
-Checking http-level security and grading a site
+Checking http-level security and grading a site from a web extension.
+
+THIS IS JUST A DEMO. IT CALLS THE OBSERVATORY API FOR EACH SITE, A PRIVACY RISK.
 
 ## Development 
 
@@ -14,7 +16,7 @@ If you find this software helpful [star](https://github.com/MobileFirstLLC/exten
 | Commands | Description |
 | --- | --- |
 | `npm run start` | build extension, watch file changes |
-| `npm run build` | generate release version |
+| `npm run package` | generate release version |
 | `npm run docs` | generate source code docs |
 | `npm run clean` | remove temporary files |
 | `npm run test` | run unit tests |

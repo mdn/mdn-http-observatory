@@ -1,6 +1,33 @@
 // const CACHE_PERIOD_MS = 1000 * 60 * 60 * 24;
 const CACHE_PERIOD_MS = 1000 * 60;
 
+// store a tabid->hostname map
+/** @type {{ [key: string]: string }} */
+const tabHostnameMap = {};
+
+// message type received from popup
+/** @typedef {{ type: string, tabId: number }} message */
+
+browser.runtime.onConnect.addListener((port) => {
+  port.onMessage.addListener(async (/** @type message */ msg) => {
+    if (msg.type === "getData") {
+      const tabId = msg.tabId;
+      if (tabHostnameMap[tabId]) {
+        const hostname = tabHostnameMap[tabId];
+        const result = await browser.storage.local.get(hostname);
+        port.postMessage({ result: Object.values(result)[0] });
+      } else {
+        port.postMessage({ error: "no result" });
+      }
+    }
+  });
+
+  port.onDisconnect.addListener(() => {
+    console.log("DISCONNECT");
+    port = null;
+  });
+});
+
 browser.webNavigation.onCompleted.addListener(async (details) => {
   if (details.frameId === 0) {
     const tab = await browser.tabs.get(details.tabId);
@@ -28,26 +55,29 @@ browser.webNavigation.onCompleted.addListener(async (details) => {
         apiResult = await fetchApiResponse(hostname);
       } catch (error) {
         stopAnimation(details.tabId);
+        delete tabHostnameMap[details.tabId];
         handleError(error, details);
         return;
       }
       stopAnimation(details.tabId);
     }
 
-    const iconPath = `assets/img/${apiResult.scan.grade}.png`;
-    browser.action.setIcon({ path: iconPath, tabId: details.tabId });
-
     // store result in the cache
     if (apiResult && !apiResult.error) {
       try {
+        const iconPath = `assets/img/${apiResult.scan.grade}.png`;
+        browser.action.setIcon({ path: iconPath, tabId: details.tabId });
         /** @type {{ [key: string]: any }} */
         const data = {};
         data[hostname] = apiResult;
         await browser.storage.local.set(data);
+        tabHostnameMap[details.tabId] = hostname;
+        console.log("tabHostnameMap", tabHostnameMap);
       } catch (error) {
         console.error(error);
       }
     } else {
+      delete tabHostnameMap[details.tabId];
       handleError(
         `API result error: ${apiResult.error ? apiResult.error : "No result"}`,
         details

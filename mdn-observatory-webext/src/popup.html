@@ -29,12 +29,12 @@
       </svg>
     </section>
 
-    <main id="result">
+    <main id="result" class="visually-hidden">
       <section class="header">
         <h1>HTTP Observatory</h1>
       </section>
       <section class="grade-container">
-        <section class="grade grade-d" onclick="showResults()">D+</section>
+        <section id="grade" class="grade grade-d click-handler">D+</section>
       </section>
       <section class="data-container">
         <section class="data-item">
@@ -43,15 +43,15 @@
         <section class="data-item">
           Tests Passed: <span id="tests">5 / 10</span>
         </section>
-      </section>
-      <section class="learn-more">
-        <button class="button" onclick="openResults()">
-          Show detailed results on MDN
-        </button>
+        <section class="data-item">
+          <button class="button click-handler">
+            Show detailed results on MDN
+          </button>
+        </section>
       </section>
     </main>
-    <section id="scanning" class="visually-hidden">
-      Insert animation here
+    <section id="scanning" class="xvisually-hidden">
+      <section class="progress">Scanning…</section>
     </section>
     <script type="module" src="popup.js"></script>
   </body>

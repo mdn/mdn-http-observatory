@@ -9,7 +9,7 @@
   "permissions": ["activeTab", "webNavigation", "tabs", "storage"],
   "host_permissions": ["<all_urls>"],
   "content_security_policy": {
-    "extension_pages": "script-src 'self'; object-src 'self'; connect-src *;"
+    "extension_pages": "script-src 'self'; connect-src *;"
   },
   "browser_specific_settings": {
     "gecko": {

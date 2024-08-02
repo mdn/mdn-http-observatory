@@ -7,7 +7,7 @@ describe("Scanner", () => {
   it("returns an error on an unknown host", async function () {
     const domain =
       Array(223)
-        .fill()
+        .fill(0)
         .map(() => String.fromCharCode(Math.random() * 26 + 97))
         .join("") + ".net";
 
@@ -15,7 +15,11 @@ describe("Scanner", () => {
       const scanResult = await scan(domain);
       throw new Error("scan should throw");
     } catch (e) {
-      assert.equal(e.message, "The site seems to be down.");
+      if (e instanceof Error) {
+        assert.equal(e.message, "The site seems to be down.");
+      } else {
+        throw new Error("Unexpected error type");
+      }
     }
   });
 

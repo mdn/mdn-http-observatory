@@ -1,5 +1,7 @@
+import { X_CONTENT_TYPE_OPTIONS } from "../../headers.js";
 import { BaseOutput, Requests } from "../../types.js";
 import { Expectation } from "../../types.js";
+import { getFirstHttpHeader } from "../utils.js";
 
 export class XContentTypeOptionsOutput extends BaseOutput {
   /** @type {string | null} */
@@ -34,8 +36,15 @@ export function xContentTypeOptionsTest(
   const output = new XContentTypeOptionsOutput(expectation);
   const resp = requests.responses.auto;
 
-  if (resp.headers["x-content-type-options"]) {
-    output.data = resp.headers["x-content-type-options"].slice(0, 256);
+  if (!resp) {
+    output.result = Expectation.XContentTypeOptionsNotImplemented;
+    return output;
+  }
+
+  const header = getFirstHttpHeader(resp, X_CONTENT_TYPE_OPTIONS);
+
+  if (header) {
+    output.data = header.slice(0, 256);
     if (output.data.trim().toLowerCase() === "nosniff") {
       output.result = Expectation.XContentTypeOptionsNosniff;
     } else {

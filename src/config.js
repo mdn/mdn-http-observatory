@@ -117,13 +117,13 @@ const SCHEMA = {
       format: "String",
       default: "",
       env: "SENTRY_DSN",
-    }
-  }
+    },
+  },
 };
 
 /**
  *
- * @param {string} configFile
+ * @param {string | undefined} configFile
  * @returns
  */
 export function load(configFile) {

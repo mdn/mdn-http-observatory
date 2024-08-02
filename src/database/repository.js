@@ -92,6 +92,7 @@ export async function insertTestResults(pool, siteId, scanId, scanResult) {
   // prepare our test data, remove all standard fields from test and lift it to the top level,
   // encode the rest for the JSON data field.
   const testValues = Object.entries(scanResult.tests).map(([name, test]) => {
+    /** @type {any} */
     const t = { ...test };
     const expectation = t.expectation;
     delete t.expectation;
@@ -343,7 +344,7 @@ export async function selectTestResults(pool, scanId) {
  * @param {Pool} pool
  * @param {number} scanId
  * @param {ScanState} state
- * @param {string} error
+ * @param {string | null} error
  */
 export async function updateScanState(pool, scanId, state, error = null) {
   if (error) {

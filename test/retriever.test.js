@@ -8,7 +8,7 @@ describe("TestRetriever", () => {
   it("test retrieve non-existent domain", async function () {
     const domain =
       Array(223)
-        .fill()
+        .fill(0)
         .map(() => String.fromCharCode(Math.random() * 26 + 97))
         .join("") + ".net";
     const requests = await retrieve(domain);
@@ -16,6 +16,7 @@ describe("TestRetriever", () => {
     assert.isNull(requests.responses.cors);
     assert.isNull(requests.responses.http);
     assert.isNull(requests.responses.https);
+    assert.isNotNull(requests.session);
     assert.isNull(requests.session.response);
     assert.equal(domain, requests.hostname);
     assert.deepEqual(new Resources(), requests.resources);
@@ -25,6 +26,8 @@ describe("TestRetriever", () => {
     const requests = await retrieve("developer.mozilla.org");
     assert.isNotNull(requests.resources.path);
     assert.isNotNull(requests.responses.auto);
+    assert.isNotNull(requests.responses.http);
+    assert.isNotNull(requests.responses.https);
     assert.isNumber(requests.responses.http.status);
     assert.isNumber(requests.responses.https.status);
     assert.instanceOf(requests.session, Session);
@@ -46,6 +49,7 @@ describe("TestRetriever", () => {
   // test site seems to have outage from time to time, disable for now
   it.skip("test_retrieve_invalid_cert", async function () {
     const reqs = await retrieve("expired.badssl.com");
+    assert.isNotNull(reqs.responses.auto);
     assert.isFalse(reqs.responses.auto.verified);
   }).timeout(10000);
 });

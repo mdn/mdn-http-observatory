@@ -29,7 +29,8 @@
     "chai": "^5.1.1",
     "json-schema-to-jsdoc": "^1.1.1",
     "mocha": "^10.7.0",
-    "nodemon": "^3.1.4"
+    "nodemon": "^3.1.4",
+    "prettier-eslint": "^16.3.0"
   },
   "dependencies": {
     "@fastify/cors": "^9.0.1",

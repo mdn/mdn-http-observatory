@@ -1,5 +1,11 @@
+import {
+  ACCESS_CONTROL_ALLOW_CREDENTIALS,
+  ACCESS_CONTROL_ALLOW_ORIGIN,
+  ORIGIN,
+} from "../../headers.js";
 import { BaseOutput, Requests } from "../../types.js";
 import { Expectation } from "../../types.js";
+import { getFirstHttpHeader, getHttpHeaders } from "../utils.js";
 
 export class CorsOutput extends BaseOutput {
   /** @type {string | null} */
@@ -34,29 +40,32 @@ export function crossOriginResourceSharingTest(
 ) {
   const output = new CorsOutput(expectation);
   output.result = Expectation.CrossOriginResourceSharingNotImplemented;
-  const resp = requests.responses.auto;
   const accessControlAllowOrigin = requests.responses.cors;
 
-  if (
-    accessControlAllowOrigin &&
-    accessControlAllowOrigin.headers["access-control-allow-origin"]
-  ) {
-    output.data = accessControlAllowOrigin.headers[
-      "access-control-allow-origin"
-    ]
-      .slice(0, 256)
-      .trim()
-      .toLowerCase();
+  const acaoHeader = getFirstHttpHeader(
+    accessControlAllowOrigin,
+    ACCESS_CONTROL_ALLOW_ORIGIN
+  );
+  const originHeader = getFirstHttpHeader(
+    accessControlAllowOrigin?.request,
+    ORIGIN
+  );
+  const credentialsHeader = getFirstHttpHeader(
+    accessControlAllowOrigin,
+    ACCESS_CONTROL_ALLOW_CREDENTIALS
+  );
+
+  if (accessControlAllowOrigin && acaoHeader) {
+    output.data = acaoHeader.slice(0, 256).trim().toLowerCase();
     if (output.data === "*") {
       output.result =
         Expectation.CrossOriginResourceSharingImplementedWithPublicAccess;
     } else if (
-      accessControlAllowOrigin.request?.headers?.["origin"] ===
-        accessControlAllowOrigin.headers["access-control-allow-origin"] &&
-      accessControlAllowOrigin.headers["access-control-allow-credentials"] &&
-      accessControlAllowOrigin.headers["access-control-allow-credentials"]
-        .toLowerCase()
-        .trim() === "true"
+      originHeader &&
+      acaoHeader &&
+      originHeader === acaoHeader &&
+      credentialsHeader &&
+      credentialsHeader.toLowerCase().trim() === "true"
     ) {
       output.result =
         Expectation.CrossOriginResourceSharingImplementedWithUniversalAccess;

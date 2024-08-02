@@ -69,14 +69,16 @@ export async function validHostname(hostname) {
   }
 
   // Check if we can look up the host
-  await new Promise((resolve, reject) => {
-    dns.lookup(hostname, (err, address, family) => {
-      if (err) {
-        reject(new InvalidHostNameLookupError(hostname));
-      }
-      resolve();
-    });
-  });
+  await /** @type {Promise<void>} */ (
+    new Promise((resolve, reject) => {
+      dns.lookup(hostname, (err, address, family) => {
+        if (err) {
+          reject(new InvalidHostNameLookupError(hostname));
+        }
+        resolve();
+      });
+    })
+  );
 
   return hostname;
 }
@@ -134,7 +136,6 @@ export async function testsForScan(pool, scanId) {
       const key = snakeCase(k);
       value[key] = v;
     }
-    delete test.output;
     acc[test.name] = value;
     return acc;
   }, /** @type {any} */ ({}));

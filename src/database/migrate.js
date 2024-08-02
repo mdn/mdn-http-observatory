@@ -25,6 +25,9 @@ export async function migrateDatabase(version, pool) {
   if (owned_pool) {
     pool = createPool();
   }
+  if (!pool) {
+    throw new Error("Pool is invalid");
+  }
 
   try {
     const postgrator = new Postgrator({

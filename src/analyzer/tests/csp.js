@@ -5,6 +5,7 @@ import {
 import { Requests, Policy, BaseOutput } from "../../types.js";
 import { Expectation } from "../../types.js";
 import { parseCsp, parseCspMeta } from "../cspParser.js";
+import { getHttpHeaders } from "../utils.js";
 
 const DANGEROUSLY_BROAD = new Set([
   "ftp:",
@@ -83,11 +84,17 @@ export function contentSecurityPolicyTest(
   const output = new CspOutput(expectation);
   const response = requests.responses.auto;
   const url = requests.session?.url;
-  // @ts-ignore
-  const httpCspHeader = response.headers.get(CONTENT_SECURITY_POLICY) ?? null;
-  const equivCspHeader = response.httpEquiv.get(CONTENT_SECURITY_POLICY) ?? [];
-  output.numPolicies =
-    equivCspHeader.length + (httpCspHeader?.split(",").length || 0);
+
+  if (!response || !url) {
+    output.result = Expectation.CspNotImplemented;
+    return output;
+  }
+
+  const httpCspHeader = getHttpHeaders(response, CONTENT_SECURITY_POLICY);
+  const equivCspHeader =
+    response?.httpEquiv?.get(CONTENT_SECURITY_POLICY) ?? [];
+
+  output.numPolicies = equivCspHeader.length + httpCspHeader.length;
 
   /** @type {Map<string, Set<string>>} */
   let csp;
@@ -98,7 +105,7 @@ export function contentSecurityPolicyTest(
 
   try {
     csp = parseCsp(
-      [httpCspHeader, ...equivCspHeader].filter((x) => x !== null)
+      [...httpCspHeader, ...equivCspHeader].filter((x) => x !== null)
     );
   } catch (e) {
     output.result = Expectation.CspHeaderInvalid;
@@ -106,7 +113,7 @@ export function contentSecurityPolicyTest(
   }
 
   try {
-    httpHeaderOnlyCsp = parseCsp([httpCspHeader]);
+    httpHeaderOnlyCsp = parseCsp(httpCspHeader);
   } catch (e) {
     httpHeaderOnlyCsp = new Map();
   }

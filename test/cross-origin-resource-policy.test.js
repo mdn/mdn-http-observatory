@@ -21,6 +21,7 @@ describe("Cross Origin Resource Policy", () => {
 
   it("checks header validity", function () {
     const values = ["whimsy"];
+    assert.isNotNull(reqs.responses.auto);
     for (const value of values) {
       reqs.responses.auto.headers["cross-origin-resource-policy"] = value;
       const result = crossOriginResourcePolicyTest(reqs);
@@ -34,6 +35,7 @@ describe("Cross Origin Resource Policy", () => {
 
   it("checks for same-site", function () {
     const values = ["same-site"];
+    assert.isNotNull(reqs.responses.auto);
     for (const value of values) {
       reqs.responses.auto.headers["cross-origin-resource-policy"] = value;
       const result = crossOriginResourcePolicyTest(reqs);
@@ -46,6 +48,7 @@ describe("Cross Origin Resource Policy", () => {
   });
   it("checks for same-origin", function () {
     const values = ["same-origin"];
+    assert.isNotNull(reqs.responses.auto);
     for (const value of values) {
       reqs.responses.auto.headers["cross-origin-resource-policy"] = value;
       const result = crossOriginResourcePolicyTest(reqs);
@@ -58,6 +61,7 @@ describe("Cross Origin Resource Policy", () => {
   });
   it("checks for cross-origin", function () {
     const values = ["cross-origin"];
+    assert.isNotNull(reqs.responses.auto);
     for (const value of values) {
       reqs.responses.auto.headers["cross-origin-resource-policy"] = value;
       const result = crossOriginResourcePolicyTest(reqs);

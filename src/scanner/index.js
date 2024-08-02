@@ -39,7 +39,7 @@ export async function scan(hostname, options) {
   // Run all the tests on the result
   /**  @type {Output[]} */
   const results = ALL_TESTS.map((test) => {
-    return test.apply(this, [r]);
+    return test(r);
   });
 
   /** @type {StringMap} */
@@ -57,12 +57,14 @@ export async function scan(hostname, options) {
   let uncurvedScore = scoreWithExtraCredit;
 
   results.forEach((result) => {
-    result.scoreDescription = getScoreDescription(result.result);
-    result.scoreModifier = getScoreModifier(result.result);
-    testsPassed += result.pass ? 1 : 0;
-    scoreWithExtraCredit += result.scoreModifier;
-    if (result.scoreModifier < 0) {
-      uncurvedScore += result.scoreModifier;
+    if (result.result) {
+      result.scoreDescription = getScoreDescription(result.result);
+      result.scoreModifier = getScoreModifier(result.result);
+      testsPassed += result.pass ? 1 : 0;
+      scoreWithExtraCredit += result.scoreModifier;
+      if (result.scoreModifier < 0) {
+        uncurvedScore += result.scoreModifier;
+      }
     }
   });
 

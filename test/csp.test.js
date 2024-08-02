@@ -56,6 +56,7 @@ describe("Content Security Policy", () => {
         Expectation.CspImplementedWithUnsafeInline
       );
       assert.isFalse(result["pass"]);
+      assert.isNotNull(result["policy"]);
       assert.isTrue(result["policy"]["unsafeInline"]);
     }
   });
@@ -78,6 +79,7 @@ describe("Content Security Policy", () => {
         Expectation.CspImplementedWithInsecureScheme
       );
       assert.isFalse(result["pass"]);
+      assert.isNotNull(result["policy"]);
       assert.isTrue(result["policy"]["insecureSchemeActive"]);
     }
   });
@@ -103,6 +105,7 @@ describe("Content Security Policy", () => {
         Expectation.CspImplementedWithInsecureSchemeInPassiveContentOnly
       );
       assert.isTrue(result["pass"]);
+      assert.isNotNull(result["policy"]);
       assert.isTrue(result["policy"]["insecureSchemePassive"]);
     }
   });
@@ -138,6 +141,7 @@ describe("Content Security Policy", () => {
         Expectation.CspImplementedWithUnsafeInline
       );
       assert.isFalse(result["pass"]);
+      assert.isNotNull(result["policy"]);
       assert.isTrue(result["policy"]["unsafeInline"]);
     }
   });
@@ -153,8 +157,10 @@ describe("Content Security Policy", () => {
     const result = contentSecurityPolicyTest(requests);
 
     assert.equal(result["result"], Expectation.CspImplementedWithUnsafeEval);
+    assert.isNotNull(result.data);
     assert.deepEqual(result.data["script-src"], ["'unsafe-eval'"]);
     assert.isFalse(result["pass"]);
+    assert.isNotNull(result["policy"]);
     assert.isTrue(result["policy"]["unsafeEval"]);
   });
   it("unsafe inline in style src only", async () => {
@@ -182,6 +188,7 @@ describe("Content Security Policy", () => {
         Expectation.CspImplementedWithUnsafeInlineInStyleSrcOnly
       );
       assert.isTrue(result["pass"]);
+      assert.isNotNull(result["policy"]);
       assert.isTrue(result["policy"]["unsafeInlineStyle"]);
     }
   });
@@ -255,6 +262,7 @@ describe("Content Security Policy", () => {
       assert.isTrue(result["http"]);
       assert.isFalse(result["meta"]);
       assert.isTrue(result["pass"]);
+      assert.isNotNull(result["policy"]);
       assert.isTrue(result["policy"]["defaultNone"]);
     }
 
@@ -353,6 +361,7 @@ describe("Content Security Policy", () => {
         result["result"],
         Expectation.CspImplementedWithNoUnsafeDefaultSrcNone
       );
+      assert.isNotNull(result["policy"]);
       assert.isTrue(result["policy"]["strictDynamic"]);
     }
   });
@@ -367,9 +376,9 @@ describe("Content Security Policy", () => {
     for (const value of values) {
       const requests = emptyRequests();
       setHeader(requests.responses.auto, "Content-Security-Policy", value);
-      assert.isFalse(
-        contentSecurityPolicyTest(requests)["policy"]["antiClickjacking"]
-      );
+      const policy = contentSecurityPolicyTest(requests)["policy"];
+      assert.isNotNull(policy);
+      assert.isFalse(policy["antiClickjacking"]);
     }
 
     // Now test where anticlickjacking is enabled
@@ -379,9 +388,9 @@ describe("Content Security Policy", () => {
       "Content-Security-Policy",
       "default-src *; frame-ancestors 'none'"
     );
-    assert.isTrue(
-      contentSecurityPolicyTest(requests)["policy"]["antiClickjacking"]
-    );
+    const policy = contentSecurityPolicyTest(requests)["policy"];
+    assert.isNotNull(policy);
+    assert.isTrue(policy["antiClickjacking"]);
 
     // Test unsafeObjects and insecureBaseUri
     values = [
@@ -393,12 +402,10 @@ describe("Content Security Policy", () => {
     for (const value of values) {
       const requests = emptyRequests();
       setHeader(requests.responses.auto, "Content-Security-Policy", value);
-      assert.isTrue(
-        contentSecurityPolicyTest(requests)["policy"]["insecureBaseUri"]
-      );
-      assert.isTrue(
-        contentSecurityPolicyTest(requests)["policy"]["unsafeObjects"]
-      );
+      const policy = contentSecurityPolicyTest(requests)["policy"];
+      assert.isNotNull(policy);
+      assert.isTrue(policy["insecureBaseUri"]);
+      assert.isTrue(policy["unsafeObjects"]);
     }
 
     // Other tests for insecureBaseUri
@@ -411,9 +418,9 @@ describe("Content Security Policy", () => {
     for (const value of values) {
       const requests = emptyRequests();
       setHeader(requests.responses.auto, "Content-Security-Policy", value);
-      assert.isFalse(
-        contentSecurityPolicyTest(requests)["policy"]["insecureBaseUri"]
-      );
+      const policy = contentSecurityPolicyTest(requests)["policy"];
+      assert.isNotNull(policy);
+      assert.isFalse(policy["insecureBaseUri"]);
     }
 
     // Test for insecureSchemePassive
@@ -427,9 +434,9 @@ describe("Content Security Policy", () => {
     for (const value of values) {
       const requests = emptyRequests();
       setHeader(requests.responses.auto, "Content-Security-Policy", value);
-      assert.isTrue(
-        contentSecurityPolicyTest(requests)["policy"]["insecureSchemePassive"]
-      );
+      const policy = contentSecurityPolicyTest(requests)["policy"];
+      assert.isNotNull(policy);
+      assert.isTrue(policy["insecureSchemePassive"]);
     }
 
     // Test for insecureFormAction
@@ -443,9 +450,9 @@ describe("Content Security Policy", () => {
     for (const value of values) {
       const requests = emptyRequests();
       setHeader(requests.responses.auto, "Content-Security-Policy", value);
-      assert.isFalse(
-        contentSecurityPolicyTest(requests)["policy"]["insecureFormAction"]
-      );
+      const policy = contentSecurityPolicyTest(requests)["policy"];
+      assert.isNotNull(policy);
+      assert.isFalse(policy["insecureFormAction"]);
     }
 
     values = ["default-src *", "default-src 'none'", "form-action https:"];
@@ -453,9 +460,9 @@ describe("Content Security Policy", () => {
     for (const value of values) {
       const requests = emptyRequests();
       setHeader(requests.responses.auto, "Content-Security-Policy", value);
-      assert.isTrue(
-        contentSecurityPolicyTest(requests)["policy"]["insecureFormAction"]
-      );
+      const policy = contentSecurityPolicyTest(requests)["policy"];
+      assert.isNotNull(policy);
+      assert.isTrue(policy["insecureFormAction"]);
     }
   });
   it("report only", async () => {

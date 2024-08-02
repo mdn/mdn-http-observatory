@@ -1,5 +1,7 @@
+import { CROSS_ORIGIN_RESOURCE_POLICY } from "../../headers.js";
 import { BaseOutput, Requests } from "../../types.js";
 import { Expectation } from "../../types.js";
+import { getFirstHttpHeader } from "../utils.js";
 
 export class CrossOriginResourcePolicyOutput extends BaseOutput {
   /** @type {string | null} */
@@ -36,24 +38,33 @@ export function crossOriginResourcePolicyTest(
   expectation = Expectation.CrossOriginResourcePolicyImplementedWithSameSite
 ) {
   const output = new CrossOriginResourcePolicyOutput(expectation);
-  const resp = requests.responses.auto;
-
   output.result = Expectation.CrossOriginResourcePolicyNotImplemented;
 
+  const resp = requests.responses.auto;
+  if (!resp) {
+    return output;
+  }
+
+  const httpHeader = getFirstHttpHeader(resp, CROSS_ORIGIN_RESOURCE_POLICY);
+  const equivHeaders =
+    resp.httpEquiv?.get(CROSS_ORIGIN_RESOURCE_POLICY) ?? null;
+
   // Store whether the header or the meta tag were present
-  output.http = !!resp.headers["cross-origin-resource-policy"];
-  output.meta = !!resp.httpEquiv?.get("cross-origin-resource-policy");
+  output.http = !!httpHeader;
+  output.meta = equivHeaders ? equivHeaders.length > 0 : false;
 
   // If it is both a header and a http-equiv, http-equiv has precedence (last value)
   let corpHeader;
-  if (output.http) {
-    corpHeader = resp.headers["cross-origin-resource-policy"]
-      .slice(0, 256)
-      .trim()
-      .toLowerCase();
+  if (output.http && httpHeader) {
+    corpHeader = httpHeader.slice(0, 256).trim().toLowerCase();
   } else if (output.meta) {
-    const headers = resp.httpEquiv.get("cross-origin-resource-policy");
-    corpHeader = headers[headers.length - 1].slice(0, 256).trim().toLowerCase();
+    // const headers = resp.httpEquiv?.get("cross-origin-resource-policy");
+    if (equivHeaders && equivHeaders.length) {
+      corpHeader = equivHeaders[equivHeaders.length - 1]
+        .slice(0, 256)
+        .trim()
+        .toLowerCase();
+    }
   }
 
   if (corpHeader) {
@@ -79,7 +90,7 @@ export function crossOriginResourcePolicyTest(
     Expectation.CrossOriginResourcePolicyImplementedWithSameSite,
     Expectation.CrossOriginResourcePolicyImplementedWithSameOrigin,
     Expectation.CrossOriginResourcePolicyImplementedWithCrossOrigin,
-  ].includes(output.result);
+  ].includes(output.result ?? "");
 
   return output;
 }

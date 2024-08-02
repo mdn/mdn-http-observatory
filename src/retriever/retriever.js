@@ -64,7 +64,7 @@ export async function retrieve(hostname, options = {}) {
   if (cors_resp) {
     retrievals.responses.cors = {
       ...cors_resp,
-      verified: retrievals.session.response.verified,
+      verified: retrievals.session.response?.verified ?? false,
     };
   } else {
     retrievals.responses.cors = null;

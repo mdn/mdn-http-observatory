@@ -74,14 +74,13 @@ export function referrerPolicyTest(
   }
 
   // Find the last known valid policy value in the referrer policy
-  let policy = output.data
-    ? output.data
-        .split(",")
-        .filter((e) => valid.includes(e.toLowerCase().trim()))
-        .reverse()[0]
-        ?.toLowerCase()
-        .trim()
-    : "";
+  let policy =
+    output.data
+      ?.split(",")
+      .filter((e) => valid.includes(e.toLowerCase().trim()))
+      .reverse()[0]
+      ?.toLowerCase()
+      .trim() ?? "";
 
   if (goodness.includes(policy)) {
     output.result = Expectation.ReferrerPolicyPrivate;

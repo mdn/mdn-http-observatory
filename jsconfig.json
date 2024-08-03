@@ -1,6 +1,5 @@
 {
     "compilerOptions": {
-        "noImplicitAny": true,
         "checkJs": true,
         "target": "es2022",
         "maxNodeModuleJsDepth": 0,

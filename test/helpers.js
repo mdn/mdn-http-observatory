@@ -9,13 +9,14 @@ import { parseHttpEquivHeaders } from "../src/retriever/utils.js";
 
 /**
  *
- * @param {import("../src/types.js").Response} response
+ * @param {import("../src/types.js").Response | null} response
  * @param {string} header
  * @param {string} value
  */
 export function setHeader(response, header, value) {
-  // @ts-ignore
-  response.headers.set(header, value);
+  if (typeof response?.headers.set === "function") {
+    response.headers.set(header, value);
+  }
 }
 
 /**
@@ -37,13 +38,19 @@ export function emptyRequests(httpEquivFile = null) {
     req.resources.path = html;
   }
 
-  // @ts-ignore
-  req.responses.auto = {};
-  req.responses.auto.headers = new AxiosHeaders("Content-Type: text/html");
-  req.responses.auto.request = {};
-  req.responses.auto.request.headers = new AxiosHeaders();
-  req.responses.auto.status = 200;
-  req.responses.auto.verified = true;
+  req.responses.auto = {
+    headers: new AxiosHeaders("Content-Type: text/html"),
+    request: {
+      headers: new AxiosHeaders(),
+    },
+    status: 200,
+    statusText: "OK",
+    verified: true,
+    data: "",
+    config: {
+      headers: new AxiosHeaders(),
+    },
+  };
 
   req.responses.cors = structuredClone(req.responses.auto);
   req.responses.http = structuredClone(req.responses.auto);

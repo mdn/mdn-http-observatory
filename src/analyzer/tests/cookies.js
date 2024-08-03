@@ -1,6 +1,7 @@
+import { SET_COOKIE } from "../../headers.js";
 import { Requests, BaseOutput } from "../../types.js";
 import { Expectation } from "../../types.js";
-import { onlyIfWorse } from "../utils.js";
+import { getHttpHeaders, onlyIfWorse } from "../utils.js";
 import { strictTransportSecurityTest } from "./strict-transport-security.js";
 import { Cookie } from "tough-cookie";
 
@@ -25,7 +26,7 @@ const COOKIES_TO_DELETE = ["heroku-session-affinity"];
 
 export class CookiesOutput extends BaseOutput {
   /** @type {CookieMap | null} */
-  data;
+  data = null;
   // Store whether or not we saw SameSite cookies, if cookies were set
   /** @type {boolean | null} */
   sameSite = null;
@@ -77,25 +78,27 @@ export function cookiesTest(
   let hasMissingSameSite = false;
 
   // Check if we got a malformed SameSite on the raw headers
-  const rawCookies = requests.responses.auto.headers["set-cookie"];
-  if (rawCookies) {
-    for (const rawCookie of rawCookies) {
-      if (containsInvalidSameSiteCookie(rawCookie)) {
-        output.result = onlyIfWorse(
-          Expectation.CookiesSamesiteFlagInvalid,
-          output.result,
-          goodness
-        );
+  if (requests.responses.auto) {
+    const rawCookies = getHttpHeaders(requests.responses.auto, SET_COOKIE);
+    if (rawCookies) {
+      for (const rawCookie of rawCookies) {
+        if (containsInvalidSameSiteCookie(rawCookie)) {
+          output.result = onlyIfWorse(
+            Expectation.CookiesSamesiteFlagInvalid,
+            output.result,
+            goodness
+          );
+        }
       }
     }
   }
 
   // get ALL the cookies from the store with serializeSync instead of using getCookiesSync
-  const allCookies = requests.session.jar
+  const allCookies = requests.session?.jar
     .serializeSync()
     .cookies.filter(filterCookies);
 
-  if (!allCookies.length) {
+  if (!allCookies?.length) {
     output.result = Expectation.CookiesNotFound;
     output.data = null;
   } else {
@@ -233,7 +236,7 @@ function containsInvalidSameSiteCookie(cookieString) {
 }
 
 /**
- * @param {Cookie} cookie
+ * @param {Cookie.Serialized} cookie
  */
 function filterCookies(cookie) {
   return !COOKIES_TO_DELETE.includes(cookie.key);

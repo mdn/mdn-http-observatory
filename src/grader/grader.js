@@ -16,7 +16,12 @@ export function getGradeForScore(score) {
   score = Math.max(score, 0);
 
   // If score>100, just use the grade for 100, otherwise round down to the nearest multiple of 5
-  const grade = GRADE_CHART.get(Math.min(score - (score % 5), 100));
+  const scoreMapKey = Math.min(score - (score % 5), 100);
+  const grade = GRADE_CHART.get(scoreMapKey);
+
+  if (!grade) {
+    throw new Error(`Score of ${scoreMapKey} did not map to a grade`);
+  }
 
   return {
     score,
@@ -29,7 +34,7 @@ export function getGradeForScore(score) {
  * @returns {string}
  */
 export function getScoreDescription(expectation) {
-  return SCORE_TABLE.get(expectation)?.description;
+  return SCORE_TABLE.get(expectation)?.description ?? "";
 }
 
 /**
@@ -37,7 +42,7 @@ export function getScoreDescription(expectation) {
  * @returns {string}
  */
 export function getRecommendation(expectation) {
-  return SCORE_TABLE.get(expectation)?.recommendation;
+  return SCORE_TABLE.get(expectation)?.recommendation ?? "";
 }
 
 /**
@@ -45,7 +50,7 @@ export function getRecommendation(expectation) {
  * @returns {string}
  */
 export function getTopicLink(testName) {
-  return TEST_TOPIC_LINKS.get(testName);
+  return TEST_TOPIC_LINKS.get(testName) ?? "";
 }
 
 /**
@@ -53,7 +58,7 @@ export function getTopicLink(testName) {
  * @returns {number}
  */
 export function getScoreModifier(expectation) {
-  return SCORE_TABLE.get(expectation).modifier;
+  return SCORE_TABLE.get(expectation)?.modifier ?? 0;
 }
 
 //

@@ -20,6 +20,7 @@ describe("Cross Origin Resource Sharing", () => {
   });
 
   it("checks for public access", function () {
+    assert.isNotNull(reqs.responses.cors);
     reqs.responses.cors.headers["access-control-allow-origin"] = "*";
     const result = crossOriginResourceSharingTest(reqs);
     assert.equal(
@@ -31,6 +32,7 @@ describe("Cross Origin Resource Sharing", () => {
   });
 
   it("checks for restricted access", function () {
+    assert.isNotNull(reqs.responses.cors);
     reqs.responses.cors.request.headers["origin"] =
       "https://http-observatory.security.mozilla.org";
     reqs.responses.cors.headers["access-control-allow-origin"] =
@@ -45,6 +47,7 @@ describe("Cross Origin Resource Sharing", () => {
   });
 
   it("checks for universal access", function () {
+    assert.isNotNull(reqs.responses.cors);
     reqs.responses.cors.request.headers["origin"] =
       "https://http-observatory.security.mozilla.org";
     reqs.responses.cors.headers["access-control-allow-origin"] =

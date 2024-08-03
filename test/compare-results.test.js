@@ -60,7 +60,7 @@ describeOrSkip("Old and New Comparison", () => {
           ),
         ]);
       } catch (error) {
-        console.log("ERROR", error.message);
+        console.log("ERROR", error);
         continue;
       }
       const resultNew = JSON.parse(response.body);

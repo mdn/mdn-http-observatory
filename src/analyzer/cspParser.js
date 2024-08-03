@@ -29,14 +29,10 @@ export function parseCspMeta(cspList) {
  * @returns {Map<string, Set<string>>}
  */
 export function parseCsp(cspList) {
-  const cleanCspList = cspList.flatMap((scpString) =>
-    scpString
-      ? scpString
-          .split(",") // NodeJS joins multiple headers with a comma
-          .map((scpString) => scpString.replace(/[\r\n]/g, "").trim())
-      : [""]
+  const cleanCspList = cspList.map((cspString) =>
+    cspString.replaceAll(/[\r\n]/g, "").trim()
   );
-  if (!cleanCspList) {
+  if (cleanCspList.length === 0) {
     return new Map();
   }
 

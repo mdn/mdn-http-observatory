@@ -18,6 +18,7 @@ describe("X-Content-Type-Options", () => {
 
   it("checks header validity", function () {
     const values = ["whimsy", "nosniff, nosniff"];
+    assert.isNotNull(reqs.responses.auto);
     for (const value of values) {
       reqs.responses.auto.headers["x-content-type-options"] = value;
       const result = xContentTypeOptionsTest(reqs);
@@ -28,6 +29,7 @@ describe("X-Content-Type-Options", () => {
 
   it("checks for nosniff", function () {
     const values = ["nosniff", "nosniff "];
+    assert.isNotNull(reqs.responses.auto);
     for (const value of values) {
       reqs.responses.auto.headers["x-content-type-options"] = value;
       const result = xContentTypeOptionsTest(reqs);

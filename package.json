@@ -13,6 +13,7 @@
     "test": "CONFIG_FILE=conf/config-test.json mocha",
     "test:nodb": "CONFIG_FILE=conf/config-test.json SKIP_DB_TESTS=1 mocha",
     "test:compare": "CONFIG_FILE=conf/config-test.json COMPARE_RESULT_TESTS=1 mocha test/compare-results.test.js",
+    "tsc": "tsc -p jsconfig.json",
     "scan": "node src/cli/index.js",
     "updateHsts": "node src/retrieve-hsts.js",
     "refreshMaterializedViews": "node src/maintenance/index.js",
@@ -25,10 +26,18 @@
     "@faker-js/faker": "^8.4.1",
     "@supercharge/promise-pool": "^3.2.0",
     "@types/mocha": "^10.0.7",
+    "@types/chai": "^4.3.16",
+    "@types/convict": "^6.1.6",
+    "@types/ip": "^1.1.3",
+    "@types/jsdom": "^21.1.7",
+    "@types/pg-format": "^1.0.5",
+    "@types/tough-cookie": "^4.0.5",
     "chai": "^5.1.1",
     "json-schema-to-jsdoc": "^1.1.1",
     "mocha": "^10.7.0",
-    "nodemon": "^3.1.4"
+    "nodemon": "^3.1.4",
+    "prettier-eslint": "^16.3.0",
+    "typescript": "^5.5.4"
   },
   "dependencies": {
     "@fastify/cors": "^9.0.1",

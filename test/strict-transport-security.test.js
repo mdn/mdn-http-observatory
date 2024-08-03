@@ -19,6 +19,7 @@ describe("Strict Transport Security", () => {
   });
 
   it("header invalid", function () {
+    assert.isNotNull(reqs.responses.https);
     reqs.responses.https.headers["strict-transport-security"] =
       "includeSubDomains; preload";
     let result = strictTransportSecurityTest(reqs);
@@ -33,8 +34,10 @@ describe("Strict Transport Security", () => {
   });
 
   it("no https", function () {
+    assert.isNotNull(reqs.responses.auto);
     reqs.responses.auto.headers["strict-transport-security"] =
       "max-age=15768000";
+    assert.isNotNull(reqs.responses.http);
     reqs.responses.http.headers["strict-transport-security"] =
       "max-age=15768000";
     reqs.responses.https = null;
@@ -45,6 +48,7 @@ describe("Strict Transport Security", () => {
   });
 
   it("invalid cert", function () {
+    assert.isNotNull(reqs.responses.https);
     reqs.responses.https.headers["strict-transport-security"] =
       "max-age=15768000; includeSubDomains; preload";
     reqs.responses.https.verified = false;
@@ -55,7 +59,8 @@ describe("Strict Transport Security", () => {
   });
 
   it("max age too low", function () {
-    reqs.responses.https.headers["strict-transport-security"] = "max-age=86400";
+    assert.isNotNull(reqs.responses.https);
+    reqs.responses.https.headers["Strict-Transport-Security"] = "max-age=86400";
 
     const result = strictTransportSecurityTest(reqs);
     assert.equal(
@@ -66,6 +71,7 @@ describe("Strict Transport Security", () => {
   });
 
   it("implemented", function () {
+    assert.isNotNull(reqs.responses.https);
     reqs.responses.https.headers["strict-transport-security"] =
       "max-age=15768000; includeSubDomains; preload";
 

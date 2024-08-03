@@ -16,7 +16,9 @@ program
       const result = await scan(hostname);
       console.log(JSON.stringify(result, null, 2));
     } catch (e) {
-      console.log(JSON.stringify({ error: e.message }));
+      if (e instanceof Error) {
+        console.log(JSON.stringify({ error: e.message }));
+      }
     }
   });
 

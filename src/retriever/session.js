@@ -46,12 +46,12 @@ export class Session {
   /** @type {URL} */
   url;
 
-  /** @type {import("axios").AxiosInstance} */
+  /** @type {import("axios").AxiosInstance | null} */
   clientInstanceRecordingRedirects;
-  /** @type {import("axios").AxiosInstance} */
+  /** @type {import("axios").AxiosInstance | null} */
   clientInstance;
-  /** @type {import("../types.js").HttpResponse} | null */
-  response;
+  /** @type {import("../types.js").HttpResponse | null} */
+  response = null;
   /** @type {import("../types.js").RedirectEntry[]} */
   redirectHistory;
   /** @type {number} */
@@ -92,7 +92,9 @@ export class Session {
 
     // Add an interceptor to record and request all redirections we encounter
     const ic = this.createInterceptor();
-    axiosInstance.interceptors.response.use(ic.response, ic.error);
+    if (ic.response) {
+      axiosInstance.interceptors.response.use(ic.response, ic.error);
+    }
 
     this.clientInstanceRecordingRedirects = axiosInstance;
     // used for additional resourece requests, without recording redirects
@@ -109,19 +111,13 @@ export class Session {
         /** @type { import("axios").AxiosResponse<any, any>} */ response
       ) {
         // push our url to the redirection chain
-        const url = response.config.url;
-        // console.log("INTERCEPTOR PUSHING URL", url);
+        const url = response.config.url ?? that.url;
+
         that.redirectHistory.push({
           url: new URL(url),
           status: response.status,
         });
-        // console.log(
-        //   "INTERCEPTOR CONDITION",
-        //   that.redirectCount,
-        //   response.status,
-        //   REDIRECT_STATUS_CODES.includes(response.status),
-        //   response.headers
-        // );
+
         if (
           that.redirectCount < MAX_REDIRECTS &&
           response.status &&
@@ -132,7 +128,9 @@ export class Session {
           const redirectUrl = response.headers.location;
           const newUrl = new URL(redirectUrl, url);
           that.redirectCount++;
-          // console.log("INTERCEPTOR NEW URL", newUrl.href);
+          if (!that.clientInstanceRecordingRedirects) {
+            throw new Error("clientInstanceRecordingRedirects is null");
+          }
           return that.clientInstanceRecordingRedirects.get(newUrl.href, {
             timeout: CLIENT_TIMEOUT,
           });
@@ -166,9 +164,16 @@ export class Session {
     } catch (e) {
       // Check for a cert error and replace the httpsAgent with
       // a non-verifying one
+      let code;
+      if (e && typeof e === "object" && "code" in e) {
+        const code = e.code;
+      } else {
+        code = null;
+      }
+
       if (
-        e.code &&
-        CERT_ERROR_CODES.indexOf(e.code) !== -1 &&
+        code &&
+        CERT_ERROR_CODES.indexOf(code) !== -1 &&
         this.clientInstanceRecordingRedirects.defaults.httpsAgent.options
           .rejectUnauthorized
       ) {
@@ -188,6 +193,9 @@ export class Session {
           ic.response,
           ic.error
         );
+        if (!this.clientInstance) {
+          throw new Error("clientInstance is null");
+        }
         this.clientInstance = axios.create({
           ...this.clientInstance.defaults,
           signal: AbortSignal.timeout(ABORT_TIMEOUT),
@@ -201,9 +209,6 @@ export class Session {
         await this.init();
         return this;
       }
-      // console.error(
-      //   `Testing connection to ${this.url.href} failed with: ${e.code}`
-      // );
       this.clientInstance = null;
       this.clientInstanceRecordingRedirects = null;
       this.response = null;

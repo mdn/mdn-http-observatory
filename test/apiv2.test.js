@@ -213,10 +213,7 @@ describeOrSkip("API V2", function () {
     const r = JSON.parse(response.body);
     assert.isObject(r);
     assert.equal(r.error, "invalid-hostname-lookup");
-    assert.equal(
-      r.message,
-      "www.somethingorother1234.mozilla.net can not be resolved"
-    );
+    assert.equal(r.message, "The host name cannot be resolved");
   }).timeout(6000);
 
   it("responds to GET /analyze of an ip address", async function () {

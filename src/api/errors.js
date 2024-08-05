@@ -57,7 +57,7 @@ export class InvalidHostNameLookupError extends AppError {
    * @param {string} hostname
    */
   constructor(hostname) {
-    super(`The host name cannot be resolved`);
+    super(`${hostname} cannot be resolved`);
     this.name = "invalid-hostname-lookup";
     this.statusCode = STATUS_CODES.unprocessableEntity;
   }

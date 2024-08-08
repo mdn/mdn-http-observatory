@@ -6,14 +6,12 @@ import { init as initSentry, setupFastifyErrorHandler } from "@sentry/node";
 
 // import analyzeApiV1 from "./v1/analyze/index.js";
 import analyzeApiV2 from "./v2/analyze/index.js";
-import scanApiV2 from "./v2/scan/index.js";
 import statsApiV2 from "./v2/stats/index.js";
 import recommendationMatrixApiV2 from "./v2/recommendations/index.js";
 import globalErrorHandler from "./global-error-handler.js";
 import pool from "@fastify/postgres";
 import { poolOptions } from "../database/repository.js";
 import { CONFIG } from "../config.js";
-
 
 if (CONFIG.sentry.dsn) {
   initSentry({
@@ -74,7 +72,6 @@ export async function createServer() {
   // await Promise.all([server.register(analyzeApiV1, { prefix: "/api/v1" })]);
   await Promise.all([
     server.register(analyzeApiV2, { prefix: "/api/v2" }),
-    server.register(scanApiV2, { prefix: "/api/v2" }),
     server.register(statsApiV2, { prefix: "/api/v2" }),
     server.register(recommendationMatrixApiV2, { prefix: "/api/v2" }),
   ]);

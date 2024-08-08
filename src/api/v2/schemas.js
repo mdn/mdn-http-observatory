@@ -88,24 +88,6 @@ const analyzeResponse = {
   },
 };
 
-const scanQuery = {
-  title: "scanQuery",
-  type: "object",
-  required: ["scan"],
-  properties: {
-    scan: { type: "number", minimum: 1, maximum: 2147483646 },
-  },
-};
-
-const scanResponse = {
-  title: "scanResponse",
-  type: "object",
-  properties: {
-    scan: scan,
-    tests: tests,
-  },
-};
-
 const gradeDistributionResponse = {
   type: "array",
   items: {
@@ -156,13 +138,6 @@ export const SCHEMAS = {
     querystring: analyzeReqQuery,
     response: {
       200: analyzeResponse,
-    },
-  },
-
-  scan: {
-    querystring: scanQuery,
-    response: {
-      200: scanResponse,
     },
   },
 

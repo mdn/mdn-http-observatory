@@ -255,36 +255,6 @@ describeOrSkip("API V2", function () {
     assert.equal(r.error, "invalid-hostname");
   }).timeout(6000);
 
-  it("responds to GET /scan of an existing scan", async function () {
-    const app = await createServer();
-    // create a scan first
-    const sr = await app.inject({
-      method: "POST",
-      url: "/api/v2/analyze?host=www.mozilla.org",
-    });
-    const s = JSON.parse(sr.body);
-
-    const response = await app.inject({
-      method: "GET",
-      url: `/api/v2/scan?scan=${s.scan.id}`,
-    });
-    assert.equal(response.statusCode, 200);
-    const r = JSON.parse(response.body);
-    assert.isObject(r);
-    assert.deepEqual(s.scan, r.scan);
-    assert.deepEqual(s.tests, r.tests);
-    assert.isUndefined(r.history);
-  }).timeout(6000);
-
-  it("responds to GET /scan of a non-existing scan", async function () {
-    const app = await createServer();
-    const response = await app.inject({
-      method: "GET",
-      url: `/api/v2/scan?scan=1234`,
-    });
-    assert.equal(response.statusCode, 404);
-  }).timeout(6000);
-
   it("responds to GET /grade_distribution", async function () {
     const app = await createServer();
     // create a scan

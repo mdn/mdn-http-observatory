@@ -1,0 +1,6 @@
+{
+  "database": {
+    "database": "observatory",
+    "user": "postgres"
+  }
+}

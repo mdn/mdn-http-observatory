@@ -44,7 +44,7 @@ describe("TestRetriever", () => {
         requests.responses.httpRedirects.length - 1
       ].url.href
     );
-  }).timeout(5000);
+  }).timeout(10000);
 
   // test site seems to have outage from time to time, disable for now
   it.skip("test_retrieve_invalid_cert", async function () {

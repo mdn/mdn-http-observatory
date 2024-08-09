@@ -32,8 +32,15 @@ export async function scan(hostname, options) {
     throw new Error("The site seems to be down.");
   }
 
-  if (r.responses.auto.status < 200 || r.responses.auto.status >= 300) {
-    throw new Error("Site did not respond with a 2xx HTTP status code.");
+  // We allow 401 and 403 status codes
+  if (
+    r.responses.auto.status < 200 ||
+    (r.responses.auto.status >= 400 &&
+      ![401, 403].includes(r.responses.auto.status))
+  ) {
+    throw new Error(
+      `Site did respond with an unexpected HTTP status code ${r.responses.auto.status}.`
+    );
   }
 
   // Run all the tests on the result

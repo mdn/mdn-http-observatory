@@ -32,14 +32,11 @@ export async function scan(hostname, options) {
     throw new Error("The site seems to be down.");
   }
 
-  // We allow 401 and 403 status codes
-  if (
-    r.responses.auto.status < 200 ||
-    (r.responses.auto.status >= 400 &&
-      ![401, 403].includes(r.responses.auto.status))
-  ) {
+  // We allow 2xx, 3xx, 401 and 403 status codes
+  const { status } = r.responses.auto;
+  if (status < 200 || (status >= 400 && ![401, 403].includes(status))) {
     throw new Error(
-      `Site did respond with an unexpected HTTP status code ${r.responses.auto.status}.`
+      `Site did respond with an unexpected HTTP status code ${status}.`
     );
   }
 

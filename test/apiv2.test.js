@@ -314,6 +314,10 @@ describeOrSkip("API V2", function () {
     const scan = JSON.parse(response.body);
 
     assert.isNumber(scan.id);
+    assert.isString(scan.details_url);
+    const url = new URL(scan.details_url);
+    assert.equal(url.hostname, "developer.mozilla.org");
+    assert.equal(url.searchParams.get("host"), "www.mozilla.org");
     assert.isNumber(scan.tests_quantity);
     assert.isNumber(scan.tests_passed);
     assert.isNumber(scan.tests_failed);

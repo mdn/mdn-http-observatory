@@ -134,6 +134,9 @@ const scanResponse = {
     id: {
       type: "number",
     },
+    details_url: {
+      type: "string",
+    },
     algorithm_version: {
       type: "number",
     },

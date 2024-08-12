@@ -122,6 +122,8 @@ On success, a JSON object is returned, structured like this example response:
 }
 ```
 
+**Note:** For a full set of details about the host, use the provided link in the `details_url` field.
+
 If an error occurred, an object like this is returned:
 
 ```json

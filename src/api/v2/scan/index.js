@@ -47,5 +47,6 @@ async function scanOrReturnRecent(fastify, pool, hostname, age) {
     fastify.log.info("Returning a recent scan result");
   }
   scanRow.scanned_at = scanRow.start_time;
-  return scanRow;
+  const siteLink = `https://developer.mozilla.org/en-US/observatory/analyze?host=${encodeURIComponent(hostname)}`;
+  return { details_url: siteLink, ...scanRow };
 }

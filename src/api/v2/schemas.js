@@ -126,6 +126,44 @@ const recommendationMatrixResponse = {
   },
 };
 
+const scanQuery = analyzeReqQuery;
+
+const scanResponse = {
+  type: "object",
+  properties: {
+    id: {
+      type: "number",
+    },
+    algorithm_version: {
+      type: "number",
+    },
+    scanned_at: {
+      type: "string",
+    },
+    error: {
+      type: ["string", "null"],
+    },
+    grade: {
+      type: ["string", "null"],
+    },
+    score: {
+      type: ["number", "null"],
+    },
+    status_code: {
+      type: ["number", "null"],
+    },
+    tests_failed: {
+      type: "number",
+    },
+    tests_passed: {
+      type: "number",
+    },
+    tests_quantity: {
+      type: "number",
+    },
+  },
+};
+
 export const SCHEMAS = {
   analyzeGet: {
     querystring: analyzeReqQuery,
@@ -138,6 +176,13 @@ export const SCHEMAS = {
     querystring: analyzeReqQuery,
     response: {
       200: analyzeResponse,
+    },
+  },
+
+  scan: {
+    querystring: scanQuery,
+    response: {
+      200: scanResponse,
     },
   },
 
@@ -174,7 +219,7 @@ export const SCHEMAS = {
 
 /**
  * @typedef {object} ScanQuery
- * @property {number} scan
+ * @property {string} host
  */
 
 /**

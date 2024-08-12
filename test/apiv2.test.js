@@ -301,4 +301,29 @@ describeOrSkip("API V2", function () {
       }
     }
   });
+
+  it("responds to GET /scan", async function () {
+    const app = await createServer();
+    const response = await app.inject({
+      method: "POST",
+      url: "/api/v2/scan?host=www.mozilla.org",
+    });
+    assert.equal(response.statusCode, 200);
+
+    assert(response.body);
+    const scan = JSON.parse(response.body);
+
+    assert.isNumber(scan.id);
+    assert.isNumber(scan.tests_quantity);
+    assert.isNumber(scan.tests_passed);
+    assert.isNumber(scan.tests_failed);
+    assert.isNull(scan.error);
+    assert.isNumber(scan.score);
+    assert.equal(scan.status_code, 200);
+    assert.isString(scan.grade);
+    assert.isString(scan.scanned_at);
+    const d = new Date(scan.scanned_at);
+    assert.notEqual(d.toString(), "Invalid Date");
+    assert.equal(scan.algorithm_version, ALGORITHM_VERSION);
+  }).timeout(6000);
 });

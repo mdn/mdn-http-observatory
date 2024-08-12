@@ -1,17 +1,9 @@
 import { CONFIG } from "../../../config.js";
-import {
-  ensureSite,
-  insertScan,
-  insertTestResults,
-  ScanState,
-  selectScanLatestScanByHost,
-  updateScanState,
-} from "../../../database/repository.js";
-import { scan } from "../../../scanner/index.js";
-import { ScanFailedError } from "../../errors.js";
+import { selectScanLatestScanByHost } from "../../../database/repository.js";
 import { SCHEMAS } from "../schemas.js";
 import {
   checkHostname,
+  executeScan,
   historyForSite,
   hydrateTests,
   testsForScan,
@@ -65,38 +57,6 @@ export default async function (fastify) {
       );
     }
   );
-}
-
-/**
- *
- * @param {Pool} pool
- * @param {string} hostname
- * @returns {Promise<import("../../../database/repository.js").ScanRow>}
- */
-async function executeScan(pool, hostname) {
-  const siteId = await ensureSite(pool, hostname);
-  let scanRow = await insertScan(pool, siteId);
-  const scanId = scanRow.id;
-  let scanResult;
-  try {
-    scanResult = await scan(hostname);
-  } catch (e) {
-    if (e instanceof Error) {
-      await updateScanState(pool, scanId, ScanState.FAILED, e.message);
-      throw new ScanFailedError(e);
-    } else {
-      const unknownError = new Error("Unknown error occurred");
-      await updateScanState(
-        pool,
-        scanId,
-        ScanState.FAILED,
-        unknownError.message
-      );
-      throw new ScanFailedError(unknownError);
-    }
-  }
-  scanRow = await insertTestResults(pool, siteId, scanId, scanResult);
-  return scanRow;
 }
 
 /**

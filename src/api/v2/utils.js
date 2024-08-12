@@ -4,10 +4,16 @@ import {
   InvalidHostNameError,
   InvalidHostNameIpError,
   InvalidHostNameLookupError,
+  ScanFailedError,
 } from "../errors.js";
 import {
+  ensureSite,
+  insertScan,
+  insertTestResults,
+  ScanState,
   selectScanHostHistory,
   selectTestResults,
+  updateScanState,
 } from "../../database/repository.js";
 import {
   getRecommendation,
@@ -18,6 +24,7 @@ import { snakeCase } from "change-case";
 import { PolicyResponse } from "./schemas.js";
 import { Expectation } from "../../types.js";
 import { TEST_TITLES } from "../../grader/charts.js";
+import { scan } from "../../scanner/index.js";
 
 /**
  *
@@ -207,4 +214,36 @@ export function hydrateTests(tests) {
   }
 
   return tests;
+}
+
+/**
+ *
+ * @param {Pool} pool
+ * @param {string} hostname
+ * @returns {Promise<import("../../database/repository.js").ScanRow>}
+ */
+export async function executeScan(pool, hostname) {
+  const siteId = await ensureSite(pool, hostname);
+  let scanRow = await insertScan(pool, siteId);
+  const scanId = scanRow.id;
+  let scanResult;
+  try {
+    scanResult = await scan(hostname);
+  } catch (e) {
+    if (e instanceof Error) {
+      await updateScanState(pool, scanId, ScanState.FAILED, e.message);
+      throw new ScanFailedError(e);
+    } else {
+      const unknownError = new Error("Unknown error occurred");
+      await updateScanState(
+        pool,
+        scanId,
+        ScanState.FAILED,
+        unknownError.message
+      );
+      throw new ScanFailedError(unknownError);
+    }
+  }
+  scanRow = await insertTestResults(pool, siteId, scanId, scanResult);
+  return scanRow;
 }

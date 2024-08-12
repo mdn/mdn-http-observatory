@@ -54,7 +54,7 @@ $ ./scan mdn.dev
 
 This needs a [postgres](https://www.postgresql.org/) database for the API to use as a persistence layer. All scans and results initiated via the API are stored in the database.
 
-## Configuration
+#### Configuration
 
 Default configuration is read from a default `config/config.json` file. See [this file](src/config.js) for a list of possible configuration options.
 

@@ -110,6 +110,7 @@ On success, a JSON object is returned, structured like this example response:
 ```json
 {
   "id": 77666718,
+  "details_url": "https://developer.mozilla.org/en-US/observatory/analyze?host=mdn.dev",
   "algorithm_version": 4,
   "scanned_at": "2024-08-12T08:20:18.926Z",
   "error": null,

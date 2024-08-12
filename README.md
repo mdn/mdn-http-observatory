@@ -17,7 +17,7 @@ $ npm i
 
 ### Running a local scan
 
-To run a scan on a host, a command line script `scan.sh` is available. It returns the a JSON of the form described below. For example, to scan `mdn.dev`:
+To run a scan on a host, a command line script `scan` is available. It returns the a JSON of the form described below. For example, to scan `mdn.dev`:
 
 ```sh
 $ ./scan mdn.dev

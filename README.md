@@ -1,69 +1,98 @@
-# Welcome to Mozilla's MDN Observatory
+# Welcome to Mozilla's HTTP Observatory
 
-MDN HTTP Observatory is a library and service that checks web sites for security-relevant headers.
-
-MDN HTTP Observatory is hosted by [MDN Web Docs](https://github.com/mdn).
+[HTTP Observatory](https://developer.mozilla.org/en-US/observatory/) is a service that checks web sites for security-relevant headers. It is hosted by [MDN Web Docs](https://github.com/mdn).
 
 ## Getting Started
+
+If you just want to scan a host, please head over to <https://developer.mozilla.org/en-US/observatory/>. If you want to
+run the code locally or on your premises, continue reading.
+
+### Installation
 
 Install dependencies by running this from the root of the repository:
 
 ```sh
-npm i
+$ npm i
 ```
 
 ### Running a local scan
 
-To run a scan on a host, a command line script is available. It returns the same JSON response as the API endpoint's, described below.
-For example, to scan `mdn.dev`:
+To run a scan on a host, a command line script `scan.sh` is available. It returns the a JSON of the form described below. For example, to scan `mdn.dev`:
 
-```
-[insert a scan example]
+```sh
+$ ./scan mdn.dev
+
+{
+  "scan": {
+    "algorithmVersion": 4,
+    "grade": "A+",
+    "error": null,
+    "score": 105,
+    "statusCode": 200,
+    "testsFailed": 0,
+    "testsPassed": 10,
+    "testsQuantity": 10,
+    "responseHeaders": {
+      ...
+    }
+  },
+  "tests": {
+    "cross-origin-resource-sharing": {
+      "expectation": "cross-origin-resource-sharing-not-implemented",
+      "pass": true,
+      "result": "cross-origin-resource-sharing-not-implemented",
+      "scoreModifier": 0,
+      "data": null
+    },
+    ...
+  }
+}
+
 ```
 
 ### Running a local API server
 
 This needs a [postgres](https://www.postgresql.org/) database for the API to use as a persistence layer. All scans and results initiated via the API are stored in the database.
+
+## Configuration
+
+Default configuration is read from a default `config/config.json` file. See [this file](src/config.js) for a list of possible configuration options.
+
 Create a configuration file by copying the [`config/config-example.json`](conf/config-example.json) to `config/config.json`.
 Put in your database credentials into `config/config.json`:
 
-```sh
-[insert an example configuration file for a local database]
+```json
+{
+  "database": {
+    "database": "observatory",
+    "user": "postgres"
+  }
+}
+
 ```
 
 To initialize the database with the proper tables, use this command to migrate. This is a one-time action, but future code changes
 might need further database changes, so run this migration every time the code is updated from the repository.
 
 ```sh
-[insert migration command]
+npm run migrate
 ```
 
 Finally, start the server by running
 
 ```sh
-[insert server start command and output]
+npm start
 ```
 
-The server istening on your local interface on port `8080`. You can check the root path by opening http://localhost:8080/ in your browser or `curl` the URL. The server should respond with `Welcome to the MDN Observatory!`.
+The server is listening on your local interface on port `8080`. You can check the root path by opening <http://localhost:8080/> in your browser or `curl` the URL. The server should respond with `Welcome to the MDN Observatory!`.
 
-## API endpoints
+## JSON API
 
-### POST `/api/v2/analyze`
+**Note:** We provide these endpoints on our public deployment of HTTP Observatory at <https://observatory-api.mdn.mozilla.net/>
 
-Used to invoke a new scan of a website. By default, HTTP Observatory will return a cached site result if the site has been scanned anytime in the previous minute. This timeout can be set to a different value in the configuration at `api.cooldown`. On success, the API will return a single [scan result object](#scan) in JSON format on success.
+### POST `/api/v2/scan`
 
-#### Query parameters:
-
-* `host` hostname (required)
-
-#### Examples:
-
-* `POST /api/v2/analyze?host=mdn.dev`
-* `POST /api/v2/analyze?host=google.com`
-
-### GET `/api/v2/analyze`
-
-Used to retrieve a result of a successful result for the host, not older than 24 hours (configurable under `api.cacheTimeForGet` in the configuration object).
+For integration in CI pipelines or similar applications, a JSON API endpoint is provided. The request rate is limited to one scan per host per `api.cooldown` (default: One minute) seconds. If exceeded, a cached result will be returned.
 
 #### Query parameters:
 
@@ -71,9 +100,37 @@ Used to retrieve a result of a successful result for the host, not older than 24
 
 #### Examples:
 
-* `POST /api/v2/analyze?host=mdn.dev`
-* `POST /api/v2/analyze?host=google.com`
+* `POST /api/v2/scan?host=mdn.dev`
+* `POST /api/v2/scan?host=google.com`
 
+#### Result
+
+On success, a JSON object is returned, structured like this example response:
+
+```json
+{
+  "id": 77666718,
+  "algorithm_version": 4,
+  "scanned_at": "2024-08-12T08:20:18.926Z",
+  "error": null,
+  "grade": "A+",
+  "score": 105,
+  "status_code": 200,
+  "tests_failed": 0,
+  "tests_passed": 10,
+  "tests_quantity": 10
+}
+```
+
+If an error occurred, an object like this is returned:
+
+```json
+{
+  "statusCode": 422,
+  "error": "invalid-hostname-lookup",
+  "message": "some.invalid.hostname.dev cannot be resolved"
+}
+```
 
 ## Contributing
 

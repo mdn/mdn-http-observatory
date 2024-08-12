@@ -14,10 +14,21 @@ program
   .action(async (hostname, _options) => {
     try {
       const result = await scan(hostname);
-      console.log(JSON.stringify(result, null, 2));
+      const tests = Object.fromEntries(
+        Object.entries(result.tests).map(([key, test]) => {
+          const { scoreDescription, ...rest } = test;
+          return [key, rest];
+        })
+      );
+      const ret = {
+        scan: result.scan,
+        tests: tests,
+      };
+      console.log(JSON.stringify(ret, null, 2));
     } catch (e) {
       if (e instanceof Error) {
         console.log(JSON.stringify({ error: e.message }));
+        process.exit(1);
       }
     }
   });

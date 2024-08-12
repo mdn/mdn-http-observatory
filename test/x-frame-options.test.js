@@ -17,6 +17,7 @@ describe("X-Frame-Options", () => {
   });
 
   it("checks validity", function () {
+    assert.isNotNull(reqs.responses.auto);
     reqs.responses.auto.headers["x-frame-options"] = "whimsy";
     let result = xFrameOptionsTest(reqs);
     assert.equal(result.result, Expectation.XFrameOptionsHeaderInvalid);
@@ -30,6 +31,7 @@ describe("X-Frame-Options", () => {
   });
 
   it("checks allow from origin", function () {
+    assert.isNotNull(reqs.responses.auto);
     reqs.responses.auto.headers["x-frame-options"] =
       "ALLOW-FROM https://mozilla.org";
     const result = xFrameOptionsTest(reqs);
@@ -38,6 +40,7 @@ describe("X-Frame-Options", () => {
   });
 
   it("checks deny", function () {
+    assert.isNotNull(reqs.responses.auto);
     reqs.responses.auto.headers["x-frame-options"] = "DENY";
     let result = xFrameOptionsTest(reqs);
     assert.equal(result.result, Expectation.XFrameOptionsSameoriginOrDeny);
@@ -50,6 +53,7 @@ describe("X-Frame-Options", () => {
   });
 
   it("checks implemented via CSP", function () {
+    assert.isNotNull(reqs.responses.auto);
     reqs.responses.auto.headers["x-frame-options"] = "DENY";
     reqs.responses.auto.headers["content-security-policy"] =
       "frame-ancestors https://mozilla.org";

@@ -81,8 +81,19 @@ async function executeScan(pool, hostname) {
   try {
     scanResult = await scan(hostname);
   } catch (e) {
-    await updateScanState(pool, scanId, ScanState.FAILED, e.message);
-    throw new ScanFailedError(e);
+    if (e instanceof Error) {
+      await updateScanState(pool, scanId, ScanState.FAILED, e.message);
+      throw new ScanFailedError(e);
+    } else {
+      const unknownError = new Error("Unknown error occurred");
+      await updateScanState(
+        pool,
+        scanId,
+        ScanState.FAILED,
+        unknownError.message
+      );
+      throw new ScanFailedError(unknownError);
+    }
   }
   scanRow = await insertTestResults(pool, siteId, scanId, scanResult);
   return scanRow;

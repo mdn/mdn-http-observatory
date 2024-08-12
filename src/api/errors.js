@@ -57,20 +57,8 @@ export class InvalidHostNameLookupError extends AppError {
    * @param {string} hostname
    */
   constructor(hostname) {
-    super(`${hostname} can not be resolved`);
+    super(`${hostname} cannot be resolved`);
     this.name = "invalid-hostname-lookup";
     this.statusCode = STATUS_CODES.unprocessableEntity;
-  }
-}
-
-export class RescanTooSoonError extends AppError {
-  /**
-   *
-   * @param {string} hostname
-   */
-  constructor(hostname) {
-    super(`${hostname} is on temporary cooldown'`);
-    this.name = "rescan-attempt-too-soon";
-    this.statusCode = STATUS_CODES.badRequest;
   }
 }

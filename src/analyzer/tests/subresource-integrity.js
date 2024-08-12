@@ -2,7 +2,8 @@ import { BaseOutput, HTML_TYPES, Requests } from "../../types.js";
 import { Expectation } from "../../types.js";
 import { JSDOM } from "jsdom";
 import { parse } from "tldts";
-import { onlyIfWorse } from "../utils.js";
+import { getFirstHttpHeader, onlyIfWorse } from "../utils.js";
+import { CONTENT_TYPE } from "../../headers.js";
 
 export class SubresourceIntegrityOutput extends BaseOutput {
   /** @type {import("../../types.js").ScriptMap} */
@@ -49,8 +50,15 @@ export function subresourceIntegrityTest(
     Expectation.SriNotImplementedAndExternalScriptsNotLoadedSecurely,
     Expectation.SriNotImplementedResponseNotHtml,
   ];
+
   const resp = requests.responses.auto;
-  const mime = resp.headers["content-type"]?.split(";")[0];
+
+  if (!resp) {
+    output.result = Expectation.SriNotImplementedButNoScriptsLoaded;
+    return output;
+  }
+
+  const mime = (getFirstHttpHeader(resp, CONTENT_TYPE) ?? "").split(";")[0];
   if (!HTML_TYPES.has(mime)) {
     // If the content isn't HTML, there's no scripts to load; this is okay
     output.result = Expectation.SriNotImplementedResponseNotHtml;
@@ -58,7 +66,7 @@ export function subresourceIntegrityTest(
     // Try to parse the HTML
     let dom;
     try {
-      dom = new JSDOM(requests.resources.path);
+      dom = new JSDOM(requests.resources.path || "");
     } catch (e) {
       // severe parser error
       output.result = Expectation.HtmlNotParseable;
@@ -111,7 +119,7 @@ export function subresourceIntegrityTest(
         let secureScheme = false;
         if (
           scheme === "https:" ||
-          (relativeOrigin && requests.session.url.protocol === "https:")
+          (relativeOrigin && requests.session?.url.protocol === "https:")
         ) {
           secureScheme = true;
         }
@@ -157,21 +165,19 @@ export function subresourceIntegrityTest(
 
     if (scripts.length === 0) {
       output.result = Expectation.SriNotImplementedButNoScriptsLoaded;
-    } else if (
-      scripts.length > 0 &&
-      !scriptsOnForeignOrigin &&
-      !output.result
-    ) {
-      output.result =
-        Expectation.SriNotImplementedButAllScriptsLoadedFromSecureOrigin;
-    } else if (scripts.length > 0 && scriptsOnForeignOrigin && !output.result) {
-      output.result = onlyIfWorse(
-        Expectation.SriImplementedAndExternalScriptsLoadedSecurely,
-        output.result,
-        goodness
-      );
+    } else {
+      if (!output.result) {
+        if (scriptsOnForeignOrigin) {
+          output.result =
+            Expectation.SriImplementedAndExternalScriptsLoadedSecurely;
+        } else {
+          output.result =
+            Expectation.SriNotImplementedButAllScriptsLoadedFromSecureOrigin;
+        }
+      }
     }
   }
+
   // Code defensively on the size of the data
   output.data = JSON.stringify(output.data).length < 32768 ? output.data : {};
   // Check to see if the test passed or failed

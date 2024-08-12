@@ -19,15 +19,17 @@ export function parseHttpEquivHeaders(html, baseUrl) {
       if (meta.hasAttribute("http-equiv") && meta.hasAttribute("content")) {
         const httpEquiv = meta.getAttribute("http-equiv")?.toLowerCase().trim();
         const content = meta.getAttribute("content");
-        if (httpEquiv === CONTENT_SECURITY_POLICY) {
-          httpEquivHeaders.get(CONTENT_SECURITY_POLICY).push(content);
+        if (content && httpEquiv === CONTENT_SECURITY_POLICY) {
+          httpEquivHeaders.get(CONTENT_SECURITY_POLICY)?.push(content);
         }
       } else if (
         // Technically not HTTP Equiv, but we're treating it that way
-        meta.getAttribute("name")?.toLowerCase().trim() === "referrer" &&
-        meta.hasAttribute("content")
+        meta.getAttribute("name")?.toLowerCase().trim() === "referrer"
       ) {
-        httpEquivHeaders.set(REFERRER_POLICY, [meta.getAttribute("content")]);
+        const attr = meta.getAttribute("content");
+        if (attr) {
+          httpEquivHeaders.set(REFERRER_POLICY, [attr]);
+        }
       }
     }
   } catch (e) {

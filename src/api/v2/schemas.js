@@ -245,6 +245,7 @@ export class PolicyResponse {
   };
   /** @typedef {PolicyItem} */
   strictDynamic = {
+    /** @type {boolean | null} */
     pass: false,
     description: `<p>Uses CSP3's <code>'strict-dynamic'</code> directive to allow dynamic script loading (optional)</p>`,
     info: `<p><code>'strict-dynamic'</code> lets you use a JavaScript shim loader to load all your site's JavaScript dynamically, without having to track <code>script-src</code> origins.</p>`,

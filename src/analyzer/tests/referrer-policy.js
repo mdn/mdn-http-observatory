@@ -1,5 +1,8 @@
+import { REFERRER_POLICY } from "../../headers.js";
 import { Requests, BaseOutput } from "../../types.js";
 import { Expectation } from "../../types.js";
+import { getFirstHttpHeader, getHttpHeaders } from "../utils.js";
+
 export class ReferrerOutput extends BaseOutput {
   /** @type {string | null} */
   data = null;
@@ -49,21 +52,21 @@ export function referrerPolicyTest(
   const valid = goodness.concat(badness);
 
   const response = requests.responses.auto;
+  if (!response) {
+    output.result = Expectation.ReferrerPolicyNotImplemented;
+    return output;
+  }
+
+  const httpHeaders = getHttpHeaders(response, REFERRER_POLICY);
+  const equivHeaders = response.httpEquiv?.get(REFERRER_POLICY) ?? [];
 
   // Store whether the header or the meta tag were present
-  output.http = !!response.headers["referrer-policy"];
-  output.meta = !!response.httpEquiv?.get("referrer-policy");
+  output.http = httpHeaders.length > 0;
+  output.meta = equivHeaders ? equivHeaders?.length > 0 : false;
 
   // If it is both a header and a http-equiv, http-equiv has precedence (last value)
-  if (output.http && output.meta) {
-    output.data = [
-      response.headers["referrer-policy"],
-      response.httpEquiv?.get("referrer-policy")?.join(", "),
-    ].join(", ");
-  } else if (output.http) {
-    output.data = response.headers["referrer-policy"];
-  } else if (output.meta) {
-    output.data = response.httpEquiv.get("referrer-policy").join(",");
+  if (output.http || output.meta) {
+    output.data = [...httpHeaders, ...equivHeaders].join(", ");
   } else {
     output.result = Expectation.ReferrerPolicyNotImplemented;
     output.pass = true;
@@ -71,12 +74,13 @@ export function referrerPolicyTest(
   }
 
   // Find the last known valid policy value in the referrer policy
-  let policy = output.data
-    .split(",")
-    .filter((e) => valid.includes(e.toLowerCase().trim()))
-    .reverse()[0]
-    ?.toLowerCase()
-    .trim();
+  let policy =
+    output.data
+      ?.split(",")
+      .filter((e) => valid.includes(e.toLowerCase().trim()))
+      .reverse()[0]
+      ?.toLowerCase()
+      .trim() ?? "";
 
   if (goodness.includes(policy)) {
     output.result = Expectation.ReferrerPolicyPrivate;

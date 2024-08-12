@@ -1,5 +1,7 @@
+import { X_FRAME_OPTIONS } from "../../headers.js";
 import { BaseOutput, Requests } from "../../types.js";
 import { Expectation } from "../../types.js";
+import { getFirstHttpHeader } from "../utils.js";
 import { contentSecurityPolicyTest } from "./csp.js";
 
 export class XFrameOptionsOutput extends BaseOutput {
@@ -37,8 +39,15 @@ export function xFrameOptionsTest(
   const output = new XFrameOptionsOutput(expectation);
   const resp = requests.responses.auto;
 
-  if (resp.headers["x-frame-options"]) {
-    output.data = resp.headers["x-frame-options"].slice(0, 1024);
+  if (!resp) {
+    output.result = Expectation.XFrameOptionsNotImplemented;
+    return output;
+  }
+
+  const header = getFirstHttpHeader(resp, X_FRAME_OPTIONS);
+
+  if (header) {
+    output.data = header.slice(0, 1024);
     const xfo = output.data.trim().toLowerCase();
     if (["deny", "sameorigin"].includes(xfo)) {
       output.result = Expectation.XFrameOptionsSameoriginOrDeny;
@@ -58,7 +67,6 @@ export function xFrameOptionsTest(
   }
 
   // Check to see if the test passed or failed
-
   if (
     [
       Expectation.XFrameOptionsAllowFromOrigin,

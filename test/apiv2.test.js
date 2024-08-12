@@ -215,7 +215,7 @@ describeOrSkip("API V2", function () {
     assert.equal(r.error, "invalid-hostname-lookup");
     assert.equal(
       r.message,
-      "www.somethingorother1234.mozilla.net can not be resolved"
+      "www.somethingorother1234.mozilla.net cannot be resolved"
     );
   }).timeout(6000);
 

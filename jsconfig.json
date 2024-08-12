@@ -1,9 +1,11 @@
 {
     "compilerOptions": {
-        "noImplicitAny": true,
         "checkJs": true,
         "target": "es2022",
+        "maxNodeModuleJsDepth": 0,
         "module": "NodeNext",
-        "moduleResolution": "nodenext"
-    }
+        "moduleResolution": "nodenext",
+        "strict": true
+    },
+    "exclude": ["node_modules", "mdn-observatory-webext"]
 }

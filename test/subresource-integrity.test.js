@@ -28,6 +28,7 @@ describe("Subresource Integrity", () => {
 
   it("checks for not html", function () {
     reqs.resources.path = `{"foo": "bar"}`;
+    assert.isNotNull(reqs.responses.auto);
     reqs.responses.auto.headers["content-type"] = "application/json";
     const result = subresourceIntegrityTest(reqs);
     assert.equal(result.result, Expectation.SriNotImplementedResponseNotHtml);
@@ -62,6 +63,7 @@ describe("Subresource Integrity", () => {
     assert.isTrue(result.pass);
 
     // And the same, but with a 404 status code
+    assert.isNotNull(reqs.responses.auto);
     reqs.responses.auto.status = 404;
     result = subresourceIntegrityTest(reqs);
     assert.equal(

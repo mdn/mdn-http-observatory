@@ -1,6 +1,8 @@
+import { STRICT_TRANSPORT_SECURITY } from "../../headers.js";
 import { Requests, BaseOutput } from "../../types.js";
 import { Expectation } from "../../types.js";
 import { isHstsPreloaded } from "../hsts.js";
+import { getHttpHeaders } from "../utils.js";
 export class StrictTransportSecurityOutput extends BaseOutput {
   /** @type {string | null} */
   data = null;
@@ -51,8 +53,9 @@ export function strictTransportSecurityTest(
   } else if (!response.verified) {
     // Also need a valid certificate chain for HSTS
     output.result = Expectation.HstsInvalidCert;
-  } else if (response.headers["strict-transport-security"]) {
-    output.data = response.headers["strict-transport-security"].slice(0, 1024); // code against malicious headers
+  } else if (getHttpHeaders(response, STRICT_TRANSPORT_SECURITY).length > 0) {
+    const header = getHttpHeaders(response, STRICT_TRANSPORT_SECURITY)[0];
+    output.data = header.slice(0, 1024); // code against malicious headers
 
     try {
       let sts = output.data.split(";").map((i) => i.trim().toLowerCase());

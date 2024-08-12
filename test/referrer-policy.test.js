@@ -19,9 +19,9 @@ describe("ReferrerPolicy", () => {
       "STRICT-ORIGIN",
       "strict-origin-when-cross-origin",
     ];
-
+    assert.isNotNull(reqs.responses.auto);
     for (const v of privValues) {
-      reqs.responses.auto.headers["referrer-policy"] = v;
+      reqs.responses.auto.headers["Referrer-Policy"] = v;
       const result = referrerPolicyTest(reqs);
       assert.equal(result.result, Expectation.ReferrerPolicyPrivate);
       assert.isTrue(result.http);
@@ -42,6 +42,7 @@ describe("ReferrerPolicy", () => {
 
     {
       // The meta/http-equiv header has precendence over the http header
+      assert.isNotNull(reqs.responses.auto);
       reqs.responses.auto.headers["referrer-policy"] = "unsafe-url";
       const result = referrerPolicyTest(reqs);
       assert.equal(result.result, Expectation.ReferrerPolicyPrivate);
@@ -59,6 +60,7 @@ describe("ReferrerPolicy", () => {
   });
 
   it("checks for invalid referrer header", function () {
+    assert.isNotNull(reqs.responses.auto);
     reqs.responses.auto.headers["referrer-policy"] = "whimsy";
     const result = referrerPolicyTest(reqs);
     assert.equal(result.result, Expectation.ReferrerPolicyHeaderInvalid);
@@ -68,6 +70,7 @@ describe("ReferrerPolicy", () => {
   it("checks for unsafe referrer header", function () {
     const policies = ["origin", "origin-when-cross-origin", "unsafe-url"];
     for (const policy of policies) {
+      assert.isNotNull(reqs.responses.auto);
       reqs.responses.auto.headers["referrer-policy"] = policy;
       const result = referrerPolicyTest(reqs);
       assert.equal(result.result, Expectation.ReferrerPolicyUnsafe);
@@ -81,6 +84,7 @@ describe("ReferrerPolicy", () => {
       "no-referrer, unsafe-url", // safe first value
     ];
     for (const policy of valid_but_unsafe_policies) {
+      assert.isNotNull(reqs.responses.auto);
       reqs.responses.auto.headers["referrer-policy"] = policy;
       const result = referrerPolicyTest(reqs);
       assert.equal(result.result, Expectation.ReferrerPolicyUnsafe);
@@ -91,6 +95,7 @@ describe("ReferrerPolicy", () => {
   it("checks for multiple referrer headers with valid and invalid mixed", function () {
     const mixed_valid_invalid_policies = ["no-referrer, whimsy"];
     for (const policy of mixed_valid_invalid_policies) {
+      assert.isNotNull(reqs.responses.auto);
       reqs.responses.auto.headers["referrer-policy"] = policy;
       const result = referrerPolicyTest(reqs);
       assert.equal(result.result, Expectation.ReferrerPolicyPrivate);
@@ -101,6 +106,7 @@ describe("ReferrerPolicy", () => {
   it("checks for multiple invalid referrer headers", function () {
     const invalid_policies = ["whimsy, whimsy1, whimsy2"];
     for (const policy of invalid_policies) {
+      assert.isNotNull(reqs.responses.auto);
       reqs.responses.auto.headers["referrer-policy"] = policy;
       const result = referrerPolicyTest(reqs);
       assert.equal(result.result, Expectation.ReferrerPolicyHeaderInvalid);

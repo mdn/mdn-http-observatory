@@ -230,7 +230,7 @@ export const HTML_TYPES = new Set(["text/html", "application/xhtml+xml"]);
  */
 
 /**
- * @typedef {{[key: string]: {crossorigin: string, integrity: string}}} ScriptMap
+ * @typedef {{[key: string]: {crossorigin: string | null, integrity: string | null}}} ScriptMap
  */
 
 export class Policy {

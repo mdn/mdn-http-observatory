@@ -35,12 +35,13 @@ describe("Cookies", () => {
     ];
     const reqs = emptyRequests();
     setCookieStrings(reqs, cookieStrings);
-
+    assert.isNotNull(reqs.session);
     const retrieved = reqs.session.jar.getCookiesSync("https://mozilla.org", {
       http: true,
     });
 
     const res = cookiesTest(reqs);
+    assert.isNotNull(res.data);
     for (const [key, c] of Object.entries(res.data)) {
       switch (key) {
         case "SESSIONID_SAMESITE_STRICT":
@@ -72,6 +73,7 @@ describe("Cookies", () => {
     setCookieStrings(reqs, cookieStrings);
 
     const res = cookiesTest(reqs);
+    assert.isNotNull(res.data);
     for (const [key, c] of Object.entries(res.data)) {
       switch (key) {
         case "SESSIONID_SAMESITE_STRICT":
@@ -149,6 +151,7 @@ describe("Cookies", () => {
     const reqs = emptyRequests();
     setCookieStrings(reqs, cookieStrings);
 
+    assert.isNotNull(reqs.responses.https);
     reqs.responses.https.headers["strict-transport-security"] =
       "max-age=15768000";
 
@@ -168,6 +171,7 @@ describe("Cookies", () => {
     const reqs = emptyRequests();
     setCookieStrings(reqs, cookieStrings);
 
+    assert.isNotNull(reqs.responses.https);
     reqs.responses.https.headers["strict-transport-security"] =
       "max-age=15768000";
 
@@ -234,9 +238,12 @@ describe("Cookies", () => {
  * @param {string[]} cookieStrings
  */
 function setCookieStrings(reqs, cookieStrings) {
-  reqs.responses.auto.headers["set-cookie"] = cookieStrings;
+  assert.isNotNull(reqs.responses.auto);
+  reqs.responses.auto.headers["Set-Cookie"] = cookieStrings;
   for (const cookieString of cookieStrings) {
     const cookie = Cookie.parse(cookieString);
+    assert(cookie);
+    assert.isNotNull(reqs.session);
     reqs.session.jar.setCookieSync(cookie, reqs.session.url.href, {
       http: true,
     });

@@ -1,5 +1,5 @@
 // const CACHE_PERIOD_MS = 1000 * 60 * 60 * 24;
-const CACHE_PERIOD_MS = 1000 * 60;
+const CACHE_PERIOD_MS = 1000 * 60 * 60;
 
 // store a tabid->hostname map
 /** @type {{ [key: string]: string }} */
@@ -12,12 +12,43 @@ browser.runtime.onConnect.addListener((port) => {
   port.onMessage.addListener(async (/** @type message */ msg) => {
     if (msg.type === "getData") {
       const tabId = msg.tabId;
+      console.log("GETDATA", msg);
       if (tabHostnameMap[tabId]) {
         const hostname = tabHostnameMap[tabId];
         const result = await browser.storage.local.get(hostname);
-        port.postMessage({ result: Object.values(result)[0] });
+        if (Object.values(result)[0]) {
+          console.log("GETDATA FROM CACHE", Object.values(result)[0]);
+          port.postMessage({ result: Object.values(result)[0] });
+        } else {
+          console.log("GETDATA FETCH");
+          const apiResult = await fetchApiResponse(hostname);
+          if (apiResult && !apiResult.error) {
+            console.log("GETDATA FETCH RESULT", apiResult);
+            port.postMessage({ result: apiResult });
+            const data = {};
+            data[hostname] = apiResult;
+            await browser.storage.local.set(data);
+          } else {
+            port.postMessage({ error: "no result" });
+          }
+        }
       } else {
-        port.postMessage({ error: "no result" });
+        console.log("GETDATA NO TABHOSTNAMEMAP");
+        const tab = await browser.tabs.get(tabId);
+        const url = new URL(tab.url);
+        const hostname = url.hostname;
+        tabHostnameMap[tabId] = hostname;
+
+        const apiResult = await fetchApiResponse(hostname);
+        if (apiResult && !apiResult.error) {
+          console.log("GETDATA NO TABHOSTNAMEMAP FETCH RESULT", apiResult);
+          port.postMessage({ result: apiResult });
+          const data = {};
+          data[hostname] = apiResult;
+          await browser.storage.local.set(data);
+        } else {
+          port.postMessage({ error: "no result" });
+        }
       }
     }
   });

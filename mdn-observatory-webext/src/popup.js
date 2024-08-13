@@ -3,6 +3,7 @@ document.addEventListener("DOMContentLoaded", function () {
   const port = browser.runtime.connect();
 
   function setUIQuerying(querying = true) {
+    console.log("SETUIQUERYING", querying);
     if (querying) {
       document.getElementById("result").classList.add("visually-hidden");
       document.getElementById("scanning").classList.remove("visually-hidden");
@@ -36,9 +37,8 @@ document.addEventListener("DOMContentLoaded", function () {
         .getElementById("grade")
         .classList.add(`grade-${res.scan.grade.toLowerCase().slice(0, 1)}`);
       document.getElementById("score").textContent = `${res.scan.score} / 100`;
-      document.getElementById(
-        "tests"
-      ).textContent = `${res.scan.tests_passed} / ${res.scan.tests_quantity}`;
+      document.getElementById("tests").textContent =
+        `${res.scan.tests_passed} / ${res.scan.tests_quantity}`;
       setUIQuerying(false);
     }
   }
@@ -72,6 +72,7 @@ document.addEventListener("DOMContentLoaded", function () {
         }
       });
       // request result from backend
+      console.log("POST FE->BE");
       port.postMessage({ type: "getData", tabId });
     }
   });

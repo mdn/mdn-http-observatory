@@ -1,60 +1,27 @@
 // const CACHE_PERIOD_MS = 1000 * 60 * 60 * 24;
-const CACHE_PERIOD_MS = 1000 * 60 * 60;
-
-// store a tabid->hostname map
-/** @type {{ [key: string]: string }} */
-const tabHostnameMap = {};
+// const CACHE_PERIOD_MS = 1000 * 60 * 60;
+const CACHE_PERIOD_MS = 1000 * 10;
 
 // message type received from popup
-/** @typedef {{ type: string, tabId: number }} message */
+/** @typedef {{ type: string, tabId: number, url: URL }} message */
 
 browser.runtime.onConnect.addListener((port) => {
   port.onMessage.addListener(async (/** @type message */ msg) => {
     if (msg.type === "getData") {
-      const tabId = msg.tabId;
-      console.log("GETDATA", msg);
-      if (tabHostnameMap[tabId]) {
-        const hostname = tabHostnameMap[tabId];
-        const result = await browser.storage.local.get(hostname);
-        if (Object.values(result)[0]) {
-          console.log("GETDATA FROM CACHE", Object.values(result)[0]);
-          port.postMessage({ result: Object.values(result)[0] });
-        } else {
-          console.log("GETDATA FETCH");
-          const apiResult = await fetchApiResponse(hostname);
-          if (apiResult && !apiResult.error) {
-            console.log("GETDATA FETCH RESULT", apiResult);
-            port.postMessage({ result: apiResult });
-            const data = {};
-            data[hostname] = apiResult;
-            await browser.storage.local.set(data);
-          } else {
-            port.postMessage({ error: "no result" });
-          }
-        }
-      } else {
-        console.log("GETDATA NO TABHOSTNAMEMAP");
-        const tab = await browser.tabs.get(tabId);
-        const url = new URL(tab.url);
-        const hostname = url.hostname;
-        tabHostnameMap[tabId] = hostname;
+      const { hostname, tabId } = msg;
+      const apiResult = await getCachedOrScan(hostname);
 
-        const apiResult = await fetchApiResponse(hostname);
-        if (apiResult && !apiResult.error) {
-          console.log("GETDATA NO TABHOSTNAMEMAP FETCH RESULT", apiResult);
-          port.postMessage({ result: apiResult });
-          const data = {};
-          data[hostname] = apiResult;
-          await browser.storage.local.set(data);
-        } else {
-          port.postMessage({ error: "no result" });
-        }
+      if (apiResult && !apiResult.error) {
+        port.postMessage({ result: apiResult });
+        const iconPath = `assets/img/${apiResult.scan.grade}.png`;
+        browser.action.setIcon({ path: iconPath, tabId: tabId });
+      } else {
+        port.postMessage({ error: "no result" });
       }
     }
   });
 
   port.onDisconnect.addListener(() => {
-    console.log("DISCONNECT");
     port = null;
   });
 });
@@ -65,50 +32,13 @@ browser.webNavigation.onCompleted.addListener(async (details) => {
     const url = new URL(tab.url);
     const hostname = url.hostname;
 
-    let apiResult;
-
-    // Check for a cached version not too old.
-    const cachedResult = await browser.storage.local.get(hostname);
-    if (cachedResult[hostname]) {
-      // check timestamp
-      const ts = new Date(cachedResult[hostname].scan.scanned_at);
-      const now = new Date();
-
-      if (now.getTime() - ts.getTime() < CACHE_PERIOD_MS) {
-        apiResult = cachedResult[hostname];
-      }
-    }
-
-    // Nothing cached, get it from the API.
-    if (!apiResult) {
-      startAnimation(details.tabId);
-      try {
-        apiResult = await fetchApiResponse(hostname);
-      } catch (error) {
-        stopAnimation(details.tabId);
-        delete tabHostnameMap[details.tabId];
-        handleError(error, details);
-        return;
-      }
-      stopAnimation(details.tabId);
-    }
+    const apiResult = await getCachedOrScan(hostname);
 
     // store result in the cache
     if (apiResult && !apiResult.error) {
-      try {
-        const iconPath = `assets/img/${apiResult.scan.grade}.png`;
-        browser.action.setIcon({ path: iconPath, tabId: details.tabId });
-        /** @type {{ [key: string]: any }} */
-        const data = {};
-        data[hostname] = apiResult;
-        await browser.storage.local.set(data);
-        tabHostnameMap[details.tabId] = hostname;
-        console.log("tabHostnameMap", tabHostnameMap);
-      } catch (error) {
-        console.error(error);
-      }
+      const iconPath = `assets/img/${apiResult.scan.grade}.png`;
+      browser.action.setIcon({ path: iconPath, tabId: details.tabId });
     } else {
-      delete tabHostnameMap[details.tabId];
       handleError(
         `API result error: ${apiResult.error ? apiResult.error : "No result"}`,
         details
@@ -116,6 +46,44 @@ browser.webNavigation.onCompleted.addListener(async (details) => {
     }
   }
 });
+
+/**
+ *
+ * @param {string} hostname
+ * @param {number} tabId
+ * @returns any
+ */
+async function getCachedOrScan(hostname, tabId) {
+  // Check for a cached version not too old.
+  const cachedResult = await browser.storage.local.get(hostname);
+  if (cachedResult[hostname]) {
+    // check timestamp
+    const ts = new Date(cachedResult[hostname].scan.scanned_at);
+    const now = new Date();
+
+    if (now.getTime() - ts.getTime() < CACHE_PERIOD_MS) {
+      return cachedResult[hostname];
+    }
+  }
+
+  // Nothing cached, get it from the API.
+  startAnimation(tabId);
+  let apiResult;
+  try {
+    apiResult = await fetchApiResponse(hostname);
+  } catch (error) {
+    stopAnimation(tabId);
+    handleError(error, tabId);
+    return;
+  }
+  // Store result in local cache
+  /** @type {{ [key: string]: any }} */
+  const data = {};
+  data[hostname] = apiResult;
+  await browser.storage.local.set(data);
+  stopAnimation(tabId);
+  return apiResult;
+}
 
 /**
  * @param {string} host
@@ -174,10 +142,10 @@ function stopAnimation(tabId) {
 
 /**
  * @param {any} error
- * @param {browser.webNavigation._OnCompletedDetails} details
+ * @param {number} tabId
  */
-function handleError(error, details) {
+function handleError(error, tabId) {
   console.error(error);
   const iconPath = `assets/img/error.png`;
-  browser.action.setIcon({ path: iconPath, tabId: details.tabId });
+  browser.action.setIcon({ path: iconPath, tabId });
 }

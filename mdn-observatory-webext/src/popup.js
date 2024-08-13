@@ -1,9 +1,10 @@
 /* eslint-disable no-irregular-whitespace */
 document.addEventListener("DOMContentLoaded", function () {
   const port = browser.runtime.connect();
+  let url;
+  let hostname;
 
   function setUIQuerying(querying = true) {
-    console.log("SETUIQUERYING", querying);
     if (querying) {
       document.getElementById("result").classList.add("visually-hidden");
       document.getElementById("scanning").classList.remove("visually-hidden");
@@ -50,7 +51,8 @@ document.addEventListener("DOMContentLoaded", function () {
   querying.then(async (tabs) => {
     if (tabs.length > 0) {
       const tabId = tabs[0].id;
-      const url = new URL(tabs[0].url);
+      url = new URL(tabs[0].url);
+      hostname = url.hostname;
       for (const el of document.getElementsByClassName("click-handler")) {
         el.addEventListener("click", () => {
           const obsUrl = `https://developer.mozilla.org/en-US/observatory/analyze?host=${encodeURIComponent(
@@ -67,13 +69,12 @@ document.addEventListener("DOMContentLoaded", function () {
         // Poll for data if we did not finish scanning.
         if (msg.error) {
           setTimeout(() => {
-            port.postMessage({ type: "getData", tabId });
+            port.postMessage({ type: "getData", tabId, hostname });
           }, 500);
         }
       });
       // request result from backend
-      console.log("POST FE->BE");
-      port.postMessage({ type: "getData", tabId });
+      port.postMessage({ type: "getData", tabId, hostname });
     }
   });
   setUIQuerying(true);

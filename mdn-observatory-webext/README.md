@@ -22,7 +22,7 @@ If you find this software helpful [star](https://github.com/MobileFirstLLC/exten
 | `npm run test` | run unit tests |
 | `npm run sync` | update config files |
 
-For CLI instructions see [User Guide &rarr;](https://oss.mobilefirst.me/extension-cli/)
+For CLI instructions see [User Guide](https://oss.mobilefirst.me/extension-cli/)
 
 ### Learn More
 

@@ -61,7 +61,7 @@
     "pg-pool": "^3.6.2",
     "postgrator": "^7.2.0",
     "postgrator-cli": "^8.1.0",
-    "tldts": "^6.1.39",
+    "tldts": "^6.1.40",
     "tough-cookie": "^4.1.4"
   }
 }

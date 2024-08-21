@@ -1,8 +1,14 @@
+import { AxiosHeaders } from "axios";
 import { CONFIG } from "../config.js";
 import { HTML_TYPES, Requests } from "../types.js";
 import { Session, getPageText } from "./session.js";
 import { urls } from "./url.js";
 import { parseHttpEquivHeaders } from "./utils.js";
+
+const STANDARD_HEADERS = [
+  "Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
+];
+const ROBOTS_HEADERS = ["Accept: text/plain,*/*;q=0.8"];
 
 /**
  *
@@ -15,8 +21,8 @@ export async function retrieve(hostname, options = {}) {
 
   const { http, https } = urls(hostname, options);
   const [httpSession, httpsSession] = await Promise.all([
-    Session.fromUrl(http, options),
-    Session.fromUrl(https, options),
+    Session.fromUrl(http, { headers: STANDARD_HEADERS, ...options }),
+    Session.fromUrl(https, { headers: STANDARD_HEADERS, ...options }),
   ]);
 
   if (!httpSession && !httpsSession) {
@@ -42,7 +48,10 @@ export async function retrieve(hostname, options = {}) {
   retrievals.resources.path = getPageText(retrievals.responses.auto, true);
 
   // Get robots.txt to gather additional cookies, if any.
-  await retrievals.session?.get({ path: "/robots.txt" });
+  await retrievals.session?.get({
+    path: "/robots.txt",
+    headers: new AxiosHeaders(ROBOTS_HEADERS.join("\n")),
+  });
 
   // Do a CORS preflight request
   const corsUrl = retrievals.session.redirectHistory[

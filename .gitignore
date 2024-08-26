@@ -6,3 +6,4 @@ mdn-observatory-webext/dist
 .DS_Store
 compare_output.txt
 load-script.js
+.vscode/

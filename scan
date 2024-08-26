@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+
+if [ -z "$1" ]; then
+  echo "Usage: $0 <hostname>"
+  exit 1
+fi
+
+node src/cli/index.js scan $1

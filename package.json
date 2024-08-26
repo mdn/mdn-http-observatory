@@ -12,9 +12,7 @@
     "dev": "nodemon src/api/index.js",
     "test": "CONFIG_FILE=conf/config-test.json mocha",
     "test:nodb": "CONFIG_FILE=conf/config-test.json SKIP_DB_TESTS=1 mocha",
-    "test:compare": "CONFIG_FILE=conf/config-test.json COMPARE_RESULT_TESTS=1 mocha test/compare-results.test.js",
     "tsc": "tsc -p jsconfig.json",
-    "scan": "node src/cli/index.js",
     "updateHsts": "node src/retrieve-hsts.js",
     "refreshMaterializedViews": "node src/maintenance/index.js",
     "migrate": "node -e 'import(\"./src/database/migrate.js\").then( m => m.migrateDatabase() )'"

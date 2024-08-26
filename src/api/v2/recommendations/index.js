@@ -1,4 +1,3 @@
-import { CookiesOutput } from "../../../analyzer/tests/cookies.js";
 import { ALL_RESULTS, ALL_TESTS } from "../../../constants.js";
 import { SCORE_TABLE, TEST_TOPIC_LINKS } from "../../../grader/charts.js";
 import { SCHEMAS } from "../schemas.js";

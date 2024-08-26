@@ -14,7 +14,6 @@ import pool from "@fastify/postgres";
 import { poolOptions } from "../database/repository.js";
 import { CONFIG } from "../config.js";
 
-
 if (CONFIG.sentry.dsn) {
   initSentry({
     dsn: CONFIG.sentry.dsn,

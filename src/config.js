@@ -2,12 +2,6 @@ import convict from "convict";
 
 const SCHEMA = {
   retriever: {
-    sameSite: {
-      doc: "Appear to be [SameSite] for cookies.",
-      format: "String",
-      default: "lax",
-      env: "SAME_SITE",
-    },
     retrieverUserAgent: {
       doc: "The user agent to use for retriever requests.",
       format: "String",
@@ -74,12 +68,6 @@ const SCHEMA = {
     },
   },
   api: {
-    allowVerboseStatsFromPublic: {
-      doc: "Allow verbose stats from public",
-      format: "Boolean",
-      default: false,
-      env: "HTTPOBS_ALLOW_VERBOSE_STATS_FROM_PUBLIC",
-    },
     cooldown: {
       doc: "Cached result time for API V2, in Seconds. Defaults to 1 minute",
       format: "nat",
@@ -97,12 +85,6 @@ const SCHEMA = {
       format: "Number",
       default: 8080,
       env: "HTTPOBS_API_PORT",
-    },
-    propagateExceptions: {
-      doc: "Propagate API Exceptions",
-      format: "Boolean",
-      default: false,
-      env: "HTTPOBS_PROPAGATE_EXCEPTIONS",
     },
     enableLogging: {
       doc: "Enable server logging",

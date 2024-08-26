@@ -88,24 +88,6 @@ const analyzeResponse = {
   },
 };
 
-const scanQuery = {
-  title: "scanQuery",
-  type: "object",
-  required: ["scan"],
-  properties: {
-    scan: { type: "number", minimum: 1, maximum: 2147483646 },
-  },
-};
-
-const scanResponse = {
-  title: "scanResponse",
-  type: "object",
-  properties: {
-    scan: scan,
-    tests: tests,
-  },
-};
-
 const gradeDistributionResponse = {
   type: "array",
   items: {
@@ -141,6 +123,47 @@ const recommendationMatrixResponse = {
       },
     },
     required: ["name", "title", "mdnLink", "results"],
+  },
+};
+
+const scanQuery = analyzeReqQuery;
+
+const scanResponse = {
+  type: "object",
+  properties: {
+    id: {
+      type: "number",
+    },
+    details_url: {
+      type: "string",
+    },
+    algorithm_version: {
+      type: "number",
+    },
+    scanned_at: {
+      type: "string",
+    },
+    error: {
+      type: ["string", "null"],
+    },
+    grade: {
+      type: ["string", "null"],
+    },
+    score: {
+      type: ["number", "null"],
+    },
+    status_code: {
+      type: ["number", "null"],
+    },
+    tests_failed: {
+      type: "number",
+    },
+    tests_passed: {
+      type: "number",
+    },
+    tests_quantity: {
+      type: "number",
+    },
   },
 };
 
@@ -199,7 +222,7 @@ export const SCHEMAS = {
 
 /**
  * @typedef {object} ScanQuery
- * @property {number} scan
+ * @property {string} host
  */
 
 /**

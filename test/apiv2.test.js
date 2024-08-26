@@ -255,36 +255,6 @@ describeOrSkip("API V2", function () {
     assert.equal(r.error, "invalid-hostname");
   }).timeout(6000);
 
-  it("responds to GET /scan of an existing scan", async function () {
-    const app = await createServer();
-    // create a scan first
-    const sr = await app.inject({
-      method: "POST",
-      url: "/api/v2/analyze?host=www.mozilla.org",
-    });
-    const s = JSON.parse(sr.body);
-
-    const response = await app.inject({
-      method: "GET",
-      url: `/api/v2/scan?scan=${s.scan.id}`,
-    });
-    assert.equal(response.statusCode, 200);
-    const r = JSON.parse(response.body);
-    assert.isObject(r);
-    assert.deepEqual(s.scan, r.scan);
-    assert.deepEqual(s.tests, r.tests);
-    assert.isUndefined(r.history);
-  }).timeout(6000);
-
-  it("responds to GET /scan of a non-existing scan", async function () {
-    const app = await createServer();
-    const response = await app.inject({
-      method: "GET",
-      url: `/api/v2/scan?scan=1234`,
-    });
-    assert.equal(response.statusCode, 404);
-  }).timeout(6000);
-
   it("responds to GET /grade_distribution", async function () {
     const app = await createServer();
     // create a scan
@@ -331,4 +301,33 @@ describeOrSkip("API V2", function () {
       }
     }
   });
+
+  it("responds to GET /scan", async function () {
+    const app = await createServer();
+    const response = await app.inject({
+      method: "POST",
+      url: "/api/v2/scan?host=www.mozilla.org",
+    });
+    assert.equal(response.statusCode, 200);
+
+    assert(response.body);
+    const scan = JSON.parse(response.body);
+
+    assert.isNumber(scan.id);
+    assert.isString(scan.details_url);
+    const url = new URL(scan.details_url);
+    assert.equal(url.hostname, "developer.mozilla.org");
+    assert.equal(url.searchParams.get("host"), "www.mozilla.org");
+    assert.isNumber(scan.tests_quantity);
+    assert.isNumber(scan.tests_passed);
+    assert.isNumber(scan.tests_failed);
+    assert.isNull(scan.error);
+    assert.isNumber(scan.score);
+    assert.equal(scan.status_code, 200);
+    assert.isString(scan.grade);
+    assert.isString(scan.scanned_at);
+    const d = new Date(scan.scanned_at);
+    assert.notEqual(d.toString(), "Invalid Date");
+    assert.equal(scan.algorithm_version, ALGORITHM_VERSION);
+  }).timeout(6000);
 });

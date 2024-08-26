@@ -43,7 +43,7 @@
     "@fastify/postgres": "^5.2.2",
     "@fastify/static": "^7.0.4",
     "@sentry/node": "^8.26.0",
-    "axios": "^1.7.4",
+    "axios": "^1.7.5",
     "axios-cookiejar-support": "^5.0.2",
     "change-case": "^5.4.4",
     "commander": "^12.1.0",

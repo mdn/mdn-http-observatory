@@ -129,7 +129,6 @@ If an error occurred, an object like this is returned:
 
 ```json
 {
-  "statusCode": 422,
   "error": "invalid-hostname-lookup",
   "message": "some.invalid.hostname.dev cannot be resolved"
 }

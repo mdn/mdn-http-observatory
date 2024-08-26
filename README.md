@@ -12,7 +12,7 @@ run the code locally or on your premises, continue reading.
 Install dependencies by running this from the root of the repository:
 
 ```sh
-$ npm i
+npm i
 ```
 
 ### Running a local scan
@@ -20,7 +20,7 @@ $ npm i
 To run a scan on a host, a command line script `scan` is available. It returns the a JSON of the form described below. For example, to scan `mdn.dev`:
 
 ```sh
-$ ./scan mdn.dev
+./scan mdn.dev
 
 {
   "scan": {
@@ -94,11 +94,11 @@ The server is listening on your local interface on port `8080`. You can check th
 
 For integration in CI pipelines or similar applications, a JSON API endpoint is provided. The request rate is limited to one scan per host per `api.cooldown` (default: One minute) seconds. If exceeded, a cached result will be returned.
 
-#### Query parameters:
+#### Query parameters
 
 * `host` hostname (required)
 
-#### Examples:
+#### Examples
 
 * `POST /api/v2/scan?host=mdn.dev`
 * `POST /api/v2/scan?host=google.com`

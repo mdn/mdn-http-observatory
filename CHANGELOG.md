@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.3.0](https://github.com/mdn/mdn-http-observatory/compare/v1.2.1...v1.3.0) (2024-08-26)
+
+
+### Bug Fixes
+
+* **scanner:** allow 401 and 403 responses, set proper accept header on requests ([#64](https://github.com/mdn/mdn-http-observatory/issues/64)) ([b90b1ff](https://github.com/mdn/mdn-http-observatory/commit/b90b1ff85b127415a8024de7be596a199b100714))
+
 ## [1.2.1](https://github.com/mdn/mdn-http-observatory/compare/v1.2.0...v1.2.1) (2024-08-05)
 
 

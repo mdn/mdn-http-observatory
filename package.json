@@ -35,7 +35,7 @@
     "mocha": "^10.7.3",
     "nodemon": "^3.1.4",
     "prettier-eslint": "^16.3.0",
-    "typescript": "^5.5.4"
+    "typescript": "^5.6.2"
   },
   "dependencies": {
     "@fastify/cors": "^9.0.1",

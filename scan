@@ -5,4 +5,4 @@ if [ -z "$1" ]; then
   exit 1
 fi
 
-node src/cli/index.js scan $1
+node ./src/cli/index.js scan $1

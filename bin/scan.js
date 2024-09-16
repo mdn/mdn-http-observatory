@@ -1,16 +1,16 @@
+#!/usr/bin/env node
+
 import { Command } from "commander";
-import { scan } from "../scanner/index.js";
+import { scan } from "../src/scanner/index.js";
+
+const NAME = "mdn-http-observatory-scan";
 const program = new Command();
 
 program
-  .name("observatory")
-  .description("CLI for the MDN HTTP Observatory")
-  .version("1.0.0");
-
-program
-  .command("scan")
-  .description("Scan a host")
-  .argument("<string>", "hostname to scan")
+  .name(NAME)
+  .description("CLI for the MDN HTTP Observatory scan functionality")
+  .version("1.0.0")
+  .argument("<hostname>", "hostname to scan")
   .action(async (hostname, _options) => {
     try {
       const result = await scan(hostname);

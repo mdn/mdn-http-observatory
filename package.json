@@ -17,6 +17,9 @@
     "refreshMaterializedViews": "node src/maintenance/index.js",
     "migrate": "node -e 'import(\"./src/database/migrate.js\").then( m => m.migrateDatabase() )'"
   },
+  "bin": {
+    "mdn-http-observatory-scan": "bin/scan.js"
+  },
   "type": "module",
   "author": "",
   "license": "MPL-2.0",

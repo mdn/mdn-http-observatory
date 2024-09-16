@@ -17,10 +17,10 @@ npm i
 
 ### Running a local scan
 
-To run a scan on a host, a command line script `scan` is available. It returns the a JSON of the form described below. For example, to scan `mdn.dev`:
+To run a scan on a host, a command line script is available. It returns the a JSON of the form described below. For example, to scan `mdn.dev`:
 
 ```sh
-./scan mdn.dev
+npx mdn-http-observatory-scan mdn.dev
 
 {
   "scan": {
@@ -47,8 +47,9 @@ To run a scan on a host, a command line script `scan` is available. It returns t
     ...
   }
 }
-
 ```
+
+To install the CLI script globally on your machine, run `npm install -g .` from the project root. `mdn-http-observatory-scan` is then available in your shell.
 
 ### Running a local API server
 

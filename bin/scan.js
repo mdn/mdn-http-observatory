@@ -3,11 +3,11 @@
 import { Command } from "commander";
 import { scan } from "../src/scanner/index.js";
 
-const name = "mdn-http-observatory-scan";
+const NAME = "mdn-http-observatory-scan";
 const program = new Command();
 
 program
-  .name(name)
+  .name(NAME)
   .description("CLI for the MDN HTTP Observatory scan functionality")
   .version("1.0.0")
   .argument("<hostname>", "hostname to scan")

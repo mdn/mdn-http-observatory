@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.3.1](https://github.com/mdn/mdn-http-observatory/compare/v1.3.0...v1.3.1) (2024-09-16)
+
+
+### Bug Fixes
+
+* **ci:** check dependabot PR user instead of actor ([#84](https://github.com/mdn/mdn-http-observatory/issues/84)) ([723f3a6](https://github.com/mdn/mdn-http-observatory/commit/723f3a634f3c4a5084df612637c1b661c768905b))
+
 ## [1.3.0](https://github.com/mdn/mdn-http-observatory/compare/v1.2.1...v1.3.0) (2024-08-26)
 
 

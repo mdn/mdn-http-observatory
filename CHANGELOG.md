@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.3.2](https://github.com/mdn/mdn-http-observatory/compare/v1.3.1...v1.3.2) (2024-09-16)
+
+
+### Bug Fixes
+
+* **cli:** make the scan command npx compatible ([#92](https://github.com/mdn/mdn-http-observatory/issues/92)) ([6d66d0e](https://github.com/mdn/mdn-http-observatory/commit/6d66d0e532ef32b835ea9d9fc1773861723a7d4e))
+
 ## [1.3.1](https://github.com/mdn/mdn-http-observatory/compare/v1.3.0...v1.3.1) (2024-09-16)
 
 

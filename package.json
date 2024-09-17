@@ -1,7 +1,8 @@
 {
   "name": "@mdn/mdn-http-observatory",
-  "version": "1.3.2",
-  "description": "",
+  "version": "1.3.3",
+  "author": "Mozilla Developer Network",
+  "description": "The MDN HTTP Observatory is a set of tools to analyze your website and inform you if you are utilizing the many available methods to secure it.",
   "main": "src/index.js",
   "engines": {
     "node": ">=20.0.0",
@@ -21,7 +22,6 @@
     "mdn-http-observatory-scan": "bin/scan.js"
   },
   "type": "module",
-  "author": "",
   "license": "MPL-2.0",
   "devDependencies": {
     "@faker-js/faker": "^9.0.1",

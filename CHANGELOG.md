@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.3.3](https://github.com/mdn/mdn-http-observatory/compare/v1.3.2...v1.3.3) (2024-09-17)
+
+
+### Bug Fixes
+
+* **cli:** published package on NPM ([#96](https://github.com/mdn/mdn-http-observatory/issues/96)) ([276f84c](https://github.com/mdn/mdn-http-observatory/commit/276f84cb7ed0a78f2117ed42473344362d4d2ea6))
+
 ## [1.3.2](https://github.com/mdn/mdn-http-observatory/compare/v1.3.1...v1.3.2) (2024-09-16)
 
 

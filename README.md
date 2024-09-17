@@ -7,21 +7,29 @@
 If you just want to scan a host, please head over to <https://developer.mozilla.org/en-US/observatory/>. If you want to
 run the code locally or on your premises, continue reading.
 
-### Installation
+### Running a simple scan from the command line
 
-Install dependencies by running this from the root of the repository:
+Using npx to install the package, simply run
 
 ```sh
-npm i
+npx @mdn/mdn-http-observatory mdn.dev
 ```
 
-### Running a local scan
-
-To run a scan on a host, a command line script is available. It returns the a JSON of the form described below. For example, to scan `mdn.dev`:
+If you want to install the package first, use npm to install it globally
 
 ```sh
-npx mdn-http-observatory-scan mdn.dev
+npm install --global @mdn/mdn-http-observatory
+```
 
+After that, the `mdn-http-observatory-scan` command should be available in your shell. To scan a host, run 
+
+```sh
+mdn-http-observatory-scan mdn.dev
+```
+
+Both methods return a JSON response of the following form:
+
+```json
 {
   "scan": {
     "algorithmVersion": 4,
@@ -48,8 +56,6 @@ npx mdn-http-observatory-scan mdn.dev
   }
 }
 ```
-
-To install the CLI script globally on your machine, run `npm install -g .` from the project root. `mdn-http-observatory-scan` is then available in your shell.
 
 ### Running a local API server
 

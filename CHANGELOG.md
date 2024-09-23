@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.3.4](https://github.com/mdn/mdn-http-observatory/compare/v1.3.3...v1.3.4) (2024-09-23)
+
+
+### Bug Fixes
+
+* **api:** fixed link to HSTS docs ([#99](https://github.com/mdn/mdn-http-observatory/issues/99)) ([bb6cc34](https://github.com/mdn/mdn-http-observatory/commit/bb6cc341dde52e87f81debd35a55c2edf0142278))
+
 ## [1.3.3](https://github.com/mdn/mdn-http-observatory/compare/v1.3.2...v1.3.3) (2024-09-17)
 
 

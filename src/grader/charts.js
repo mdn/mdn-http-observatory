@@ -75,7 +75,7 @@ export const TEST_TOPIC_LINKS = new Map([
   ],
   [
     "strict-transport-security",
-    "/en-US/docs/Web/Security/Practical_implementation_guides/TLS#http_strict_transport_security",
+    "/en-US/docs/Web/Security/Practical_implementation_guides/TLS#http_strict_transport_security_implementation",
   ],
   ["subresource-integrity", "/en-US/docs/Web/Security/Subresource_Integrity"],
   [

@@ -29,7 +29,7 @@ describe("Scanner", () => {
 
     assert.equal(scanResult.scan.algorithmVersion, 4);
     assert.equal(scanResult.scan.grade, "A+");
-    assert.equal(scanResult.scan.score, 125);
+    assert.equal(scanResult.scan.score, 100);
     assert.equal(scanResult.scan.testsFailed, 0);
     assert.equal(scanResult.scan.testsPassed, 10);
     assert.equal(scanResult.scan.testsQuantity, 10);

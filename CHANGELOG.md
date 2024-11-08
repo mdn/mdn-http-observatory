@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.3.5](https://github.com/mdn/mdn-http-observatory/compare/v1.3.4...v1.3.5) (2024-10-15)
+
+
+### Miscellaneous
+
+* **api:** added a migration paragraph to the README ([#113](https://github.com/mdn/mdn-http-observatory/issues/113)) ([7ba23ac](https://github.com/mdn/mdn-http-observatory/commit/7ba23acdbd22b53f1dbed6c7c268b66beb4c5316))
+
 ## [1.3.4](https://github.com/mdn/mdn-http-observatory/compare/v1.3.3...v1.3.4) (2024-09-23)
 
 

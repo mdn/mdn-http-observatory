@@ -141,6 +141,22 @@ If an error occurred, an object like this is returned:
 }
 ```
 
+## Migrating from the public V1 API to the V2 API
+
+### Sunset of the V1 API
+
+The previous iteration of the Observatory JSON API has bee deprecated and will be shut down on October 31, 2024. At some point, there will be a strong reminder of that fact by responding with an error if a special header is not included with the request. At Oct 31 2024, the API will be completely shut down.
+
+### Migrating your application
+
+If you previously used the Observatory API with some automation or a CI context, the switch from the old `/api/v1/analyze` endpoint to the new `/api/v2/scan` endpoint should be painless:
+
+* Replace all API calls to `POST https://http-observatory.security.mozilla.org/api/v1/analyze?host=<HOST TO SCAN>` with `POST https://observatory-api.mdn.mozilla.net/api/v2/scan?host=<HOST TO SCAN>`
+* Be aware that the complete list of headers has been removed from the response.
+* The POST parameters `rescan` and `hidden` in the POST body have been removed.
+* Remove all other requests from your application, if any. If you need any additional information about your scan, open the URL from the `detail_url` field of the response in your browser.
+* Note that scans are still limited to one every minute per host, otherwise a cached response is returned.
+
 ## Contributing
 
 Our project welcomes contributions from any member of our community.

@@ -2,6 +2,22 @@ import axios, { AxiosHeaders } from "axios";
 import { CONFIG } from "../config.js";
 import { HttpCookieAgent, HttpsCookieAgent } from "http-cookie-agent/http";
 import { Cookie, CookieJar } from "tough-cookie";
+import path from "path";
+import { fileURLToPath } from "url";
+import { dirname } from "path";
+import fs from "fs";
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
+
+const CA_PATH = path.join(
+  dirname(
+    new URL(import.meta.resolve("node_extra_ca_certs_mozilla_bundle")).pathname
+  ),
+  "ca_bundle",
+  "ca_intermediate_root_bundle.pem"
+);
+const CAS = fs.readFileSync(CA_PATH);
 
 const ABORT_TIMEOUT = CONFIG.retriever.abortTimeout;
 const CLIENT_TIMEOUT = CONFIG.retriever.clientTimeout;
@@ -83,6 +99,7 @@ export class Session {
       httpsAgent: new HttpsCookieAgent({
         rejectUnauthorized: true,
         cookies: { jar: this.jar },
+        ca: CAS,
       }),
       httpAgent: new HttpCookieAgent({
         cookies: { jar: this.jar },
@@ -184,6 +201,7 @@ export class Session {
           httpsAgent: new HttpsCookieAgent({
             rejectUnauthorized: false,
             cookies: { jar: this.jar },
+            ca: CAS,
           }),
         });
         const ic = this.createInterceptor();
@@ -200,6 +218,7 @@ export class Session {
           httpsAgent: new HttpsCookieAgent({
             rejectUnauthorized: false,
             cookies: { jar: this.jar },
+            ca: CAS,
           }),
         });
         this.clientInstance.interceptors.response.use(ic.response, ic.error);

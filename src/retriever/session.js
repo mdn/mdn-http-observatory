@@ -6,18 +6,12 @@ import path from "path";
 import { fileURLToPath } from "url";
 import { dirname } from "path";
 import fs from "fs";
+import { getCaIntermediateRootBundle } from "extra_certs";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
-const CA_PATH = path.join(
-  dirname(
-    new URL(import.meta.resolve("node_extra_ca_certs_mozilla_bundle")).pathname
-  ),
-  "ca_bundle",
-  "ca_intermediate_root_bundle.pem"
-);
-const CAS = fs.readFileSync(CA_PATH);
+const CAS = getCaIntermediateRootBundle();
 
 const ABORT_TIMEOUT = CONFIG.retriever.abortTimeout;
 const CLIENT_TIMEOUT = CONFIG.retriever.clientTimeout;

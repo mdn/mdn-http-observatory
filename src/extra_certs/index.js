@@ -111,20 +111,13 @@ export async function build() {
   );
 }
 
-/**
- * @type {string|null}
- */
-let cas = null;
-
 export function getCaIntermediateRootBundle() {
-  if (cas) {
-    return cas;
-  }
   const p = path.join(
     __dirname,
     "ca_bundle",
     "ca_intermediate_root_bundle.pem"
   );
-  cas = fs.readFileSync(p, "utf8");
+  const cas = fs.readFileSync(p, "utf8");
+  console.log(`read cas from file system: ${cas.length} bytes`);
   return cas;
 }

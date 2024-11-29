@@ -9,8 +9,8 @@
     "npm": ">=9.0.0"
   },
   "scripts": {
-    "start": "node src/api/index.js",
-    "dev": "nodemon src/api/index.js",
+    "start": "NODE_EXTRA_CA_CERTS=node_modules/extra_certs/ca_bundle/ca_intermediate_root_bundle.pem node src/api/index.js",
+    "dev": "NODE_EXTRA_CA_CERTS=node_modules/extra_certs/ca_bundle/ca_intermediate_root_bundle.pem nodemon src/api/index.js",
     "test": "CONFIG_FILE=conf/config-test.json mocha",
     "test:nodb": "CONFIG_FILE=conf/config-test.json SKIP_DB_TESTS=1 mocha",
     "tsc": "tsc -p jsconfig.json",

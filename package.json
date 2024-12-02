@@ -53,7 +53,7 @@
     "commander": "^12.1.0",
     "convict": "^6.2.4",
     "dayjs": "^1.11.13",
-    "extra_certs": "./src/extra_certs",
+    "extra_certs": "./extra_certs",
     "fastify": "^5.1.0",
     "fastify-simple-form": "^3.0.0",
     "http-cookie-agent": "^6.0.6",

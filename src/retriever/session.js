@@ -2,11 +2,8 @@ import axios, { AxiosHeaders } from "axios";
 import { CONFIG } from "../config.js";
 import { HttpCookieAgent, HttpsCookieAgent } from "http-cookie-agent/http";
 import { Cookie, CookieJar } from "tough-cookie";
-import path from "path";
 import { fileURLToPath } from "url";
 import { dirname } from "path";
-import fs from "fs";
-import { getCaIntermediateRootBundle } from "extra_certs";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);

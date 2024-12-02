@@ -1,12 +1,7 @@
 import axios, { AxiosHeaders } from "axios";
 import { CONFIG } from "../config.js";
 import { HttpCookieAgent, HttpsCookieAgent } from "http-cookie-agent/http";
-import { Cookie, CookieJar } from "tough-cookie";
-import { fileURLToPath } from "url";
-import { dirname } from "path";
-
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = dirname(__filename);
+import { CookieJar } from "tough-cookie";
 
 const ABORT_TIMEOUT = CONFIG.retriever.abortTimeout;
 const CLIENT_TIMEOUT = CONFIG.retriever.clientTimeout;

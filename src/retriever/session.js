@@ -11,8 +11,6 @@ import { getCaIntermediateRootBundle } from "extra_certs";
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
-const CAS = getCaIntermediateRootBundle();
-
 const ABORT_TIMEOUT = CONFIG.retriever.abortTimeout;
 const CLIENT_TIMEOUT = CONFIG.retriever.clientTimeout;
 
@@ -93,7 +91,6 @@ export class Session {
       httpsAgent: new HttpsCookieAgent({
         rejectUnauthorized: true,
         cookies: { jar: this.jar },
-        ca: CAS,
       }),
       httpAgent: new HttpCookieAgent({
         cookies: { jar: this.jar },
@@ -195,7 +192,6 @@ export class Session {
           httpsAgent: new HttpsCookieAgent({
             rejectUnauthorized: false,
             cookies: { jar: this.jar },
-            ca: CAS,
           }),
         });
         const ic = this.createInterceptor();
@@ -212,7 +208,6 @@ export class Session {
           httpsAgent: new HttpsCookieAgent({
             rejectUnauthorized: false,
             cookies: { jar: this.jar },
-            ca: CAS,
           }),
         });
         this.clientInstance.interceptors.response.use(ic.response, ic.error);

@@ -106,7 +106,7 @@ export function cookiesTest(
     for (const cookie of allCookies) {
       // Is it a session identifier or an anti-csrf token?
       const sessionId = ["login", "sess"].some((i) =>
-        cookie.key.toLowerCase().includes(i)
+        cookie.key?.toLowerCase().includes(i)
       );
       const anticsrf = cookie.key?.toLowerCase().includes("csrf");
 

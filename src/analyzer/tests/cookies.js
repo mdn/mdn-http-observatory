@@ -94,11 +94,10 @@ export function cookiesTest(
   }
 
   // get ALL the cookies from the store with serializeSync instead of using getCookiesSync
-  const allCookies = requests.session?.jar
-    .serializeSync()
-    .cookies.filter(filterCookies);
+  const allCookies =
+    requests.session?.jar?.serializeSync()?.cookies.filter(filterCookies) ?? [];
 
-  if (!allCookies?.length) {
+  if (!allCookies.length) {
     output.result = Expectation.CookiesNotFound;
     output.data = null;
   } else {
@@ -107,11 +106,15 @@ export function cookiesTest(
     for (const cookie of allCookies) {
       // Is it a session identifier or an anti-csrf token?
       const sessionId = ["login", "sess"].some((i) =>
-        cookie.key.toLowerCase().includes(i)
+        cookie.key?.toLowerCase().includes(i)
       );
-      const anticsrf = cookie.key.toLowerCase().includes("csrf");
+      const anticsrf = cookie.key?.toLowerCase().includes("csrf");
 
-      if (!cookie.secure && cookie.sameSite?.toLowerCase() === "none") {
+      if (
+        !cookie.secure &&
+        typeof cookie.sameSite === "string" &&
+        cookie.sameSite.toLowerCase() === "none"
+      ) {
         output.result = onlyIfWorse(
           Expectation.CookiesSamesiteFlagInvalid,
           output.result,
@@ -236,8 +239,10 @@ function containsInvalidSameSiteCookie(cookieString) {
 }
 
 /**
- * @param {Cookie.Serialized} cookie
+ *
+ * @param {import("tough-cookie").SerializedCookie} cookie
  */
 function filterCookies(cookie) {
-  return !COOKIES_TO_DELETE.includes(cookie.key);
+  const key = cookie.key;
+  return key && !COOKIES_TO_DELETE.includes(key);
 }

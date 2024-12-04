@@ -1,7 +1,7 @@
 import axios, { AxiosHeaders } from "axios";
 import { CONFIG } from "../config.js";
 import { HttpCookieAgent, HttpsCookieAgent } from "http-cookie-agent/http";
-import { Cookie, CookieJar } from "tough-cookie";
+import { CookieJar } from "tough-cookie";
 
 const ABORT_TIMEOUT = CONFIG.retriever.abortTimeout;
 const CLIENT_TIMEOUT = CONFIG.retriever.clientTimeout;
@@ -112,7 +112,6 @@ export class Session {
       ) {
         // push our url to the redirection chain
         const url = response.config.url ?? that.url;
-
         that.redirectHistory.push({
           url: new URL(url),
           status: response.status,
@@ -124,7 +123,7 @@ export class Session {
           REDIRECT_STATUS_CODES.includes(response.status)
         ) {
           const url =
-            that.redirectHistory[that.redirectHistory.length - 1].url.href; // response.config.url;
+            that.redirectHistory[that.redirectHistory.length - 1].url.href;
           const redirectUrl = response.headers.location;
           const newUrl = new URL(redirectUrl, url);
           that.redirectCount++;
@@ -166,11 +165,10 @@ export class Session {
       // a non-verifying one
       let code;
       if (e && typeof e === "object" && "code" in e) {
-        const code = e.code;
+        code = String(e.code);
       } else {
         code = null;
       }
-
       if (
         code &&
         CERT_ERROR_CODES.indexOf(code) !== -1 &&
@@ -243,7 +241,6 @@ export class Session {
       });
       return res;
     } catch (e) {
-      // console.error(`Failed GET request ${reqUrl}: ${e}`);
       return null;
     }
   }
@@ -265,7 +262,6 @@ export class Session {
       });
       return res;
     } catch (e) {
-      // console.error(`Failed OPTIONS request ${reqUrl}: ${e}`);
       return null;
     }
   }

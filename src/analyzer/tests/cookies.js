@@ -97,7 +97,7 @@ export function cookiesTest(
   const allCookies =
     requests.session?.jar?.serializeSync()?.cookies.filter(filterCookies) ?? [];
 
-  if (!allCookies?.length) {
+  if (!allCookies.length) {
     output.result = Expectation.CookiesNotFound;
     output.data = null;
   } else {
@@ -106,7 +106,7 @@ export function cookiesTest(
     for (const cookie of allCookies) {
       // Is it a session identifier or an anti-csrf token?
       const sessionId = ["login", "sess"].some((i) =>
-        cookie.key?.toLowerCase().includes(i)
+        cookie.key.toLowerCase().includes(i)
       );
       const anticsrf = cookie.key?.toLowerCase().includes("csrf");
 
@@ -243,5 +243,6 @@ function containsInvalidSameSiteCookie(cookieString) {
  * @param {import("tough-cookie").SerializedCookie} cookie
  */
 function filterCookies(cookie) {
-  return !COOKIES_TO_DELETE.includes(cookie.key ?? "");
+  const key = cookie.key;
+  return key && !COOKIES_TO_DELETE.includes(key);
 }

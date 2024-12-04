@@ -9,8 +9,8 @@
     "npm": ">=9.0.0"
   },
   "scripts": {
-    "start": "NODE_EXTRA_CA_CERTS=node_modules/extra_certs/ca_bundle/ca_intermediate_root_bundle.pem node src/api/index.js",
-    "dev": "NODE_EXTRA_CA_CERTS=node_modules/extra_certs/ca_bundle/ca_intermediate_root_bundle.pem nodemon src/api/index.js",
+    "start": "NODE_EXTRA_CA_CERTS=node_modules/node_extra_ca_certs_mozilla_bundle/ca_bundle/ca_intermediate_root_bundle.pem node src/api/index.js",
+    "dev": "NODE_EXTRA_CA_CERTS=node_modules/node_extra_ca_certs_mozilla_bundle/ca_bundle/ca_intermediate_root_bundle.pem nodemon src/api/index.js",
     "test": "CONFIG_FILE=conf/config-test.json mocha",
     "test:nodb": "CONFIG_FILE=conf/config-test.json SKIP_DB_TESTS=1 mocha",
     "tsc": "tsc -p jsconfig.json",
@@ -19,7 +19,7 @@
     "migrate": "node -e 'import(\"./src/database/migrate.js\").then( m => m.migrateDatabase() )'"
   },
   "bin": {
-    "mdn-http-observatory-scan": "bin/scan.js"
+    "mdn-http-observatory-scan": "./bin/wrapper.sh"
   },
   "type": "module",
   "license": "MPL-2.0",
@@ -52,12 +52,12 @@
     "commander": "^12.1.0",
     "convict": "^6.2.4",
     "dayjs": "^1.11.13",
-    "extra_certs": "./extra_certs",
     "fastify": "^5.1.0",
     "fastify-simple-form": "^3.0.0",
     "http-cookie-agent": "^6.0.6",
     "ip": "^2.0.1",
     "jsdom": "^25.0.1",
+    "node_extra_ca_certs_mozilla_bundle": "^1.0.6",
     "pg": "^8.13.1",
     "pg-format": "^1.0.4",
     "pg-pool": "^3.7.0",

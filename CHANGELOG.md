@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.3.6](https://github.com/mdn/mdn-http-observatory/compare/v1.3.5...v1.3.6) (2024-12-04)
+
+
+### Bug Fixes
+
+* **redirection:** provide additional intermediate ca certs ([#123](https://github.com/mdn/mdn-http-observatory/issues/123)) ([0200be8](https://github.com/mdn/mdn-http-observatory/commit/0200be8d7358e955cad6fe013a80089cd5f30831))
+
 ## [1.3.5](https://github.com/mdn/mdn-http-observatory/compare/v1.3.4...v1.3.5) (2024-10-15)
 
 

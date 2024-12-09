@@ -35,7 +35,7 @@
     "@types/tough-cookie": "^4.0.5",
     "chai": "^5.1.2",
     "json-schema-to-jsdoc": "^1.1.1",
-    "mocha": "^10.8.2",
+    "mocha": "^11.0.1",
     "nodemon": "^3.1.7",
     "prettier-eslint": "^16.3.0",
     "typescript": "^5.7.2"

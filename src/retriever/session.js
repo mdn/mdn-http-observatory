@@ -95,6 +95,7 @@ export class Session {
     if (ic.response) {
       axiosInstance.interceptors.response.use(ic.response, ic.error);
     }
+
     this.clientInstanceRecordingRedirects = axiosInstance;
     // used for additional resourece requests, without recording redirects
     this.clientInstance = axios.create({

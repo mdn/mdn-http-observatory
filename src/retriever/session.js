@@ -83,6 +83,7 @@ export class Session {
       httpsAgent: new HttpsCookieAgent({
         rejectUnauthorized: true,
         cookies: { jar: this.jar },
+        ciphers: "DEFAULT:@SECLEVEL=0",
       }),
       httpAgent: new HttpCookieAgent({
         cookies: { jar: this.jar },
@@ -95,7 +96,6 @@ export class Session {
     if (ic.response) {
       axiosInstance.interceptors.response.use(ic.response, ic.error);
     }
-
     this.clientInstanceRecordingRedirects = axiosInstance;
     // used for additional resourece requests, without recording redirects
     this.clientInstance = axios.create({
@@ -137,6 +137,7 @@ export class Session {
         return response;
       },
       error: function (/** @type {any} */ error) {
+        console.log("herer", error);
         return Promise.reject(error);
       },
     };
@@ -184,6 +185,7 @@ export class Session {
           httpsAgent: new HttpsCookieAgent({
             rejectUnauthorized: false,
             cookies: { jar: this.jar },
+            ciphers: "DEFAULT:@SECLEVEL=0",
           }),
         });
         const ic = this.createInterceptor();
@@ -200,6 +202,7 @@ export class Session {
           httpsAgent: new HttpsCookieAgent({
             rejectUnauthorized: false,
             cookies: { jar: this.jar },
+            ciphers: "DEFAULT:@SECLEVEL=0",
           }),
         });
         this.clientInstance.interceptors.response.use(ic.response, ic.error);

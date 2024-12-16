@@ -19,7 +19,7 @@
     "migrate": "node -e 'import(\"./src/database/migrate.js\").then( m => m.migrateDatabase() )'"
   },
   "bin": {
-    "mdn-http-observatory-scan": "./bin/wrapper.js"
+    "mdn-http-observatory-scan": "./bin/wrapper.sh"
   },
   "type": "module",
   "license": "MPL-2.0",

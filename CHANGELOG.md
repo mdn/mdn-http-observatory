@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.3.7](https://github.com/mdn/mdn-http-observatory/compare/v1.3.6...v1.3.7) (2024-12-16)
+
+
+### Miscellaneous
+
+* release 1.3.7 ([525dfe3](https://github.com/mdn/mdn-http-observatory/commit/525dfe3a028a2b21221836974d8661ddd0edb662))
+
 ## [1.3.6](https://github.com/mdn/mdn-http-observatory/compare/v1.3.5...v1.3.6) (2024-12-04)
 
 

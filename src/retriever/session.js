@@ -137,7 +137,6 @@ export class Session {
         return response;
       },
       error: function (/** @type {any} */ error) {
-        console.log("herer", error);
         return Promise.reject(error);
       },
     };

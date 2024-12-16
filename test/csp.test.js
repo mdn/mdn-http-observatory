@@ -495,17 +495,4 @@ describe("Content Security Policy", () => {
     assert.equal(result["result"], Expectation.CspImplementedWithUnsafeInline);
     assert.isFalse(result["pass"]);
   });
-
-  it("knows about 'inline-speculation-rules'", async () => {
-    let requests = emptyRequests();
-    setHeader(
-      requests.responses.auto,
-      "Content-Security-Policy",
-      "form-action 'self' https://www.dropbox.com/ https://dl-web.dropbox.com/ https://photos.dropbox.com/ https://paper.dropbox.com/ https://showcase.dropbox.com/ https://www.hellofax.com/ https://app.hellofax.com/ https://www.hellosign.com/ https://app.hellosign.com/ https://docsend.com/ https://www.docsend.com/ https://help.dropbox.com/ https://navi.dropbox.jp/ https://a.sprig.com/ https://selfguidedlearning.dropboxbusiness.com/ https://instructorledlearning.dropboxbusiness.com/ https://sales.dropboxbusiness.com/ https://accounts.google.com/ https://api.login.yahoo.com/ https://login.yahoo.com/ https://experience.dropbox.com/ https://pal-test.adyen.com https://2e83413d8036243b-Dropbox-pal-live.adyenpayments.com/ https://onedrive.live.com/picker ; frame-ancestors 'self' ; base-uri 'self' ; script-src 'unsafe-eval' 'inline-speculation-rules' https://www.dropbox.com/static/api/ https://www.dropbox.com/pithos/* https://www.dropbox.com/page_success/ https://cfl.dropboxstatic.com/static/ https://www.dropboxstatic.com/static/ https://accounts.google.com/gsi/client https://canny.io/sdk.js https://www.paypal.com/sdk/js 'nonce-JDl/v+wNZgVUGEhGYV/1KklqXSc=' ; font-src https://* data: ; style-src https://* 'unsafe-inline' 'unsafe-eval' ; frame-src https://* carousel: dbapi-6: dbapi-7: dbapi-8: dropbox-client: itms-apps: itms-appss: ; connect-src https://* ws://127.0.0.1:*/ws blob: wss://dsimports.dropbox.com/ ; report-uri https://www.dropbox.com/csp_log?policy_name=metaserver-whitelist ; worker-src https://www.dropbox.com/static/serviceworker/ https://www.dropbox.com/encrypted_folder_download/service_worker.js https://www.dropbox.com/service_worker.js blob: ; child-src https://www.dropbox.com/static/serviceworker/ blob: ; img-src https://* data: blob: ; object-src 'self' https://cfl.dropboxstatic.com/static/ https://www.dropboxstatic.com/static/ ; default-src 'none' ; media-src https://* blob:, script-src 'unsafe-eval' 'strict-dynamic' 'nonce-JDl/v+wNZgVUGEhGYV/1KklqXSc=' 'nonce-Y/mr54TAhy14t/5IwRL/KNraBlM=' ; report-uri https://www.dropbox.com/csp_log?policy_name=metaserver-dynamic"
-    );
-    const result = contentSecurityPolicyTest(requests);
-    console.log(result);
-    // assert.equal(result["result"], Expectation.CspImplementedWithUnsafeInline);
-    // assert.isFalse(result["pass"]);
-  });
 });

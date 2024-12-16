@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 
 import { Command } from "commander";
-import { scan } from "../src/scanner/index.js";
+import { scan } from "./scanner/index.js";
 
 const NAME = "mdn-http-observatory-scan";
 const program = new Command();

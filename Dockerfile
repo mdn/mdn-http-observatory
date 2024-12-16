@@ -13,6 +13,6 @@ RUN npm install
 # Get the current HSTS list
 RUN npm run updateHsts
 
-ENV NODE_EXTRA_CA_CERTS=node_modules/extra_certs/ca_bundle/ca_intermediate_root_bundle.pem
+ENV NODE_EXTRA_CA_CERTS=node_modules/extra_certs/ca_bundle/ca_intermediate_bundle.pem
 EXPOSE 8080
 CMD [ "node", "src/api/index.js" ]

@@ -108,6 +108,7 @@ export function contentSecurityPolicyTest(
       [...httpCspHeader, ...equivCspHeader].filter((x) => x !== null)
     );
   } catch (e) {
+    console.log(e);
     output.result = Expectation.CspHeaderInvalid;
     return output;
   }

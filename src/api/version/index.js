@@ -1,5 +1,5 @@
 import { version } from "tough-cookie";
-import { SCHEMAS } from "../schemas.js";
+import { SCHEMAS } from "../v2/schemas.js";
 import fs from "node:fs";
 import path from "path";
 import { fileURLToPath } from "url";
@@ -24,10 +24,10 @@ export default async function (fastify) {
   const pool = fastify.pg.pool;
 
   fastify.get(
-    "/__version__",
+    "/_version",
     { schema: SCHEMAS.version },
     async (request, reply) => {
-      /** @type {import("../../../types.js").VersionResponse} */
+      /** @type {import("../../types.js").VersionResponse} */
       const ret = {
         version: packageJson.version,
         commit: process.env.GIT_SHA || "unknown",

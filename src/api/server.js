@@ -77,7 +77,7 @@ export async function createServer() {
     server.register(scanApiV2, { prefix: "/api/v2" }),
     server.register(statsApiV2, { prefix: "/api/v2" }),
     server.register(recommendationMatrixApiV2, { prefix: "/api/v2" }),
-    server.register(version, { prefix: "/api" }),
+    server.register(version, { prefix: "/api/v2" }),
   ]);
 
   ["SIGINT", "SIGTERM"].forEach((signal) => {

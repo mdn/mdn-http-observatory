@@ -24,7 +24,7 @@ export default async function (fastify) {
   const pool = fastify.pg.pool;
 
   fastify.get(
-    "/_version",
+    "/version",
     { schema: SCHEMAS.version },
     async (request, reply) => {
       /** @type {import("../../types.js").VersionResponse} */

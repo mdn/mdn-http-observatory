@@ -32,7 +32,7 @@ describeOrSkip("API V2", function () {
     const app = await createServer();
     const response = await app.inject({
       method: "GET",
-      url: "/__version__",
+      url: "/version",
     });
     assert.equal(response.statusCode, 200);
     const j = response.json();

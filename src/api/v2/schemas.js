@@ -100,6 +100,17 @@ const gradeDistributionResponse = {
   },
 };
 
+const versionResponse = {
+  type: "object",
+  properties: {
+    commit: { type: "string" },
+    version: { type: "string" },
+    source: { type: "string" },
+    build: { type: "string" },
+  },
+  required: ["commit", "version", "source", "build"],
+};
+
 const recommendationMatrixResponse = {
   type: "array",
   items: {
@@ -198,6 +209,12 @@ export const SCHEMAS = {
   recommendationMatrix: {
     response: {
       200: recommendationMatrixResponse,
+    },
+  },
+
+  version: {
+    response: {
+      200: versionResponse,
     },
   },
 };
@@ -318,4 +335,4 @@ export class PolicyResponse {
 }
 
 // import jsdoc from "json-schema-to-jsdoc";
-// console.log(jsdoc(SCHEMAS.gradeDistribution.response["200"]));
+// console.log(jsdoc(SCHEMAS.version.response["200"]));

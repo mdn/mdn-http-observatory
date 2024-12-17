@@ -10,7 +10,7 @@ const __dirname = path.dirname(__filename);
 
 const packageJson = JSON.parse(
   fs.readFileSync(
-    path.join(__dirname, "..", "..", "..", "..", "package.json"),
+    path.join(__dirname, "..", "..", "..", "package.json"),
     "utf8"
   )
 );

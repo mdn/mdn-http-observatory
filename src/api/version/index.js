@@ -23,18 +23,14 @@ const packageJson = JSON.parse(
 export default async function (fastify) {
   const pool = fastify.pg.pool;
 
-  fastify.get(
-    "/version",
-    { schema: SCHEMAS.version },
-    async (request, reply) => {
-      /** @type {import("../../types.js").VersionResponse} */
-      const ret = {
-        version: packageJson.version,
-        commit: process.env.GIT_SHA || "unknown",
-        source: "https://github.com/mdn/mdn-http-observatory",
-        build: process.env.RUN_ID || "unknown",
-      };
-      return ret;
-    }
-  );
+  fastify.get("/hey", { schema: SCHEMAS.version }, async (request, reply) => {
+    /** @type {import("../../types.js").VersionResponse} */
+    const ret = {
+      version: packageJson.version,
+      commit: process.env.GIT_SHA || "unknown",
+      source: "https://github.com/mdn/mdn-http-observatory",
+      build: process.env.RUN_ID || "unknown",
+    };
+    return ret;
+  });
 }

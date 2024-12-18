@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.3.8](https://github.com/mdn/mdn-http-observatory/compare/v1.3.7...v1.3.8) (2024-12-18)
+
+
+### Miscellaneous
+
+* rewrite wrapper script in js ([#139](https://github.com/mdn/mdn-http-observatory/issues/139)) ([7b863e1](https://github.com/mdn/mdn-http-observatory/commit/7b863e14f56a06ca82ef81bdb2c756154f1310f1))
+
 ## [1.3.7](https://github.com/mdn/mdn-http-observatory/compare/v1.3.6...v1.3.7) (2024-12-16)
 
 

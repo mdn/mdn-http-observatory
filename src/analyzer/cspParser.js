@@ -7,6 +7,8 @@ const DIRECTIVES_DISALLOWED_IN_META = [
   "report-uri",
   "sandbox",
 ];
+const ALLOWED_DUPLICATE_KEYS = new Set(["report-uri", "report-to"]);
+export const DUPLICATE_WARNINGS_KEY = "_observatory_duplicate_warnings";
 
 /**
  * Parse CSP from meta tags, weeding out directives
@@ -24,6 +26,9 @@ export function parseCspMeta(cspList) {
 }
 
 /**
+ * The returned Map has the directive as the key and a Set of sources as the value.
+ * If there are allowed duplicates detected, the first one is kept and the rest are discarded,
+ * and an entry in the final Map is added with the key "_observatory_warnings" and the value.
  *
  * @param {string[]} cspList
  * @returns {Map<string, Set<string>>}
@@ -44,6 +49,8 @@ export function parseCsp(cspList) {
 
   /**  @type {Map<string, {source: string, index: number, keep: boolean}[]>} */
   const csp = new Map();
+  /**  @type {Set<string>} */
+  const duplicate_warnings = new Set();
 
   for (const [policyIndex, policy] of cleanCspList.entries()) {
     const directiveSeenBeforeThisPolicy = new Set();
@@ -59,11 +66,16 @@ export function parseCsp(cspList) {
       const directive = directiveEntry.toLowerCase();
 
       // While technically valid in that you just use the first entry, we are saying that repeated
-      // directives are invalid so that people notice it
+      // directives are invalid so that people notice it. The exception are duplicate report-uri
+      // and report-to directives, which we allow.
       if (directiveSeenBeforeThisPolicy.has(directive)) {
-        throw new Error(
-          `Duplicate directive ${directive} in policy ${policyIndex}`
-        );
+        if (ALLOWED_DUPLICATE_KEYS.has(directive)) {
+          duplicate_warnings.add(directive);
+        } else {
+          throw new Error(
+            `Duplicate directive ${directive} in policy ${policyIndex}`
+          );
+        }
       } else {
         directiveSeenBeforeThisPolicy.add(directive);
       }
@@ -146,7 +158,9 @@ export function parseCsp(cspList) {
         : new Set(["'none'"]),
     ])
   );
-
+  if (duplicate_warnings.size) {
+    finalCsp.set(DUPLICATE_WARNINGS_KEY, duplicate_warnings);
+  }
   return finalCsp;
 }
 

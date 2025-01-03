@@ -1,5 +1,24 @@
 # Changelog
 
+## [1.3.9](https://github.com/mdn/mdn-http-observatory/compare/v1.3.8...v1.3.9) (2025-01-03)
+
+
+### Bug Fixes
+
+* **csp:** allow duplicate report-* directives ([#151](https://github.com/mdn/mdn-http-observatory/issues/151)) ([c172ce8](https://github.com/mdn/mdn-http-observatory/commit/c172ce8dbe40408459e218f153458937c08e6c4a))
+
+## [1.3.8](https://github.com/mdn/mdn-http-observatory/compare/v1.3.7...v1.3.8) (2024-12-20)
+
+
+### Bug Fixes
+
+* package.json ([#145](https://github.com/mdn/mdn-http-observatory/issues/145)) ([b70469a](https://github.com/mdn/mdn-http-observatory/commit/b70469aedb8c6eed1e38b95bfec301dde609d3ad))
+
+
+### Miscellaneous
+
+* rewrite wrapper script in js ([#139](https://github.com/mdn/mdn-http-observatory/issues/139)) ([7b863e1](https://github.com/mdn/mdn-http-observatory/commit/7b863e14f56a06ca82ef81bdb2c756154f1310f1))
+
 ## [1.3.7](https://github.com/mdn/mdn-http-observatory/compare/v1.3.6...v1.3.7) (2024-12-16)
 
 

@@ -4,7 +4,11 @@ import {
 } from "../../headers.js";
 import { Requests, Policy, BaseOutput } from "../../types.js";
 import { Expectation } from "../../types.js";
-import { parseCsp, parseCspMeta } from "../cspParser.js";
+import {
+  DUPLICATE_WARNINGS_KEY,
+  parseCsp,
+  parseCspMeta,
+} from "../cspParser.js";
 import { getHttpHeaders } from "../utils.js";
 
 const DANGEROUSLY_BROAD = new Set([
@@ -47,6 +51,7 @@ export class CspOutput extends BaseOutput {
     Expectation.CspImplementedWithUnsafeEval,
     Expectation.CspImplementedWithUnsafeInline,
     Expectation.CspImplementedWithInsecureScheme,
+    Expectation.CspImplementedButDuplicateDirectives,
     Expectation.CspHeaderInvalid,
     Expectation.CspNotImplemented,
     Expectation.CspNotImplementedButReportingEnabled,
@@ -301,6 +306,7 @@ export function contentSecurityPolicyTest(
   );
 
   // Check to see if the test passed or failed
+  // If it passed, report any duplicate report-uri/report-to directives
   if (
     [
       expectation,
@@ -310,10 +316,17 @@ export function contentSecurityPolicyTest(
     ].includes(output.result)
   ) {
     output.pass = true;
+    if (csp.has(DUPLICATE_WARNINGS_KEY)) {
+      output.result = Expectation.CspImplementedButDuplicateDirectives;
+    }
   }
 
   output.data = {};
   for (const [key, value] of csp) {
+    // filter out the duplicate warnings key from the parsed CSP
+    if (key === DUPLICATE_WARNINGS_KEY) {
+      continue;
+    }
     output.data[key] = [...value].sort();
   }
 

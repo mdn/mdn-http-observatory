@@ -196,11 +196,28 @@ describe("Content Security Policy Parser", function () {
     }
   });
 
-  it("should parse this header correctly", function () {
+  it("should parse this example header correctly", function () {
     let policy = [
       "default-src 'self' blob: https://*.cnn.com:* http://*.cnn.com:* *.cnn.io:* *.cnn.net:* *.turner.com:* *.turner.io:* *.ugdturner.com:* courageousstudio.com *.vgtf.net:*; script-src 'unsafe-eval' 'unsafe-inline' 'self' *; style-src 'unsafe-inline' 'self' blob: *; child-src 'self' blob: *; frame-src 'self' *; object-src 'self' *; img-src 'self' data: blob: *; media-src 'self' data: blob: *; font-src 'self' data: *; connect-src 'self' data: *; frame-ancestors 'self' https://*.cnn.com:* http://*.cnn.com https://*.cnn.io:* http://*.cnn.io:* *.turner.com:* courageousstudio.com;",
     ];
     const res = parseCsp(policy);
     assert(res);
+  });
+
+  it("should parse a policy with duplicate report-uri entries and report those duplicates", function () {
+    let policy = [
+      "report-uri https://www.dropbox.com/csp_log?policy_name=metaserver-whitelist ; report-uri https://www.dropbox.com/csp_log?policy_name=metaserver-dynamic",
+    ];
+    const res = parseCsp(policy);
+    assert(res);
+    assert(res.has("_observatory_duplicate_key_warnings"));
+    assert(res.get("_observatory_duplicate_key_warnings")?.has("report-uri"));
+  });
+  it("should parse a policy with duplicate report-to entries and report those duplicates", function () {
+    let policy = ["report-to some_name ; report-to some_other_name"];
+    const res = parseCsp(policy);
+    assert(res);
+    assert(res.has("_observatory_duplicate_key_warnings"));
+    assert(res.get("_observatory_duplicate_key_warnings")?.has("report-to"));
   });
 });

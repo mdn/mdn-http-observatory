@@ -106,8 +106,8 @@ export const Expectation = {
   CspNotImplemented: "csp-not-implemented",
   CspNotImplementedButReportingEnabled:
     "csp-not-implemented-but-reporting-enabled",
-  CspImplementedButHasDuplicateDirectives:
-    "csp-implemented-but-has-duplicate-directives",
+  CspImplementedButDuplicateDirectives:
+    "csp-implemented-but-duplicate-directives",
 
   // SUBRESOURCE INTEGRITY
 

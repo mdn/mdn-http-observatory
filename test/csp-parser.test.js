@@ -1,6 +1,6 @@
 import { assert } from "chai";
 
-import { DUPLICATE_WARNINGS_KEY, parseCsp } from "../src/analyzer/cspParser.js";
+import { parseCsp } from "../src/analyzer/cspParser.js";
 
 describe("Content Security Policy Parser", function () {
   it("should parse policy correctly", function () {
@@ -210,14 +210,14 @@ describe("Content Security Policy Parser", function () {
     ];
     const res = parseCsp(policy);
     assert(res);
-    assert(res.has(DUPLICATE_WARNINGS_KEY));
-    assert(res.get(DUPLICATE_WARNINGS_KEY)?.has("report-uri"));
+    assert(res.has("_observatory_duplicate_key_warnings"));
+    assert(res.get("_observatory_duplicate_key_warnings")?.has("report-uri"));
   });
   it("should parse a policy with duplicate report-to entries and report those duplicates", function () {
     let policy = ["report-to some_name ; report-to some_other_name"];
     const res = parseCsp(policy);
     assert(res);
-    assert(res.has(DUPLICATE_WARNINGS_KEY));
-    assert(res.get(DUPLICATE_WARNINGS_KEY)?.has("report-to"));
+    assert(res.has("_observatory_duplicate_key_warnings"));
+    assert(res.get("_observatory_duplicate_key_warnings")?.has("report-to"));
   });
 });

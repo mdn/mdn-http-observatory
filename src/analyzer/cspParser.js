@@ -8,7 +8,7 @@ const DIRECTIVES_DISALLOWED_IN_META = [
   "sandbox",
 ];
 const ALLOWED_DUPLICATE_KEYS = new Set(["report-uri", "report-to"]);
-export const DUPLICATE_WARNINGS_KEY = "_observatory_duplicate_warnings";
+export const DUPLICATE_WARNINGS_KEY = "_observatory_duplicate_key_warnings";
 
 /**
  * Parse CSP from meta tags, weeding out directives
@@ -28,7 +28,8 @@ export function parseCspMeta(cspList) {
 /**
  * The returned Map has the directive as the key and a Set of sources as the value.
  * If there are allowed duplicates detected, the first one is kept and the rest are discarded,
- * and an entry in the final Map is added with the key "_observatory_warnings" and the value.
+ * and an entry in the final Map is added with the key "_observatory_duplicate_key_warnings"
+ * and the directive's name as the value.
  *
  * @param {string[]} cspList
  * @returns {Map<string, Set<string>>}

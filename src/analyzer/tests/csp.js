@@ -51,7 +51,7 @@ export class CspOutput extends BaseOutput {
     Expectation.CspImplementedWithUnsafeEval,
     Expectation.CspImplementedWithUnsafeInline,
     Expectation.CspImplementedWithInsecureScheme,
-    Expectation.CspImplementedButHasDuplicateDirectives,
+    Expectation.CspImplementedButDuplicateDirectives,
     Expectation.CspHeaderInvalid,
     Expectation.CspNotImplemented,
     Expectation.CspNotImplementedButReportingEnabled,
@@ -306,7 +306,7 @@ export function contentSecurityPolicyTest(
   );
 
   // Check to see if the test passed or failed
-  // Also switch to duplicate report-uri/report-to if needed
+  // If it passed, report any duplicate report-uri/report-to directives
   if (
     [
       expectation,
@@ -317,7 +317,7 @@ export function contentSecurityPolicyTest(
   ) {
     output.pass = true;
     if (csp.has(DUPLICATE_WARNINGS_KEY)) {
-      output.result = Expectation.CspImplementedButHasDuplicateDirectives;
+      output.result = Expectation.CspImplementedButDuplicateDirectives;
     }
   }
 

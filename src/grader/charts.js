@@ -215,10 +215,10 @@ export const SCORE_TABLE = new Map([
     },
   ],
   [
-    Expectation.CspImplementedButHasDuplicateDirectives,
+    Expectation.CspImplementedButDuplicateDirectives,
     {
       description: `<p>
-        Content Security Policy (CSP) implemented but contains duplicate directives.
+        Content Security Policy (CSP) implemented, but contains duplicate directives.
         </p>`,
       modifier: 0,
       recommendation: `<p>Remove duplicate directives from the CSP</p>`,

@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.3.9](https://github.com/mdn/mdn-http-observatory/compare/v1.3.8...v1.3.9) (2025-01-03)
+
+
+### Bug Fixes
+
+* **csp:** allow duplicate report-* directives ([#151](https://github.com/mdn/mdn-http-observatory/issues/151)) ([c172ce8](https://github.com/mdn/mdn-http-observatory/commit/c172ce8dbe40408459e218f153458937c08e6c4a))
+
 ## [1.3.8](https://github.com/mdn/mdn-http-observatory/compare/v1.3.7...v1.3.8) (2024-12-20)
 
 

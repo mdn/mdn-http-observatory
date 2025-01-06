@@ -37,10 +37,12 @@ describeOrSkip("API V2", function () {
     assert.equal(response.statusCode, 200);
     const j = response.json();
     const p = JSON.parse(fs.readFileSync("package.json", "utf8"));
-    assert.equal(j.version, p.version);
-    assert.equal(j.commit, "commitinfo");
-    assert.equal(j.build, "buildinfo");
-    assert.equal(j.source, "https://github.com/mdn/mdn-http-observatory");
+    assert.deepEqual(j, {
+        version: p.version,
+        commit: "commitinfo",
+        build: "buildinfo",
+        source: "https://github.com/mdn/mdn-http-observatory"
+    };
   });
 
   it("serves the root path with a greeting", async function () {

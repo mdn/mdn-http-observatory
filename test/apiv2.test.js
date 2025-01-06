@@ -38,11 +38,11 @@ describeOrSkip("API V2", function () {
     const j = response.json();
     const p = JSON.parse(fs.readFileSync("package.json", "utf8"));
     assert.deepEqual(j, {
-        version: p.version,
-        commit: "commitinfo",
-        build: "buildinfo",
-        source: "https://github.com/mdn/mdn-http-observatory"
-    };
+      version: p.version,
+      commit: "commitinfo",
+      build: "buildinfo",
+      source: "https://github.com/mdn/mdn-http-observatory",
+    });
   });
 
   it("serves the root path with a greeting", async function () {

@@ -8,6 +8,7 @@ import {
 } from "../src/database/repository.js";
 import { EventEmitter } from "events";
 import { NUM_TESTS } from "../src/constants.js";
+import fs from "node:fs";
 
 const pool = createPool();
 EventEmitter.defaultMaxListeners = 20;
@@ -23,6 +24,25 @@ describeOrSkip("API V2", function () {
   this.beforeEach(async () => {
     await migrateDatabase("0", pool);
     await migrateDatabase("max", pool);
+  });
+
+  it("serves the version path", async function () {
+    process.env.RUN_ID = "buildinfo";
+    process.env.GIT_SHA = "commitinfo";
+    const app = await createServer();
+    const response = await app.inject({
+      method: "GET",
+      url: "/api/v2/version",
+    });
+    assert.equal(response.statusCode, 200);
+    const j = response.json();
+    const p = JSON.parse(fs.readFileSync("package.json", "utf8"));
+    assert.deepEqual(j, {
+      version: p.version,
+      commit: "commitinfo",
+      build: "buildinfo",
+      source: "https://github.com/mdn/mdn-http-observatory",
+    });
   });
 
   it("serves the root path with a greeting", async function () {

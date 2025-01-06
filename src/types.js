@@ -360,3 +360,11 @@ export class Policy {
  * @property {string} grade
  * @property {number} count
  */
+
+/**
+ * @typedef {object} VersionResponse
+ * @property {string} commit
+ * @property {string} version
+ * @property {string} source
+ * @property {string} build
+ */

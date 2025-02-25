@@ -1,4 +1,4 @@
-FROM node:20
+FROM node:23
 
 RUN apt-get -y update && \
   apt-get install -y git && \

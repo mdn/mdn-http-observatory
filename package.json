@@ -41,7 +41,7 @@
     "typescript": "^5.7.2"
   },
   "dependencies": {
-    "@fastify/cors": "^10.0.1",
+    "@fastify/cors": "^11.0.0",
     "@fastify/helmet": "^13.0.0",
     "@fastify/postgres": "^6.0.1",
     "@fastify/static": "^8.0.3",

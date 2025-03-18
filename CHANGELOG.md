@@ -1,5 +1,17 @@
 # Changelog
 
+## [1.4.0](https://github.com/mdn/mdn-http-observatory/compare/v1.3.9...v1.4.0) (2025-03-17)
+
+
+### Features
+
+* **api:** add version endpoint (`/api/v2/version`) ([4bf980c](https://github.com/mdn/mdn-http-observatory/commit/4bf980c1a85feb0dc5764b6e19b83ed072a2be85))
+
+
+### Bug Fixes
+
+* **grader:** update HTTP Redirection link ([#181](https://github.com/mdn/mdn-http-observatory/issues/181)) ([93d3c44](https://github.com/mdn/mdn-http-observatory/commit/93d3c44cae4cee6152b384cd79ffd25b637a1252))
+
 ## [1.3.9](https://github.com/mdn/mdn-http-observatory/compare/v1.3.8...v1.3.9) (2025-01-03)
 
 

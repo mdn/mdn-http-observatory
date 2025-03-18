@@ -67,7 +67,7 @@ export const TEST_TOPIC_LINKS = new Map([
   ],
   [
     "redirection",
-    "/en-US/docs/Web/Security/Practical_implementation_guides/TLS#http_redirections",
+    "/en-US/docs/Web/Security/Practical_implementation_guides/TLS#http_redirection",
   ],
   [
     "referrer-policy",

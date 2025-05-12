@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.4.1](https://github.com/mdn/mdn-http-observatory/compare/v1.4.0...v1.4.1) (2025-05-12)
+
+
+### Bug Fixes
+
+* **docker:** ignore GCP token file ([#215](https://github.com/mdn/mdn-http-observatory/issues/215)) ([16a7a86](https://github.com/mdn/mdn-http-observatory/commit/16a7a862dffda554074ec91c031231fc69bcb2a1))
+
 ## [1.4.0](https://github.com/mdn/mdn-http-observatory/compare/v1.3.9...v1.4.0) (2025-03-17)
 
 

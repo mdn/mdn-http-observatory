@@ -23,7 +23,7 @@
     "test/**/*"
   ],
   "devDependencies": {
-    "esbuild": "0.25.3",
+    "esbuild": "0.25.4",
     "esbuild-plugin-polyfill-node": "^0.3.0",
     "extension-cli": "latest"
   },

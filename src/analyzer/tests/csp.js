@@ -134,7 +134,7 @@ export function contentSecurityPolicyTest(
   // as csp-not-implemented
   if (httpHeaderOnlyCsp.size + metaCsp.size === 0) {
     // Content-Security-Policy-Report-Only is only allowed in headers, not in meta tags
-    // see https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Security-Policy-Report-Only
+    // see https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Content-Security-Policy-Report-Only
     const httpCspReportOnly =
       // @ts-ignore
       response.headers.get(CONTENT_SECURITY_POLICY_REPORT_ONLY) ?? null;
@@ -155,7 +155,7 @@ export function contentSecurityPolicyTest(
   // Get the various directives we look at
   const base_uri = csp.get("base-uri") || new Set(["*"]);
   // frame-ancherstors can only be set via header, not via http-equiv meta tag
-  // see https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Security-Policy/frame-ancestors
+  // see https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Content-Security-Policy/frame-ancestors
   const frame_ancestors =
     httpHeaderOnlyCsp.get("frame-ancestors") || new Set(["*"]);
   const form_action = csp.get("form-action") || new Set(["*"]);

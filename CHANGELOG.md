@@ -1,5 +1,19 @@
 # Changelog
 
+## [1.4.1](https://github.com/mdn/mdn-http-observatory/compare/v1.4.0...v1.4.1) (2025-06-27)
+
+
+### Bug Fixes
+
+* **docker:** ignore GCP token file ([#215](https://github.com/mdn/mdn-http-observatory/issues/215)) ([16a7a86](https://github.com/mdn/mdn-http-observatory/commit/16a7a862dffda554074ec91c031231fc69bcb2a1))
+
+
+### Miscellaneous
+
+* dependency updates ([#243](https://github.com/mdn/mdn-http-observatory/issues/243)) ([03f2725](https://github.com/mdn/mdn-http-observatory/commit/03f27256674c118a3feb041eebcaac858fc7e8d5))
+* update extra ca certs ([#242](https://github.com/mdn/mdn-http-observatory/issues/242)) ([c70a56b](https://github.com/mdn/mdn-http-observatory/commit/c70a56be5e31edc16b07b9872fc916b6e090d285))
+* update MDN links ([#239](https://github.com/mdn/mdn-http-observatory/issues/239)) ([a2c8502](https://github.com/mdn/mdn-http-observatory/commit/a2c85024de651f8ef7302192ebe02faff0c8cf82))
+
 ## [1.4.0](https://github.com/mdn/mdn-http-observatory/compare/v1.3.9...v1.4.0) (2025-03-17)
 
 

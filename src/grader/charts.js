@@ -88,7 +88,7 @@ export const TEST_TOPIC_LINKS = new Map([
   ],
   // inactive, for historic records
   ["contribute", "/en-US/"],
-  ["x-xss-protection", "/en-US/docs/Web/HTTP/Headers/X-XSS-Protection"],
+  ["x-xss-protection", "/en-US/docs/Web/HTTP/Reference/Headers/X-XSS-Protection"],
 ]);
 
 /**
@@ -581,7 +581,7 @@ export const SCORE_TABLE = new Map([
         </p>`,
       modifier: -20,
       recommendation: `<p>
-      Read <a href="/en-US/docs/Web/HTTP/Headers/Strict-Transport-Security">MDN's documentation on HTTP Strict Transport Security</a>.
+      Read <a href="/en-US/docs/Web/HTTP/Reference/Headers/Strict-Transport-Security">MDN's documentation on HTTP Strict Transport Security</a>.
       </p>`,
     },
   ],

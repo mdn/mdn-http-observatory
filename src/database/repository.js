@@ -167,7 +167,7 @@ export async function ensureSite(pool, hostname) {
       LIMIT 1`,
     [hostname]
   );
-  if (result.rowCount > 0) {
+  if (result.rowCount && result.rowCount > 0) {
     return result.rows[0]["id"];
   }
 
@@ -374,7 +374,7 @@ export async function updateScanState(pool, scanId, state, error = null) {
  */
 export async function selectGradeDistribution(pool) {
   const result = await pool.query(
-    `SELECT grade, count FROM grade_distribution 
+    `SELECT grade, count FROM grade_distribution
     ORDER BY array_position(array['A+','A','A-','B+','B','B-','C+','C','C-','D+','D','D-','F'], grade) asc`,
     []
   );

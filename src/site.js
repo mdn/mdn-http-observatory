@@ -1,3 +1,5 @@
+import { domainToASCII } from "url";
+
 /**
  * A string representing a site that can be:
  * - A simple hostname: "example.com"
@@ -82,16 +84,31 @@ export class Site {
 
       const hostname = url.hostname;
       if (!hostname) {
-        throw new Error("Invalid site string");
+        throw new Error("hostname cannot be empty");
       }
 
-      // URL.port returns empty string if no port, convert to number or undefined
+      // 253 characters is the practical limit for DNS hostnames.
+      if (domainToASCII(hostname).length > 253) {
+        throw new Error("hostname is too long");
+      }
+
+      // Ensure hostname has proper structure: at least one dot
+      // with non-empty parts.
+      const parts = hostname.split(".");
+      if (parts.length < 2 || parts.some((part) => part.length === 0)) {
+        throw new Error(
+          "Invalid site string: hostname must have at least a host and TLD (e.g., example.com)"
+        );
+      }
+
+      // URL.port returns empty string if no port, convert to
+      // number or undefined.
       const port = url.port ? Number(url.port) : undefined;
 
       // URL.pathname is "/" by default
       const path = url.pathname;
 
-      return new Site(hostname, port, path);
+      return new Site(hostname.toLowerCase(), port, path);
     } catch (error) {
       throw new Error("Invalid site string");
     }

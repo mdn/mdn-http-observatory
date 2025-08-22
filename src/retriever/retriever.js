@@ -12,12 +12,12 @@ const ROBOTS_HEADERS = ["Accept: text/plain,*/*;q=0.8"];
 
 /**
  *
- * @param {string} site
+ * @param {import("../scanner/index.js").Site} site
  * @param {import("../types.js").Options} options
  * @returns {Promise<Requests>}
  */
 export async function retrieve(site, options = {}) {
-  const retrievals = new Requests(site, options);
+  const retrievals = new Requests(site);
   console.error("Retrieving", retrievals);
 
   const { http, https } = urls(site, options);

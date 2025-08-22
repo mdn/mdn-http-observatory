@@ -90,7 +90,7 @@ export function strictTransportSecurityTest(
 
   // If they're in the preloaded list, this overrides most anything else
   if (response) {
-    const preloaded = isHstsPreloaded(requests.hostname);
+    const preloaded = isHstsPreloaded(requests.site);
     if (preloaded) {
       output.result = Expectation.HstsPreloaded;
       output.includeSubDomains = preloaded.includeSubDomains;

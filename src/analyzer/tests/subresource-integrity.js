@@ -94,8 +94,7 @@ export function subresourceIntegrityTest(
           sameSecondLevelDomain = true;
         } else if (fullUrlRegex.test(script.src)) {
           // full URL (src="https://example.com/script.js")
-          sameSecondLevelDomain =
-            src.domain === parse(requests.hostname).domain;
+          sameSecondLevelDomain = src.domain === parse(requests.site).domain;
         } else {
           // relative URL (src="/path" etc.)
           relativeOrigin = true;

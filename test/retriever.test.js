@@ -18,7 +18,7 @@ describe("TestRetriever", () => {
     assert.isNull(requests.responses.https);
     assert.isNotNull(requests.session);
     assert.isNull(requests.session.response);
-    assert.equal(domain, requests.hostname);
+    assert.equal(domain, requests.site);
     assert.deepEqual(new Resources(), requests.resources);
   });
 
@@ -31,7 +31,7 @@ describe("TestRetriever", () => {
     assert.isNumber(requests.responses.http.status);
     assert.isNumber(requests.responses.https.status);
     assert.instanceOf(requests.session, Session);
-    assert.equal(requests.hostname, "developer.mozilla.org");
+    assert.equal(requests.site, "developer.mozilla.org");
     assert.equal(requests.responses.httpRedirects.length, 3);
     assert.equal(
       "text/html",

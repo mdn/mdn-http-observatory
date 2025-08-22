@@ -1,4 +1,5 @@
 import { Session } from "./retriever/session.js";
+import { Site } from "./site.js";
 
 /**
  * @typedef {Object} HttpEquiv
@@ -70,8 +71,8 @@ export class BaseOutput {
 }
 
 export class Requests {
-  /** @type {string} */
-  hostname;
+  /** @type {Site} */
+  site;
   /** @type {number} */
   httpPort;
   /** @type {number} */
@@ -85,13 +86,12 @@ export class Requests {
 
   /**
    *
-   * @param {string} site
-   * @param {Options} options
+   * @param {Site} site
    */
-  constructor(site, options = {}) {
-    this.hostname = site;
-    this.httpPort = Number(options.httpPort) || 80;
-    this.httpsPort = Number(options.httpsPort) || 443;
+  constructor(site) {
+    this.site = site;
+    this.httpPort = site.port || 80;
+    this.httpsPort = site.port || 443;
     this.resources = new Resources();
     this.responses = new Responses();
     this.session = null;
@@ -229,8 +229,8 @@ export const Expectation = {
  * @typedef {Object} Options
  * @prop {string[]} [headers]
  * @prop {string[]} [cookies]
- * @prop {string} [httpPort]
- * @prop {string} [httpsPort]
+ * @prop {number} [httpPort]
+ * @prop {number} [httpsPort]
  * @prop {string} [path]
  */
 

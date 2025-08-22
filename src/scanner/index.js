@@ -18,10 +18,11 @@ import { ALL_TESTS } from "../constants.js";
  * @typedef {import("../types.js").Output} Output
  * @typedef {import("../types.js").StringMap} StringMap
  * @typedef {import("../types.js").TestMap} TestMap
+ * @typedef {import("../site.js").Site} Site
  */
 
 /**
- * @param {string} site
+ * @param {string} Site
  * @param {Options} [options]
  * @returns {Promise<ScanResult>}
  */

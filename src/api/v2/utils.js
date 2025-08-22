@@ -92,12 +92,12 @@ export async function validHostname(hostname) {
 
 /**
  *
- * @param {import("../../types.js").SiteString} site
- * @returns {Promise<import("../../types.js").SiteString>}
+ * @param {import("../../site.js").SiteString} site
+ * @returns {Promise<import("../../site.js").SiteString>}
  */
 export async function checkSitename(site) {
   // first, divide the site string into its components: hostname, port (optional) and path (optional)
-  // them lowercase the hostname.
+  // then lowercase the hostname.
   // look up the hostname
   // if lookup fails, try again with "www." prefix
   // make sure the path does not contain any query parameters or fragments or hashes. strip those out if needed.

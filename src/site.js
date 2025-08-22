@@ -87,7 +87,8 @@ export class Site {
         throw new Error("hostname cannot be empty");
       }
 
-      // 253 characters is the practical limit for DNS hostnames.
+      // 253 bytes is the practical limit for DNS hostnames.
+      // Take IDN notation into account.
       if (domainToASCII(hostname).length > 253) {
         throw new Error("hostname is too long");
       }

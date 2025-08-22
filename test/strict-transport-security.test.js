@@ -87,21 +87,21 @@ describe("Strict Transport Security", () => {
   });
 
   it("preloaded", function () {
-    reqs.hostname = "bugzilla.mozilla.org";
+    reqs.site = "bugzilla.mozilla.org";
     let result = strictTransportSecurityTest(reqs);
     assert.equal(result.result, Expectation.HstsPreloaded);
     assert.isTrue(result.includeSubDomains);
     assert.isTrue(result.pass);
     assert.isTrue(result.preloaded);
 
-    reqs.hostname = "facebook.com";
+    reqs.site = "facebook.com";
     result = strictTransportSecurityTest(reqs);
     assert.equal(result.result, Expectation.HstsPreloaded);
     assert.isFalse(result.includeSubDomains);
     assert.isTrue(result.pass);
     assert.isTrue(result.preloaded);
 
-    reqs.hostname = "dropboxusercontent.com";
+    reqs.site = "dropboxusercontent.com";
     result = strictTransportSecurityTest(reqs);
     assert.equal(result.result, Expectation.HstsNotImplemented);
     assert.isFalse(result.includeSubDomains);

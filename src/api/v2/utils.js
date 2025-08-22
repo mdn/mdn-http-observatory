@@ -78,7 +78,7 @@ export async function validHostname(hostname) {
   // Check if we can look up the host
   await /** @type {Promise<void>} */ (
     new Promise((resolve, reject) => {
-      dns.lookup(hostname, (err, address, family) => {
+      dns.lookup(hostname, (err, _address, _family) => {
         if (err) {
           reject(new InvalidHostNameLookupError(hostname));
         }
@@ -92,25 +92,33 @@ export async function validHostname(hostname) {
 
 /**
  *
- * @param {string} hostname
- * @returns {Promise<string>}
+ * @param {import("../../types.js").SiteString} site
+ * @returns {Promise<import("../../types.js").SiteString>}
  */
-export async function checkHostname(hostname) {
-  if (isIp(hostname)) {
+export async function checkSitename(site) {
+  // first, divide the site string into its components: hostname, port (optional) and path (optional)
+  // them lowercase the hostname.
+  // look up the hostname
+  // if lookup fails, try again with "www." prefix
+  // make sure the path does not contain any query parameters or fragments or hashes. strip those out if needed.
+  // maybe try to create a URL object from the results, just to make sure we have something worth checking
+  // finally, return the sanitized site string.
+
+  if (isIp(site)) {
     throw new InvalidHostNameIpError();
   }
 
   // Try prefixing with `www.` if it fails on first try
   try {
-    hostname = await validHostname(hostname);
+    site = await validHostname(site);
   } catch (e) {
     if (e instanceof InvalidHostNameLookupError) {
-      hostname = await validHostname(`www.${hostname}`);
+      site = await validHostname(`www.${site}`);
     } else {
       throw e;
     }
   }
-  return hostname;
+  return site;
 }
 
 /**
@@ -165,7 +173,6 @@ function getTitle(name) {
 export async function historyForSite(pool, siteId) {
   const historyRows = await selectScanHostHistory(pool, siteId);
   const history = historyRows.map((h) => {
-    const id = h.id;
     return {
       id: h.id,
       grade: h.grade,
@@ -219,16 +226,16 @@ export function hydrateTests(tests) {
 /**
  *
  * @param {Pool} pool
- * @param {string} hostname
+ * @param {string} site
  * @returns {Promise<import("../../database/repository.js").ScanRow>}
  */
-export async function executeScan(pool, hostname) {
-  const siteId = await ensureSite(pool, hostname);
+export async function executeScan(pool, site) {
+  const siteId = await ensureSite(pool, site);
   let scanRow = await insertScan(pool, siteId);
   const scanId = scanRow.id;
   let scanResult;
   try {
-    scanResult = await scan(hostname);
+    scanResult = await scan(site);
   } catch (e) {
     if (e instanceof Error) {
       await updateScanState(pool, scanId, ScanState.FAILED, e.message);

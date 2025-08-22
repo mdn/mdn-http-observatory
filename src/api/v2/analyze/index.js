@@ -2,7 +2,7 @@ import { CONFIG } from "../../../config.js";
 import { selectScanLatestScanByHost } from "../../../database/repository.js";
 import { SCHEMAS } from "../schemas.js";
 import {
-  checkHostname,
+  checkSitename,
   executeScan,
   historyForSite,
   hydrateTests,
@@ -29,7 +29,7 @@ export default async function (fastify) {
           request.query
         );
       let hostname = query.host.trim().toLowerCase();
-      hostname = await checkHostname(hostname);
+      hostname = await checkSitename(hostname);
       return await scanOrReturnRecent(
         fastify,
         pool,
@@ -48,7 +48,7 @@ export default async function (fastify) {
           request.query
         );
       let hostname = query.host.trim().toLowerCase();
-      hostname = await checkHostname(hostname);
+      hostname = await checkSitename(hostname);
       return await scanOrReturnRecent(
         fastify,
         pool,

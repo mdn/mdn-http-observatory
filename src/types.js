@@ -70,18 +70,28 @@ export class BaseOutput {
 }
 
 export class Requests {
+  /** @type {string} */
   hostname;
+  /** @type {number} */
+  httpPort;
+  /** @type {number} */
+  httpsPort;
+  /** @type {Resources} */
   resources;
+  /** @type {Responses} */
   responses;
   /** @type {Session | null} */
   session;
 
   /**
    *
-   * @param {string} hostname
+   * @param {string} site
+   * @param {Options} options
    */
-  constructor(hostname) {
-    this.hostname = hostname;
+  constructor(site, options = {}) {
+    this.hostname = site;
+    this.httpPort = Number(options.httpPort) || 80;
+    this.httpsPort = Number(options.httpsPort) || 443;
     this.resources = new Resources();
     this.responses = new Responses();
     this.session = null;

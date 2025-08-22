@@ -21,12 +21,12 @@ import { ALL_TESTS } from "../constants.js";
  */
 
 /**
- * @param {string} hostname
+ * @param {string} site
  * @param {Options} [options]
  * @returns {Promise<ScanResult>}
  */
-export async function scan(hostname, options) {
-  let r = await retrieve(hostname);
+export async function scan(site, options) {
+  let r = await retrieve(site, options);
   if (!r.responses.auto) {
     // We cannot connect at all, abort the test.
     throw new Error("The site seems to be down.");

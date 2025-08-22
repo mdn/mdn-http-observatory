@@ -12,14 +12,15 @@ const ROBOTS_HEADERS = ["Accept: text/plain,*/*;q=0.8"];
 
 /**
  *
- * @param {*} hostname
+ * @param {string} site
  * @param {import("../types.js").Options} options
  * @returns {Promise<Requests>}
  */
-export async function retrieve(hostname, options = {}) {
-  const retrievals = new Requests(hostname);
+export async function retrieve(site, options = {}) {
+  const retrievals = new Requests(site, options);
+  console.error("Retrieving", retrievals);
 
-  const { http, https } = urls(hostname, options);
+  const { http, https } = urls(site, options);
   const [httpSession, httpsSession] = await Promise.all([
     Session.fromUrl(http, { headers: STANDARD_HEADERS, ...options }),
     Session.fromUrl(https, { headers: STANDARD_HEADERS, ...options }),

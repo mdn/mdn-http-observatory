@@ -18,9 +18,14 @@ export default async function (fastify) {
     const query = /** @type {import("../../v2/schemas.js").ScanQuery} */ (
       request.query
     );
-    let site = query.host.trim(); //.toLowerCase();
-    site = await checkSitename(site);
-    return await scanOrReturnRecent(fastify, pool, site, CONFIG.api.cooldown);
+    let siteString = query.host.trim();
+    siteString = await checkSitename(siteString);
+    return await scanOrReturnRecent(
+      fastify,
+      pool,
+      siteString,
+      CONFIG.api.cooldown
+    );
   });
 }
 

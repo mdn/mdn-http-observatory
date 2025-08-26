@@ -23,7 +23,7 @@ export default async function (fastify) {
   fastify.get(
     "/analyze",
     { schema: SCHEMAS.analyzeGet },
-    async (request, reply) => {
+    async (request, _reply) => {
       const query =
         /** @type {import("../../v2/schemas.js").AnalyzeReqQuery} */ (
           request.query
@@ -42,7 +42,7 @@ export default async function (fastify) {
   fastify.post(
     "/analyze",
     { schema: SCHEMAS.analyzePost },
-    async (request, reply) => {
+    async (request, _reply) => {
       const query =
         /** @type {import("../../v2/schemas.js").AnalyzeReqQuery} */ (
           request.query
@@ -63,16 +63,16 @@ export default async function (fastify) {
  *
  * @param {import("fastify").FastifyInstance} fastify
  * @param {Pool} pool
- * @param {string} hostname
+ * @param {import("../../../site.js").SiteString} siteString
  * @param {number} age
  * @returns {Promise<any>}
  */
-async function scanOrReturnRecent(fastify, pool, hostname, age) {
-  let scanRow = await selectScanLatestScanByHost(pool, hostname, age);
+async function scanOrReturnRecent(fastify, pool, siteString, age) {
+  let scanRow = await selectScanLatestScanByHost(pool, siteString, age);
   if (!scanRow) {
     // do a rescan
     fastify.log.info("Rescanning because no recent scan could be found");
-    scanRow = await executeScan(pool, hostname);
+    scanRow = await executeScan(pool, siteString);
   } else {
     fastify.log.info("Returning a recent scan result");
   }

@@ -13,14 +13,18 @@ const ROBOTS_HEADERS = ["Accept: text/plain,*/*;q=0.8"];
 /**
  *
  * @param {import("../scanner/index.js").Site} site
- * @param {import("../types.js").Options} options
+ * @param {import("../types.js").ScanOptions} options
  * @returns {Promise<Requests>}
  */
 export async function retrieve(site, options = {}) {
   const retrievals = new Requests(site);
-  console.error("Retrieving", retrievals);
+  console.log("Retrieving", retrievals.site.hostname);
 
   const { http, https } = urls(site, options);
+
+  // console.log("HTTP URL:", http);
+  // console.log("HTTPS URL:", https);
+
   const [httpSession, httpsSession] = await Promise.all([
     Session.fromUrl(http, { headers: STANDARD_HEADERS, ...options }),
     Session.fromUrl(https, { headers: STANDARD_HEADERS, ...options }),
@@ -60,7 +64,7 @@ export async function retrieve(site, options = {}) {
   ]
     ? retrievals.session.redirectHistory[
         retrievals.session.redirectHistory.length - 1
-      ].url.href
+      ]?.url.href
     : retrievals.session.url.href;
   const cors_resp =
     (await retrievals.session?.options({

@@ -123,7 +123,7 @@ export class Session {
           REDIRECT_STATUS_CODES.includes(response.status)
         ) {
           const url =
-            that.redirectHistory[that.redirectHistory.length - 1].url.href;
+            that.redirectHistory[that.redirectHistory.length - 1]?.url.href;
           const redirectUrl = response.headers.location;
           const newUrl = new URL(redirectUrl, url);
           that.redirectCount++;

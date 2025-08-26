@@ -226,7 +226,7 @@ export const Expectation = {
 };
 
 /**
- * @typedef {Object} Options
+ * @typedef {Object} ScanOptions
  * @prop {string[]} [headers]
  * @prop {string[]} [cookies]
  * @prop {number} [httpPort]

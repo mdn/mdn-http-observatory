@@ -10,10 +10,6 @@ import { NUM_TESTS } from "../constants.js";
 import { ALL_TESTS } from "../constants.js";
 
 /**
- * @typedef {Object} Options
- */
-
-/**
  * @typedef {import("../types.js").ScanResult} ScanResult
  * @typedef {import("../types.js").Output} Output
  * @typedef {import("../types.js").StringMap} StringMap
@@ -22,8 +18,8 @@ import { ALL_TESTS } from "../constants.js";
  */
 
 /**
- * @param {string} Site
- * @param {Options} [options]
+ * @param {Site} site
+ * @param {import("../types.js").ScanOptions} [options]
  * @returns {Promise<ScanResult>}
  */
 export async function scan(site, options) {

@@ -122,7 +122,7 @@ export async function insertTestResults(pool, siteId, scanId, scanResult) {
       "INSERT INTO tests (site_id, scan_id, name, expectation, result, pass, output, score_modifier) VALUES %L",
       testValues
     );
-    const _ = await pool.query(query, []);
+    await pool.query(query, []);
   }
 
   // Update the scan record

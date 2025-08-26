@@ -25,6 +25,7 @@ import { PolicyResponse } from "./schemas.js";
 import { Expectation } from "../../types.js";
 import { TEST_TITLES } from "../../grader/charts.js";
 import { scan } from "../../scanner/index.js";
+import { Site } from "../../site.js";
 
 /**
  *
@@ -226,15 +227,16 @@ export function hydrateTests(tests) {
 /**
  *
  * @param {Pool} pool
- * @param {string} site
+ * @param {import("../../site.js").SiteString} siteString
  * @returns {Promise<import("../../database/repository.js").ScanRow>}
  */
-export async function executeScan(pool, site) {
-  const siteId = await ensureSite(pool, site);
+export async function executeScan(pool, siteString) {
+  const siteId = await ensureSite(pool, siteString);
   let scanRow = await insertScan(pool, siteId);
   const scanId = scanRow.id;
   let scanResult;
   try {
+    const site = Site.fromSiteString(siteString);
     scanResult = await scan(site);
   } catch (e) {
     if (e instanceof Error) {

@@ -9,15 +9,16 @@ import {
 import { EventEmitter } from "events";
 import { NUM_TESTS } from "../src/constants.js";
 import fs from "node:fs";
+import { CONFIG } from "../src/config.js";
 
 const pool = createPool();
 EventEmitter.defaultMaxListeners = 20;
 
 let describeOrSkip;
-if (process.env.SKIP_DB_TESTS) {
-  describeOrSkip = describe.skip;
-} else {
+if (CONFIG.tests.enableDBTests) {
   describeOrSkip = describe;
+} else {
+  describeOrSkip = describe.skip;
 }
 
 describeOrSkip("API V2", function () {

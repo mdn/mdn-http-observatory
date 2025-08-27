@@ -6,5 +6,9 @@
   "api": {
     "enableLogging": false,
     "cooldown": 3
+  },
+  "tests": {
+    "enableDBTests": false,
+    "hostForPortAndPathChecks": "generalmagic.space"
   }
 }

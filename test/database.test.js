@@ -17,14 +17,15 @@ import { ALGORITHM_VERSION } from "../src/constants.js";
 import { faker } from "@faker-js/faker";
 import { migrateDatabase } from "../src/database/migrate.js";
 import { insertSeeds } from "./helpers/db.js";
+import { CONFIG } from "../src/config.js";
 
 const pool = createPool();
 
 let describeOrSkip;
-if (process.env.SKIP_DB_TESTS) {
-  describeOrSkip = describe.skip;
-} else {
+if (CONFIG.tests.enableDBTests) {
   describeOrSkip = describe;
+} else {
+  describeOrSkip = describe.skip;
 }
 describeOrSkip("Database repository", function () {
   this.beforeEach(async () => {
@@ -386,11 +387,11 @@ describeOrSkip("Database repository", function () {
       [...Array(10).keys()].map((i) => {
         return pool.query(
           `INSERT INTO scans (site_id, state, start_time, end_time, grade, score, tests_quantity, algorithm_version)
-          VALUES ($1, 
-            $2, 
-            NOW() - INTERVAL '${(i + 1) * 20000}', 
-            NOW() - INTERVAL '${(i + 1) * 20000}', 
-            'A', 
+          VALUES ($1,
+            $2,
+            NOW() - INTERVAL '${(i + 1) * 20000}',
+            NOW() - INTERVAL '${(i + 1) * 20000}',
+            'A',
             100,
             9,
             $3) RETURNING *`,
@@ -410,11 +411,11 @@ describeOrSkip("Database repository", function () {
       [...Array(50).keys()].map((i) => {
         return pool.query(
           `INSERT INTO scans (site_id, state, start_time, end_time, grade, score, tests_quantity, algorithm_version)
-          VALUES ($1, 
-            $2, 
-            NOW() - INTERVAL '${(i + 1) * 20000}', 
-            NOW() - INTERVAL '${(i + 1) * 20000}', 
-            'F', 
+          VALUES ($1,
+            $2,
+            NOW() - INTERVAL '${(i + 1) * 20000}',
+            NOW() - INTERVAL '${(i + 1) * 20000}',
+            'F',
             0,
             9,
             $3) RETURNING *`,

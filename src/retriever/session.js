@@ -220,7 +220,6 @@ export class Session {
    * @returns Session
    */
   static async fromUrl(url, { headers: headerParams, cookies } = {}) {
-    console.log("Creating session from URL:", url);
     return await new Session(url, { headers: headerParams, cookies }).init();
   }
 

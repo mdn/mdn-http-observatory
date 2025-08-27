@@ -1,5 +1,4 @@
 import { SiteIsDownError } from "../api/errors.js";
-import { validHostname } from "../api/v2/utils.js";
 import { CONFIG } from "../config.js";
 import { Site } from "../site.js";
 import axios from "axios";
@@ -51,12 +50,9 @@ export async function detectTlsSupport(site) {
  * @param {import("../types.js").ScanOptions} [options]
  */
 export async function urls(site, options = {}) {
-  if (site.port === undefined) {
-    await validHostname(site.hostname);
-  }
   return {
-    http: url(site, false, options),
-    https: url(site, true, options),
+    http: await url(site, false, options),
+    https: await url(site, true, options),
   };
 }
 
@@ -67,14 +63,20 @@ export async function urls(site, options = {}) {
  * @param {import("../types.js").ScanOptions} options
  * @returns
  */
-function url(site, https = true, options = {}) {
-  let port = (https ? options.httpsPort : options.httpPort) ?? "";
+async function url(site, https = true, options = {}) {
+  let port = (https ? options.httpsPort : options.httpPort) ?? undefined;
   if (site.port !== undefined) {
-    port = site.port;
+    const isTlsSecured = await detectTlsSupport(site);
+    if (isTlsSecured && https) {
+      port = site.port;
+    }
+    if (!isTlsSecured && !https) {
+      port = site.port;
+    }
   }
-  port = port === "" ? "" : `:${port}`;
+  const portString = port === undefined ? "" : `:${port}`;
   const url = new URL(
-    `${https ? "https" : "http"}://${site.hostname}${port}${site.path ?? ""}`
+    `${https ? "https" : "http"}://${site.hostname}${portString}${site.path ?? ""}`
   );
   return url;
 }

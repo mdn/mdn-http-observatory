@@ -64,7 +64,7 @@ export class Session {
    * @param {URL} url
    * @param {{ headers?: string[]; cookies?: string[]; }} [options = {}]
    */
-  constructor(url, { headers: headerParams, cookies } = {}) {
+  constructor(url, { headers: headerParams, cookies: _cookies } = {}) {
     this.redirectHistory = [];
     this.redirectCount = 0;
     const headers = new AxiosHeaders(headerParams?.join("\n"));
@@ -177,8 +177,7 @@ export class Session {
       ) {
         // console.log("retrying without TLS verification");
         this.redirectHistory = [];
-        const interceptor =
-          this.clientInstanceRecordingRedirects.interceptors.response;
+
         this.clientInstanceRecordingRedirects = axios.create({
           ...this.clientInstanceRecordingRedirects.defaults,
           httpsAgent: new HttpsCookieAgent({
@@ -221,6 +220,7 @@ export class Session {
    * @returns Session
    */
   static async fromUrl(url, { headers: headerParams, cookies } = {}) {
+    console.log("Creating session from URL:", url);
     return await new Session(url, { headers: headerParams, cookies }).init();
   }
 

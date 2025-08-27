@@ -18,16 +18,13 @@ const ROBOTS_HEADERS = ["Accept: text/plain,*/*;q=0.8"];
  */
 export async function retrieve(site, options = {}) {
   const retrievals = new Requests(site);
-  console.log("Retrieving", retrievals.site.hostname);
+  // console.log("Retrieving", retrievals.site.hostname);
 
-  const { http, https } = urls(site, options);
-
-  // console.log("HTTP URL:", http);
-  // console.log("HTTPS URL:", https);
+  const { http, https } = await urls(site, options);
 
   const [httpSession, httpsSession] = await Promise.all([
-    Session.fromUrl(http, { headers: STANDARD_HEADERS, ...options }),
-    Session.fromUrl(https, { headers: STANDARD_HEADERS, ...options }),
+    Session.fromUrl(http, { headers: STANDARD_HEADERS, ...options.headers }),
+    Session.fromUrl(https, { headers: STANDARD_HEADERS, ...options.headers }),
   ]);
 
   if (!httpSession && !httpsSession) {

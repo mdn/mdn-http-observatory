@@ -1,4 +1,4 @@
-import { assert, expect } from "chai";
+import { assert } from "chai";
 
 import { retrieve } from "../src/retriever/retriever.js";
 import { Session } from "../src/retriever/session.js";
@@ -8,32 +8,29 @@ import { detectTlsSupport } from "../src/retriever/url.js";
 
 describe("TestRetriever", () => {
   it("detects tls on a custom port", async () => {
-    {
-      const site = Site.fromSiteString("generalmagic.space:8443");
-      const res = await detectTlsSupport(site);
-      console.log(res);
-      assert.isTrue(res);
-    }
-    {
-      const site = Site.fromSiteString("generalmagic.space:8081");
-      try {
-        await detectTlsSupport(site);
-        throw new Error("scan should throw");
-      } catch (e) {
-        if (e instanceof Error) {
-          assert.equal(e.name, "site-down");
-        } else {
-          throw new Error("Unexpected error type");
-        }
+    let site = Site.fromSiteString("generalmagic.space:8443");
+    let res = await detectTlsSupport(site);
+    assert.isTrue(res);
+    site = Site.fromSiteString("generalmagic.space:8080");
+    res = await detectTlsSupport(site);
+    assert.isFalse(res);
+    site = Site.fromSiteString("generalmagic.space:8684");
+    try {
+      await detectTlsSupport(site);
+      throw new Error("scan should throw");
+    } catch (e) {
+      if (e instanceof Error) {
+        assert.equal(e.name, "site-down");
+      } else {
+        throw new Error("Unexpected error type");
       }
     }
   });
 
-  it.skip("test retrieve mdn", async () => {
-    const site = Site.fromSiteString("developer.mozilla.org");
-    console.log("SITE", site);
+  it.only("test retrieve mdn", async () => {
+    const site = Site.fromSiteString("developer.mozilla.org/en-US");
     const requests = await retrieve(site);
-    console.log("REQUESTS", requests);
+    // console.log("REQUESTS", requests);
     assert.isNotNull(requests.resources.path);
     assert.isNotNull(requests.responses.auto);
     assert.isNotNull(requests.responses.http);
@@ -56,7 +53,7 @@ describe("TestRetriever", () => {
     );
   }).timeout(10000);
 
-  it.skip("test retrieve non-existent domain", async function () {
+  it("test retrieve non-existent domain", async function () {
     const domain =
       Array(223)
         .fill(0)
@@ -75,7 +72,7 @@ describe("TestRetriever", () => {
   });
 
   // test site seems to have outage from time to time, disable for now
-  it.skip("test_retrieve_invalid_cert", async function () {
+  it("test_retrieve_invalid_cert", async function () {
     const site = Site.fromSiteString("expired.badssl.com");
     const reqs = await retrieve(site);
     assert.isNotNull(reqs.responses.auto);

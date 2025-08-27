@@ -9,6 +9,6 @@
   },
   "tests": {
     "enableDBTests": false,
-    "hostForPortAndPathChecks": "generalmagic.space"
+    "hostForPortAndPathChecks": ""
   }
 }

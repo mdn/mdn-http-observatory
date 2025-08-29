@@ -1,0 +1,24 @@
+name: Stage deploy
+
+on:
+  push:
+    branches:
+      - main
+
+  workflow_dispatch:
+    inputs:
+      ref:
+        description: "Branch to deploy (default: main)"
+        required: false
+        default: refs/heads/main
+
+permissions: {}
+
+jobs:
+  deploy:
+    if: github.repository_owner == 'mdn' && github.actor != 'dependabot[bot]'
+    uses: ./.github/workflows/_deploy.yml
+    secrets: inherit
+    with:
+      environment: staging
+      ref: ${{ inputs.ref }}

@@ -1,0 +1,20 @@
+name: Prod deploy
+
+on:
+  push:
+    tags:
+      - "v*"
+
+  workflow_dispatch:
+
+permissions: {}
+
+jobs:
+  deploy:
+    if: github.repository_owner == 'mdn' && github.ref_protected
+    uses: ./.github/workflows/_deploy.yml
+    secrets: inherit
+    with:
+      environment: production
+      ref: ${{ github.ref }}
+      tag: ${{ github.ref_name }}

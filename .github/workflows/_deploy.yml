@@ -1,5 +1,5 @@
 name: Deploy (reusable)
-description: Builds, pushes, and tags a Docker image.
+description: Builds and pushes a Docker image.
 
 on:
   workflow_call:

@@ -1,4 +1,4 @@
-name: Prod deploy
+name: Prod build
 
 on:
   push:
@@ -10,9 +10,9 @@ on:
 permissions: {}
 
 jobs:
-  deploy:
+  build:
     if: github.repository_owner == 'mdn' && github.ref_protected
-    uses: ./.github/workflows/_deploy.yml
+    uses: ./.github/workflows/_build.yml
     secrets: inherit
     with:
       environment: production

@@ -1,4 +1,4 @@
-name: Stage deploy
+name: Stage build
 
 on:
   push:
@@ -8,16 +8,16 @@ on:
   workflow_dispatch:
     inputs:
       ref:
-        description: "Branch to deploy (default: main)"
+        description: "Branch to build (default: main)"
         required: false
         default: refs/heads/main
 
 permissions: {}
 
 jobs:
-  deploy:
+  build:
     if: github.repository_owner == 'mdn' && github.actor != 'dependabot[bot]'
-    uses: ./.github/workflows/_deploy.yml
+    uses: ./.github/workflows/_build.yml
     secrets: inherit
     with:
       environment: staging

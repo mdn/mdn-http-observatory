@@ -1,4 +1,4 @@
-name: Deploy (reusable)
+name: Build (reusable)
 description: Builds and pushes a Docker image.
 
 on:
@@ -9,7 +9,7 @@ on:
         required: true
 
       ref:
-        description: "Branch to deploy (default: main)"
+        description: "Branch to build (default: main)"
         type: string
         default: main
 
@@ -23,7 +23,7 @@ env:
   REGISTRY: us-docker.pkg.dev
 
 concurrency:
-  group: deploy-${{ inputs.environment }}
+  group: build-${{ inputs.environment }}
   cancel-in-progress: false
 
 jobs:

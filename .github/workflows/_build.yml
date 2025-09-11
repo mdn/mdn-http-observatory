@@ -1,0 +1,99 @@
+name: Build (reusable)
+description: Builds and pushes a Docker image.
+
+on:
+  workflow_call:
+    inputs:
+      environment:
+        type: string
+        required: true
+
+      ref:
+        description: "Branch to build (default: main)"
+        type: string
+
+      tag:
+        description: "Additional tag for the Docker image"
+        type: string
+        required: false
+
+env:
+  IMAGE: mdn-observatory
+  REGISTRY: us-docker.pkg.dev
+
+concurrency:
+  group: build-${{ inputs.environment }}
+
+jobs:
+  docker-build-push:
+    environment: build
+    runs-on: ubuntu-latest
+
+    permissions:
+      # Read/write GHA cache.
+      actions: write
+      # Checkout.
+      contents: read
+      # Authenticate with GCP.
+      id-token: write
+
+    steps:
+      - name: Validate tag format
+        if: inputs.tag
+        env:
+          TAG: ${{ inputs.tag }}
+        run: |
+          if [[ ! "$TAG" =~ ^v[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
+            echo "❌ Invalid tag: $TAG does not match format vX.Y.Z (e.g., v1.2.3)"
+            exit 1
+          fi
+          echo "✅ Valid tag: $TAG"
+
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ inputs.ref || github.event.repository.default_branch }}
+
+      - name: Docker setup
+        uses: docker/setup-buildx-action@e468171a9de216ec08956ac3ada2f0791b6bd435 # v3.11.1
+
+      - name: GCP auth
+        id: gcp-auth
+        uses: google-github-actions/auth@v2
+        with:
+          token_format: access_token
+          service_account: artifact-writer@${{ secrets.GCP_PROJECT_NAME }}.iam.gserviceaccount.com
+          workload_identity_provider: projects/${{ secrets.WIP_PROJECT_ID }}/locations/global/workloadIdentityPools/github-actions/providers/github-actions
+
+      - name: Gather GIT_SHA and DOCKER_TAGS
+        id: gather-build-metadata
+        run: |
+          IMAGE_PREFIX="${{ env.REGISTRY }}/${{ secrets.GCP_PROJECT_NAME }}/${{ secrets.GAR_REPOSITORY }}/${{ env.IMAGE }}"
+
+          GIT_SHA="$(git rev-parse HEAD)"
+          DOCKER_TAGS="$IMAGE_PREFIX:$GIT_SHA"
+
+          if [ -n "${{ inputs.tag }}" ]; then
+            DOCKER_TAGS="$DOCKER_TAGS,$IMAGE_PREFIX:${{ inputs.tag }}"
+          fi
+
+          echo "GIT_SHA=$GIT_SHA" >> "$GITHUB_OUTPUT"
+          echo "DOCKER_TAGS=$DOCKER_TAGS" >> "$GITHUB_OUTPUT"
+
+      - name: Docker login
+        uses: docker/login-action@184bdaa0721073962dff0199f1fb9940f07167d1 # v3.5.0
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: oauth2accesstoken
+          password: ${{ steps.gcp-auth.outputs.access_token }}
+
+      - name: Build and push
+        uses: docker/build-push-action@263435318d21b8e681c14492fe198d362a7d2c83 # v6.18.0
+        with:
+          context: .
+          build-args: |
+            GIT_SHA=${{ steps.gather-build-metadata.outputs.GIT_SHA }}
+          tags: ${{ steps.gather-build-metadata.outputs.DOCKER_TAGS }}
+          push: true
+          cache-from: type=gha
+          cache-to: type=gha,mode=max

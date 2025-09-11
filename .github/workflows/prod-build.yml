@@ -6,15 +6,25 @@ on:
       - "v*"
 
   workflow_dispatch:
+    inputs:
+      tag:
+        description: "Tag to build (e.g. v1.13.0)"
+        required: true
 
-permissions: {}
+permissions:
+  # Read/write GHA cache.
+  actions: write
+  # Checkout.
+  contents: read
+  # Authenticate with GCP.
+  id-token: write
 
 jobs:
   build:
-    if: github.repository_owner == 'mdn' && github.ref_protected
+    if: github.repository_owner == 'mdn'
     uses: ./.github/workflows/_build.yml
     secrets: inherit
     with:
-      environment: production
-      ref: ${{ github.ref }}
-      tag: ${{ github.ref_name }}
+      environment: prod
+      ref: ${{ inputs.tag || github.ref }}
+      tag: ${{ inputs.tag || github.ref_name }}

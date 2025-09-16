@@ -29,6 +29,7 @@ jobs:
         uses: actions/setup-node@v5
         with:
           node-version-file: ".nvmrc"
+          package-manager-cache: false
 
       - name: Install dependencies
         run: "npm install"

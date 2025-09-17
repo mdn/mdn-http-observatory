@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.4.3](https://github.com/mdn/mdn-http-observatory/compare/v1.4.2...v1.4.3) (2025-09-17)
+
+
+### Miscellaneous
+
+* **dependabot:** specify commit message format ([#295](https://github.com/mdn/mdn-http-observatory/issues/295)) ([2d5b0ce](https://github.com/mdn/mdn-http-observatory/commit/2d5b0cedfc885fee49c50bef75e2b452e45fc4b7))
+
 ## [1.4.2](https://github.com/mdn/mdn-http-observatory/compare/v1.4.1...v1.4.2) (2025-09-11)
 
 

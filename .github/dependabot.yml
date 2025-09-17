@@ -5,13 +5,21 @@ updates:
     directory: "/"
     schedule:
       interval: "weekly"
+    commit-message:
+      prefix: "ci(deps): "
 
   - package-ecosystem: npm
     directory: "/"
     schedule:
       interval: weekly
+    commit-message:
+      prefix: "chore(deps): "
+      prefix-development: "chore(deps-dev): "
 
   - package-ecosystem: npm
     directory: "/mdn-observatory-webext"
     schedule:
       interval: weekly
+    commit-message:
+      prefix: "chore(deps): "
+      prefix-development: "chore(deps-dev): "

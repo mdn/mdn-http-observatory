@@ -25,6 +25,7 @@ import { PolicyResponse } from "./schemas.js";
 import { Expectation } from "../../types.js";
 import { TEST_TITLES } from "../../grader/charts.js";
 import { scan } from "../../scanner/index.js";
+import { TLDS } from "../../../conf/public_suffix_list.js";
 
 /**
  *
@@ -68,8 +69,13 @@ export async function validHostname(hostname) {
     // hostname.endsWith(".example.net") ||
     // hostname === "example.org" ||
     // hostname.endsWith(".example.org") ||
-    // RFC 6762
+    // RFC 6762 + docker, kubernetes, consul etc
     hostname.endsWith(".local") ||
+    hostname.endsWith(".svc") ||
+    hostname.endsWith(".internal") ||
+    hostname.endsWith(".consul") ||
+    hostname.endsWith(".mesos") ||
+    hostname.endsWith(".") ||
     hostname === ""
   ) {
     throw new InvalidHostNameError();

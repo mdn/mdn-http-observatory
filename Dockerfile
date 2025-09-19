@@ -14,6 +14,7 @@ ARG GIT_SHA=dev
 ARG RUN_ID=unknown
 # Get the current HSTS list
 RUN npm run updateHsts
+RUN npm run updatePublicSuffixList
 
 RUN env
 

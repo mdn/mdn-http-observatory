@@ -40,7 +40,7 @@ const dirname = path.dirname(fileURLToPath(import.meta.url));
  * Download the Google HSTS preload list
  * @returns
  */
-async function retrieveAndStoreHsts() {
+export async function retrieveAndStoreHsts() {
   let r;
   try {
     r = await axios.get(HSTS_URL.href);
@@ -84,4 +84,7 @@ function removeJsonComments(jsonString) {
   return jsonString.replace(/\/\/.*$/gm, "");
 }
 
-await retrieveAndStoreHsts();
+// Execute when run directly
+if (import.meta.url === `file://${process.argv[1]}`) {
+  retrieveAndStoreHsts().catch(console.error);
+}

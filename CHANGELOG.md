@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.4.2](https://github.com/mdn/mdn-http-observatory/compare/v1.4.1...v1.4.2) (2025-09-11)
+
+
+### Miscellaneous
+
+* **workflows:** remove advanced CodeQL setup ([#280](https://github.com/mdn/mdn-http-observatory/issues/280)) ([816df5b](https://github.com/mdn/mdn-http-observatory/commit/816df5bd41f450ea33157310d455dd7e50b6396e))
+
 ## [1.4.1](https://github.com/mdn/mdn-http-observatory/compare/v1.4.0...v1.4.1) (2025-06-27)
 
 

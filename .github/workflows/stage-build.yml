@@ -1,0 +1,29 @@
+name: Stage build
+
+on:
+  push:
+    branches:
+      - main
+
+  workflow_dispatch:
+    inputs:
+      ref:
+        description: "Branch to build (default: main)"
+        required: false
+
+permissions:
+  # Read/write GHA cache.
+  actions: write
+  # Checkout.
+  contents: read
+  # Authenticate with GCP.
+  id-token: write
+
+jobs:
+  build:
+    if: github.repository_owner == 'mdn' && github.actor != 'dependabot[bot]'
+    uses: ./.github/workflows/_build.yml
+    secrets: inherit
+    with:
+      environment: stage
+      ref: ${{ inputs.ref || github.event.repository.default_branch }}

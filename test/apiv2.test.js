@@ -154,6 +154,8 @@ describeOrSkip("API V2", function () {
       "local",
       "foo.local",
       "foo.local.",
+      "test.svc",
+      "test.svc.",
     ];
     for (const host of hosts) {
       const response = await app.inject({

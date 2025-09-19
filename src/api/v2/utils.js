@@ -53,29 +53,11 @@ export function isIp(hostname) {
 export async function validHostname(hostname) {
   // remove any trailing dot
   hostname = hostname.replace(/\.$/, "");
+  const tld = hostname.split(".").pop()?.toLowerCase();
   if (
+    !hostname ||
     !hostname.includes(".") ||
-    hostname === "localhost" ||
-    // RFC 2606
-    hostname.endsWith(".test") ||
-    hostname.endsWith(".example") ||
-    hostname.endsWith(".invalid") ||
-    hostname.endsWith(".localhost") ||
-    // RFC 6761
-    // We allow these as they are valid domains and may be useful.
-    // hostname === "example.com" ||
-    // hostname.endsWith(".example.com") ||
-    // hostname === "example.net" ||
-    // hostname.endsWith(".example.net") ||
-    // hostname === "example.org" ||
-    // hostname.endsWith(".example.org") ||
-    // RFC 6762 + docker, kubernetes, consul etc
-    hostname.endsWith(".local") ||
-    hostname.endsWith(".svc") ||
-    hostname.endsWith(".internal") ||
-    hostname.endsWith(".consul") ||
-    hostname.endsWith(".mesos") ||
-    hostname.endsWith(".") ||
+    !TLDS.has(tld || "") ||
     hostname === ""
   ) {
     throw new InvalidHostNameError();

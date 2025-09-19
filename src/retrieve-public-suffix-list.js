@@ -23,7 +23,7 @@ export async function retrieveAndStorePublicSuffixList() {
   const data = cleanData(r.data);
   const filePath = path.join(dirname, "..", "conf", "public_suffix_list.js");
   try {
-    await writeFile(filePath, `export const TLDS = [${data}];`);
+    await writeFile(filePath, `export const TLDS = new Set([${data}]);`);
     console.log(`File written to ${filePath}`);
   } catch (error) {
     console.error("Error writing file:", error);

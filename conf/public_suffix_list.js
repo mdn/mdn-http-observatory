@@ -1,4 +1,4 @@
-export const TLDS = ["aaa",
+export const TLDS = new Set(["aaa",
 "aarp",
 "abb",
 "abbott",
@@ -1436,4 +1436,4 @@ export const TLDS = ["aaa",
 "zm",
 "zone",
 "zuerich",
-"zw"];
+"zw"]);

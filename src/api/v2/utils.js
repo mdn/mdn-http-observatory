@@ -25,6 +25,7 @@ import { PolicyResponse } from "./schemas.js";
 import { Expectation } from "../../types.js";
 import { TEST_TITLES } from "../../grader/charts.js";
 import { scan } from "../../scanner/index.js";
+import { TLDS } from "../../../conf/public_suffix_list.js";
 
 /**
  *
@@ -52,24 +53,11 @@ export function isIp(hostname) {
 export async function validHostname(hostname) {
   // remove any trailing dot
   hostname = hostname.replace(/\.$/, "");
+  const tld = hostname.split(".").pop()?.toLowerCase();
   if (
+    !hostname ||
     !hostname.includes(".") ||
-    hostname === "localhost" ||
-    // RFC 2606
-    hostname.endsWith(".test") ||
-    hostname.endsWith(".example") ||
-    hostname.endsWith(".invalid") ||
-    hostname.endsWith(".localhost") ||
-    // RFC 6761
-    // We allow these as they are valid domains and may be useful.
-    // hostname === "example.com" ||
-    // hostname.endsWith(".example.com") ||
-    // hostname === "example.net" ||
-    // hostname.endsWith(".example.net") ||
-    // hostname === "example.org" ||
-    // hostname.endsWith(".example.org") ||
-    // RFC 6762
-    hostname.endsWith(".local") ||
+    !TLDS.has(tld || "") ||
     hostname === ""
   ) {
     throw new InvalidHostNameError();

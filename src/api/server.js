@@ -22,7 +22,7 @@ const FILTERED_ERROR_TYPES = [
   "scan-failed",
   "site-down",
 ];
-const FILTERED_ERROR_PREFIXES = ["FST_ERR_VALIDATION"];
+const FILTERED_ERROR_CODES = ["FST_ERR_VALIDATION"];
 
 if (CONFIG.sentry.dsn) {
   Sentry.init({
@@ -38,30 +38,18 @@ if (CONFIG.sentry.dsn) {
       if (event.tags?.["http.status_code"] === "422") {
         return null;
       }
-
       // Filter out common user errors
       // @ts-ignore
       const errorType = originalError?.name || "";
       if (FILTERED_ERROR_TYPES.includes(errorType)) {
         return null;
       }
-
       // Filter out errors from query schema validation
-      // ex: querystring must have required property
       // @ts-ignore
       const errorMessage = originalError?.code || "";
-      if (
-        FILTERED_ERROR_PREFIXES.some((prefix) =>
-          errorMessage.startsWith(prefix)
-        )
-      ) {
+      if (FILTERED_ERROR_CODES.includes(errorMessage)) {
         return null;
       }
-
-      console.log(
-        "beforeSend: passing",
-        JSON.stringify(originalError, null, 2)
-      );
       return event;
     },
   });

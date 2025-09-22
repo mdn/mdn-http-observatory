@@ -8,13 +8,11 @@ RUN apt-get -y update && \
 WORKDIR /home/node/app
 USER node
 COPY --chown=node:node . .
+# This also installs hsts and suffix list in a postinstall script:
 RUN npm install
 
 ARG GIT_SHA=dev
 ARG RUN_ID=unknown
-# Get the current HSTS list
-RUN npm run updateHsts
-RUN npm run updatePublicSuffixList
 
 RUN env
 

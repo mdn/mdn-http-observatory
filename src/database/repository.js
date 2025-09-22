@@ -19,10 +19,10 @@ export const poolOptions = {
   password: CONFIG.database.pass,
   port: CONFIG.database.port,
   ssl: CONFIG.database.sslmode,
-  max: 80, // set pool max size to 80
-  idleTimeoutMillis: 10000, // close idle clients after 10 seconds
-  connectionTimeoutMillis: 2000, // return an error after 2 seconds if connection could not be established
-  maxUses: 10000, // close (and replace) a connection after it has been used 10000 times
+  max: 40, // set pool max size to 50
+  idleTimeoutMillis: 1000, // close idle clients after 1 second
+  connectionTimeoutMillis: 1000, // return an error after 1 second if connection could not be established
+  maxUses: 10000, // close (and replace) a connection after it has been used 7500 times (see below for discussion)
 };
 
 /**

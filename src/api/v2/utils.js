@@ -25,7 +25,7 @@ import { PolicyResponse } from "./schemas.js";
 import { Expectation } from "../../types.js";
 import { TEST_TITLES } from "../../grader/charts.js";
 import { scan } from "../../scanner/index.js";
-import { TLDS } from "../../../conf/public_suffix_list.js";
+import { TLDS } from "../../../conf/public-suffix-list.js";
 
 /**
  *

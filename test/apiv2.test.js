@@ -171,7 +171,7 @@ describeOrSkip("API V2", function () {
   it("responds to GET /analyze of a known host", async function () {
     const app = await createServer();
     // create a scan first
-    const _ = await app.inject({
+    await app.inject({
       method: "POST",
       url: "/api/v2/analyze?host=www.mozilla.org",
     });

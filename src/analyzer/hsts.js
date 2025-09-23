@@ -43,8 +43,8 @@ export function isHstsPreloaded(hostname) {
   }
 
   // Either the hostname is in the list *or* the TLD is and includeSubDomains is true
+  console.log("hostname: ", hostname);
   const hostParts = hostname.split(".");
-  const levels = hostParts.length;
 
   // If hostname is foo.bar.baz.mozilla.org, check bar.baz.mozilla.org,
   // baz.mozilla.org, mozilla.org, and.org

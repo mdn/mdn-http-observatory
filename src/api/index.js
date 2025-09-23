@@ -1,5 +1,4 @@
 import { CONFIG } from "../config.js";
-import { migrateDatabase } from "../database/migrate.js";
 import { createServer } from "./server.js";
 
 async function main() {

@@ -13,10 +13,7 @@
     "noUnusedLocals": true,
     "noUnusedParameters": true,
     "noImplicitReturns": true,
-    "noFallthroughCasesInSwitch": true,
-    "paths": {
-      "@*": ["./src/types.js"]
-    }
+    "noFallthroughCasesInSwitch": true
   },
   "exclude": ["node_modules", "mdn-observatory-webext"]
 }

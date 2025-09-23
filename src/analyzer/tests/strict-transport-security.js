@@ -54,7 +54,7 @@ export function strictTransportSecurityTest(
     // Also need a valid certificate chain for HSTS
     output.result = Expectation.HstsInvalidCert;
   } else if (getHttpHeaders(response, STRICT_TRANSPORT_SECURITY).length > 0) {
-    const header = getHttpHeaders(response, STRICT_TRANSPORT_SECURITY)[0];
+    const header = getHttpHeaders(response, STRICT_TRANSPORT_SECURITY)[0] || "";
     output.data = header.slice(0, 1024); // code against malicious headers
 
     try {

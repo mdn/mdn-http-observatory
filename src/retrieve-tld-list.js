@@ -3,7 +3,7 @@ import { writeFile } from "fs/promises";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 
-const PUBLIC_SUFFIX_LIST_URL = new URL(
+const TLD_LIST_URL = new URL(
   "https://data.iana.org/TLD/tlds-alpha-by-domain.txt"
 );
 
@@ -12,18 +12,18 @@ const dirname = path.dirname(fileURLToPath(import.meta.url));
 /**
  * Download the IANA-maintained public suffix list
  */
-export async function retrieveAndStorePublicSuffixList() {
+export async function retrieveAndStoreTldList() {
   let r;
   try {
-    r = await axios.get(PUBLIC_SUFFIX_LIST_URL.href);
+    r = await axios.get(TLD_LIST_URL.href);
   } catch (error) {
     console.error("Error getting data:", error);
     return;
   }
   const data = cleanData(r.data);
-  const filePath = path.join(dirname, "..", "conf", "public-suffix-list.js");
+  const filePath = path.join(dirname, "..", "conf", "tld-list.json");
   try {
-    await writeFile(filePath, `export const TLDS = new Set([${data}]);`);
+    await writeFile(filePath, `[${data}]`);
     console.log(`File written to ${filePath}`);
   } catch (error) {
     console.error("Error writing file:", error);
@@ -48,5 +48,5 @@ function cleanData(data) {
 
 // Execute when run directly
 if (import.meta.url === `file://${process.argv[1]}`) {
-  retrieveAndStorePublicSuffixList().catch(console.error);
+  retrieveAndStoreTldList().catch(console.error);
 }

@@ -8,7 +8,7 @@ RUN apt-get -y update && \
 WORKDIR /home/node/app
 USER node
 COPY --chown=node:node . .
-# This also installs hsts and suffix data files in a postinstall script:
+# This also installs hsts and tld data files in a postinstall script:
 RUN npm install
 
 ARG GIT_SHA=dev

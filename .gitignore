@@ -3,6 +3,7 @@ node_modules/
 conf/config.json
 conf/hsts-preload.json
 conf/public-suffix-list.js
+conf/tld-list.json
 api-examples.http
 mdn-observatory-webext/dist
 .DS_Store

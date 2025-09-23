@@ -8,12 +8,10 @@ const pool = createPool();
 const res = await refreshMaterializedViews(pool);
 console.log("Successfully refreshed materialized views.");
 
-// get the public suffix list from https://publicsuffix.org/list/public_suffix_list.dat
-import { retrieveAndStorePublicSuffixList } from "../retrieve-public-suffix-list.js";
-await retrieveAndStorePublicSuffixList();
-console.log("Successfully updated public suffix list.");
+import { retrieveAndStoreTldList } from "../retrieve-tld-list.js";
+await retrieveAndStoreTldList();
+console.log("Successfully updated TLD list.");
 
-// update HSTS database
 import { retrieveAndStoreHsts } from "../retrieve-hsts.js";
 await retrieveAndStoreHsts();
 console.log("Successfully updated HSTS data.");

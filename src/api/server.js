@@ -22,7 +22,10 @@ const FILTERED_ERROR_TYPES = [
   "scan-failed",
   "site-down",
 ];
-const FILTERED_ERROR_CODES = ["FST_ERR_VALIDATION"];
+const FILTERED_ERROR_CODES = [
+  "FST_ERR_VALIDATION",
+  "FST_ERR_CTP_INVALID_MEDIA_TYPE",
+];
 const FILTERED_STATUS_CODES = [422];
 
 if (CONFIG.sentry.dsn) {

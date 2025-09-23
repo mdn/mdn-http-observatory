@@ -1,5 +1,23 @@
 # Changelog
 
+## [1.4.3](https://github.com/mdn/mdn-http-observatory/compare/v1.4.2...v1.4.3) (2025-09-23)
+
+
+### Miscellaneous
+
+* **dependabot:** specify commit message format ([#295](https://github.com/mdn/mdn-http-observatory/issues/295)) ([2d5b0ce](https://github.com/mdn/mdn-http-observatory/commit/2d5b0cedfc885fee49c50bef75e2b452e45fc4b7))
+* **deps-dev:** bump esbuild from 0.25.9 to 0.25.10 in /mdn-observatory-webext ([#300](https://github.com/mdn/mdn-http-observatory/issues/300)) ([983b2d7](https://github.com/mdn/mdn-http-observatory/commit/983b2d75e3b6372e056e951843d114521d28a2e0))
+* **deps:** bump tldts from 7.0.12 to 7.0.15 ([#301](https://github.com/mdn/mdn-http-observatory/issues/301)) ([a2aac99](https://github.com/mdn/mdn-http-observatory/commit/a2aac99f27dcd3a9cef78f12540746e7ad5938e7))
+* filter out common non-fatal errors from sentry ([#298](https://github.com/mdn/mdn-http-observatory/issues/298)) ([8790079](https://github.com/mdn/mdn-http-observatory/commit/87900793b180c45f76d76a933eadac4d03f9e07d))
+* pgpool settings adjustments ([#299](https://github.com/mdn/mdn-http-observatory/issues/299)) ([88d06b7](https://github.com/mdn/mdn-http-observatory/commit/88d06b7e736f7931564dec58940da98d7ba5a11b))
+
+## [1.4.2](https://github.com/mdn/mdn-http-observatory/compare/v1.4.1...v1.4.2) (2025-09-11)
+
+
+### Miscellaneous
+
+* **workflows:** remove advanced CodeQL setup ([#280](https://github.com/mdn/mdn-http-observatory/issues/280)) ([816df5b](https://github.com/mdn/mdn-http-observatory/commit/816df5bd41f450ea33157310d455dd7e50b6396e))
+
 ## [1.4.1](https://github.com/mdn/mdn-http-observatory/compare/v1.4.0...v1.4.1) (2025-06-27)
 
 

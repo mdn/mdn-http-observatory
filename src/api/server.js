@@ -2,7 +2,7 @@ import Fastify from "fastify";
 import simpleFormPlugin from "fastify-simple-form";
 import cors from "@fastify/cors";
 import helmet from "@fastify/helmet";
-import { init as initSentry, setupFastifyErrorHandler } from "@sentry/node";
+import * as Sentry from "@sentry/node";
 
 // import analyzeApiV1 from "./v1/analyze/index.js";
 import analyzeApiV2 from "./v2/analyze/index.js";
@@ -15,9 +15,52 @@ import pool from "@fastify/postgres";
 import { poolOptions } from "../database/repository.js";
 import { CONFIG } from "../config.js";
 
+const FILTERED_ERROR_TYPES = [
+  "invalid-hostname",
+  "invalid-hostname-lookup",
+  "invalid-hostname-ip",
+  "scan-failed",
+  "site-down",
+];
+const FILTERED_ERROR_CODES = ["FST_ERR_VALIDATION"];
+const FILTERED_STATUS_CODES = [422];
+
 if (CONFIG.sentry.dsn) {
-  initSentry({
+  Sentry.init({
     dsn: CONFIG.sentry.dsn,
+    beforeSend(event, hint) {
+      // Filter all 422 status codes
+      const originalError = hint.originalException;
+      if (
+        // @ts-expect-error
+        FILTERED_STATUS_CODES.includes(originalError?.statusCode) ||
+        // @ts-expect-error
+        FILTERED_STATUS_CODES.includes(originalError?.originalError?.status)
+      ) {
+        return null;
+      }
+      // Also check event tags for HTTP status
+      if (
+        FILTERED_STATUS_CODES.includes(
+          Number(event.tags?.["http.status_code"] || 0)
+        )
+      ) {
+        return null;
+      }
+      // Filter out common user errors
+      // @ts-expect-error
+      const errorType = originalError?.name || "";
+      if (FILTERED_ERROR_TYPES.includes(errorType)) {
+        return null;
+      }
+      // Filter out errors from query schema validation
+      // @ts-ignore
+      const errorMessage = originalError?.code || "";
+      if (FILTERED_ERROR_CODES.includes(errorMessage)) {
+        return null;
+      }
+      return event;
+    },
   });
 }
 
@@ -31,7 +74,8 @@ export async function createServer() {
   });
 
   if (CONFIG.sentry.dsn) {
-    setupFastifyErrorHandler(server);
+    server.log.error("Sentry enabled");
+    Sentry.setupFastifyErrorHandler(server);
   }
 
   // @ts-ignore

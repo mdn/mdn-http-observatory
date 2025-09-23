@@ -23,6 +23,7 @@ const FILTERED_ERROR_TYPES = [
   "site-down",
 ];
 const FILTERED_ERROR_CODES = ["FST_ERR_VALIDATION"];
+const FILTERED_STATUS_CODES = [422];
 
 if (CONFIG.sentry.dsn) {
   Sentry.init({
@@ -30,16 +31,24 @@ if (CONFIG.sentry.dsn) {
     beforeSend(event, hint) {
       // Filter all 422 status codes
       const originalError = hint.originalException;
-      // @ts-ignore
-      if (originalError?.statusCode === 422 || originalError?.status === 422) {
+      if (
+        // @ts-expect-error
+        FILTERED_STATUS_CODES.includes(originalError?.statusCode) ||
+        // @ts-expect-error
+        FILTERED_STATUS_CODES.includes(originalError?.originalError?.status)
+      ) {
         return null;
       }
       // Also check event tags for HTTP status
-      if (event.tags?.["http.status_code"] === "422") {
+      if (
+        FILTERED_STATUS_CODES.includes(
+          Number(event.tags?.["http.status_code"] || 0)
+        )
+      ) {
         return null;
       }
       // Filter out common user errors
-      // @ts-ignore
+      // @ts-expect-error
       const errorType = originalError?.name || "";
       if (FILTERED_ERROR_TYPES.includes(errorType)) {
         return null;

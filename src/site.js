@@ -57,6 +57,14 @@ export class Site {
   }
 
   /**
+   *
+   * @returns a string suitable for the site field in the database
+   */
+  asSiteKey() {
+    return `${this.hostname}${this.port ? `:${this.port}` : ""}${this.path || ""}`;
+  }
+
+  /**
    * Parses a site string and creates a Site instance.
    *
    * This method can parse various site string formats:

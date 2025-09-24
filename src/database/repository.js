@@ -155,17 +155,17 @@ export async function insertTestResults(pool, siteId, scanId, scanResult) {
 /**
  *
  * @param {Pool} pool
- * @param {string} hostname
+ * @param {string} siteKey
  * @returns {Promise<number>}
  */
-export async function ensureSite(pool, hostname) {
+export async function ensureSite(pool, siteKey) {
   // Return known id
   const result = await pool.query(
     `SELECT id FROM sites
       WHERE domain = $1
       ORDER BY creation_time DESC
       LIMIT 1`,
-    [hostname]
+    [siteKey]
   );
   if (result.rowCount && result.rowCount > 0) {
     return result.rows[0]["id"];
@@ -176,7 +176,7 @@ export async function ensureSite(pool, hostname) {
     `INSERT INTO sites (domain, creation_time)
       VALUES ($1, NOW())
       RETURNING id`,
-    [hostname]
+    [siteKey]
   );
   return insert.rows[0]["id"];
 }

@@ -28,7 +28,6 @@ import { PolicyResponse } from "./schemas.js";
 import { Expectation } from "../../types.js";
 import { TEST_TITLES } from "../../grader/charts.js";
 import { scan } from "../../scanner/index.js";
-import { Site } from "../../site.js";
 
 /**
  *
@@ -108,8 +107,8 @@ export async function validHostname(hostname) {
 
 /**
  *
- * @param {import("../../site.js").SiteString} site
- * @returns {Promise<import("../../site.js").SiteString>}
+ * @param {import("../../site.js").Site} site
+ * @returns {Promise<import("../../site.js").Site>}
  */
 export async function checkSitename(site) {
   // first, divide the site string into its components: hostname, port (optional) and path (optional)
@@ -120,16 +119,16 @@ export async function checkSitename(site) {
   // maybe try to create a URL object from the results, just to make sure we have something worth checking
   // finally, return the sanitized site string.
 
-  if (isIp(site)) {
+  if (isIp(site.hostname)) {
     throw new InvalidHostNameIpError();
   }
 
   // Try prefixing with `www.` if it fails on first try
   try {
-    site = await validHostname(site);
+    site.hostname = await validHostname(site.hostname);
   } catch (e) {
     if (e instanceof InvalidHostNameLookupError) {
-      site = await validHostname(`www.${site}`);
+      site.hostname = await validHostname(`www.${site.hostname}`);
     } else {
       throw e;
     }
@@ -242,16 +241,15 @@ export function hydrateTests(tests) {
 /**
  *
  * @param {Pool} pool
- * @param {import("../../site.js").SiteString} siteString
+ * @param {import("../../site.js").Site} site
  * @returns {Promise<import("../../database/repository.js").ScanRow>}
  */
-export async function executeScan(pool, siteString) {
-  const siteId = await ensureSite(pool, siteString);
+export async function executeScan(pool, site) {
+  const siteId = await ensureSite(pool, site.asSiteKey());
   let scanRow = await insertScan(pool, siteId);
   const scanId = scanRow.id;
   let scanResult;
   try {
-    const site = Site.fromSiteString(siteString);
     scanResult = await scan(site);
   } catch (e) {
     if (e instanceof Error) {

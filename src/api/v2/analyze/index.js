@@ -1,5 +1,6 @@
 import { CONFIG } from "../../../config.js";
 import { selectScanLatestScanByHost } from "../../../database/repository.js";
+import { Site } from "../../../site.js";
 import { SCHEMAS } from "../schemas.js";
 import {
   checkSitename,
@@ -28,12 +29,14 @@ export default async function (fastify) {
         /** @type {import("../../v2/schemas.js").AnalyzeReqQuery} */ (
           request.query
         );
-      let hostname = query.host.trim().toLowerCase();
-      hostname = await checkSitename(hostname);
+      const hostname = query.host.trim().toLowerCase();
+      let site = Site.fromSiteString(hostname);
+      site = await checkSitename(site);
+      request.log.info(`HERE ${hostname} ${JSON.stringify(site)}`);
       return await scanOrReturnRecent(
         fastify,
         pool,
-        hostname,
+        site,
         CONFIG.api.cacheTimeForGet
       );
     }
@@ -47,34 +50,28 @@ export default async function (fastify) {
         /** @type {import("../../v2/schemas.js").AnalyzeReqQuery} */ (
           request.query
         );
-      let hostname = query.host.trim().toLowerCase();
-      hostname = await checkSitename(hostname);
-      return await scanOrReturnRecent(
-        fastify,
-        pool,
-        hostname,
-        CONFIG.api.cooldown
-      );
+      const hostname = query.host.trim().toLowerCase();
+      let site = Site.fromSiteString(hostname);
+      site = await checkSitename(site);
+      request.log.info(`HERE ${hostname} ${JSON.stringify(site)}`);
+      return await scanOrReturnRecent(fastify, pool, site, CONFIG.api.cooldown);
     }
   );
 }
 
 /**
  *
- * @param {import("fastify").FastifyInstance} fastify
+ * @param {import("fastify").FastifyInstance} _fastify
  * @param {Pool} pool
- * @param {import("../../../site.js").SiteString} siteString
+ * @param {import("../../../site.js").Site} site
  * @param {number} age
  * @returns {Promise<any>}
  */
-async function scanOrReturnRecent(fastify, pool, siteString, age) {
-  let scanRow = await selectScanLatestScanByHost(pool, siteString, age);
+async function scanOrReturnRecent(_fastify, pool, site, age) {
+  let scanRow = await selectScanLatestScanByHost(pool, site.asSiteKey(), age);
   if (!scanRow) {
     // do a rescan
-    fastify.log.info("Rescanning because no recent scan could be found");
-    scanRow = await executeScan(pool, siteString);
-  } else {
-    fastify.log.info("Returning a recent scan result");
+    scanRow = await executeScan(pool, site);
   }
   const scanId = scanRow.id;
   const siteId = scanRow.site_id;

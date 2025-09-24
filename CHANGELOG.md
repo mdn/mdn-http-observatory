@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.4.4](https://github.com/mdn/mdn-http-observatory/compare/v1.4.3...v1.4.4) (2025-09-24)
+
+
+### Bug Fixes
+
+* **api:** extended hostname rejection ([#297](https://github.com/mdn/mdn-http-observatory/issues/297)) ([7bbb7a4](https://github.com/mdn/mdn-http-observatory/commit/7bbb7a441958810add22325df74c100380a10535))
+
 ## [1.4.3](https://github.com/mdn/mdn-http-observatory/compare/v1.4.2...v1.4.3) (2025-09-23)
 
 

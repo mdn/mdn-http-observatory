@@ -15,8 +15,11 @@
     "test:nodb": "CONFIG_FILE=conf/config-test.json SKIP_DB_TESTS=1 mocha",
     "tsc": "tsc -p jsconfig.json",
     "updateHsts": "node src/retrieve-hsts.js",
+    "updateTldList": "node src/retrieve-tld-list.js",
     "refreshMaterializedViews": "node src/maintenance/index.js",
-    "migrate": "node -e 'import(\"./src/database/migrate.js\").then( m => m.migrateDatabase() )'"
+    "maintenance": "node src/maintenance/index.js",
+    "migrate": "node -e 'import(\"./src/database/migrate.js\").then( m => m.migrateDatabase() )'",
+    "postinstall": "npm run updateHsts && npm run updateTldList"
   },
   "bin": {
     "mdn-http-observatory-scan": "bin/wrapper.js"

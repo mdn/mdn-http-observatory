@@ -2,7 +2,6 @@ import {
   createPool,
   refreshMaterializedViews,
 } from "../database/repository.js";
-import { retrieveAndStoreHsts } from "../retrieve-hsts.js";
 
 console.log("Starting MV refresh.");
 const pool = createPool();

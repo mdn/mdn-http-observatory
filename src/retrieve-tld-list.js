@@ -23,7 +23,7 @@ export async function retrieveAndStoreTldList() {
   const data = cleanData(r.data);
   const filePath = path.join(dirname, "..", "conf", "tld-list.json");
   try {
-    await writeFile(filePath, `[${data}]`);
+    await writeFile(filePath, data);
     console.log(`File written to ${filePath}`);
   } catch (error) {
     console.error("Error writing file:", error);
@@ -37,13 +37,13 @@ export async function retrieveAndStoreTldList() {
  * @returns {string}
  */
 function cleanData(data) {
-  return data
+  const ret = data
     .replace(/#.*$/gm, "")
     .split("\n")
     .filter((line) => !line.startsWith("#"))
     .filter((line) => line.trim() !== "")
-    .map((line) => `"${line.trim().toLowerCase()}"`)
-    .join(",\n");
+    .map((line) => line.trim().toLowerCase());
+  return JSON.stringify(ret);
 }
 
 // Execute when run directly

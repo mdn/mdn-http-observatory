@@ -59,7 +59,7 @@ export function subresourceIntegrityTest(
   }
 
   const mime = (getFirstHttpHeader(resp, CONTENT_TYPE) ?? "").split(";")[0];
-  if (!HTML_TYPES.has(mime)) {
+  if (mime && !HTML_TYPES.has(mime)) {
     // If the content isn't HTML, there's no scripts to load; this is okay
     output.result = Expectation.SriNotImplementedResponseNotHtml;
   } else {
@@ -94,7 +94,8 @@ export function subresourceIntegrityTest(
           sameSecondLevelDomain = true;
         } else if (fullUrlRegex.test(script.src)) {
           // full URL (src="https://example.com/script.js")
-          sameSecondLevelDomain = src.domain === parse(requests.site).domain;
+          sameSecondLevelDomain =
+            src.domain === parse(requests.site.hostname).domain;
         } else {
           // relative URL (src="/path" etc.)
           relativeOrigin = true;

@@ -98,6 +98,7 @@ describeOrSkip("API V2", function () {
     const tests = responseJson.tests;
     assert.isObject(tests);
     assert.equal(Object.keys(tests).length, NUM_TESTS);
+    // @ts-expect-error
     const test = tests[Object.keys(tests)[0]];
     assert.isString(test.expectation);
     assert.isBoolean(test.pass);
@@ -214,6 +215,7 @@ describeOrSkip("API V2", function () {
     const tests = r.tests;
     assert.isObject(tests);
     assert.equal(Object.keys(tests).length, NUM_TESTS);
+    // @ts-expect-error
     const test = tests[Object.keys(tests)[0]];
     assert.isString(test.expectation);
     assert.isBoolean(test.pass);

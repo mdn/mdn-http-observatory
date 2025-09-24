@@ -1,5 +1,8 @@
 import ip from "ip";
 import dns from "node:dns";
+import fs from "fs";
+import { fileURLToPath } from "node:url";
+import path from "node:path";
 import {
   InvalidHostNameError,
   InvalidHostNameIpError,
@@ -45,6 +48,31 @@ export function isIp(hostname) {
  */
 
 /**
+ * @type {Set<string> | null}
+ */
+let tldSet = null;
+const dirname = path.dirname(fileURLToPath(import.meta.url));
+
+/**
+ * Get the cached set of top level domains.
+ * @returns {Set<string>}
+ */
+function tlds() {
+  if (!tldSet) {
+    const filePath = path.join(
+      dirname,
+      "..",
+      "..",
+      "..",
+      "conf",
+      "tld-list.json"
+    );
+    tldSet = new Set(JSON.parse(fs.readFileSync(filePath, "utf8")));
+  }
+  return tldSet;
+}
+
+/**
  *
  * @param {string} hostname
  * @returns {Promise<string>} - The valid hostname, maybe prefixed with 'www.'
@@ -53,24 +81,11 @@ export function isIp(hostname) {
 export async function validHostname(hostname) {
   // remove any trailing dot
   hostname = hostname.replace(/\.$/, "");
+  const tld = hostname.split(".").pop()?.toLowerCase();
   if (
+    !hostname ||
     !hostname.includes(".") ||
-    hostname === "localhost" ||
-    // RFC 2606
-    hostname.endsWith(".test") ||
-    hostname.endsWith(".example") ||
-    hostname.endsWith(".invalid") ||
-    hostname.endsWith(".localhost") ||
-    // RFC 6761
-    // We allow these as they are valid domains and may be useful.
-    // hostname === "example.com" ||
-    // hostname.endsWith(".example.com") ||
-    // hostname === "example.net" ||
-    // hostname.endsWith(".example.net") ||
-    // hostname === "example.org" ||
-    // hostname.endsWith(".example.org") ||
-    // RFC 6762
-    hostname.endsWith(".local") ||
+    !tlds().has(tld || "") ||
     hostname === ""
   ) {
     throw new InvalidHostNameError();

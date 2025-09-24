@@ -84,4 +84,7 @@ function removeJsonComments(jsonString) {
   return jsonString.replace(/\/\/.*$/gm, "");
 }
 
-await retrieveAndStoreHsts();
+// Execute when run directly
+if (import.meta.url === `file://${process.argv[1]}`) {
+  retrieveAndStoreHsts().catch(console.error);
+}

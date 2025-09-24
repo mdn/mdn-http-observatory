@@ -139,7 +139,7 @@ describeOrSkip("API V2", function () {
     assert.equal(response.statusCode, 422);
     assert(response.body);
     const responseJson = JSON.parse(response.body);
-    assert.equal(responseJson.error, "invalid-hostname-lookup");
+    assert.equal(responseJson.error, "invalid-hostname");
   });
 
   it("refuses to analyze special domains", async function () {
@@ -156,6 +156,8 @@ describeOrSkip("API V2", function () {
       "local",
       "foo.local",
       "foo.local.",
+      "test.svc",
+      "test.svc.",
     ];
     for (const host of hosts) {
       const response = await app.inject({
@@ -263,7 +265,7 @@ describeOrSkip("API V2", function () {
     assert.equal(response.statusCode, 422);
     const r = JSON.parse(response.body);
     assert.isObject(r);
-    assert.equal(r.error, "invalid-hostname-lookup");
+    assert.equal(r.error, "invalid-hostname");
   }).timeout(6000);
 
   it("responds to GET /analyze of localhost", async function () {

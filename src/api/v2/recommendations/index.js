@@ -1,4 +1,4 @@
-import { ALL_RESULTS, ALL_TESTS } from "../../../constants.js";
+import { ALL_RESULTS } from "../../../constants.js";
 import { SCORE_TABLE, TEST_TOPIC_LINKS } from "../../../grader/charts.js";
 import { SCHEMAS } from "../schemas.js";
 
@@ -8,12 +8,10 @@ import { SCHEMAS } from "../schemas.js";
  * @returns {Promise<void>}
  */
 export default async function (fastify) {
-  const pool = fastify.pg.pool;
-
   fastify.get(
     "/recommendation_matrix",
     { schema: SCHEMAS.recommendationMatrix },
-    async (request, reply) => {
+    async (_request, _reply) => {
       const res = ALL_RESULTS.map((output) => {
         return {
           name: output.name,

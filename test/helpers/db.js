@@ -45,11 +45,11 @@ export async function insertSeeds(pool) {
         const siteId = siteIds[i % siteIds.length];
         return pool.query(
           `INSERT INTO scans (site_id, state, start_time, end_time, grade, score, tests_quantity, algorithm_version, status_code)
-          VALUES ($1, 
-            $2, 
-            NOW() - INTERVAL '${(i + 1) * 2000} seconds', 
-            NOW() - INTERVAL '${(i + 1) * 2000} seconds', 
-            $3, 
+          VALUES ($1,
+            $2,
+            NOW() - INTERVAL '${(i + 1) * 2000} seconds',
+            NOW() - INTERVAL '${(i + 1) * 2000} seconds',
+            $3,
             $4,
             9,
             $5,

@@ -145,7 +145,7 @@ If an error occurred, an object like this is returned:
 
 ### Sunset of the V1 API
 
-The previous iteration of the Observatory JSON API has bee deprecated and will be shut down on October 31, 2024. At some point, there will be a strong reminder of that fact by responding with an error if a special header is not included with the request. At Oct 31 2024, the API will be completely shut down.
+The previous iteration of the Observatory JSON API has been deprecated and shut down on October 31, 2024.
 
 ### Migrating your application
 

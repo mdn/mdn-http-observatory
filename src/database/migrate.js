@@ -35,7 +35,7 @@ export async function migrateDatabase(version, pool) {
       driver: "pg",
       execQuery: (query) => pool.query(query),
     });
-    const _appliedMigrations = await postgrator.migrate(version);
+    await postgrator.migrate(version);
   } catch (e) {
     console.error(e);
   } finally {

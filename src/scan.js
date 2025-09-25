@@ -2,6 +2,7 @@
 
 import { Command } from "commander";
 import { scan } from "./scanner/index.js";
+import { Site } from "./site.js";
 
 const NAME = "mdn-http-observatory-scan";
 const program = new Command();
@@ -11,9 +12,10 @@ program
   .description("CLI for the MDN HTTP Observatory scan functionality")
   .version("1.0.0")
   .argument("<hostname>", "hostname to scan")
-  .action(async (hostname, _options) => {
+  .action(async (siteString, _options) => {
     try {
-      const result = await scan(hostname);
+      const site = Site.fromSiteString(siteString);
+      const result = await scan(site);
       const tests = Object.fromEntries(
         Object.entries(result.tests).map(([key, test]) => {
           const { scoreDescription, ...rest } = test;

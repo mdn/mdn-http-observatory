@@ -9,15 +9,16 @@ import {
 import { EventEmitter } from "events";
 import { NUM_TESTS } from "../src/constants.js";
 import fs from "node:fs";
+import { CONFIG } from "../src/config.js";
 
 const pool = createPool();
 EventEmitter.defaultMaxListeners = 20;
 
 let describeOrSkip;
-if (process.env.SKIP_DB_TESTS) {
-  describeOrSkip = describe.skip;
-} else {
+if (CONFIG.tests.enableDBTests) {
   describeOrSkip = describe;
+} else {
+  describeOrSkip = describe.skip;
 }
 
 describeOrSkip("API V2", function () {
@@ -97,6 +98,7 @@ describeOrSkip("API V2", function () {
     const tests = responseJson.tests;
     assert.isObject(tests);
     assert.equal(Object.keys(tests).length, NUM_TESTS);
+    // @ts-expect-error
     const test = tests[Object.keys(tests)[0]];
     assert.isString(test.expectation);
     assert.isBoolean(test.pass);
@@ -172,7 +174,7 @@ describeOrSkip("API V2", function () {
   it("responds to GET /analyze of a known host", async function () {
     const app = await createServer();
     // create a scan first
-    const _ = await app.inject({
+    await app.inject({
       method: "POST",
       url: "/api/v2/analyze?host=www.mozilla.org",
     });
@@ -215,6 +217,7 @@ describeOrSkip("API V2", function () {
     const tests = r.tests;
     assert.isObject(tests);
     assert.equal(Object.keys(tests).length, NUM_TESTS);
+    // @ts-expect-error
     const test = tests[Object.keys(tests)[0]];
     assert.isString(test.expectation);
     assert.isBoolean(test.pass);

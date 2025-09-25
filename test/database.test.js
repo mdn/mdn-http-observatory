@@ -17,14 +17,15 @@ import { ALGORITHM_VERSION } from "../src/constants.js";
 import { faker } from "@faker-js/faker";
 import { migrateDatabase } from "../src/database/migrate.js";
 import { insertSeeds } from "./helpers/db.js";
+import { CONFIG } from "../src/config.js";
 
 const pool = createPool();
 
 let describeOrSkip;
-if (process.env.SKIP_DB_TESTS) {
-  describeOrSkip = describe.skip;
-} else {
+if (CONFIG.tests.enableDBTests) {
   describeOrSkip = describe;
+} else {
+  describeOrSkip = describe.skip;
 }
 describeOrSkip("Database repository", function () {
   this.beforeEach(async () => {
@@ -372,8 +373,10 @@ describeOrSkip("Database repository", function () {
     // check the grade_distribution
     const gd = await selectGradeDistribution(pool);
     assert.equal(gd.length, 2);
+    assert(gd[0]);
     assert.equal(gd[0].grade, "A");
     assert.equal(gd[0].count, 1);
+    assert(gd[1]);
     assert.equal(gd[1].grade, "B");
     assert.equal(gd[1].count, 1);
   });
@@ -386,11 +389,11 @@ describeOrSkip("Database repository", function () {
       [...Array(10).keys()].map((i) => {
         return pool.query(
           `INSERT INTO scans (site_id, state, start_time, end_time, grade, score, tests_quantity, algorithm_version)
-          VALUES ($1, 
-            $2, 
-            NOW() - INTERVAL '${(i + 1) * 20000}', 
-            NOW() - INTERVAL '${(i + 1) * 20000}', 
-            'A', 
+          VALUES ($1,
+            $2,
+            NOW() - INTERVAL '${(i + 1) * 20000}',
+            NOW() - INTERVAL '${(i + 1) * 20000}',
+            'A',
             100,
             9,
             $3) RETURNING *`,
@@ -401,7 +404,7 @@ describeOrSkip("Database repository", function () {
 
     // create a bunch of other sites
     const otherIds = await Promise.all(
-      [...Array(10).keys()].map((i) => {
+      [...Array(10).keys()].map((_i) => {
         return ensureSite(pool, faker.internet.domainName());
       })
     );
@@ -410,11 +413,11 @@ describeOrSkip("Database repository", function () {
       [...Array(50).keys()].map((i) => {
         return pool.query(
           `INSERT INTO scans (site_id, state, start_time, end_time, grade, score, tests_quantity, algorithm_version)
-          VALUES ($1, 
-            $2, 
-            NOW() - INTERVAL '${(i + 1) * 20000}', 
-            NOW() - INTERVAL '${(i + 1) * 20000}', 
-            'F', 
+          VALUES ($1,
+            $2,
+            NOW() - INTERVAL '${(i + 1) * 20000}',
+            NOW() - INTERVAL '${(i + 1) * 20000}',
+            'F',
             0,
             9,
             $3) RETURNING *`,
@@ -434,6 +437,7 @@ describeOrSkip("Database repository", function () {
     assert.lengthOf(res, 1);
     assert(res.every((r) => r.grade === "A"));
     const entry = res[0];
+    assert(entry);
     assert.isNumber(entry.id);
     assert.isString(entry.grade);
     assert.isNumber(entry.score);
@@ -482,6 +486,7 @@ describeOrSkip("Database repository", function () {
     assert.isArray(res);
     assert.isAbove(res.length, 0);
     const test = res[0];
+    assert(test);
     assert.equal(test.scan_id, 1);
     assert(test.id);
     assert.isNumber(test.site_id);

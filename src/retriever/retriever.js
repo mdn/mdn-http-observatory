@@ -18,8 +18,6 @@ const ROBOTS_HEADERS = ["Accept: text/plain,*/*;q=0.8"];
  */
 export async function retrieve(site, options = {}) {
   const retrievals = new Requests(site);
-  // console.log("Retrieving", retrievals.site.hostname);
-
   const { http: httpUrl, https: httpsUrl } = await urls(site, options);
 
   const [httpSession, httpsSession] = await Promise.all([
@@ -53,6 +51,7 @@ export async function retrieve(site, options = {}) {
   retrievals.resources.path = getPageText(retrievals.responses.auto, true);
 
   // Get robots.txt to gather additional cookies, if any.
+  // robots.txt has to live at the root of the server, hence the leading slash
   await retrievals.session?.get({
     path: "/robots.txt",
     headers: new AxiosHeaders(ROBOTS_HEADERS.join("\n")),

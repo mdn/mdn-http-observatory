@@ -61,7 +61,7 @@ export class Site {
    * @returns a string suitable for the site field in the database
    */
   asSiteKey() {
-    return `${this.hostname}${this.port ? `:${this.port}` : ""}${this.path || ""}`;
+    return `${this.hostname}${this.port ? `:${this.port}` : ""}${this.path === "/" ? "" : this.path || ""}`;
   }
 
   /**

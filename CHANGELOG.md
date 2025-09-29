@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.4.5](https://github.com/mdn/mdn-http-observatory/compare/v1.4.4...v1.4.5) (2025-09-29)
+
+
+### Miscellaneous
+
+* use native libpq for postgres access ([#304](https://github.com/mdn/mdn-http-observatory/issues/304)) ([68c0f8e](https://github.com/mdn/mdn-http-observatory/commit/68c0f8e42738146d0fa24fcc38baf94647267940))
+
 ## [1.4.4](https://github.com/mdn/mdn-http-observatory/compare/v1.4.3...v1.4.4) (2025-09-24)
 
 

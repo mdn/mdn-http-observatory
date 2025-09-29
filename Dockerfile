@@ -1,7 +1,7 @@
 FROM node:20
 
 RUN apt-get -y update && \
-  apt-get install -y git && \
+  apt-get install -y git libpq-dev && \
   mkdir -p /home/node/app/node_modules && \
   chown -R node:node /home/node/app
 

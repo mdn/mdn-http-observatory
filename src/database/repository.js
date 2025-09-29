@@ -3,7 +3,9 @@ import format from "pg-format";
 import { ALGORITHM_VERSION } from "../constants.js";
 import pg from "pg";
 
-const { Pool } = pg;
+// Use native bindings instead of standard bindings
+// @ts-ignore - pg.native is optional and may not be in types
+const { Pool } = pg.native || pg; // Fallback to standard pg if native not available
 
 /**
  * @typedef {import("pg").Pool} Pool
@@ -19,10 +21,11 @@ export const poolOptions = {
   password: CONFIG.database.pass,
   port: CONFIG.database.port,
   ssl: CONFIG.database.sslmode,
-  max: 80, // set pool max size to 80
-  idleTimeoutMillis: 10000, // close idle clients after 10 seconds
+  max: 40, // set pool max size to 80
+  idleTimeoutMillis: 60000, // close idle clients after 60 seconds
   connectionTimeoutMillis: 2000, // return an error after 2 seconds if connection could not be established
   maxUses: 10000, // close (and replace) a connection after it has been used 10000 times
+  native: true,
 };
 
 /**

@@ -7,6 +7,9 @@ import pg from "pg";
 // @ts-ignore - pg.native is optional and may not be in types
 const { Pool } = pg.native || pg; // Fallback to standard pg if native not available
 
+// @ts-ignore - pg.native is optional and may not be in types
+console.log(`PG native support: ${pg.native ? "Yes" : "No"}`);
+
 /**
  * @typedef {import("pg").Pool} Pool
  */

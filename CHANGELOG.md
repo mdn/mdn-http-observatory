@@ -1,5 +1,22 @@
 # Changelog
 
+## [1.4.6](https://github.com/mdn/mdn-http-observatory/compare/v1.4.5...v1.4.6) (2025-09-30)
+
+
+### Miscellaneous
+
+* **deps:** bump @fastify/helmet from 13.0.1 to 13.0.2 ([#309](https://github.com/mdn/mdn-http-observatory/issues/309)) ([a6ac7fc](https://github.com/mdn/mdn-http-observatory/commit/a6ac7fc08c92f759726a06750bbc64ceff86508d))
+* **deps:** bump @sentry/node from 10.11.0 to 10.16.0 ([#311](https://github.com/mdn/mdn-http-observatory/issues/311)) ([8fe595a](https://github.com/mdn/mdn-http-observatory/commit/8fe595ae82b664146dd634c07b2c67c457f93b09))
+* **deps:** bump postgrator-cli from 9.0.1 to 9.1.0 ([#314](https://github.com/mdn/mdn-http-observatory/issues/314)) ([5a0644f](https://github.com/mdn/mdn-http-observatory/commit/5a0644f81dd395255aa2d76214cb9cb002beba47))
+* **deps:** bump tldts from 7.0.15 to 7.0.16 ([#312](https://github.com/mdn/mdn-http-observatory/issues/312)) ([fa847b9](https://github.com/mdn/mdn-http-observatory/commit/fa847b9808545e904b4c9ab64ddfa38cba81c9b2))
+
+## [1.4.5](https://github.com/mdn/mdn-http-observatory/compare/v1.4.4...v1.4.5) (2025-09-29)
+
+
+### Miscellaneous
+
+* use native libpq for postgres access ([#304](https://github.com/mdn/mdn-http-observatory/issues/304)) ([68c0f8e](https://github.com/mdn/mdn-http-observatory/commit/68c0f8e42738146d0fa24fcc38baf94647267940))
+
 ## [1.4.4](https://github.com/mdn/mdn-http-observatory/compare/v1.4.3...v1.4.4) (2025-09-24)
 
 

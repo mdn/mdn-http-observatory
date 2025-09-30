@@ -33,7 +33,11 @@ describeOrSkip("Database repository", function () {
     await migrateDatabase("max", pool);
   });
 
-  this.afterEach(async () => {});
+  // this.afterEach(async () => {});
+
+  this.afterAll(async () => {
+    await pool.end();
+  });
 
   it("ensures a site record", async function () {
     const id = await ensureSite(pool, "www.mozilla.org");

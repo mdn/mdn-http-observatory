@@ -1,4 +1,5 @@
 import { domainToASCII } from "url";
+import { InvalidSiteError } from "./api/errors.js";
 
 /**
  * A string representing a site that can be:
@@ -92,21 +93,22 @@ export class Site {
 
       const hostname = url.hostname;
       if (!hostname) {
-        throw new Error("hostname cannot be empty");
+        throw new InvalidSiteError(hostname, "hostname cannot be empty");
       }
 
       // 253 bytes is the practical limit for DNS hostnames.
       // Take IDN notation into account.
       if (domainToASCII(hostname).length > 253) {
-        throw new Error("hostname is too long");
+        throw new InvalidSiteError(hostname, "hostname is too long");
       }
 
       // Ensure hostname has proper structure: at least one dot
       // with non-empty parts.
       const parts = hostname.split(".");
       if (parts.length < 2 || parts.some((part) => part.length === 0)) {
-        throw new Error(
-          "Invalid site string: hostname must have at least a host and TLD (e.g., example.com)"
+        throw new InvalidSiteError(
+          hostname,
+          "hostname must have at least a host and TLD (e.g., site.com)"
         );
       }
 
@@ -119,7 +121,11 @@ export class Site {
 
       return new Site(hostname.toLowerCase(), port, path);
     } catch (error) {
-      throw new Error("Invalid site string");
+      if (error instanceof InvalidSiteError) {
+        throw error;
+      } else {
+        throw new InvalidSiteError(siteString, "invalid site string");
+      }
     }
   }
 }

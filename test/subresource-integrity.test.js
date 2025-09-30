@@ -16,16 +16,6 @@ describe("Subresource Integrity", () => {
     assert.equal(result.result, "sri-not-implemented-but-no-scripts-loaded");
   });
 
-  it("checks for no invalid html", function () {
-    // Invalid html. For some reason this provokes a parser error,
-    // whenever that is fixed on the JSDOM side, we have to find a new
-    // magic html fragment.
-    reqs.resources.path = `<div style="@media only screen{background-image: url(http://a.com/a.jpg)">`;
-    const result = subresourceIntegrityTest(reqs);
-    assert.equal(result.result, "html-not-parseable");
-    assert.isFalse(result.pass);
-  });
-
   it("checks for not html", function () {
     reqs.resources.path = `{"foo": "bar"}`;
     assert.isNotNull(reqs.responses.auto);

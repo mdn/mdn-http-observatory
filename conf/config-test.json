@@ -8,7 +8,7 @@
     "cooldown": 3
   },
   "tests": {
-    "enableDBTests": false,
+    "enableDBTests": true,
     "hostForPortAndPathChecks": ""
   }
 }

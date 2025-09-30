@@ -62,3 +62,15 @@ export class InvalidHostNameLookupError extends AppError {
     this.statusCode = STATUS_CODES.unprocessableEntity;
   }
 }
+
+export class InvalidSiteError extends AppError {
+  /**
+   * @param {string} siteString
+   * @param {string} reason
+   */
+  constructor(siteString, reason) {
+    super(`${siteString} is invalid: ${reason}`);
+    this.name = "invalid-site";
+    this.statusCode = STATUS_CODES.unprocessableEntity;
+  }
+}

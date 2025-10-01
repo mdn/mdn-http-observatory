@@ -175,7 +175,7 @@ export class Session {
         this.clientInstanceRecordingRedirects.defaults.httpsAgent.options
           .rejectUnauthorized
       ) {
-        // retrying without TLS verification"
+        // retrying without TLS verification
         this.redirectHistory = [];
 
         this.clientInstanceRecordingRedirects = axios.create({

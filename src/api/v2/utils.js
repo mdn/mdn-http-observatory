@@ -115,8 +115,6 @@ export async function checkSitename(site) {
   // then lowercase the hostname.
   // look up the hostname
   // if lookup fails, try again with "www." prefix
-  // make sure the path does not contain any query parameters or fragments or hashes. strip those out if needed.
-  // maybe try to create a URL object from the results, just to make sure we have something worth checking
   // finally, return the sanitized site string.
 
   if (isIp(site.hostname)) {

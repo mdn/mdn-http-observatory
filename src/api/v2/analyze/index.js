@@ -32,7 +32,6 @@ export default async function (fastify) {
       const hostname = query.host.trim().toLowerCase();
       let site = Site.fromSiteString(hostname);
       site = await checkSitename(site);
-      request.log.info(`HERE ${hostname} ${JSON.stringify(site)}`);
       return await scanOrReturnRecent(
         fastify,
         pool,

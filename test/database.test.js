@@ -483,7 +483,7 @@ describeOrSkip("Database repository", function () {
     assert.isNumber(res.score);
   });
 
-  xit("gets test results for a scan", async function () {
+  it("gets test results for a scan", async function () {
     await insertSeeds(pool);
     const res = await selectTestResults(pool, 1);
     assert(res);
@@ -503,7 +503,7 @@ describeOrSkip("Database repository", function () {
     assert.isObject(test.output);
   });
 
-  xit("updates a scan state", async function () {
+  it("updates a scan state", async function () {
     await insertSeeds(pool);
     {
       const res = await updateScanState(

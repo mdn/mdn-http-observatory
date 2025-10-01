@@ -313,23 +313,6 @@ export async function selectScanById(pool, scanId) {
   return result.rows[0];
 }
 
-// /**
-//  * Is this used any more?
-//  * @param {Pool} pool
-//  * @param {string} hostname
-//  * @returns {Promise<import("../types.js").SiteHeadersResult>}
-//  */
-// export async function selectSiteHeaders(pool, hostname) {
-//   const result = await pool.query(
-//     `SELECT public_headers, private_headers, cookies FROM sites
-//       WHERE domain = $1
-//       ORDER BY creation_time DESC
-//       LIMIT 1`,
-//     [hostname]
-//   );
-//   return result.rows[0];
-// }
-
 /**
  * @param {Pool} pool
  * @param {number} scanId

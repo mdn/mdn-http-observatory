@@ -15,6 +15,8 @@ Using npx to install the package, simply run
 npx @mdn/mdn-http-observatory mdn.dev
 ```
 
+Subpaths like `example.com/path` and port numbers like `example.com:8080/path` are suported.
+
 If you want to install the package first, use npm to install it globally
 
 ```sh
@@ -145,7 +147,7 @@ If an error occurred, an object like this is returned:
 
 ### Sunset of the V1 API
 
-The previous iteration of the Observatory JSON API has bee deprecated and will be shut down on October 31, 2024. At some point, there will be a strong reminder of that fact by responding with an error if a special header is not included with the request. At Oct 31 2024, the API will be completely shut down.
+The previous iteration of the Observatory JSON API has been deprecated and shut down on October 31, 2024.
 
 ### Migrating your application
 

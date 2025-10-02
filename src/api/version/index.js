@@ -1,4 +1,3 @@
-import { version } from "tough-cookie";
 import { SCHEMAS } from "../v2/schemas.js";
 import fs from "node:fs";
 import path from "path";
@@ -21,12 +20,10 @@ const packageJson = JSON.parse(
  * @returns {Promise<void>}
  */
 export default async function (fastify) {
-  const pool = fastify.pg.pool;
-
   fastify.get(
     "/version",
     { schema: SCHEMAS.version },
-    async (request, reply) => {
+    async (_request, _reply) => {
       /** @type {import("../../types.js").VersionResponse} */
       const ret = {
         version: packageJson.version,

@@ -82,13 +82,13 @@ export const TEST_TOPIC_LINKS = new Map([
     "x-content-type-options",
     "/en-US/docs/Web/Security/Practical_implementation_guides/MIME_types",
   ],
-  [
-    "x-frame-options",
-    "/en-US/docs/Web/Security/Practical_implementation_guides/Clickjacking",
-  ],
+  ["x-frame-options", "/en-US/docs/Web/Security/Attacks/Clickjacking"],
   // inactive, for historic records
   ["contribute", "/en-US/"],
-  ["x-xss-protection", "/en-US/docs/Web/HTTP/Reference/Headers/X-XSS-Protection"],
+  [
+    "x-xss-protection",
+    "/en-US/docs/Web/HTTP/Reference/Headers/X-XSS-Protection",
+  ],
 ]);
 
 /**
@@ -198,7 +198,7 @@ export const SCORE_TABLE = new Map([
       </p>`,
       modifier: -25,
       recommendation: `<p>
-      Implement one, see <a href="/en-US/docs/Web/HTTP/CSP">MDN's Content Security Policy (CSP) documentation</a>.
+      Implement one, see <a href="/en-US/docs/Web/HTTP/Guides/CSP">MDN's Content Security Policy (CSP) documentation</a>.
       </p>`,
     },
   ],
@@ -210,7 +210,7 @@ export const SCORE_TABLE = new Map([
       </p>`,
       modifier: -25,
       recommendation: `<p>
-      Implement an enforced policy, see <a href="/en-US/docs/Web/HTTP/CSP">MDN's Content Security Policy (CSP) documentation</a>.
+      Implement an enforced policy, see <a href="/en-US/docs/Web/HTTP/Guides/CSP">MDN's Content Security Policy (CSP) documentation</a>.
       </p>`,
     },
   ],

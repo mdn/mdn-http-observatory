@@ -15,6 +15,8 @@ Using npx to install the package, simply run
 npx @mdn/mdn-http-observatory mdn.dev
 ```
 
+Subpaths like `example.com/path` and port numbers like `example.com:8080/path` are suported.
+
 If you want to install the package first, use npm to install it globally
 
 ```sh

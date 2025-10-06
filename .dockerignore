@@ -15,6 +15,10 @@ api-examples.http
 .gitignore
 .prettierrc.json
 
+# Exclude Temporary and Log Files.
+# See: https://wiki.mozilla.org/GitHub/Repository_Security/GitHub_Workflows_%26_Actions#Docker_Security_Best_Practices
+*.log
+*.tmp
 
 # Ignore generated credentials from google-github-actions/auth
 gha-creds-*.json

@@ -1,5 +1,16 @@
 # Changelog
 
+## [1.4.7](https://github.com/mdn/mdn-http-observatory/compare/v1.4.6...v1.4.7) (2025-10-06)
+
+
+### Miscellaneous
+
+* **deps-dev:** bump mocha from 11.7.2 to 11.7.4 ([#317](https://github.com/mdn/mdn-http-observatory/issues/317)) ([086d7e8](https://github.com/mdn/mdn-http-observatory/commit/086d7e8a8afdaee55c98fb2c3ffc54ccbf3fe593))
+* **deps-dev:** bump typescript from 5.9.2 to 5.9.3 ([#321](https://github.com/mdn/mdn-http-observatory/issues/321)) ([1b3b34c](https://github.com/mdn/mdn-http-observatory/commit/1b3b34c1c0574c55d4f17d0c06df0d20f824064b))
+* **deps:** bump @sentry/node from 10.16.0 to 10.17.0 ([#318](https://github.com/mdn/mdn-http-observatory/issues/318)) ([bbad0a6](https://github.com/mdn/mdn-http-observatory/commit/bbad0a6e14e0e9056b0f361c61d7f8809e74d1cd))
+* **deps:** bump fastify from 5.5.0 to 5.6.1 ([#319](https://github.com/mdn/mdn-http-observatory/issues/319)) ([2e8500d](https://github.com/mdn/mdn-http-observatory/commit/2e8500df963c65c2cd48f6e6f012f2f4ba90b2bc))
+* remove webext experiment ([#315](https://github.com/mdn/mdn-http-observatory/issues/315)) ([e7c644d](https://github.com/mdn/mdn-http-observatory/commit/e7c644ddf960da0e50d35da9da67fd17695fac2a))
+
 ## [1.4.6](https://github.com/mdn/mdn-http-observatory/compare/v1.4.5...v1.4.6) (2025-09-30)
 
 

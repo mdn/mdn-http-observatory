@@ -2,7 +2,6 @@
 .git
 .vscode
 .idea
-mdn-observatory-webext
 test
 node_modules
 npm-debug.log

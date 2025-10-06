@@ -15,11 +15,3 @@ updates:
     commit-message:
       prefix: "chore(deps): "
       prefix-development: "chore(deps-dev): "
-
-  - package-ecosystem: npm
-    directory: "/mdn-observatory-webext"
-    schedule:
-      interval: weekly
-    commit-message:
-      prefix: "chore(deps): "
-      prefix-development: "chore(deps-dev): "

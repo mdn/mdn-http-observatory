@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.4.8](https://github.com/mdn/mdn-http-observatory/compare/v1.4.7...v1.4.8) (2025-10-07)
+
+
+### Miscellaneous
+
+* **docker:** ignore tmp + log files ([#320](https://github.com/mdn/mdn-http-observatory/issues/320)) ([7c8c1a4](https://github.com/mdn/mdn-http-observatory/commit/7c8c1a42411ce8096d75eba1ba3eeb43e8695a0f))
+
 ## [1.4.7](https://github.com/mdn/mdn-http-observatory/compare/v1.4.6...v1.4.7) (2025-10-06)
 
 

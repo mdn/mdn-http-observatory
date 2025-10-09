@@ -5,7 +5,7 @@ import {
 } from "../../headers.js";
 import { BaseOutput, Requests } from "../../types.js";
 import { Expectation } from "../../types.js";
-import { getFirstHttpHeader, getHttpHeaders } from "../utils.js";
+import { getFirstHttpHeader } from "../utils.js";
 
 export class CorsOutput extends BaseOutput {
   /** @type {string | null} */

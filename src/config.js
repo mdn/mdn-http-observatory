@@ -101,6 +101,20 @@ const SCHEMA = {
       env: "SENTRY_DSN",
     },
   },
+  tests: {
+    enableDBTests: {
+      doc: "Enable database tests",
+      format: "Boolean",
+      default: false,
+      env: "HTTPOBS_TESTS_ENABLE_DB_TESTS",
+    },
+    hostForPortAndPathChecks: {
+      doc: "Host to use for custom port and path checks",
+      format: "String",
+      default: "",
+      env: "HTTPOBS_TESTS_HOST_FOR_PORT_AND_PATH_CHECKS",
+    },
+  },
 };
 
 /**

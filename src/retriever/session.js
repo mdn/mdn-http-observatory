@@ -64,7 +64,7 @@ export class Session {
    * @param {URL} url
    * @param {{ headers?: string[]; cookies?: string[]; }} [options = {}]
    */
-  constructor(url, { headers: headerParams, cookies } = {}) {
+  constructor(url, { headers: headerParams, cookies: _cookies } = {}) {
     this.redirectHistory = [];
     this.redirectCount = 0;
     const headers = new AxiosHeaders(headerParams?.join("\n"));
@@ -123,7 +123,7 @@ export class Session {
           REDIRECT_STATUS_CODES.includes(response.status)
         ) {
           const url =
-            that.redirectHistory[that.redirectHistory.length - 1].url.href;
+            that.redirectHistory[that.redirectHistory.length - 1]?.url;
           const redirectUrl = response.headers.location;
           const newUrl = new URL(redirectUrl, url);
           that.redirectCount++;
@@ -175,10 +175,9 @@ export class Session {
         this.clientInstanceRecordingRedirects.defaults.httpsAgent.options
           .rejectUnauthorized
       ) {
-        // console.log("retrying without TLS verification");
+        // retrying without TLS verification
         this.redirectHistory = [];
-        const interceptor =
-          this.clientInstanceRecordingRedirects.interceptors.response;
+
         this.clientInstanceRecordingRedirects = axios.create({
           ...this.clientInstanceRecordingRedirects.defaults,
           httpsAgent: new HttpsCookieAgent({
@@ -225,6 +224,30 @@ export class Session {
   }
 
   /**
+   * If no path is passed, return a URL derived from href.
+   * If a path without leading slash is passed, append it to href as a new path component.
+   * If a path with leading slash is passed, replace the path of href.
+   *
+   * @param {string | undefined} path
+   * @param {string} href
+   * @returns URL
+   */
+  pathToUrl(path, href) {
+    if (!path || path === "") {
+      const reqUrl = new URL(href);
+      return reqUrl;
+    } else {
+      if (!path.startsWith("/")) {
+        const reqUrl = new URL(`${href.replace(/\/+$/, "")}/${path}`);
+        return reqUrl;
+      } else {
+        const reqUrl = new URL(path, href);
+        return reqUrl;
+      }
+    }
+  }
+
+  /**
    *
    * @param {{ url?: string, path?: string, headers?: object }} param1
    * @returns
@@ -233,9 +256,9 @@ export class Session {
     if (!this.clientInstance) {
       return null;
     }
-    const reqUrl = path ? new URL(path, url).href : url;
+    const reqUrl = this.pathToUrl(path, url);
     try {
-      const res = await this.clientInstance.get(reqUrl, {
+      const res = await this.clientInstance.get(reqUrl.href, {
         headers,
         timeout: CLIENT_TIMEOUT,
       });
@@ -254,9 +277,9 @@ export class Session {
     if (!this.clientInstance) {
       return null;
     }
-    const reqUrl = path ? new URL(path, url).href : url;
+    const reqUrl = this.pathToUrl(path, url);
     try {
-      const res = await this.clientInstance.options(reqUrl, {
+      const res = await this.clientInstance.options(reqUrl.href, {
         headers,
         timeout: CLIENT_TIMEOUT,
       });

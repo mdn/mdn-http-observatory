@@ -9,33 +9,48 @@ import {
 import { EventEmitter } from "events";
 import { NUM_TESTS } from "../src/constants.js";
 import fs from "node:fs";
+import { CONFIG } from "../src/config.js";
 
 const pool = createPool();
 EventEmitter.defaultMaxListeners = 20;
 
 let describeOrSkip;
-if (process.env.SKIP_DB_TESTS) {
-  describeOrSkip = describe.skip;
-} else {
+if (CONFIG.tests.enableDBTests) {
   describeOrSkip = describe;
+} else {
+  describeOrSkip = describe.skip;
 }
 
 describeOrSkip("API V2", function () {
+  /** @type {import("fastify").FastifyInstance | null} */
+  let app = null;
+
   this.beforeEach(async () => {
     await migrateDatabase("0", pool);
     await migrateDatabase("max", pool);
+    app = await createServer();
+  });
+
+  this.afterEach(async () => {
+    if (app) {
+      await app.close();
+      app = null;
+    }
+  });
+
+  this.afterAll(async () => {
+    await pool.end();
   });
 
   it("serves the version path", async function () {
     process.env.RUN_ID = "buildinfo";
     process.env.GIT_SHA = "commitinfo";
-    const app = await createServer();
-    const response = await app.inject({
+    const response = await app?.inject({
       method: "GET",
       url: "/api/v2/version",
     });
-    assert.equal(response.statusCode, 200);
-    const j = response.json();
+    assert.equal(response?.statusCode, 200);
+    const j = response?.json();
     const p = JSON.parse(fs.readFileSync("package.json", "utf8"));
     assert.deepEqual(j, {
       version: p.version,
@@ -46,25 +61,24 @@ describeOrSkip("API V2", function () {
   });
 
   it("serves the root path with a greeting", async function () {
-    const app = await createServer();
-    const response = await app.inject({
+    const response = await app?.inject({
       method: "GET",
       url: "/",
     });
-    assert.equal(response.statusCode, 200);
-    assert.include(response.body, "Welcome");
+    assert.equal(response?.statusCode, 200);
+    assert.include(response?.body, "Welcome");
   });
 
   it("responds to POST /analyze", async function () {
-    const app = await createServer();
-    const response = await app.inject({
+    const response = await app?.inject({
       method: "POST",
       url: "/api/v2/analyze?host=www.mozilla.org",
     });
-    assert.equal(response.statusCode, 200);
+    assert.equal(response?.statusCode, 200);
 
-    assert(response.body);
-    const responseJson = JSON.parse(response.body);
+    assert(response?.body);
+
+    const responseJson = JSON.parse(response?.body);
     const scan = responseJson.scan;
 
     assert.isNumber(scan.id);
@@ -97,6 +111,7 @@ describeOrSkip("API V2", function () {
     const tests = responseJson.tests;
     assert.isObject(tests);
     assert.equal(Object.keys(tests).length, NUM_TESTS);
+    // @ts-expect-error
     const test = tests[Object.keys(tests)[0]];
     assert.isString(test.expectation);
     assert.isBoolean(test.pass);
@@ -117,31 +132,28 @@ describeOrSkip("API V2", function () {
   }).timeout(6000);
 
   it("refuses to analyze an ip address", async function () {
-    const app = await createServer();
-    const response = await app.inject({
+    const response = await app?.inject({
       method: "POST",
       url: "/api/v2/analyze?host=141.1.1.1",
     });
-    assert.equal(response.statusCode, 422);
-    assert(response.body);
-    const responseJson = JSON.parse(response.body);
+    assert.equal(response?.statusCode, 422);
+    assert(response?.body);
+    const responseJson = JSON.parse(response?.body);
     assert.equal(responseJson.error, "invalid-hostname-ip");
   });
 
   it("refuses to analyze a non-existent domain", async function () {
-    const app = await createServer();
-    const response = await app.inject({
+    const response = await app?.inject({
       method: "POST",
       url: "/api/v2/analyze?host=some.non-existent.domain.err",
     });
-    assert.equal(response.statusCode, 422);
-    assert(response.body);
-    const responseJson = JSON.parse(response.body);
+    assert.equal(response?.statusCode, 422);
+    assert(response?.body);
+    const responseJson = JSON.parse(response?.body);
     assert.equal(responseJson.error, "invalid-hostname");
   });
 
   it("refuses to analyze special domains", async function () {
-    const app = await createServer();
     const hosts = [
       "test",
       "foo.test",
@@ -158,30 +170,29 @@ describeOrSkip("API V2", function () {
       "test.svc.",
     ];
     for (const host of hosts) {
-      const response = await app.inject({
+      const response = await app?.inject({
         method: "POST",
         url: `/api/v2/analyze?host=${encodeURIComponent(host)}`,
       });
-      assert.equal(response.statusCode, 422);
-      assert(response.body);
-      const responseJson = JSON.parse(response.body);
-      assert.equal(responseJson.error, "invalid-hostname");
+      assert.equal(response?.statusCode, 422);
+      assert(response?.body);
+      const responseJson = JSON.parse(response?.body);
+      assert.include(["invalid-site", "invalid-hostname"], responseJson.error);
     }
   });
 
   it("responds to GET /analyze of a known host", async function () {
-    const app = await createServer();
     // create a scan first
-    const _ = await app.inject({
+    await app?.inject({
       method: "POST",
       url: "/api/v2/analyze?host=www.mozilla.org",
     });
-    const response = await app.inject({
+    const response = await app?.inject({
       method: "GET",
       url: "/api/v2/analyze?host=www.mozilla.org",
     });
-    assert.equal(response.statusCode, 200);
-    const r = JSON.parse(response.body);
+    assert.equal(response?.statusCode, 200);
+    const r = JSON.parse(response?.body || "");
     assert.isObject(r);
     const scan = r.scan;
 
@@ -215,6 +226,7 @@ describeOrSkip("API V2", function () {
     const tests = r.tests;
     assert.isObject(tests);
     assert.equal(Object.keys(tests).length, NUM_TESTS);
+    // @ts-expect-error
     const test = tests[Object.keys(tests)[0]];
     assert.isString(test.expectation);
     assert.isBoolean(test.pass);
@@ -225,14 +237,13 @@ describeOrSkip("API V2", function () {
   }).timeout(6000);
 
   it("responds to GET /analyze of an unknown host", async function () {
-    const app = await createServer();
-    const response = await app.inject({
+    const response = await app?.inject({
       method: "GET",
       url: "/api/v2/analyze?host=somethingorother1234.mozilla.net",
     });
     // we do scan that host
-    assert.equal(response.statusCode, 422);
-    const r = JSON.parse(response.body);
+    assert.equal(response?.statusCode, 422);
+    const r = JSON.parse(response?.body || "");
     assert.isObject(r);
     assert.equal(r.error, "invalid-hostname-lookup");
     assert.equal(
@@ -242,73 +253,67 @@ describeOrSkip("API V2", function () {
   }).timeout(6000);
 
   it("responds to GET /analyze of an ip address", async function () {
-    const app = await createServer();
-    const response = await app.inject({
+    const response = await app?.inject({
       method: "GET",
       url: "/api/v2/analyze?host=141.1.1.1",
     });
-    assert.equal(response.statusCode, 422);
-    const r = JSON.parse(response.body);
+    assert.equal(response?.statusCode, 422);
+    const r = JSON.parse(response?.body || "");
     assert.isObject(r);
     assert.equal(r.error, "invalid-hostname-ip");
   }).timeout(6000);
 
   it("responds to GET /analyze of a non-existent doman", async function () {
-    const app = await createServer();
-    const response = await app.inject({
+    const response = await app?.inject({
       method: "GET",
       url: "/api/v2/analyze?host=some.non-existent.domain.err",
     });
-    assert.equal(response.statusCode, 422);
-    const r = JSON.parse(response.body);
+    assert.equal(response?.statusCode, 422);
+    const r = JSON.parse(response?.body || "");
     assert.isObject(r);
     assert.equal(r.error, "invalid-hostname");
   }).timeout(6000);
 
   it("responds to GET /analyze of localhost", async function () {
-    const app = await createServer();
-    const response = await app.inject({
+    const response = await app?.inject({
       method: "GET",
       url: "/api/v2/analyze?host=localhost",
     });
-    assert.equal(response.statusCode, 422);
-    const r = JSON.parse(response.body);
+    assert.equal(response?.statusCode, 422);
+    const r = JSON.parse(response?.body || "");
     assert.isObject(r);
-    assert.equal(r.error, "invalid-hostname");
+    assert.equal(r.error, "invalid-site");
   }).timeout(6000);
 
   it("responds to GET /grade_distribution", async function () {
-    const app = await createServer();
     // create a scan
-    const sr = await app.inject({
+    const sr = await app?.inject({
       method: "POST",
       url: "/api/v2/analyze?host=www.mozilla.org",
     });
-    const srJson = JSON.parse(sr.body);
+    const srJson = JSON.parse(sr?.body || "");
     const grade = srJson.scan.grade;
     // refresh the mat views
-    const pool = createPool();
     await refreshMaterializedViews(pool);
 
-    const response = await app.inject({
+    const response = await app?.inject({
       method: "GET",
       url: `/api/v2/grade_distribution`,
     });
-    assert.equal(response.statusCode, 200);
-    const responseJson = JSON.parse(response.body);
+    assert.equal(response?.statusCode, 200);
+    const responseJson = JSON.parse(response?.body || "");
     assert.equal(responseJson.length, 1);
     assert.equal(responseJson[0].grade, grade);
     assert.equal(responseJson[0].count, 1);
   });
 
   it("responds to GET /recommendation_matrix", async function () {
-    const app = await createServer();
-    const response = await app.inject({
+    const response = await app?.inject({
       method: "GET",
       url: `/api/v2/recommendation_matrix`,
     });
-    assert.equal(response.statusCode, 200);
-    const responseJson = JSON.parse(response.body);
+    assert.equal(response?.statusCode, 200);
+    const responseJson = JSON.parse(response?.body || "");
     assert.equal(responseJson.length, NUM_TESTS);
     for (const entry of responseJson) {
       assert.isString(entry.name);
@@ -325,15 +330,14 @@ describeOrSkip("API V2", function () {
   });
 
   it("responds to GET /scan", async function () {
-    const app = await createServer();
-    const response = await app.inject({
+    const response = await app?.inject({
       method: "POST",
       url: "/api/v2/scan?host=www.mozilla.org",
     });
-    assert.equal(response.statusCode, 200);
+    assert.equal(response?.statusCode, 200);
 
-    assert(response.body);
-    const scan = JSON.parse(response.body);
+    assert(response?.body);
+    const scan = JSON.parse(response?.body || "");
 
     assert.isNumber(scan.id);
     assert.isString(scan.details_url);

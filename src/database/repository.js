@@ -125,7 +125,7 @@ export async function insertTestResults(pool, siteId, scanId, scanResult) {
       "INSERT INTO tests (site_id, scan_id, name, expectation, result, pass, output, score_modifier) VALUES %L",
       testValues
     );
-    const _ = await pool.query(query, []);
+    await pool.query(query, []);
   }
 
   // Update the scan record
@@ -158,17 +158,17 @@ export async function insertTestResults(pool, siteId, scanId, scanResult) {
 /**
  *
  * @param {Pool} pool
- * @param {string} hostname
+ * @param {string} siteKey
  * @returns {Promise<number>}
  */
-export async function ensureSite(pool, hostname) {
+export async function ensureSite(pool, siteKey) {
   // Return known id
   const result = await pool.query(
     `SELECT id FROM sites
       WHERE domain = $1
       ORDER BY creation_time DESC
       LIMIT 1`,
-    [hostname]
+    [siteKey]
   );
   if (result.rowCount && result.rowCount > 0) {
     return result.rows[0]["id"];
@@ -179,7 +179,7 @@ export async function ensureSite(pool, hostname) {
     `INSERT INTO sites (domain, creation_time)
       VALUES ($1, NOW())
       RETURNING id`,
-    [hostname]
+    [siteKey]
   );
   return insert.rows[0]["id"];
 }
@@ -312,23 +312,6 @@ export async function selectScanById(pool, scanId) {
   );
   return result.rows[0];
 }
-
-// /**
-//  * Is this used any more?
-//  * @param {Pool} pool
-//  * @param {string} hostname
-//  * @returns {Promise<import("../types.js").SiteHeadersResult>}
-//  */
-// export async function selectSiteHeaders(pool, hostname) {
-//   const result = await pool.query(
-//     `SELECT public_headers, private_headers, cookies FROM sites
-//       WHERE domain = $1
-//       ORDER BY creation_time DESC
-//       LIMIT 1`,
-//     [hostname]
-//   );
-//   return result.rows[0];
-// }
 
 /**
  * @param {Pool} pool

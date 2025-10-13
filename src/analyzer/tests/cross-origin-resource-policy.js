@@ -54,16 +54,20 @@ export function crossOriginResourcePolicyTest(
   output.meta = equivHeaders ? equivHeaders.length > 0 : false;
 
   // If it is both a header and a http-equiv, http-equiv has precedence (last value)
+  /** @type {string | undefined}  */
   let corpHeader;
   if (output.http && httpHeader) {
     corpHeader = httpHeader.slice(0, 256).trim().toLowerCase();
   } else if (output.meta) {
-    // const headers = resp.httpEquiv?.get("cross-origin-resource-policy");
-    if (equivHeaders && equivHeaders.length) {
-      corpHeader = equivHeaders[equivHeaders.length - 1]
-        .slice(0, 256)
-        .trim()
-        .toLowerCase();
+    if (
+      equivHeaders &&
+      Array.isArray(equivHeaders) &&
+      equivHeaders.length > 0
+    ) {
+      const h = equivHeaders[equivHeaders.length - 1];
+      if (h) {
+        corpHeader = h.slice(0, 256).trim().toLowerCase();
+      }
     }
   }
 

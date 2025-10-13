@@ -5,7 +5,7 @@ import {
 
 console.log("Starting MV refresh.");
 const pool = createPool();
-const res = await refreshMaterializedViews(pool);
+await refreshMaterializedViews(pool);
 console.log("Successfully refreshed materialized views.");
 
 import { retrieveAndStoreTldList } from "../retrieve-tld-list.js";

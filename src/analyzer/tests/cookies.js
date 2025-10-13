@@ -3,7 +3,6 @@ import { Requests, BaseOutput } from "../../types.js";
 import { Expectation } from "../../types.js";
 import { getHttpHeaders, onlyIfWorse } from "../utils.js";
 import { strictTransportSecurityTest } from "./strict-transport-security.js";
-import { Cookie } from "tough-cookie";
 
 // See: https://github.com/mozilla/http-observatory/issues/282 for the heroku-session-affinity insanity
 const COOKIES_TO_DELETE = ["heroku-session-affinity"];
@@ -225,8 +224,10 @@ export function cookiesTest(
 function containsInvalidSameSiteCookie(cookieString) {
   const parts = cookieString.trim().split(";");
   for (const p of parts) {
-    const [key, value] = p.trim().split("=");
-    if (key.trim().toLowerCase() === "samesite") {
+    const splitResult = p.trim().split("=");
+    const key = splitResult[0];
+    const value = splitResult[1];
+    if (key && key.trim().toLowerCase() === "samesite") {
       if (!value) {
         return true;
       }

@@ -36,9 +36,6 @@ describe("Cookies", () => {
     const reqs = emptyRequests();
     setCookieStrings(reqs, cookieStrings);
     assert.isNotNull(reqs.session);
-    const retrieved = reqs.session.jar.getCookiesSync("https://mozilla.org", {
-      http: true,
-    });
 
     const res = cookiesTest(reqs);
     assert.isNotNull(res.data);

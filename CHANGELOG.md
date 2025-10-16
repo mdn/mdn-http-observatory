@@ -1,5 +1,14 @@
 # Changelog
 
+## [1.4.9](https://github.com/mdn/mdn-http-observatory/compare/v1.4.8...v1.4.9) (2025-10-15)
+
+
+### Miscellaneous
+
+* **CODEOWNERS:** add Engineering for workflows and CODEOWNERS ([#329](https://github.com/mdn/mdn-http-observatory/issues/329)) ([df3c1e6](https://github.com/mdn/mdn-http-observatory/commit/df3c1e63c93bf4cc942c32e176271a9c10f7fd77))
+* **deps:** bump @sentry/node from 10.17.0 to 10.19.0 ([#326](https://github.com/mdn/mdn-http-observatory/issues/326)) ([5532855](https://github.com/mdn/mdn-http-observatory/commit/553285525afecb2fb05f3fa89a5ce6e046096d60))
+* **deps:** bump tldts from 7.0.16 to 7.0.17 ([#327](https://github.com/mdn/mdn-http-observatory/issues/327)) ([66ac776](https://github.com/mdn/mdn-http-observatory/commit/66ac776d4abf8acc2680f85dd81fed732a626c7c))
+
 ## [1.4.8](https://github.com/mdn/mdn-http-observatory/compare/v1.4.7...v1.4.8) (2025-10-07)
 
 

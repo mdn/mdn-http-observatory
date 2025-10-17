@@ -35,7 +35,7 @@
     "@types/mocha": "^10.0.10",
     "@types/pg-format": "^1.0.5",
     "@types/tough-cookie": "^4.0.5",
-    "chai": "^5.1.2",
+    "chai": "^6.2.0",
     "json-schema-to-jsdoc": "^1.1.1",
     "mocha": "^11.7.1",
     "nodemon": "^3.1.10",

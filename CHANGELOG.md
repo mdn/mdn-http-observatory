@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.4.10](https://github.com/mdn/mdn-http-observatory/compare/v1.4.9...v1.4.10) (2025-10-17)
+
+
+### Miscellaneous
+
+* **deps-dev:** bump chai from 5.3.1 to 6.2.0 ([#306](https://github.com/mdn/mdn-http-observatory/issues/306)) ([3297ad7](https://github.com/mdn/mdn-http-observatory/commit/3297ad758a1480888b1c64d52be05cd8fe55a996))
+
 ## [1.4.9](https://github.com/mdn/mdn-http-observatory/compare/v1.4.8...v1.4.9) (2025-10-15)
 
 

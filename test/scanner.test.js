@@ -29,9 +29,9 @@ describe("Scanner", () => {
     const site = Site.fromSiteString(domain);
     const scanResult = await scan(site);
 
-    assert.equal(scanResult.scan.algorithmVersion, 4);
+    assert.equal(scanResult.scan.algorithmVersion, 5);
     assert.equal(scanResult.scan.grade, "A+");
-    assert.equal(scanResult.scan.score, 105);
+    assert.equal(scanResult.scan.score, 110);
     assert.equal(scanResult.scan.testsFailed, 0);
     assert.equal(scanResult.scan.testsPassed, 10);
     assert.equal(scanResult.scan.testsQuantity, 10);
@@ -43,7 +43,7 @@ describe("Scanner", () => {
     const domain = "mozilla.org";
     const site = Site.fromSiteString(domain);
     const scanResult = await scan(site);
-    assert.equal(scanResult.scan.algorithmVersion, 4);
+    assert.equal(scanResult.scan.algorithmVersion, 5);
     assert.equal(scanResult.scan.grade, "B+");
     assert.equal(scanResult.scan.score, 80);
     assert.equal(scanResult.scan.testsFailed, 1);

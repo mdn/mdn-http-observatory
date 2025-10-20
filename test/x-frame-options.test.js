@@ -2,6 +2,7 @@ import { assert } from "chai";
 import { emptyRequests } from "./helpers.js";
 import { xFrameOptionsTest } from "../src/analyzer/tests/x-frame-options.js";
 import { Expectation } from "../src/types.js";
+import { getScoreModifier } from "../src/grader/grader.js";
 
 describe("X-Frame-Options", () => {
   /** @type {import("../src/types.js").Requests} */
@@ -44,11 +45,13 @@ describe("X-Frame-Options", () => {
     reqs.responses.auto.headers["x-frame-options"] = "DENY";
     let result = xFrameOptionsTest(reqs);
     assert.equal(result.result, Expectation.XFrameOptionsSameoriginOrDeny);
+    assert.equal(getScoreModifier(result.result || ""), 5);
     assert.isTrue(result.pass);
 
-    reqs.responses.auto.headers["x-frame-options"] = "DENY ";
+    reqs.responses.auto.headers["x-frame-options"] = "SAMEORIGIN ";
     result = xFrameOptionsTest(reqs);
     assert.equal(result.result, Expectation.XFrameOptionsSameoriginOrDeny);
+    assert.equal(getScoreModifier(result.result || ""), 5);
     assert.isTrue(result.pass);
   });
 

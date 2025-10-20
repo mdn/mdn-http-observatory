@@ -61,4 +61,4 @@ export const ALL_RESULTS = [
 
 export const NUM_TESTS = ALL_TESTS.length;
 
-export const ALGORITHM_VERSION = 4;
+export const ALGORITHM_VERSION = 5;

@@ -48,7 +48,7 @@ describe("X-Frame-Options", () => {
     assert.equal(getScoreModifier(result.result || ""), 5);
     assert.isTrue(result.pass);
 
-    reqs.responses.auto.headers["x-frame-options"] = "SAMEORIGIN ";
+    reqs.responses.auto.headers["x-frame-options"] = "SAMEORIGIN";
     result = xFrameOptionsTest(reqs);
     assert.equal(result.result, Expectation.XFrameOptionsSameoriginOrDeny);
     assert.equal(getScoreModifier(result.result || ""), 5);

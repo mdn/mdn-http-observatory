@@ -754,9 +754,7 @@ export const SCORE_TABLE = new Map([
       <code>X-Frame-Options</code> (XFO) header set to <code>SAMEORIGIN</code> or <code>DENY</code>.
       </p>`,
       modifier: 5,
-      recommendation: `<p>
-      Implement frame-ancestors CSP.
-      </p>`,
+      recommendation: ``,
     },
   ],
   [

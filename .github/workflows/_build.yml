@@ -50,7 +50,7 @@ jobs:
           echo "✅ Valid tag: $TAG"
 
       - name: Checkout
-        uses: actions/checkout@v5
+        uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
         with:
           ref: ${{ inputs.ref || github.event.repository.default_branch }}
           persist-credentials: false
@@ -60,7 +60,7 @@ jobs:
 
       - name: GCP auth
         id: gcp-auth
-        uses: google-github-actions/auth@v3
+        uses: google-github-actions/auth@7c6bc770dae815cd3e89ee6cdf493a5fab2cc093 # v3.0.0
         with:
           token_format: access_token
           service_account: artifact-writer@${{ secrets.GCP_PROJECT_NAME }}.iam.gserviceaccount.com

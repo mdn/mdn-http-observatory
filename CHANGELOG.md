@@ -1,5 +1,23 @@
 # Changelog
 
+## [1.5.0](https://github.com/mdn/mdn-http-observatory/compare/v1.4.9...v1.5.0) (2025-10-28)
+
+
+### Features
+
+* **tests:** un-deprecated x-frame-options and re-score ([#332](https://github.com/mdn/mdn-http-observatory/issues/332)) ([102df60](https://github.com/mdn/mdn-http-observatory/commit/102df60cce49102bd42f6849d2603dcb50fa2e83))
+
+
+### Miscellaneous
+
+* **deps-dev:** bump @faker-js/faker from 10.0.0 to 10.1.0 ([#335](https://github.com/mdn/mdn-http-observatory/issues/335)) ([ef9c72a](https://github.com/mdn/mdn-http-observatory/commit/ef9c72a49b7779e4eedd5b1ccaccd79f6c021d28))
+* **deps-dev:** bump @types/chai from 5.2.2 to 5.2.3 ([#342](https://github.com/mdn/mdn-http-observatory/issues/342)) ([f54e6d9](https://github.com/mdn/mdn-http-observatory/commit/f54e6d98899951a024a6528838b75fafc3a8143f))
+* **deps-dev:** bump chai from 5.3.1 to 6.2.0 ([#306](https://github.com/mdn/mdn-http-observatory/issues/306)) ([3297ad7](https://github.com/mdn/mdn-http-observatory/commit/3297ad758a1480888b1c64d52be05cd8fe55a996))
+* **deps:** bump @fastify/static from 8.2.0 to 8.3.0 ([#334](https://github.com/mdn/mdn-http-observatory/issues/334)) ([71e0a89](https://github.com/mdn/mdn-http-observatory/commit/71e0a89e0fbc8934c9f84e78df6f7c6c2f3b6c5b))
+* **deps:** bump @sentry/node from 10.19.0 to 10.20.0 ([#337](https://github.com/mdn/mdn-http-observatory/issues/337)) ([21a98e3](https://github.com/mdn/mdn-http-observatory/commit/21a98e35a2428e90f2140e990cf96e0cdc60f0be))
+* **deps:** bump jsdom from 27.0.0 to 27.0.1 ([#336](https://github.com/mdn/mdn-http-observatory/issues/336)) ([b58ee3a](https://github.com/mdn/mdn-http-observatory/commit/b58ee3a8543de16fe314f4f3c1681869cbd65dbe))
+* migrate GitHub team references ([#340](https://github.com/mdn/mdn-http-observatory/issues/340)) ([b8a9c32](https://github.com/mdn/mdn-http-observatory/commit/b8a9c3248d1625c0663497af66eeec14cf779854))
+
 ## [1.4.9](https://github.com/mdn/mdn-http-observatory/compare/v1.4.8...v1.4.9) (2025-10-15)
 
 

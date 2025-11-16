@@ -1,5 +1,15 @@
 # Changelog
 
+## [1.5.1](https://github.com/mdn/mdn-http-observatory/compare/v1.5.0...v1.5.1) (2025-11-16)
+
+
+### Miscellaneous
+
+* **deps-dev:** bump js-yaml from 4.1.0 to 4.1.1 ([#351](https://github.com/mdn/mdn-http-observatory/issues/351)) ([b8535d4](https://github.com/mdn/mdn-http-observatory/commit/b8535d437dd10b0ed8960a77438816040febd0ae))
+* **deps:** bump commander from 14.0.1 to 14.0.2 ([#344](https://github.com/mdn/mdn-http-observatory/issues/344)) ([a6e5ed5](https://github.com/mdn/mdn-http-observatory/commit/a6e5ed5cf143600e5632bfddfaa90a5bb6d90287))
+* **deps:** bump dayjs from 1.11.18 to 1.11.19 ([#343](https://github.com/mdn/mdn-http-observatory/issues/343)) ([bca44e7](https://github.com/mdn/mdn-http-observatory/commit/bca44e72b7646cce674179f1087a6c1574524e1d))
+* **deps:** bump jsdom from 27.0.1 to 27.1.0 ([#345](https://github.com/mdn/mdn-http-observatory/issues/345)) ([98e3079](https://github.com/mdn/mdn-http-observatory/commit/98e30795decb3328a7bc90810f3d39d51d731c63))
+
 ## [1.5.0](https://github.com/mdn/mdn-http-observatory/compare/v1.4.9...v1.5.0) (2025-10-28)
 
 

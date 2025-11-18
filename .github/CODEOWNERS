@@ -9,3 +9,4 @@
 
 /package.json @mdn/engineering @mdn-bot
 /package-lock.json @mdn/engineering @mdn-bot
+/SECURITY.md @mdn/engineering

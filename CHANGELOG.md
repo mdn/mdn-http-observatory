@@ -1,5 +1,20 @@
 # Changelog
 
+## [1.5.1](https://github.com/mdn/mdn-http-observatory/compare/v1.5.0...v1.5.1) (2025-11-19)
+
+
+### Miscellaneous
+
+* **deps-dev:** bump chai from 6.2.0 to 6.2.1 ([#357](https://github.com/mdn/mdn-http-observatory/issues/357)) ([5acdcc8](https://github.com/mdn/mdn-http-observatory/commit/5acdcc8dafddaa65522de8412ad5504d3a9052f0))
+* **deps-dev:** bump js-yaml from 4.1.0 to 4.1.1 ([#351](https://github.com/mdn/mdn-http-observatory/issues/351)) ([b8535d4](https://github.com/mdn/mdn-http-observatory/commit/b8535d437dd10b0ed8960a77438816040febd0ae))
+* **deps-dev:** bump mocha from 11.7.4 to 11.7.5 ([#355](https://github.com/mdn/mdn-http-observatory/issues/355)) ([7b4d695](https://github.com/mdn/mdn-http-observatory/commit/7b4d6955922691d2c989541f5dd13652478fab8e))
+* **deps:** bump @sentry/node from 10.20.0 to 10.25.0 ([#356](https://github.com/mdn/mdn-http-observatory/issues/356)) ([8cb6eba](https://github.com/mdn/mdn-http-observatory/commit/8cb6eba41d7d4774f56d7bd335809cb3a48589cb))
+* **deps:** bump commander from 14.0.1 to 14.0.2 ([#344](https://github.com/mdn/mdn-http-observatory/issues/344)) ([a6e5ed5](https://github.com/mdn/mdn-http-observatory/commit/a6e5ed5cf143600e5632bfddfaa90a5bb6d90287))
+* **deps:** bump dayjs from 1.11.18 to 1.11.19 ([#343](https://github.com/mdn/mdn-http-observatory/issues/343)) ([bca44e7](https://github.com/mdn/mdn-http-observatory/commit/bca44e72b7646cce674179f1087a6c1574524e1d))
+* **deps:** bump glob ([#360](https://github.com/mdn/mdn-http-observatory/issues/360)) ([243e5b1](https://github.com/mdn/mdn-http-observatory/commit/243e5b19d8e71d1d2777b33b8bcc981fcc37b571))
+* **deps:** bump http-cookie-agent from 7.0.2 to 7.0.3 ([#354](https://github.com/mdn/mdn-http-observatory/issues/354)) ([93b02fa](https://github.com/mdn/mdn-http-observatory/commit/93b02fa476bae0b7335fa581343570b255e3bb56))
+* **deps:** bump jsdom from 27.0.1 to 27.1.0 ([#345](https://github.com/mdn/mdn-http-observatory/issues/345)) ([98e3079](https://github.com/mdn/mdn-http-observatory/commit/98e30795decb3328a7bc90810f3d39d51d731c63))
+
 ## [1.5.0](https://github.com/mdn/mdn-http-observatory/compare/v1.4.9...v1.5.0) (2025-10-28)
 
 

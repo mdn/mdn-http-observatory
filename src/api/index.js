@@ -1,7 +1,10 @@
 import { CONFIG } from "../config.js";
 import { createServer } from "./server.js";
+import { setupCache } from "../cache.js";
 
 async function main() {
+  await setupCache();
+
   const server = await createServer();
   try {
     await server.listen({

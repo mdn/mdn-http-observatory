@@ -1,18 +1,15 @@
 import axios from "axios";
 import { writeFile } from "fs/promises";
-import path from "node:path";
-import { fileURLToPath } from "node:url";
 
 const TLD_LIST_URL = new URL(
   "https://data.iana.org/TLD/tlds-alpha-by-domain.txt"
 );
 
-const dirname = path.dirname(fileURLToPath(import.meta.url));
-
 /**
  * Download the IANA-maintained public suffix list
+ * @param {string} filePath
  */
-export async function retrieveAndStoreTldList() {
+export async function retrieveAndStoreTldList(filePath) {
   let r;
   try {
     r = await axios.get(TLD_LIST_URL.href);
@@ -21,10 +18,9 @@ export async function retrieveAndStoreTldList() {
     return;
   }
   const data = cleanData(r.data);
-  const filePath = path.join(dirname, "..", "conf", "tld-list.json");
   try {
     await writeFile(filePath, data);
-    console.log(`File written to ${filePath}`);
+    console.log(`Downloaded TLD list and saved it to ${filePath}`);
   } catch (error) {
     console.error("Error writing file:", error);
     return;
@@ -44,9 +40,4 @@ function cleanData(data) {
     .filter((line) => line.trim() !== "")
     .map((line) => line.trim().toLowerCase());
   return JSON.stringify(ret);
-}
-
-// Execute when run directly
-if (import.meta.url === `file://${process.argv[1]}`) {
-  retrieveAndStoreTldList().catch(console.error);
 }

@@ -37,7 +37,7 @@ jobs:
           package-manager-cache: false
 
       - name: Install
-        run: npm install
+        run: npm ci
 
       - name: Run tests
         run: npm test
@@ -85,7 +85,7 @@ jobs:
           package-manager-cache: false
 
       - name: Install
-        run: npm install
+        run: npm ci
 
       - name: Run prettier
         run: npx prettier --check .

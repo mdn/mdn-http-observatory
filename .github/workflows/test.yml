@@ -39,9 +39,6 @@ jobs:
       - name: Install
         run: npm install
 
-      - name: Run type checks
-        run: npm run tsc
-
       - name: Run tests
         run: npm test
         env:

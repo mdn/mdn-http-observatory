@@ -2,11 +2,10 @@
 name: Test
 
 on:
-  workflow_dispatch:
   push:
-    branches: [main, wip-andi]
+    branches:
+      - main
   pull_request:
-    branches: [main]
 
 # No GITHUB_TOKEN permissions, as we don't use it.
 permissions: {}

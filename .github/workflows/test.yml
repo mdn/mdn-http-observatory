@@ -1,5 +1,5 @@
 # run unit tests
-name: build-and-test
+name: Test
 
 on:
   workflow_dispatch:

@@ -23,7 +23,7 @@ If you want to install the package first, use npm to install it globally
 npm install --global @mdn/mdn-http-observatory
 ```
 
-After that, the `mdn-http-observatory-scan` command should be available in your shell. To scan a host, run 
+After that, the `mdn-http-observatory-scan` command should be available in your shell. To scan a host, run
 
 ```sh
 mdn-http-observatory-scan mdn.dev
@@ -77,7 +77,6 @@ Put in your database credentials into `config/config.json`:
     "user": "postgres"
   }
 }
-
 ```
 
 To initialize the database with the proper tables, use this command to migrate. This is a one-time action, but future code changes
@@ -105,12 +104,12 @@ For integration in CI pipelines or similar applications, a JSON API endpoint is 
 
 #### Query parameters
 
-* `host` hostname (required)
+- `host` hostname (required)
 
 #### Examples
 
-* `POST /api/v2/scan?host=mdn.dev`
-* `POST /api/v2/scan?host=google.com`
+- `POST /api/v2/scan?host=mdn.dev`
+- `POST /api/v2/scan?host=google.com`
 
 #### Result
 
@@ -153,11 +152,11 @@ The previous iteration of the Observatory JSON API has been deprecated and shut 
 
 If you previously used the Observatory API with some automation or a CI context, the switch from the old `/api/v1/analyze` endpoint to the new `/api/v2/scan` endpoint should be painless:
 
-* Replace all API calls to `POST https://http-observatory.security.mozilla.org/api/v1/analyze?host=<HOST TO SCAN>` with `POST https://observatory-api.mdn.mozilla.net/api/v2/scan?host=<HOST TO SCAN>`
-* Be aware that the complete list of headers has been removed from the response.
-* The POST parameters `rescan` and `hidden` in the POST body have been removed.
-* Remove all other requests from your application, if any. If you need any additional information about your scan, open the URL from the `detail_url` field of the response in your browser.
-* Note that scans are still limited to one every minute per host, otherwise a cached response is returned.
+- Replace all API calls to `POST https://http-observatory.security.mozilla.org/api/v1/analyze?host=<HOST TO SCAN>` with `POST https://observatory-api.mdn.mozilla.net/api/v2/scan?host=<HOST TO SCAN>`
+- Be aware that the complete list of headers has been removed from the response.
+- The POST parameters `rescan` and `hidden` in the POST body have been removed.
+- Remove all other requests from your application, if any. If you need any additional information about your scan, open the URL from the `detail_url` field of the response in your browser.
+- Note that scans are still limited to one every minute per host, otherwise a cached response is returned.
 
 ## Contributing
 

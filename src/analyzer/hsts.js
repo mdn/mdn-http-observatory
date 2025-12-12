@@ -1,9 +1,6 @@
 import fs from "fs";
-import path from "node:path";
-import { fileURLToPath } from "node:url";
 import { Site } from "../site.js";
-
-const dirname = path.dirname(fileURLToPath(import.meta.url));
+import { HSTS_PRELOAD_PATH } from "../cache.js";
 
 /**
  * @type {import("../types.js").Hsts | null}
@@ -15,15 +12,8 @@ let hstsMap = null;
  */
 export function hsts() {
   if (!hstsMap) {
-    const filePath = path.join(
-      dirname,
-      "..",
-      "..",
-      "conf",
-      "hsts-preload.json"
-    );
     hstsMap = new Map(
-      Object.entries(JSON.parse(fs.readFileSync(filePath, "utf8")))
+      Object.entries(JSON.parse(fs.readFileSync(HSTS_PRELOAD_PATH, "utf8")))
     );
   }
   return hstsMap;

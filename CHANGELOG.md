@@ -1,5 +1,35 @@
 # Changelog
 
+## [1.5.1](https://github.com/mdn/mdn-http-observatory/compare/v1.5.0...v1.5.1) (2025-12-11)
+
+
+### Bug Fixes
+
+* **deps:** update Docker base image to node 24 ([#378](https://github.com/mdn/mdn-http-observatory/issues/378)) ([3542081](https://github.com/mdn/mdn-http-observatory/commit/35420811a1e22256a19b8d0d7b07be4490c98f27))
+
+
+### Miscellaneous
+
+* **deps-dev:** bump chai from 6.2.0 to 6.2.1 ([#357](https://github.com/mdn/mdn-http-observatory/issues/357)) ([5acdcc8](https://github.com/mdn/mdn-http-observatory/commit/5acdcc8dafddaa65522de8412ad5504d3a9052f0))
+* **deps-dev:** bump js-yaml from 4.1.0 to 4.1.1 ([#351](https://github.com/mdn/mdn-http-observatory/issues/351)) ([b8535d4](https://github.com/mdn/mdn-http-observatory/commit/b8535d437dd10b0ed8960a77438816040febd0ae))
+* **deps-dev:** bump mocha from 11.7.4 to 11.7.5 ([#355](https://github.com/mdn/mdn-http-observatory/issues/355)) ([7b4d695](https://github.com/mdn/mdn-http-observatory/commit/7b4d6955922691d2c989541f5dd13652478fab8e))
+* **deps-dev:** bump nodemon from 3.1.10 to 3.1.11 ([#368](https://github.com/mdn/mdn-http-observatory/issues/368)) ([ef04f1d](https://github.com/mdn/mdn-http-observatory/commit/ef04f1d4e4ac54f56f14b09e06e2454d71122c42))
+* **deps:** bump @sentry/node from 10.20.0 to 10.25.0 ([#356](https://github.com/mdn/mdn-http-observatory/issues/356)) ([8cb6eba](https://github.com/mdn/mdn-http-observatory/commit/8cb6eba41d7d4774f56d7bd335809cb3a48589cb))
+* **deps:** bump @sentry/node from 10.25.0 to 10.27.0 ([#361](https://github.com/mdn/mdn-http-observatory/issues/361)) ([ada17d3](https://github.com/mdn/mdn-http-observatory/commit/ada17d3acb0a402e767a04ae68171f716fa744f8))
+* **deps:** bump @sentry/node from 10.27.0 to 10.29.0 ([#374](https://github.com/mdn/mdn-http-observatory/issues/374)) ([8c61295](https://github.com/mdn/mdn-http-observatory/commit/8c612958174067faa24cea41811dc3a6b7a1d058))
+* **deps:** bump axios from 1.12.2 to 1.13.2 ([#364](https://github.com/mdn/mdn-http-observatory/issues/364)) ([89246a6](https://github.com/mdn/mdn-http-observatory/commit/89246a64a216ec6e71001ee1b1d0edb197a7ffdf))
+* **deps:** bump axios-cookiejar-support from 6.0.4 to 6.0.5 ([#362](https://github.com/mdn/mdn-http-observatory/issues/362)) ([7efd18b](https://github.com/mdn/mdn-http-observatory/commit/7efd18bdd6238b446247f8952ebe9feae8196cc5))
+* **deps:** bump commander from 14.0.1 to 14.0.2 ([#344](https://github.com/mdn/mdn-http-observatory/issues/344)) ([a6e5ed5](https://github.com/mdn/mdn-http-observatory/commit/a6e5ed5cf143600e5632bfddfaa90a5bb6d90287))
+* **deps:** bump dayjs from 1.11.18 to 1.11.19 ([#343](https://github.com/mdn/mdn-http-observatory/issues/343)) ([bca44e7](https://github.com/mdn/mdn-http-observatory/commit/bca44e72b7646cce674179f1087a6c1574524e1d))
+* **deps:** bump fastify from 5.6.1 to 5.6.2 ([#363](https://github.com/mdn/mdn-http-observatory/issues/363)) ([72d89c6](https://github.com/mdn/mdn-http-observatory/commit/72d89c61f58766ef88208efb7038631c6eb50796))
+* **deps:** bump glob ([#360](https://github.com/mdn/mdn-http-observatory/issues/360)) ([243e5b1](https://github.com/mdn/mdn-http-observatory/commit/243e5b19d8e71d1d2777b33b8bcc981fcc37b571))
+* **deps:** bump http-cookie-agent from 7.0.2 to 7.0.3 ([#354](https://github.com/mdn/mdn-http-observatory/issues/354)) ([93b02fa](https://github.com/mdn/mdn-http-observatory/commit/93b02fa476bae0b7335fa581343570b255e3bb56))
+* **deps:** bump jsdom from 27.0.1 to 27.1.0 ([#345](https://github.com/mdn/mdn-http-observatory/issues/345)) ([98e3079](https://github.com/mdn/mdn-http-observatory/commit/98e30795decb3328a7bc90810f3d39d51d731c63))
+* **deps:** bump jsdom from 27.1.0 to 27.2.0 ([#365](https://github.com/mdn/mdn-http-observatory/issues/365)) ([b159225](https://github.com/mdn/mdn-http-observatory/commit/b15922515c7f0c4e09b9ae2efb7ad62702ab15cc))
+* **deps:** bump jsdom from 27.2.0 to 27.3.0 ([#375](https://github.com/mdn/mdn-http-observatory/issues/375)) ([e7ae6f1](https://github.com/mdn/mdn-http-observatory/commit/e7ae6f1c5b1c8bf29fc47a7216dbc449ed69c1c1))
+* **deps:** bump tldts from 7.0.17 to 7.0.19 ([#367](https://github.com/mdn/mdn-http-observatory/issues/367)) ([191d15a](https://github.com/mdn/mdn-http-observatory/commit/191d15a27faf962d9cfe8064058f425f8301f918))
+* **deps:** set packageManager field + enable engine-strict ([#377](https://github.com/mdn/mdn-http-observatory/issues/377)) ([cfca4ec](https://github.com/mdn/mdn-http-observatory/commit/cfca4ec26d09601f2bb24517f764e86eb0460cde))
+
 ## [1.5.0](https://github.com/mdn/mdn-http-observatory/compare/v1.4.9...v1.5.0) (2025-10-28)
 
 

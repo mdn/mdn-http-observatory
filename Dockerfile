@@ -9,7 +9,7 @@ WORKDIR /home/node/app
 USER node
 COPY --chown=node:node . .
 # This also installs hsts and tld data files in a postinstall script:
-RUN npm install
+RUN npm ci
 
 ARG GIT_SHA=dev
 ARG RUN_ID=unknown

@@ -25,12 +25,20 @@ const FILTERED_ERROR_TYPES = [
 const FILTERED_ERROR_CODES = [
   "FST_ERR_VALIDATION",
   "FST_ERR_CTP_INVALID_MEDIA_TYPE",
+  "FST_ERR_CTP_EMPTY_JSON_BODY",
 ];
 const FILTERED_STATUS_CODES = [422];
 
 if (CONFIG.sentry.dsn) {
   Sentry.init({
     dsn: CONFIG.sentry.dsn,
+    ignoreErrors: [
+      "Object contains forbidden prototype property",
+      "value too long for type character varying(255)",
+      "Malformed urlencoded form",
+      "Malformed part header",
+      "Unexpected end of form",
+    ],
     beforeSend(event, hint) {
       // Filter all 422 status codes
       const originalError = hint.originalException;

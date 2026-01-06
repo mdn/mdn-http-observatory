@@ -94,6 +94,17 @@ npm start
 
 The server is listening on your local interface on port `8080`. You can check the root path by opening <http://localhost:8080/> in your browser or `curl` the URL. The server should respond with `Welcome to the MDN Observatory!`.
 
+## Common Local Setup Issues (Windows)
+
+New contributors running the project on Windows may encounter a few common issues during local setup:
+
+- **Node.js version mismatch**: Ensure the Node.js version matches the version specified in the project documentation. Using an incompatible version may cause dependency installation failures.
+- **Permission errors during npm install**: Running the terminal as Administrator or using a clean user-level Node.js installation can help resolve permission-related issues.
+- **Port already in use**: If the application fails to start due to a port conflict, ensure no other service is using the configured port before retrying.
+- **Environment variables not loaded**: After modifying environment variables, restart the terminal session to ensure changes take effect.
+
+These clarifications are based on common issues faced during initial local setup and aim to reduce onboarding friction for new contributors.
+
 ## JSON API
 
 **Note:** We provide these endpoints on our public deployment of HTTP Observatory at <https://observatory-api.mdn.mozilla.net/>

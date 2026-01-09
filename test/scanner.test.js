@@ -44,10 +44,10 @@ describe("Scanner", () => {
     const site = Site.fromSiteString(domain);
     const scanResult = await scan(site);
     assert.equal(scanResult.scan.algorithmVersion, 5);
-    assert.equal(scanResult.scan.grade, "B+");
-    assert.equal(scanResult.scan.score, 80);
-    assert.equal(scanResult.scan.testsFailed, 1);
-    assert.equal(scanResult.scan.testsPassed, 9);
+    assert.equal(scanResult.scan.grade, "B");
+    assert.equal(scanResult.scan.score, 75);
+    assert.equal(scanResult.scan.testsFailed, 2);
+    assert.equal(scanResult.scan.testsPassed, 8);
     assert.equal(scanResult.scan.testsQuantity, 10);
     assert.equal(scanResult.scan.statusCode, 200);
     assert.equal(

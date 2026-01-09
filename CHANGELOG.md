@@ -1,5 +1,17 @@
 # Changelog
 
+## [1.5.2](https://github.com/mdn/mdn-http-observatory/compare/v1.5.1...v1.5.2) (2026-01-09)
+
+
+### Miscellaneous
+
+* **deps-dev:** bump chai from 6.2.1 to 6.2.2 ([#390](https://github.com/mdn/mdn-http-observatory/issues/390)) ([90f573c](https://github.com/mdn/mdn-http-observatory/commit/90f573c62bda16f63a3f0a9c9a3f050703b16fe3))
+* **deps:** bump @fastify/cors from 11.1.0 to 11.2.0 ([#383](https://github.com/mdn/mdn-http-observatory/issues/383)) ([71de538](https://github.com/mdn/mdn-http-observatory/commit/71de5381ff31bb78648e7dfb4f23815f91006b4d))
+* **deps:** bump @sentry/node from 10.29.0 to 10.30.0 ([#384](https://github.com/mdn/mdn-http-observatory/issues/384)) ([2289d16](https://github.com/mdn/mdn-http-observatory/commit/2289d1675c39ef8869269ed48995e09bc361e710))
+* **deps:** bump @sentry/node from 10.30.0 to 10.32.1 ([#391](https://github.com/mdn/mdn-http-observatory/issues/391)) ([1523dfd](https://github.com/mdn/mdn-http-observatory/commit/1523dfd8a240328e9e7136fc14d1a610206358da))
+* **deps:** bump jsdom from 27.3.0 to 27.4.0 ([#393](https://github.com/mdn/mdn-http-observatory/issues/393)) ([cd13148](https://github.com/mdn/mdn-http-observatory/commit/cd13148a9b857080f9aef45b56911ce15276a304))
+* **Dockerfile:** run `npm ci`, not `npm install` ([#382](https://github.com/mdn/mdn-http-observatory/issues/382)) ([577e15c](https://github.com/mdn/mdn-http-observatory/commit/577e15c348705e9a6cb7d4a8bb1f1843a8cbfec7))
+
 ## [1.5.1](https://github.com/mdn/mdn-http-observatory/compare/v1.5.0...v1.5.1) (2025-12-11)
 
 

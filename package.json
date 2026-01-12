@@ -12,6 +12,7 @@
     "start": "NODE_EXTRA_CA_CERTS=node_modules/node_extra_ca_certs_mozilla_bundle/ca_bundle/ca_intermediate_root_bundle.pem node src/api/index.js",
     "dev": "NODE_EXTRA_CA_CERTS=node_modules/node_extra_ca_certs_mozilla_bundle/ca_bundle/ca_intermediate_root_bundle.pem nodemon src/api/index.js",
     "test": "CONFIG_FILE=conf/config-test.json mocha",
+    "capture-fixtures": "node scripts/capture-fixtures.js",
     "tsc": "tsc -p jsconfig.json",
     "updateHsts": "node src/retrieve-hsts.js",
     "updateTldList": "node src/retrieve-tld-list.js",

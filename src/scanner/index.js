@@ -18,19 +18,18 @@ import { ALL_TESTS } from "../constants.js";
  */
 
 /**
- * @param {Site} site
- * @param {import("../types.js").ScanOptions} [options]
- * @returns {Promise<ScanResult>}
+ * Analyzes a Requests object and returns scan results
+ * @param {import("../types.js").Requests} requests
+ * @returns {ScanResult}
  */
-export async function scan(site, options) {
-  let r = await retrieve(site, options);
-  if (!r.responses.auto) {
+export function analyzeScan(requests) {
+  if (!requests.responses.auto) {
     // We cannot connect at all, abort the test.
     throw new Error("The site seems to be down.");
   }
 
   // We allow 2xx, 3xx, 401 and 403 status codes
-  const { status } = r.responses.auto;
+  const { status } = requests.responses.auto;
   if (status < 200 || (status >= 400 && ![401, 403].includes(status))) {
     throw new Error(
       `Site did respond with an unexpected HTTP status code ${status}.`
@@ -40,18 +39,17 @@ export async function scan(site, options) {
   // Run all the tests on the result
   /**  @type {Output[]} */
   const results = ALL_TESTS.map((test) => {
-    return test(r);
+    return test(requests);
   });
 
   /** @type {StringMap} */
-  const responseHeaders = Object.entries(r.responses.auto.headers).reduce(
-    (acc, [key, value]) => {
-      acc[key] = value;
-      return acc;
-    },
-    /** @type {StringMap} */ ({})
-  );
-  const statusCode = r.responses.auto.status;
+  const responseHeaders = Object.entries(
+    requests.responses.auto.headers
+  ).reduce((acc, [key, value]) => {
+    acc[key] = value;
+    return acc;
+  }, /** @type {StringMap} */ ({}));
+  const statusCode = requests.responses.auto.status;
 
   let testsPassed = 0;
   let scoreWithExtraCredit = 100;
@@ -97,4 +95,14 @@ export async function scan(site, options) {
     },
     tests,
   };
+}
+
+/**
+ * @param {Site} site
+ * @param {import("../types.js").ScanOptions} [options]
+ * @returns {Promise<ScanResult>}
+ */
+export async function scan(site, options) {
+  const r = await retrieve(site, options);
+  return analyzeScan(r);
 }

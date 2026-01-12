@@ -1,12 +1,12 @@
 {
   "name": "@mdn/mdn-http-observatory",
-  "version": "1.5.0",
+  "version": "1.5.1",
   "author": "Mozilla Developer Network",
   "description": "The MDN HTTP Observatory is a set of tools to analyze your website and inform you if you are utilizing the many available methods to secure it.",
   "main": "src/index.js",
+  "packageManager": "npm@11.6.2",
   "engines": {
-    "node": ">=24.0.0",
-    "npm": ">=9.0.0"
+    "node": ">=24"
   },
   "scripts": {
     "start": "NODE_EXTRA_CA_CERTS=node_modules/node_extra_ca_certs_mozilla_bundle/ca_bundle/ca_intermediate_root_bundle.pem node src/api/index.js",

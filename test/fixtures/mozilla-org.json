@@ -176,13 +176,5 @@
   },
   "session": {
     "url": "https://mozilla.org/"
-  },
-  "metadata": {
-    "scanResult": {
-      "grade": "B",
-      "score": 75,
-      "testsPassed": 8,
-      "testsFailed": 2
-    }
   }
 }

@@ -78,14 +78,6 @@ async function captureFixture(domain) {
     session: {
       url: requests.session?.url.href,
     },
-    metadata: {
-      scanResult: {
-        grade: scanResult.scan.grade,
-        score: scanResult.scan.score,
-        testsPassed: scanResult.scan.testsPassed,
-        testsFailed: scanResult.scan.testsFailed,
-      },
-    },
   };
 
   // Write to fixture file

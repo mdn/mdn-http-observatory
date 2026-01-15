@@ -168,13 +168,5 @@
   },
   "session": {
     "url": "https://observatory.mozilla.org/"
-  },
-  "metadata": {
-    "scanResult": {
-      "grade": "A+",
-      "score": 110,
-      "testsPassed": 10,
-      "testsFailed": 0
-    }
   }
 }

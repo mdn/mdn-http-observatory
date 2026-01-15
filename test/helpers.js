@@ -180,11 +180,17 @@ export function fixtureRequests(fixtureName) {
 
   // Reconstruct redirect chains
   req.responses.httpRedirects = (fixtureData.responses.httpRedirects || []).map(
-    (/** @type {SerializedRedirectEntry} */ r) => ({ url: new URL(r.url), status: r.status })
+    (/** @type {SerializedRedirectEntry} */ r) => ({
+      url: new URL(r.url),
+      status: r.status,
+    })
   );
   req.responses.httpsRedirects = (
     fixtureData.responses.httpsRedirects || []
-  ).map((/** @type {SerializedRedirectEntry} */ r) => ({ url: new URL(r.url), status: r.status }));
+  ).map((/** @type {SerializedRedirectEntry} */ r) => ({
+    url: new URL(r.url),
+    status: r.status,
+  }));
 
   // Set resources
   req.resources.path = fixtureData.resources.path || "";

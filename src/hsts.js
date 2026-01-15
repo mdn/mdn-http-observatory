@@ -1,7 +1,5 @@
 import axios from "axios";
 import { writeFile } from "fs/promises";
-import path from "node:path";
-import { fileURLToPath } from "node:url";
 
 const HSTS_URL = new URL(
   "https://raw.githubusercontent.com/chromium/chromium/main/net/http/transport_security_state_static.json"
@@ -15,8 +13,6 @@ const SCANNER_PINNED_DOMAINS = [
   "cdn.mozilla.org",
   "services.mozilla.com",
 ];
-
-const dirname = path.dirname(fileURLToPath(import.meta.url));
 
 /**
  *
@@ -38,9 +34,10 @@ const dirname = path.dirname(fileURLToPath(import.meta.url));
 
 /**
  * Download the Google HSTS preload list
+ * @param {string} filePath
  * @returns
  */
-export async function retrieveAndStoreHsts() {
+export async function retrieveAndStoreHsts(filePath) {
   let r;
   try {
     r = await axios.get(HSTS_URL.href);
@@ -65,10 +62,9 @@ export async function retrieveAndStoreHsts() {
     return acc;
   }, /** @type {HstsMap} */ ({}));
 
-  const filePath = path.join(dirname, "..", "conf", "hsts-preload.json");
   try {
     await writeFile(filePath, JSON.stringify(hstsMap, null, 2));
-    console.log(`File written to ${filePath}`);
+    console.log(`Downloaded HSTS data and saved it to ${filePath}`);
   } catch (error) {
     console.error("Error writing file:", error);
     return;
@@ -82,9 +78,4 @@ export async function retrieveAndStoreHsts() {
  */
 function removeJsonComments(jsonString) {
   return jsonString.replace(/\/\/.*$/gm, "");
-}
-
-// Execute when run directly
-if (import.meta.url === `file://${process.argv[1]}`) {
-  retrieveAndStoreHsts().catch(console.error);
 }

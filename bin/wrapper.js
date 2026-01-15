@@ -9,13 +9,6 @@ import { fileURLToPath } from "node:url";
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-// Set the environment variable for extra CA certificates
-let caCertPath = import.meta.resolve("node_extra_ca_certs_mozilla_bundle");
-caCertPath = new URL(caCertPath).pathname;
-caCertPath = path.dirname(caCertPath);
-caCertPath = path.join(caCertPath, "ca_bundle", "ca_intermediate_bundle.pem");
-process.env.NODE_EXTRA_CA_CERTS = caCertPath;
-
 // The target script you want to run (relative to this script's directory)
 const targetScript = path.join(__dirname, "..", "src", "scan.js");
 

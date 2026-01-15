@@ -9,17 +9,15 @@
     "node": ">=24"
   },
   "scripts": {
-    "start": "NODE_EXTRA_CA_CERTS=node_modules/node_extra_ca_certs_mozilla_bundle/ca_bundle/ca_intermediate_root_bundle.pem node src/api/index.js",
-    "dev": "NODE_EXTRA_CA_CERTS=node_modules/node_extra_ca_certs_mozilla_bundle/ca_bundle/ca_intermediate_root_bundle.pem nodemon src/api/index.js",
+    "start": "node src/api/index.js",
+    "dev": "nodemon src/api/index.js",
     "test": "CONFIG_FILE=conf/config-test.json mocha",
     "capture-fixtures": "node scripts/capture-fixtures.js",
     "tsc": "tsc -p jsconfig.json",
-    "updateHsts": "node src/retrieve-hsts.js",
-    "updateTldList": "node src/retrieve-tld-list.js",
     "refreshMaterializedViews": "node src/maintenance/index.js",
+    "refreshCache": "node src/cache.js",
     "maintenance": "node src/maintenance/index.js",
-    "migrate": "node -e 'import(\"./src/database/migrate.js\").then( m => m.migrateDatabase() )'",
-    "postinstall": "npm run updateHsts && npm run updateTldList"
+    "migrate": "node -e 'import(\"./src/database/migrate.js\").then( m => m.migrateDatabase() )'"
   },
   "bin": {
     "mdn-http-observatory-scan": "bin/wrapper.js"
@@ -61,7 +59,7 @@
     "http-cookie-agent": "^7.0.1",
     "ip": "^2.0.1",
     "jsdom": "^27.0.0",
-    "node_extra_ca_certs_mozilla_bundle": "^1.0.7",
+    "papaparse": "^5.5.3",
     "pg": "^8.16.2",
     "pg-format": "^1.0.4",
     "pg-native": "^3.5.2",

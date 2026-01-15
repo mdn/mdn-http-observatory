@@ -1,6 +1,7 @@
 import { assert } from "chai";
 import { scan } from "../src/scanner/index.js";
 import { Site } from "../src/site.js";
+import { fixtureRequests, scanWithRequests } from "./helpers.js";
 
 /** @typedef {import("../src/scanner/index.js").ScanResult} ScanResult */
 
@@ -24,10 +25,9 @@ describe("Scanner", () => {
     }
   });
 
-  it("returns expected results on observatory.mozilla.org", async function () {
-    const domain = "observatory.mozilla.org";
-    const site = Site.fromSiteString(domain);
-    const scanResult = await scan(site);
+  it("returns expected results on observatory.mozilla.org", function () {
+    const requests = fixtureRequests("observatory-mozilla-org");
+    const scanResult = scanWithRequests(requests);
 
     assert.equal(scanResult.scan.algorithmVersion, 5);
     assert.equal(scanResult.scan.grade, "A+");
@@ -37,23 +37,22 @@ describe("Scanner", () => {
     assert.equal(scanResult.scan.testsQuantity, 10);
     assert.equal(scanResult.scan.statusCode, 200);
     assert.equal(scanResult.scan.responseHeaders["content-type"], "text/html");
-  }).timeout(5000);
+  });
 
-  it("returns expected results on mozilla.org", async function () {
-    const domain = "mozilla.org";
-    const site = Site.fromSiteString(domain);
-    const scanResult = await scan(site);
+  it("returns expected results on mozilla.org", function () {
+    const requests = fixtureRequests("mozilla-org");
+    const scanResult = scanWithRequests(requests);
+
     assert.equal(scanResult.scan.algorithmVersion, 5);
-    assert.equal(scanResult.scan.grade, "B+");
-    assert.equal(scanResult.scan.score, 80);
-    assert.equal(scanResult.scan.testsFailed, 1);
-    assert.equal(scanResult.scan.testsPassed, 9);
+    assert.equal(scanResult.scan.grade, "B");
+    assert.equal(scanResult.scan.score, 75);
+    assert.equal(scanResult.scan.testsFailed, 2);
+    assert.equal(scanResult.scan.testsPassed, 8);
     assert.equal(scanResult.scan.testsQuantity, 10);
     assert.equal(scanResult.scan.statusCode, 200);
     assert.equal(
-      // @ts-ignore
       scanResult.scan.responseHeaders["content-type"],
       "text/html; charset=utf-8"
     );
-  }).timeout(5000);
+  });
 });

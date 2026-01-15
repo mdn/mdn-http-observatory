@@ -1,5 +1,27 @@
 # Changelog
 
+## [1.5.2](https://github.com/mdn/mdn-http-observatory/compare/v1.5.1...v1.5.2) (2026-01-15)
+
+
+### Bug Fixes
+
+* **db:** limit connections across replicas to pg limit ([#386](https://github.com/mdn/mdn-http-observatory/issues/386)) ([68800e5](https://github.com/mdn/mdn-http-observatory/commit/68800e5ab56a473a1ee8bfce3056ca2b0336376f))
+
+
+### Miscellaneous
+
+* **deps-dev:** add lefthook ([#397](https://github.com/mdn/mdn-http-observatory/issues/397)) ([d25d035](https://github.com/mdn/mdn-http-observatory/commit/d25d03567d17bc882e195d2751b609e3e1f00d96))
+* **deps-dev:** bump @faker-js/faker from 10.1.0 to 10.2.0 ([#398](https://github.com/mdn/mdn-http-observatory/issues/398)) ([4c078d9](https://github.com/mdn/mdn-http-observatory/commit/4c078d95b706b02b57d9d3d19f36d522b0368205))
+* **deps-dev:** bump chai from 6.2.1 to 6.2.2 ([#390](https://github.com/mdn/mdn-http-observatory/issues/390)) ([90f573c](https://github.com/mdn/mdn-http-observatory/commit/90f573c62bda16f63a3f0a9c9a3f050703b16fe3))
+* **deps:** bump @fastify/cors from 11.1.0 to 11.2.0 ([#383](https://github.com/mdn/mdn-http-observatory/issues/383)) ([71de538](https://github.com/mdn/mdn-http-observatory/commit/71de5381ff31bb78648e7dfb4f23815f91006b4d))
+* **deps:** bump @fastify/static from 8.3.0 to 9.0.0 ([#392](https://github.com/mdn/mdn-http-observatory/issues/392)) ([52b6ed4](https://github.com/mdn/mdn-http-observatory/commit/52b6ed46383b7165adf36e1df5e7f24d705f5a38))
+* **deps:** bump @sentry/node from 10.29.0 to 10.30.0 ([#384](https://github.com/mdn/mdn-http-observatory/issues/384)) ([2289d16](https://github.com/mdn/mdn-http-observatory/commit/2289d1675c39ef8869269ed48995e09bc361e710))
+* **deps:** bump @sentry/node from 10.30.0 to 10.32.1 ([#391](https://github.com/mdn/mdn-http-observatory/issues/391)) ([1523dfd](https://github.com/mdn/mdn-http-observatory/commit/1523dfd8a240328e9e7136fc14d1a610206358da))
+* **deps:** bump @sentry/node from 10.32.1 to 10.33.0 ([#399](https://github.com/mdn/mdn-http-observatory/issues/399)) ([2170730](https://github.com/mdn/mdn-http-observatory/commit/2170730c2aa4533d945a383684adad5c3aab0b26))
+* **deps:** bump jsdom from 27.3.0 to 27.4.0 ([#393](https://github.com/mdn/mdn-http-observatory/issues/393)) ([cd13148](https://github.com/mdn/mdn-http-observatory/commit/cd13148a9b857080f9aef45b56911ce15276a304))
+* **Dockerfile:** run `npm ci`, not `npm install` ([#382](https://github.com/mdn/mdn-http-observatory/issues/382)) ([577e15c](https://github.com/mdn/mdn-http-observatory/commit/577e15c348705e9a6cb7d4a8bb1f1843a8cbfec7))
+* **sentry:** filter errors from malformed requests ([#387](https://github.com/mdn/mdn-http-observatory/issues/387)) ([7c8dc2f](https://github.com/mdn/mdn-http-observatory/commit/7c8dc2fce694e0967991460b63788aff9c616bd8))
+
 ## [1.5.1](https://github.com/mdn/mdn-http-observatory/compare/v1.5.0...v1.5.1) (2025-12-11)
 
 

@@ -1,8 +1,6 @@
 import ip from "ip";
 import dns from "node:dns";
 import fs from "fs";
-import { fileURLToPath } from "node:url";
-import path from "node:path";
 import {
   InvalidHostNameError,
   InvalidHostNameIpError,
@@ -28,6 +26,7 @@ import { PolicyResponse } from "./schemas.js";
 import { Expectation } from "../../types.js";
 import { TEST_TITLES } from "../../grader/charts.js";
 import { scan } from "../../scanner/index.js";
+import { TLD_LIST_PATH } from "../../cache.js";
 
 /**
  *
@@ -50,7 +49,6 @@ export function isIp(hostname) {
  * @type {Set<string> | null}
  */
 let tldSet = null;
-const dirname = path.dirname(fileURLToPath(import.meta.url));
 
 /**
  * Get the cached set of top level domains.
@@ -58,15 +56,7 @@ const dirname = path.dirname(fileURLToPath(import.meta.url));
  */
 function tlds() {
   if (!tldSet) {
-    const filePath = path.join(
-      dirname,
-      "..",
-      "..",
-      "..",
-      "conf",
-      "tld-list.json"
-    );
-    tldSet = new Set(JSON.parse(fs.readFileSync(filePath, "utf8")));
+    tldSet = new Set(JSON.parse(fs.readFileSync(TLD_LIST_PATH, "utf8")));
   }
   return tldSet;
 }

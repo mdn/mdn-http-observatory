@@ -3,6 +3,7 @@
 import { Command } from "commander";
 import { scan } from "./scanner/index.js";
 import { Site } from "./site.js";
+import { setupCache } from "./cache.js";
 
 const NAME = "mdn-http-observatory-scan";
 const program = new Command();
@@ -14,6 +15,8 @@ program
   .argument("<hostname>", "hostname to scan")
   .action(async (siteString, _options) => {
     try {
+      await setupCache();
+
       const site = Site.fromSiteString(siteString);
       const result = await scan(site);
       const tests = Object.fromEntries(

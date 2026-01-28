@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.5.3](https://github.com/mdn/mdn-http-observatory/compare/v1.5.2...v1.5.3) (2026-01-28)
+
+
+### Miscellaneous
+
+* **deps:** migrate from jsdom to htmlparser2 ([#419](https://github.com/mdn/mdn-http-observatory/issues/419)) ([4b4204e](https://github.com/mdn/mdn-http-observatory/commit/4b4204ecc51dc0b5c1515ec3941cb4ddd047da39))
+
 ## [1.5.2](https://github.com/mdn/mdn-http-observatory/compare/v1.5.1...v1.5.2) (2026-01-27)
 
 

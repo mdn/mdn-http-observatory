@@ -1,4 +1,8 @@
-import { JSDOM } from "jsdom";
+import {
+  collectElements,
+  getAttribute,
+  hasAttribute,
+} from "../utils/html-parser.js";
 import { CONTENT_SECURITY_POLICY, REFERRER_POLICY } from "../headers.js";
 
 /**
@@ -12,21 +16,22 @@ export function parseHttpEquivHeaders(html, _baseUrl) {
   const httpEquivHeaders = new Map([[CONTENT_SECURITY_POLICY, []]]);
 
   try {
-    const dom = JSDOM.fragment(html);
-    const metas = [...dom.querySelectorAll("meta")];
+    const metas = collectElements(html, "meta");
 
     for (const meta of metas) {
-      if (meta.hasAttribute("http-equiv") && meta.hasAttribute("content")) {
-        const httpEquiv = meta.getAttribute("http-equiv")?.toLowerCase().trim();
-        const content = meta.getAttribute("content");
+      if (hasAttribute(meta, "http-equiv") && hasAttribute(meta, "content")) {
+        const httpEquiv = getAttribute(meta, "http-equiv")
+          ?.toLowerCase()
+          .trim();
+        const content = getAttribute(meta, "content");
         if (content && httpEquiv === CONTENT_SECURITY_POLICY) {
           httpEquivHeaders.get(CONTENT_SECURITY_POLICY)?.push(content);
         }
       } else if (
         // Technically not HTTP Equiv, but we're treating it that way
-        meta.getAttribute("name")?.toLowerCase().trim() === "referrer"
+        getAttribute(meta, "name")?.toLowerCase().trim() === "referrer"
       ) {
-        const attr = meta.getAttribute("content");
+        const attr = getAttribute(meta, "content");
         if (attr) {
           httpEquivHeaders.set(REFERRER_POLICY, [attr]);
         }

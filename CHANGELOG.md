@@ -1,5 +1,40 @@
 # Changelog
 
+## [1.5.2](https://github.com/mdn/mdn-http-observatory/compare/v1.5.1...v1.5.2) (2026-01-27)
+
+
+### Bug Fixes
+
+* **db:** limit connections across replicas to pg limit ([#386](https://github.com/mdn/mdn-http-observatory/issues/386)) ([68800e5](https://github.com/mdn/mdn-http-observatory/commit/68800e5ab56a473a1ee8bfce3056ca2b0336376f))
+
+
+### Miscellaneous
+
+* **deps-dev:** add lefthook ([#397](https://github.com/mdn/mdn-http-observatory/issues/397)) ([d25d035](https://github.com/mdn/mdn-http-observatory/commit/d25d03567d17bc882e195d2751b609e3e1f00d96))
+* **deps-dev:** bump @faker-js/faker from 10.1.0 to 10.2.0 ([#398](https://github.com/mdn/mdn-http-observatory/issues/398)) ([4c078d9](https://github.com/mdn/mdn-http-observatory/commit/4c078d95b706b02b57d9d3d19f36d522b0368205))
+* **deps-dev:** bump chai from 6.2.1 to 6.2.2 ([#390](https://github.com/mdn/mdn-http-observatory/issues/390)) ([90f573c](https://github.com/mdn/mdn-http-observatory/commit/90f573c62bda16f63a3f0a9c9a3f050703b16fe3))
+* **deps-dev:** bump lefthook from 2.0.14 to 2.0.15 ([#407](https://github.com/mdn/mdn-http-observatory/issues/407)) ([a93e2fe](https://github.com/mdn/mdn-http-observatory/commit/a93e2fead573e1c7678923b7c3568d423b563437))
+* **deps:** bump @fastify/cors from 11.1.0 to 11.2.0 ([#383](https://github.com/mdn/mdn-http-observatory/issues/383)) ([71de538](https://github.com/mdn/mdn-http-observatory/commit/71de5381ff31bb78648e7dfb4f23815f91006b4d))
+* **deps:** bump @fastify/static from 8.3.0 to 9.0.0 ([#392](https://github.com/mdn/mdn-http-observatory/issues/392)) ([52b6ed4](https://github.com/mdn/mdn-http-observatory/commit/52b6ed46383b7165adf36e1df5e7f24d705f5a38))
+* **deps:** bump @sentry/node from 10.29.0 to 10.30.0 ([#384](https://github.com/mdn/mdn-http-observatory/issues/384)) ([2289d16](https://github.com/mdn/mdn-http-observatory/commit/2289d1675c39ef8869269ed48995e09bc361e710))
+* **deps:** bump @sentry/node from 10.30.0 to 10.32.1 ([#391](https://github.com/mdn/mdn-http-observatory/issues/391)) ([1523dfd](https://github.com/mdn/mdn-http-observatory/commit/1523dfd8a240328e9e7136fc14d1a610206358da))
+* **deps:** bump @sentry/node from 10.32.1 to 10.33.0 ([#399](https://github.com/mdn/mdn-http-observatory/issues/399)) ([2170730](https://github.com/mdn/mdn-http-observatory/commit/2170730c2aa4533d945a383684adad5c3aab0b26))
+* **deps:** bump @sentry/node from 10.33.0 to 10.35.0 ([#408](https://github.com/mdn/mdn-http-observatory/issues/408)) ([f163785](https://github.com/mdn/mdn-http-observatory/commit/f163785ae1c2a0d14c39b009a3c522238690afe5))
+* **deps:** bump @sentry/node from 10.35.0 to 10.36.0 ([#413](https://github.com/mdn/mdn-http-observatory/issues/413)) ([553106e](https://github.com/mdn/mdn-http-observatory/commit/553106e5d30fefd20cc248dc1322f504028f8026))
+* **deps:** bump axios from 1.13.2 to 1.13.3 ([#416](https://github.com/mdn/mdn-http-observatory/issues/416)) ([9ccf10c](https://github.com/mdn/mdn-http-observatory/commit/9ccf10c6b0acfe9763668ee77dfea2c9ae4d751e))
+* **deps:** bump csvtojson from 2.0.10 to 2.0.14 ([#417](https://github.com/mdn/mdn-http-observatory/issues/417)) ([ff674ec](https://github.com/mdn/mdn-http-observatory/commit/ff674ecff5eb6fc28af6408942c7e3681818b808))
+* **deps:** bump fastify from 5.6.2 to 5.7.1 ([#404](https://github.com/mdn/mdn-http-observatory/issues/404)) ([72d66fa](https://github.com/mdn/mdn-http-observatory/commit/72d66fa9b8b82c3d09700bc323d6a74c39212621))
+* **deps:** bump fastify from 5.7.1 to 5.7.2 ([#415](https://github.com/mdn/mdn-http-observatory/issues/415)) ([6f38160](https://github.com/mdn/mdn-http-observatory/commit/6f38160040afa7590bc0e44b853c85c875b2f8c1))
+* **deps:** bump jsdom from 27.3.0 to 27.4.0 ([#393](https://github.com/mdn/mdn-http-observatory/issues/393)) ([cd13148](https://github.com/mdn/mdn-http-observatory/commit/cd13148a9b857080f9aef45b56911ce15276a304))
+* **deps:** bump lodash from 4.17.21 to 4.17.23 ([#411](https://github.com/mdn/mdn-http-observatory/issues/411)) ([64ae144](https://github.com/mdn/mdn-http-observatory/commit/64ae14400492beb2283281fba8b2e372514802a4))
+* **deps:** bump pg from 8.16.3 to 8.17.1 ([#406](https://github.com/mdn/mdn-http-observatory/issues/406)) ([79b7d9a](https://github.com/mdn/mdn-http-observatory/commit/79b7d9aed67e7c28386e66f0e6908a8e6ee9b545))
+* **deps:** bump pg from 8.17.1 to 8.17.2 ([#414](https://github.com/mdn/mdn-http-observatory/issues/414)) ([0129cd7](https://github.com/mdn/mdn-http-observatory/commit/0129cd705225f066c7ff14b82b4fdfc610b492c2))
+* **deps:** bump pg-pool from 3.10.1 to 3.11.0 ([#405](https://github.com/mdn/mdn-http-observatory/issues/405)) ([6ddc3c9](https://github.com/mdn/mdn-http-observatory/commit/6ddc3c962f4011ed9e30a09c954b64ce4701ed47))
+* **deps:** sync `package-lock.json` ([#402](https://github.com/mdn/mdn-http-observatory/issues/402)) ([a21aa27](https://github.com/mdn/mdn-http-observatory/commit/a21aa27de0b5b027f94bc529f0f1b0de7f2a47a2))
+* **Dockerfile:** run `npm ci`, not `npm install` ([#382](https://github.com/mdn/mdn-http-observatory/issues/382)) ([577e15c](https://github.com/mdn/mdn-http-observatory/commit/577e15c348705e9a6cb7d4a8bb1f1843a8cbfec7))
+* **github:** remove obsolete `settings.yml` ([#409](https://github.com/mdn/mdn-http-observatory/issues/409)) ([fef55b5](https://github.com/mdn/mdn-http-observatory/commit/fef55b5f597d26529d1f9c1bb927c74f92795a82))
+* **sentry:** filter errors from malformed requests ([#387](https://github.com/mdn/mdn-http-observatory/issues/387)) ([7c8dc2f](https://github.com/mdn/mdn-http-observatory/commit/7c8dc2fce694e0967991460b63788aff9c616bd8))
+
 ## [1.5.1](https://github.com/mdn/mdn-http-observatory/compare/v1.5.0...v1.5.1) (2025-12-11)
 
 

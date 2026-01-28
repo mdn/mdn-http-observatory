@@ -1,4 +1,4 @@
-import { JSDOM } from "jsdom";
+import { parseHTML } from "linkedom";
 import { CONTENT_SECURITY_POLICY, REFERRER_POLICY } from "../headers.js";
 
 /**
@@ -12,8 +12,8 @@ export function parseHttpEquivHeaders(html, _baseUrl) {
   const httpEquivHeaders = new Map([[CONTENT_SECURITY_POLICY, []]]);
 
   try {
-    const dom = JSDOM.fragment(html);
-    const metas = [...dom.querySelectorAll("meta")];
+    const { document } = parseHTML(html);
+    const metas = [...document.querySelectorAll("meta")];
 
     for (const meta of metas) {
       if (meta.hasAttribute("http-equiv") && meta.hasAttribute("content")) {

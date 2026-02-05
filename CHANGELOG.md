@@ -1,5 +1,17 @@
 # Changelog
 
+## [1.5.4](https://github.com/mdn/mdn-http-observatory/compare/v1.5.3...v1.5.4) (2026-02-05)
+
+
+### Miscellaneous
+
+* **deps-dev:** bump lefthook from 2.0.15 to 2.0.16 ([#426](https://github.com/mdn/mdn-http-observatory/issues/426)) ([535b055](https://github.com/mdn/mdn-http-observatory/commit/535b055d208e01d1ad4e941e200ec103c0ee6a18))
+* **deps:** bump @isaacs/brace-expansion from 5.0.0 to 5.0.1 ([#430](https://github.com/mdn/mdn-http-observatory/issues/430)) ([ca8ac1b](https://github.com/mdn/mdn-http-observatory/commit/ca8ac1b55635e00fed7c8d544dc0b6d5676d64b2))
+* **deps:** bump axios from 1.13.3 to 1.13.4 ([#424](https://github.com/mdn/mdn-http-observatory/issues/424)) ([79f0285](https://github.com/mdn/mdn-http-observatory/commit/79f02856d3473204d9ea70fa898e370e76b3394c))
+* **deps:** bump fastify from 5.7.2 to 5.7.4 ([#425](https://github.com/mdn/mdn-http-observatory/issues/425)) ([5c16abf](https://github.com/mdn/mdn-http-observatory/commit/5c16abf7e437a05b0c0c1698d85968ab4d5ec0d6))
+* **deps:** bump pg from 8.17.2 to 8.18.0 ([#423](https://github.com/mdn/mdn-http-observatory/issues/423)) ([1daaf30](https://github.com/mdn/mdn-http-observatory/commit/1daaf30723e2aa808c07a8fa789cd9930f7e0244))
+* **deps:** bump the npm-prod group with 3 updates ([#429](https://github.com/mdn/mdn-http-observatory/issues/429)) ([31f37ac](https://github.com/mdn/mdn-http-observatory/commit/31f37ac8519b84c08410baf27b41a23a445a5ed2))
+
 ## [1.5.3](https://github.com/mdn/mdn-http-observatory/compare/v1.5.2...v1.5.3) (2026-01-28)
 
 

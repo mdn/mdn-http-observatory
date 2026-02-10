@@ -143,19 +143,19 @@ describe("Redirections", () => {
   it("checks for all redirections preloaded", function () {
     reqs.responses.httpRedirects = [
       {
-        url: new URL("http://pokeinthe.io/"),
+        url: new URL("http://cloudflare.com/"),
         status: 301,
       },
       {
-        url: new URL("https://pokeinthe.io/"),
+        url: new URL("https://cloudflare.com/"),
         status: 302,
       },
       {
-        url: new URL("https://www.pokeinthe.io/"),
+        url: new URL("https://www.cloudflare.com/"),
         status: 302,
       },
       {
-        url: new URL("https://baz.pokeinthe.io/foo"),
+        url: new URL("https://baz.cloudflare.com/foo"),
         status: 200,
       },
     ];

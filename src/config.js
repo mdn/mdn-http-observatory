@@ -32,19 +32,19 @@ const SCHEMA = {
     database: {
       doc: "The name of the database to use",
       format: "String",
-      default: "httpobservatory",
+      default: "",
       env: "PGDATABASE",
     },
     host: {
       doc: "The database server hostname",
       format: "String",
-      default: "localhost",
+      default: "",
       env: "PGHOST",
     },
     user: {
       doc: "Database username",
       format: "String",
-      default: "postgres",
+      default: "",
       env: "PGUSER",
     },
     pass: {

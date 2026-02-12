@@ -38,7 +38,7 @@ const SCHEMA = {
     host: {
       doc: "The database server hostname",
       format: "String",
-      default: "",
+      default: "localhost",
       env: "PGHOST",
     },
     user: {
@@ -102,12 +102,6 @@ const SCHEMA = {
     },
   },
   tests: {
-    enableDBTests: {
-      doc: "Enable database tests",
-      format: "Boolean",
-      default: false,
-      env: "HTTPOBS_TESTS_ENABLE_DB_TESTS",
-    },
     hostForPortAndPathChecks: {
       doc: "Host to use for custom port and path checks",
       format: "String",

@@ -4,26 +4,28 @@ import { ALGORITHM_VERSION } from "../src/constants.js";
 import { migrateDatabase } from "../src/database/migrate.js";
 import {
   createPool,
+  isConfigured,
   refreshMaterializedViews,
 } from "../src/database/repository.js";
 import { EventEmitter } from "events";
 import { NUM_TESTS } from "../src/constants.js";
 import fs from "node:fs";
-import { CONFIG } from "../src/config.js";
-
-const pool = createPool();
 EventEmitter.defaultMaxListeners = 20;
 
-let describeOrSkip;
-if (CONFIG.tests.enableDBTests) {
-  describeOrSkip = describe;
-} else {
-  describeOrSkip = describe.skip;
-}
+describe("API V2", function () {
+  /** @type {import("pg").Pool} */
+  let pool;
 
-describeOrSkip("API V2", function () {
   /** @type {import("fastify").FastifyInstance | null} */
   let app = null;
+
+  before(async function () {
+    if (isConfigured()) {
+      pool = createPool();
+    } else {
+      this.skip();
+    }
+  });
 
   this.beforeEach(async () => {
     await migrateDatabase("0", pool);
@@ -39,7 +41,7 @@ describeOrSkip("API V2", function () {
   });
 
   this.afterAll(async () => {
-    await pool.end();
+    await pool?.end();
   });
 
   it("serves the version path", async function () {

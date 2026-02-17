@@ -1,3 +1,4 @@
+import { describe, it, beforeEach } from "node:test";
 import { assert } from "chai";
 import { emptyRequests } from "./helpers.js";
 import { subresourceIntegrityTest } from "../src/analyzer/tests/subresource-integrity.js";

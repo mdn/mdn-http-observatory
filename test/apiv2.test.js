@@ -1,3 +1,4 @@
+import { describe, it, before, beforeEach, afterEach, after } from "node:test";
 import { createServer } from "../src/api/server.js";
 import { assert } from "chai";
 import { ALGORITHM_VERSION } from "../src/constants.js";
@@ -12,35 +13,33 @@ import { NUM_TESTS } from "../src/constants.js";
 import fs from "node:fs";
 EventEmitter.defaultMaxListeners = 20;
 
-describe("API V2", function () {
+const dbConfigured = isConfigured();
+
+describe("API V2", { skip: !dbConfigured && !process.env.CI }, () => {
   /** @type {import("pg").Pool} */
   let pool;
 
   /** @type {import("fastify").FastifyInstance | null} */
   let app = null;
 
-  before(function () {
-    if (isConfigured()) {
-      pool = createPool();
-    } else if (!process.env.CI) {
-      this.skip();
-    }
+  before(() => {
+    pool = createPool();
   });
 
-  this.beforeEach(async () => {
+  beforeEach(async () => {
     await migrateDatabase("0", pool);
     await migrateDatabase("max", pool);
     app = await createServer();
   });
 
-  this.afterEach(async () => {
+  afterEach(async () => {
     if (app) {
       await app.close();
       app = null;
     }
   });
 
-  this.afterAll(async () => {
+  after(async () => {
     await pool?.end();
   });
 
@@ -71,7 +70,7 @@ describe("API V2", function () {
     assert.include(response?.body, "Welcome");
   });
 
-  it("responds to POST /analyze", async function () {
+  it("responds to POST /analyze", { timeout: 6000 }, async function () {
     const response = await app?.inject({
       method: "POST",
       url: "/api/v2/analyze?host=www.mozilla.org",
@@ -131,7 +130,7 @@ describe("API V2", function () {
     assert.isString(unsafeObjects.description);
     assert.isString(unsafeObjects.info);
     assert.isBoolean(unsafeObjects.pass);
-  }).timeout(6000);
+  });
 
   it("refuses to analyze an ip address", async function () {
     const response = await app?.inject({
@@ -183,109 +182,129 @@ describe("API V2", function () {
     }
   });
 
-  it("responds to GET /analyze of a known host", async function () {
-    // create a scan first
-    await app?.inject({
-      method: "POST",
-      url: "/api/v2/analyze?host=www.mozilla.org",
-    });
-    const response = await app?.inject({
-      method: "GET",
-      url: "/api/v2/analyze?host=www.mozilla.org",
-    });
-    assert.equal(response?.statusCode, 200);
-    const r = JSON.parse(response?.body || "");
-    assert.isObject(r);
-    const scan = r.scan;
+  it(
+    "responds to GET /analyze of a known host",
+    { timeout: 6000 },
+    async function () {
+      // create a scan first
+      await app?.inject({
+        method: "POST",
+        url: "/api/v2/analyze?host=www.mozilla.org",
+      });
+      const response = await app?.inject({
+        method: "GET",
+        url: "/api/v2/analyze?host=www.mozilla.org",
+      });
+      assert.equal(response?.statusCode, 200);
+      const r = JSON.parse(response?.body || "");
+      assert.isObject(r);
+      const scan = r.scan;
 
-    assert.isNumber(scan.id);
-    assert.isNumber(scan.tests_quantity);
-    assert.isNumber(scan.tests_passed);
-    assert.isNumber(scan.tests_failed);
-    assert.isNull(scan.error);
-    assert.isNumber(scan.score);
-    assert.equal(scan.status_code, 200);
-    assert.isObject(scan.response_headers);
-    assert.isString(scan.grade);
-    assert.isString(scan.scanned_at);
-    const d = new Date(scan.scanned_at);
-    assert.notEqual(d.toString(), "Invalid Date");
-    assert.equal(scan.algorithm_version, ALGORITHM_VERSION);
+      assert.isNumber(scan.id);
+      assert.isNumber(scan.tests_quantity);
+      assert.isNumber(scan.tests_passed);
+      assert.isNumber(scan.tests_failed);
+      assert.isNull(scan.error);
+      assert.isNumber(scan.score);
+      assert.equal(scan.status_code, 200);
+      assert.isObject(scan.response_headers);
+      assert.isString(scan.grade);
+      assert.isString(scan.scanned_at);
+      const d = new Date(scan.scanned_at);
+      assert.notEqual(d.toString(), "Invalid Date");
+      assert.equal(scan.algorithm_version, ALGORITHM_VERSION);
 
-    const history = r.history;
-    assert.isArray(history);
-    assert.isAbove(history.length, 0);
-    const historyItem = history[0];
-    assert.isNumber(historyItem.id);
-    assert.isString(historyItem.scanned_at);
-    assert.notEqual(
-      new Date(historyItem.scanned_at).toString(),
-      "Invalid Date"
-    );
-    assert.isString(historyItem.grade);
-    assert.isNumber(historyItem.score);
+      const history = r.history;
+      assert.isArray(history);
+      assert.isAbove(history.length, 0);
+      const historyItem = history[0];
+      assert.isNumber(historyItem.id);
+      assert.isString(historyItem.scanned_at);
+      assert.notEqual(
+        new Date(historyItem.scanned_at).toString(),
+        "Invalid Date"
+      );
+      assert.isString(historyItem.grade);
+      assert.isNumber(historyItem.score);
 
-    const tests = r.tests;
-    assert.isObject(tests);
-    assert.equal(Object.keys(tests).length, NUM_TESTS);
-    // @ts-expect-error
-    const test = tests[Object.keys(tests)[0]];
-    assert.isString(test.expectation);
-    assert.isBoolean(test.pass);
-    assert.isString(test.result);
-    assert.isString(test.score_description);
-    assert.isNumber(test.score_modifier);
-    assert(test.data);
-  }).timeout(6000);
+      const tests = r.tests;
+      assert.isObject(tests);
+      assert.equal(Object.keys(tests).length, NUM_TESTS);
+      // @ts-expect-error
+      const test = tests[Object.keys(tests)[0]];
+      assert.isString(test.expectation);
+      assert.isBoolean(test.pass);
+      assert.isString(test.result);
+      assert.isString(test.score_description);
+      assert.isNumber(test.score_modifier);
+      assert(test.data);
+    }
+  );
 
-  it("responds to GET /analyze of an unknown host", async function () {
-    const response = await app?.inject({
-      method: "GET",
-      url: "/api/v2/analyze?host=somethingorother1234.mozilla.net",
-    });
-    // we do scan that host
-    assert.equal(response?.statusCode, 422);
-    const r = JSON.parse(response?.body || "");
-    assert.isObject(r);
-    assert.equal(r.error, "invalid-hostname-lookup");
-    assert.equal(
-      r.message,
-      "somethingorother1234.mozilla.net cannot be resolved"
-    );
-  }).timeout(6000);
+  it(
+    "responds to GET /analyze of an unknown host",
+    { timeout: 6000 },
+    async function () {
+      const response = await app?.inject({
+        method: "GET",
+        url: "/api/v2/analyze?host=somethingorother1234.mozilla.net",
+      });
+      // we do scan that host
+      assert.equal(response?.statusCode, 422);
+      const r = JSON.parse(response?.body || "");
+      assert.isObject(r);
+      assert.equal(r.error, "invalid-hostname-lookup");
+      assert.equal(
+        r.message,
+        "somethingorother1234.mozilla.net cannot be resolved"
+      );
+    }
+  );
 
-  it("responds to GET /analyze of an ip address", async function () {
-    const response = await app?.inject({
-      method: "GET",
-      url: "/api/v2/analyze?host=141.1.1.1",
-    });
-    assert.equal(response?.statusCode, 422);
-    const r = JSON.parse(response?.body || "");
-    assert.isObject(r);
-    assert.equal(r.error, "invalid-hostname-ip");
-  }).timeout(6000);
+  it(
+    "responds to GET /analyze of an ip address",
+    { timeout: 6000 },
+    async function () {
+      const response = await app?.inject({
+        method: "GET",
+        url: "/api/v2/analyze?host=141.1.1.1",
+      });
+      assert.equal(response?.statusCode, 422);
+      const r = JSON.parse(response?.body || "");
+      assert.isObject(r);
+      assert.equal(r.error, "invalid-hostname-ip");
+    }
+  );
 
-  it("responds to GET /analyze of a non-existent doman", async function () {
-    const response = await app?.inject({
-      method: "GET",
-      url: "/api/v2/analyze?host=some.non-existent.domain.err",
-    });
-    assert.equal(response?.statusCode, 422);
-    const r = JSON.parse(response?.body || "");
-    assert.isObject(r);
-    assert.equal(r.error, "invalid-hostname");
-  }).timeout(6000);
+  it(
+    "responds to GET /analyze of a non-existent doman",
+    { timeout: 6000 },
+    async function () {
+      const response = await app?.inject({
+        method: "GET",
+        url: "/api/v2/analyze?host=some.non-existent.domain.err",
+      });
+      assert.equal(response?.statusCode, 422);
+      const r = JSON.parse(response?.body || "");
+      assert.isObject(r);
+      assert.equal(r.error, "invalid-hostname");
+    }
+  );
 
-  it("responds to GET /analyze of localhost", async function () {
-    const response = await app?.inject({
-      method: "GET",
-      url: "/api/v2/analyze?host=localhost",
-    });
-    assert.equal(response?.statusCode, 422);
-    const r = JSON.parse(response?.body || "");
-    assert.isObject(r);
-    assert.equal(r.error, "invalid-site");
-  }).timeout(6000);
+  it(
+    "responds to GET /analyze of localhost",
+    { timeout: 6000 },
+    async function () {
+      const response = await app?.inject({
+        method: "GET",
+        url: "/api/v2/analyze?host=localhost",
+      });
+      assert.equal(response?.statusCode, 422);
+      const r = JSON.parse(response?.body || "");
+      assert.isObject(r);
+      assert.equal(r.error, "invalid-site");
+    }
+  );
 
   it("responds to GET /grade_distribution", async function () {
     // create a scan
@@ -331,7 +350,7 @@ describe("API V2", function () {
     }
   });
 
-  it("responds to GET /scan", async function () {
+  it("responds to GET /scan", { timeout: 6000 }, async function () {
     const response = await app?.inject({
       method: "POST",
       url: "/api/v2/scan?host=www.mozilla.org",
@@ -357,5 +376,5 @@ describe("API V2", function () {
     const d = new Date(scan.scanned_at);
     assert.notEqual(d.toString(), "Invalid Date");
     assert.equal(scan.algorithm_version, ALGORITHM_VERSION);
-  }).timeout(6000);
+  });
 });

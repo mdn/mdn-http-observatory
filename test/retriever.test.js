@@ -1,3 +1,4 @@
+import { describe, it } from "node:test";
 import { assert } from "chai";
 
 import { retrieve } from "../src/retriever/retriever.js";
@@ -9,7 +10,7 @@ import { CONFIG } from "../src/config.js";
 
 describe("TestRetriever", () => {
   if (CONFIG.tests.hostForPortAndPathChecks !== "") {
-    it("detects tls on a custom port", async () => {
+    it("detects tls on a custom port", { timeout: 10000 }, async () => {
       let site = Site.fromSiteString(
         `${CONFIG.tests.hostForPortAndPathChecks}:8443`
       );
@@ -33,18 +34,22 @@ describe("TestRetriever", () => {
           throw new Error("Unexpected error type");
         }
       }
-    }).timeout(10000);
+    });
   }
 
-  it("correctly uses port and path on retrieving", async () => {
-    let site = Site.fromSiteString("generalmagic.space:8443/test");
-    const requests = await retrieve(site);
-    assert(requests.responses.auto);
-    assert(requests.responses.auto.verified);
-    assert.equal(requests.responses.httpRedirects.length, 3);
-  }).timeout(10000);
+  it(
+    "correctly uses port and path on retrieving",
+    { timeout: 10000 },
+    async () => {
+      let site = Site.fromSiteString("generalmagic.space:8443/test");
+      const requests = await retrieve(site);
+      assert(requests.responses.auto);
+      assert(requests.responses.auto.verified);
+      assert.equal(requests.responses.httpRedirects.length, 3);
+    }
+  );
 
-  it("test retrieve mdn", async () => {
+  it("test retrieve mdn", { timeout: 10000 }, async () => {
     const site = Site.fromSiteString("developer.mozilla.org/en-US");
     const requests = await retrieve(site);
     // console.log("REQUESTS", requests);
@@ -68,31 +73,35 @@ describe("TestRetriever", () => {
         requests.responses.httpRedirects.length - 1
       ]?.url.href
     );
-  }).timeout(10000);
+  });
 
-  it("test retrieve non-existent domain", async function () {
-    const domain =
-      Array(223)
-        .fill(0)
-        .map(() => String.fromCharCode(Math.random() * 26 + 97))
-        .join("") + ".net";
-    const site = Site.fromSiteString(domain);
-    const requests = await retrieve(site);
-    assert.isNull(requests.responses.auto);
-    assert.isNull(requests.responses.cors);
-    assert.isNull(requests.responses.http);
-    assert.isNull(requests.responses.https);
-    assert.isNotNull(requests.session);
-    assert.isNull(requests.session.response);
-    assert.equal(domain, requests.site.hostname);
-    assert.deepEqual(new Resources(), requests.resources);
-  }).timeout(10000);
+  it(
+    "test retrieve non-existent domain",
+    { timeout: 10000 },
+    async function () {
+      const domain =
+        Array(223)
+          .fill(0)
+          .map(() => String.fromCharCode(Math.random() * 26 + 97))
+          .join("") + ".net";
+      const site = Site.fromSiteString(domain);
+      const requests = await retrieve(site);
+      assert.isNull(requests.responses.auto);
+      assert.isNull(requests.responses.cors);
+      assert.isNull(requests.responses.http);
+      assert.isNull(requests.responses.https);
+      assert.isNotNull(requests.session);
+      assert.isNull(requests.session.response);
+      assert.equal(domain, requests.site.hostname);
+      assert.deepEqual(new Resources(), requests.resources);
+    }
+  );
 
   // test site seems to have outage from time to time, disable for now
-  it("test_retrieve_invalid_cert", async function () {
+  it("test_retrieve_invalid_cert", { timeout: 10000 }, async function () {
     const site = Site.fromSiteString("expired.badssl.com");
     const reqs = await retrieve(site);
     assert.isNotNull(reqs.responses.auto);
     assert.isFalse(reqs.responses.auto.verified);
-  }).timeout(10000);
+  });
 });

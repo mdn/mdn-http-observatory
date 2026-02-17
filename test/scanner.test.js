@@ -1,3 +1,4 @@
+import { describe, it } from "node:test";
 import { assert } from "chai";
 import { scan } from "../src/scanner/index.js";
 import { Site } from "../src/site.js";

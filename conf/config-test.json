@@ -1,14 +1,9 @@
 {
-  "database": {
-    "database": "observatory_test",
-    "user": "postgres"
-  },
   "api": {
     "enableLogging": false,
     "cooldown": 3
   },
   "tests": {
-    "enableDBTests": true,
     "hostForPortAndPathChecks": ""
   }
 }

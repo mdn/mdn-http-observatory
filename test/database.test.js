@@ -4,6 +4,7 @@ import {
   ensureSite,
   insertScan,
   insertTestResults,
+  isConfigured,
   refreshMaterializedViews,
   ScanState,
   selectGradeDistribution,
@@ -17,17 +18,19 @@ import { ALGORITHM_VERSION } from "../src/constants.js";
 import { faker } from "@faker-js/faker";
 import { migrateDatabase } from "../src/database/migrate.js";
 import { insertSeeds } from "./helpers/db.js";
-import { CONFIG } from "../src/config.js";
 
-const pool = createPool();
+describe("Database repository", function () {
+  /** @type {import("pg").Pool} */
+  let pool;
 
-let describeOrSkip;
-if (CONFIG.tests.enableDBTests) {
-  describeOrSkip = describe;
-} else {
-  describeOrSkip = describe.skip;
-}
-describeOrSkip("Database repository", function () {
+  before(function () {
+    if (isConfigured()) {
+      pool = createPool();
+    } else if (!process.env.CI) {
+      this.skip();
+    }
+  });
+
   this.beforeEach(async () => {
     await migrateDatabase("0", pool);
     await migrateDatabase("max", pool);
@@ -36,7 +39,7 @@ describeOrSkip("Database repository", function () {
   // this.afterEach(async () => {});
 
   this.afterAll(async () => {
-    await pool.end();
+    await pool?.end();
   });
 
   it("ensures a site record", async function () {

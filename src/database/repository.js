@@ -36,6 +36,11 @@ export function createPool() {
   return new Pool(poolOptions);
 }
 
+export function isConfigured() {
+  const { database, user } = CONFIG.database;
+  return database && user;
+}
+
 /** @enum { string } ScanState  */
 export const ScanState = {
   ABORTED: "ABORTED",

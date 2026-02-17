@@ -23,10 +23,10 @@ describe("Database repository", function () {
   /** @type {import("pg").Pool} */
   let pool;
 
-  before(async function () {
+  before(function () {
     if (isConfigured()) {
       pool = createPool();
-    } else {
+    } else if (!process.env.CI) {
       this.skip();
     }
   });

@@ -19,6 +19,8 @@ pre-push:
           - name: tsc
             run: npm run tsc
 
+    - run: npm test
+
 post-merge:
   only:
     - ref: main

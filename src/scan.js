@@ -4,6 +4,20 @@ import { Command } from "commander";
 import { scan } from "./scanner/index.js";
 import { Site } from "./site.js";
 
+/**
+ * @param {string} json
+ * @returns {string[]}
+ */
+export function parseHeadersOption(json) {
+  let parsed;
+  try {
+    parsed = JSON.parse(json);
+  } catch {
+    throw new Error("Invalid JSON for --headers");
+  }
+  return Object.entries(parsed).map(([k, v]) => `${k}: ${v}`);
+}
+
 const NAME = "mdn-http-observatory-scan";
 const program = new Command();
 
@@ -18,16 +32,7 @@ program
       /** @type {import("./types.js").ScanOptions} */
       const scanOptions = {};
       if (options.headers) {
-        let parsed;
-        try {
-          parsed = JSON.parse(options.headers);
-        } catch {
-          console.log(JSON.stringify({ error: "Invalid JSON for --headers" }));
-          process.exit(1);
-        }
-        scanOptions.headers = Object.entries(parsed).map(
-          ([k, v]) => `${k}: ${v}`
-        );
+        scanOptions.headers = parseHeadersOption(options.headers);
       }
       const site = Site.fromSiteString(siteString);
       const result = await scan(site, scanOptions);

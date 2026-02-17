@@ -126,7 +126,12 @@ export async function checkSitename(site) {
     site.hostname = await validHostname(site.hostname);
   } catch (e) {
     if (e instanceof InvalidHostNameLookupError) {
-      site.hostname = await validHostname(`www.${site.hostname}`);
+      try {
+        site.hostname = await validHostname(`www.${site.hostname}`);
+      } catch (e2) {
+        // If the www. fallback also fails to resolve, report the original hostname
+        throw e2 instanceof InvalidHostNameLookupError ? e : e2;
+      }
     } else {
       throw e;
     }

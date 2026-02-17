@@ -32,7 +32,7 @@ const SCHEMA = {
     database: {
       doc: "The name of the database to use",
       format: "String",
-      default: "httpobservatory",
+      default: "",
       env: "PGDATABASE",
     },
     host: {
@@ -44,7 +44,7 @@ const SCHEMA = {
     user: {
       doc: "Database username",
       format: "String",
-      default: "postgres",
+      default: "",
       env: "PGUSER",
     },
     pass: {
@@ -102,12 +102,6 @@ const SCHEMA = {
     },
   },
   tests: {
-    enableDBTests: {
-      doc: "Enable database tests",
-      format: "Boolean",
-      default: false,
-      env: "HTTPOBS_TESTS_ENABLE_DB_TESTS",
-    },
     hostForPortAndPathChecks: {
       doc: "Host to use for custom port and path checks",
       format: "String",

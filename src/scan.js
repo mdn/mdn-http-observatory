@@ -26,7 +26,10 @@ program
   .description("CLI for the MDN HTTP Observatory scan functionality")
   .version("1.0.0")
   .argument("<hostname>", "hostname to scan")
-  .option("--headers <json>", "extra request headers as JSON")
+  .option(
+    "--headers <json>",
+    "Send custom headers (JSON-formatted)\nWarning: Custom headers will also be used for unencrypted HTTP requests!"
+  )
   .action(async (siteString, options) => {
     try {
       /** @type {import("./types.js").ScanOptions} */

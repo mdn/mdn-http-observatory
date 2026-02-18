@@ -35,7 +35,7 @@ You can pass custom request headers as JSON using the `--headers` option:
 mdn-http-observatory-scan --headers '{"X-Custom": "value"}' mdn.dev
 ```
 
-**Warning:** Headers will also be sent over unencrypted HTTP connections, even if the host enforces HTTPS. Do not pass sensitive data.
+**Warning:** Headers will also be sent on unencrypted HTTP requests, even if the host enforces HTTPS. Do not pass sensitive data.
 
 Both methods return a JSON response of the following form:
 

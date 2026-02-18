@@ -28,7 +28,7 @@ program
   .argument("<hostname>", "hostname to scan")
   .option(
     "--headers <json>",
-    "Send custom headers (JSON-formatted)\nWarning: Custom headers will also be used for unencrypted HTTP requests!"
+    "Send custom request headers (JSON-formatted)\nWarning: Headers will also be sent on unencrypted HTTP requests, even if the host enforces HTTPS. Do not pass sensitive data."
   )
   .action(async (siteString, options) => {
     try {

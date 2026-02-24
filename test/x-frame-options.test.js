@@ -1,3 +1,4 @@
+import { describe, it, beforeEach } from "node:test";
 import { assert } from "chai";
 import { emptyRequests } from "./helpers.js";
 import { xFrameOptionsTest } from "../src/analyzer/tests/x-frame-options.js";

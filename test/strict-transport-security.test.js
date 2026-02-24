@@ -1,3 +1,4 @@
+import { describe, it, beforeEach } from "node:test";
 import { assert } from "chai";
 import { emptyRequests } from "./helpers.js";
 import { strictTransportSecurityTest } from "../src/analyzer/tests/strict-transport-security.js";

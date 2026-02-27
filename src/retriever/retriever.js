@@ -20,12 +20,10 @@ export async function retrieve(site, options = {}) {
   const retrievals = new Requests(site);
   const { http: httpUrl, https: httpsUrl } = await urls(site, options);
 
+  const headers = [...STANDARD_HEADERS, ...(options.headers ?? [])];
   const [httpSession, httpsSession] = await Promise.all([
-    Session.fromUrl(httpUrl, { headers: STANDARD_HEADERS, ...options.headers }),
-    Session.fromUrl(httpsUrl, {
-      headers: STANDARD_HEADERS,
-      ...options.headers,
-    }),
+    Session.fromUrl(httpUrl, { headers }),
+    Session.fromUrl(httpsUrl, { headers }),
   ]);
 
   if (!httpSession && !httpsSession) {

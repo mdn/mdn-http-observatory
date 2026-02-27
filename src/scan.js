@@ -4,6 +4,20 @@ import { Command } from "commander";
 import { scan } from "./scanner/index.js";
 import { Site } from "./site.js";
 
+/**
+ * @param {string} json
+ * @returns {string[]}
+ */
+export function parseHeadersOption(json) {
+  let parsed;
+  try {
+    parsed = JSON.parse(json);
+  } catch {
+    throw new Error("Invalid JSON for --headers");
+  }
+  return Object.entries(parsed).map(([k, v]) => `${k}: ${v}`);
+}
+
 const NAME = "mdn-http-observatory-scan";
 const program = new Command();
 
@@ -12,10 +26,19 @@ program
   .description("CLI for the MDN HTTP Observatory scan functionality")
   .version("1.0.0")
   .argument("<hostname>", "hostname to scan")
-  .action(async (siteString, _options) => {
+  .option(
+    "--headers <json>",
+    "Send custom request headers (JSON-formatted)\nWarning: Headers will also be sent on unencrypted HTTP requests, even if the host enforces HTTPS. Do not pass sensitive data."
+  )
+  .action(async (siteString, options) => {
     try {
+      /** @type {import("./types.js").ScanOptions} */
+      const scanOptions = {};
+      if (options.headers) {
+        scanOptions.headers = parseHeadersOption(options.headers);
+      }
       const site = Site.fromSiteString(siteString);
-      const result = await scan(site);
+      const result = await scan(site, scanOptions);
       const tests = Object.fromEntries(
         Object.entries(result.tests).map(([key, test]) => {
           const { scoreDescription, ...rest } = test;
@@ -35,4 +58,6 @@ program
     }
   });
 
-program.parse();
+if (import.meta.url === `file://${process.argv[1]}`) {
+  program.parse();
+}

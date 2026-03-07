@@ -29,6 +29,14 @@ After that, the `mdn-http-observatory-scan` command should be available in your 
 mdn-http-observatory-scan mdn.dev
 ```
 
+You can pass custom request headers as JSON using the `--headers` option:
+
+```sh
+mdn-http-observatory-scan --headers '{"X-Custom": "value"}' mdn.dev
+```
+
+**Warning:** Headers will also be sent on unencrypted HTTP requests, even if the host enforces HTTPS. Do not pass sensitive data.
+
 Both methods return a JSON response of the following form:
 
 ```json

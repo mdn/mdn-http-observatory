@@ -1,5 +1,18 @@
 # Changelog
 
+## [1.5.5](https://github.com/mdn/mdn-http-observatory/compare/v1.5.4...v1.5.5) (2026-03-10)
+
+
+### Miscellaneous
+
+* **deps-dev:** bump ajv from 6.12.6 to 6.14.0 ([#451](https://github.com/mdn/mdn-http-observatory/issues/451)) ([8af689d](https://github.com/mdn/mdn-http-observatory/commit/8af689dac4e60d2f13209cf019cb2a295686b28d))
+* **deps-dev:** bump lefthook from 2.1.1 to 2.1.2 in the npm-dev group ([#455](https://github.com/mdn/mdn-http-observatory/issues/455)) ([759c4fb](https://github.com/mdn/mdn-http-observatory/commit/759c4fbcec72caa0884eb980a9301f426bcff3d3))
+* **deps-dev:** bump nodemon from 3.1.11 to 3.1.14 in the npm-dev group ([#452](https://github.com/mdn/mdn-http-observatory/issues/452)) ([138bcbf](https://github.com/mdn/mdn-http-observatory/commit/138bcbf6675562cc497b5799024e65d56f8cebf0))
+* **deps-dev:** bump the npm-dev group with 2 updates ([#462](https://github.com/mdn/mdn-http-observatory/issues/462)) ([ceb9076](https://github.com/mdn/mdn-http-observatory/commit/ceb9076083085cac82aa96c8f1aebfcd50c59f74))
+* **deps:** bump the npm-prod group with 6 updates ([#454](https://github.com/mdn/mdn-http-observatory/issues/454)) ([9592d96](https://github.com/mdn/mdn-http-observatory/commit/9592d96569f55f782e6cd4cd9ed5579ec1e27d11))
+* **deps:** bump the npm-prod group with 6 updates ([#461](https://github.com/mdn/mdn-http-observatory/issues/461)) ([3e6ea37](https://github.com/mdn/mdn-http-observatory/commit/3e6ea370aefc25022bbf49bf28846a2b222e4918))
+* **lefthook:** run tests on pre-push ([#448](https://github.com/mdn/mdn-http-observatory/issues/448)) ([8dc2eb0](https://github.com/mdn/mdn-http-observatory/commit/8dc2eb0faff6c5b9a9070fd351b34629cfedc87b))
+
 ## [1.5.4](https://github.com/mdn/mdn-http-observatory/compare/v1.5.3...v1.5.4) (2026-02-17)
 
 

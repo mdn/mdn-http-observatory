@@ -20,7 +20,7 @@ export async function retrieve(site, options = {}) {
   const retrievals = new Requests(site);
   const { http: httpUrl, https: httpsUrl } = await urls(site, options);
 
-  const customHeaders = options.headers ?? [];
+  const { customHeaders = [] } = options;
   const httpsHeaders = [...STANDARD_HEADERS, ...customHeaders];
   const httpHeaders = [
     ...STANDARD_HEADERS,

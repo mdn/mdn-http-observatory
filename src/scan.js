@@ -39,7 +39,7 @@ program
       /** @type {import("./types.js").ScanOptions} */
       const scanOptions = {};
       if (options.headers) {
-        scanOptions.headers = parseHeadersOption(options.headers);
+        scanOptions.customHeaders = parseHeadersOption(options.headers);
       }
       if (options.sendHeadersOverHttp) {
         scanOptions.sendHeadersOverHttp = true;

@@ -28,7 +28,11 @@ program
   .argument("<hostname>", "hostname to scan")
   .option(
     "--headers <json>",
-    "Send custom request headers (JSON-formatted)\nWarning: Headers will also be sent on unencrypted HTTP requests, even if the host enforces HTTPS. Do not pass sensitive data."
+    "Send custom request headers (JSON-formatted, HTTPS only by default)"
+  )
+  .option(
+    "--send-headers-over-http",
+    "Also send custom headers over unencrypted HTTP"
   )
   .action(async (siteString, options) => {
     try {
@@ -36,6 +40,9 @@ program
       const scanOptions = {};
       if (options.headers) {
         scanOptions.headers = parseHeadersOption(options.headers);
+      }
+      if (options.sendHeadersOverHttp) {
+        scanOptions.sendHeadersOverHttp = true;
       }
       const site = Site.fromSiteString(siteString);
       const result = await scan(site, scanOptions);

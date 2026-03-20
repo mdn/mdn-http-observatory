@@ -1,12 +1,62 @@
 import { describe, it } from "node:test";
 import { assert } from "chai";
 
-import { retrieve } from "../src/retriever/retriever.js";
+import { retrieve, buildRequestHeaders } from "../src/retriever/retriever.js";
 import { Session } from "../src/retriever/session.js";
 import { Resources } from "../src/types.js";
 import { Site } from "../src/site.js";
 import { detectTlsSupport } from "../src/retriever/url.js";
 import { CONFIG } from "../src/config.js";
+
+describe("buildRequestHeaders", () => {
+  const customHeaders = ["Authorization: Bearer secret", "X-Custom: value"];
+
+  it("always includes custom headers in HTTPS headers", () => {
+    const { https } = buildRequestHeaders({
+      customHeaders,
+      sendHeadersOverHttp: false,
+    });
+    assert.include(https, "Authorization: Bearer secret");
+    assert.include(https, "X-Custom: value");
+  });
+
+  it("excludes custom headers from HTTP headers by default (sendHeadersOverHttp=false)", () => {
+    const { http } = buildRequestHeaders({
+      customHeaders,
+      sendHeadersOverHttp: false,
+    });
+    assert.notInclude(http, "Authorization: Bearer secret");
+    assert.notInclude(http, "X-Custom: value");
+  });
+
+  it("excludes custom headers from HTTP headers when sendHeadersOverHttp is undefined", () => {
+    const { http } = buildRequestHeaders({ customHeaders });
+    assert.notInclude(http, "Authorization: Bearer secret");
+    assert.notInclude(http, "X-Custom: value");
+  });
+
+  it("includes custom headers in HTTP headers when sendHeadersOverHttp=true", () => {
+    const { http } = buildRequestHeaders({
+      customHeaders,
+      sendHeadersOverHttp: true,
+    });
+    assert.include(http, "Authorization: Bearer secret");
+    assert.include(http, "X-Custom: value");
+  });
+
+  it("still includes standard headers for both HTTP and HTTPS regardless of custom headers", () => {
+    const { http, https } = buildRequestHeaders({});
+    assert.isNotEmpty(http);
+    assert.isNotEmpty(https);
+  });
+
+  it("does not bleed custom headers between calls (no mutation)", () => {
+    const headers = ["X-Secret: token"];
+    buildRequestHeaders({ customHeaders: headers, sendHeadersOverHttp: true });
+    const { http } = buildRequestHeaders({ customHeaders: headers });
+    assert.notInclude(http, "X-Secret: token");
+  });
+});
 
 describe("TestRetriever", () => {
   if (CONFIG.tests.hostForPortAndPathChecks !== "") {

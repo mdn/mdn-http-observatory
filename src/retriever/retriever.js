@@ -11,6 +11,24 @@ const STANDARD_HEADERS = [
 const ROBOTS_HEADERS = ["Accept: text/plain,*/*;q=0.8"];
 
 /**
+ * Builds the header arrays for HTTP and HTTPS requests.
+ * Custom headers are always included for HTTPS, but only included for HTTP
+ * when `sendHeadersOverHttp` is explicitly true.
+ *
+ * @param {import("../types.js").ScanOptions} options
+ * @returns {{ https: string[], http: string[] }}
+ */
+export function buildRequestHeaders({
+  customHeaders = [],
+  sendHeadersOverHttp,
+} = {}) {
+  return {
+    http: [...STANDARD_HEADERS, ...(sendHeadersOverHttp ? customHeaders : [])],
+    https: [...STANDARD_HEADERS, ...customHeaders],
+  };
+}
+
+/**
  *
  * @param {import("../scanner/index.js").Site} site
  * @param {import("../types.js").ScanOptions} options
@@ -20,12 +38,12 @@ export async function retrieve(site, options = {}) {
   const retrievals = new Requests(site);
   const { http: httpUrl, https: httpsUrl } = await urls(site, options);
 
+  const { http: httpHeaders, https: httpsHeaders } =
+    buildRequestHeaders(options);
+
   const [httpSession, httpsSession] = await Promise.all([
-    Session.fromUrl(httpUrl, { headers: STANDARD_HEADERS, ...options.headers }),
-    Session.fromUrl(httpsUrl, {
-      headers: STANDARD_HEADERS,
-      ...options.headers,
-    }),
+    Session.fromUrl(httpUrl, { headers: httpHeaders }),
+    Session.fromUrl(httpsUrl, { headers: httpsHeaders }),
   ]);
 
   if (!httpSession && !httpsSession) {

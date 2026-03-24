@@ -679,7 +679,7 @@ export const SCORE_TABLE = new Map([
     Expectation.SriImplementedButExternalScriptsNotLoadedSecurely,
     {
       description: `<p>
-      Subresource Integrity (SRI) implemented, but external scripts are loaded over HTTP or use protocol-relative URLs via <code>src="//..."</code>.
+      Subresource Integrity (SRI) implemented, but external scripts are loaded over HTTP or they use protocol-relative URLs via <code>src="//..."</code>.
       </p>`,
       modifier: -20,
       recommendation: `<p>
@@ -691,7 +691,7 @@ export const SCORE_TABLE = new Map([
     Expectation.SriNotImplementedAndExternalScriptsNotLoadedSecurely,
     {
       description: `<p>
-        Subresource Integrity (SRI) not implemented, and external scripts are loaded over HTTP or use protocol-relative URLs via <code>src="//..."</code>.
+        Subresource Integrity (SRI) not implemented, and external scripts are loaded over HTTP or they use protocol-relative URLs via <code>src="//..."</code>.
         </p>`,
       modifier: -50,
       recommendation: `<p>

@@ -39,7 +39,7 @@
     "lefthook": "^2.0.14",
     "nodemon": "^3.1.10",
     "prettier-eslint": "^16.4.2",
-    "typescript": "^5.7.2"
+    "typescript": "^6.0.2"
   },
   "dependencies": {
     "@fastify/cors": "^11.0.1",

@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.6.1](https://github.com/mdn/mdn-http-observatory/compare/v1.6.0...v1.6.1) (2026-03-27)
+
+
+### Miscellaneous
+
+* **deps-dev:** bump brace-expansion from 1.1.12 to 1.1.13 ([#475](https://github.com/mdn/mdn-http-observatory/issues/475)) ([976f49d](https://github.com/mdn/mdn-http-observatory/commit/976f49dd11697e2b4aaf99e137b801975f22ab5d))
+
 ## [1.6.0](https://github.com/mdn/mdn-http-observatory/compare/v1.5.4...v1.6.0) (2026-03-26)
 
 

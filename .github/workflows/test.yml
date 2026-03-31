@@ -112,8 +112,8 @@ jobs:
           - macos-latest
           - windows-latest
         node-version:
-          - "24.0.0"
-          - "latest"
+          - 24
+          - 25
     runs-on: ${{ matrix.os }}
 
     steps:

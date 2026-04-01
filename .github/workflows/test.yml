@@ -153,7 +153,11 @@ jobs:
           SCRIPT_PATH: ${{ github.workspace }}/.github/scripts/scan-local-server.js
         with:
           script: |
-            const { scanLocalServer } = await import(process.env.SCRIPT_PATH);
+            const { pathToFileURL } = await import("node:url");
+
+            const scriptUrl = pathToFileURL(process.env.SCRIPT_PATH).href;
+            const { scanLocalServer } = await import(scriptUrl);
+
             await scanLocalServer(core);
 
   lint:

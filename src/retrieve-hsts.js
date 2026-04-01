@@ -1,7 +1,7 @@
 import axios from "axios";
 import { writeFile } from "fs/promises";
 import path from "node:path";
-import { fileURLToPath } from "node:url";
+import { fileURLToPath, pathToFileURL } from "node:url";
 
 const HSTS_URL = new URL(
   "https://raw.githubusercontent.com/chromium/chromium/main/net/http/transport_security_state_static.json"
@@ -85,6 +85,9 @@ function removeJsonComments(jsonString) {
 }
 
 // Execute when run directly
-if (import.meta.url === `file://${process.argv[1]}`) {
+if (
+  process.argv[1] &&
+  import.meta.url === pathToFileURL(process.argv[1]).href
+) {
   retrieveAndStoreHsts().catch(console.error);
 }

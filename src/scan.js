@@ -3,6 +3,7 @@
 import { Command } from "commander";
 import { scan } from "./scanner/index.js";
 import { Site } from "./site.js";
+import { pathToFileURL } from "node:url";
 
 /**
  * @param {string} json
@@ -65,6 +66,9 @@ program
     }
   });
 
-if (import.meta.url === `file://${process.argv[1]}`) {
+if (
+  process.argv[1] &&
+  import.meta.url === pathToFileURL(process.argv[1]).href
+) {
   program.parse();
 }

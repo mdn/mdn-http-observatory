@@ -1,7 +1,7 @@
 import axios from "axios";
 import { writeFile } from "fs/promises";
 import path from "node:path";
-import { fileURLToPath } from "node:url";
+import { fileURLToPath, pathToFileURL } from "node:url";
 
 const TLD_LIST_URL = new URL(
   "https://data.iana.org/TLD/tlds-alpha-by-domain.txt"
@@ -47,6 +47,9 @@ function cleanData(data) {
 }
 
 // Execute when run directly
-if (import.meta.url === `file://${process.argv[1]}`) {
+if (
+  process.argv[1] &&
+  import.meta.url === pathToFileURL(process.argv[1]).href
+) {
   retrieveAndStoreTldList().catch(console.error);
 }

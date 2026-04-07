@@ -101,7 +101,7 @@ jobs:
         with:
           name: tarball
           path: ${{ steps.build.outputs.tarball }}
-          compression-level: 0
+          archive: false
 
   test-cli:
     needs: pack

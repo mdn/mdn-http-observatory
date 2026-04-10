@@ -30,12 +30,12 @@ describe("Scanner", () => {
     const requests = fixtureRequests("observatory-mozilla-org");
     const scanResult = scanWithRequests(requests);
 
-    assert.equal(scanResult.scan.algorithmVersion, 5);
+    assert.equal(scanResult.scan.algorithmVersion, 6);
     assert.equal(scanResult.scan.grade, "A+");
     assert.equal(scanResult.scan.score, 110);
     assert.equal(scanResult.scan.testsFailed, 0);
-    assert.equal(scanResult.scan.testsPassed, 10);
-    assert.equal(scanResult.scan.testsQuantity, 10);
+    assert.equal(scanResult.scan.testsPassed, 12);
+    assert.equal(scanResult.scan.testsQuantity, 12);
     assert.equal(scanResult.scan.statusCode, 200);
     assert.equal(scanResult.scan.responseHeaders["content-type"], "text/html");
   });
@@ -44,12 +44,12 @@ describe("Scanner", () => {
     const requests = fixtureRequests("mozilla-org");
     const scanResult = scanWithRequests(requests);
 
-    assert.equal(scanResult.scan.algorithmVersion, 5);
+    assert.equal(scanResult.scan.algorithmVersion, 6);
     assert.equal(scanResult.scan.grade, "B");
     assert.equal(scanResult.scan.score, 75);
     assert.equal(scanResult.scan.testsFailed, 2);
-    assert.equal(scanResult.scan.testsPassed, 8);
-    assert.equal(scanResult.scan.testsQuantity, 10);
+    assert.equal(scanResult.scan.testsPassed, 10);
+    assert.equal(scanResult.scan.testsQuantity, 12);
     assert.equal(scanResult.scan.statusCode, 200);
     assert.equal(
       scanResult.scan.responseHeaders["content-type"],

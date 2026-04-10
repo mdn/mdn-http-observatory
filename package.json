@@ -31,6 +31,10 @@
     "mdn-http-observatory-scan": "bin/wrapper.js"
   },
   "type": "module",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mdn/mdn-http-observatory.git"
+  },
   "license": "MPL-2.0",
   "devDependencies": {
     "@faker-js/faker": "^10.0.0",

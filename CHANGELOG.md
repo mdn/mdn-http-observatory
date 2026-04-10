@@ -1,5 +1,25 @@
 # Changelog
 
+## [1.6.1](https://github.com/mdn/mdn-http-observatory/compare/v1.6.0...v1.6.1) (2026-04-07)
+
+
+### Bug Fixes
+
+* **bin:** restore Windows support ([#479](https://github.com/mdn/mdn-http-observatory/issues/479)) ([abd0082](https://github.com/mdn/mdn-http-observatory/commit/abd00826eab97701e38f223461f3b5fde921c8f5))
+
+
+### Miscellaneous
+
+* **deps-dev:** bump @faker-js/faker from 10.3.0 to 10.4.0 in the npm-dev group across 1 directory ([#482](https://github.com/mdn/mdn-http-observatory/issues/482)) ([8513d01](https://github.com/mdn/mdn-http-observatory/commit/8513d01be91c5f8b75eb7675cd5568c50757b612))
+* **deps-dev:** bump @faker-js/faker in the npm-dev group ([8513d01](https://github.com/mdn/mdn-http-observatory/commit/8513d01be91c5f8b75eb7675cd5568c50757b612))
+* **deps-dev:** bump brace-expansion from 1.1.12 to 1.1.13 ([#475](https://github.com/mdn/mdn-http-observatory/issues/475)) ([976f49d](https://github.com/mdn/mdn-http-observatory/commit/976f49dd11697e2b4aaf99e137b801975f22ab5d))
+* **deps-dev:** bump lefthook from 2.1.4 to 2.1.5 in the npm-dev group ([46e638e](https://github.com/mdn/mdn-http-observatory/commit/46e638eaf25c290a0e111b709394260e28f81a5f))
+* **deps-dev:** bump lefthook from 2.1.4 to 2.1.5 in the npm-dev group across 1 directory ([#486](https://github.com/mdn/mdn-http-observatory/issues/486)) ([46e638e](https://github.com/mdn/mdn-http-observatory/commit/46e638eaf25c290a0e111b709394260e28f81a5f))
+* **deps-dev:** bump npm from 11.6.2 to 11.9.0 ([#480](https://github.com/mdn/mdn-http-observatory/issues/480)) ([23fbba4](https://github.com/mdn/mdn-http-observatory/commit/23fbba4e9d9364ec2ca1015d9bead3feb0032577))
+* **deps:** bump lodash from 4.17.23 to 4.18.1 ([#487](https://github.com/mdn/mdn-http-observatory/issues/487)) ([4fee9dc](https://github.com/mdn/mdn-http-observatory/commit/4fee9dc0f7cf76e15448b027688517bdb61a2b41))
+* **deps:** bump the npm-prod group with 2 updates ([#481](https://github.com/mdn/mdn-http-observatory/issues/481)) ([8373c00](https://github.com/mdn/mdn-http-observatory/commit/8373c000a027623fd802abba52397e1cdcf10dc3))
+* **deps:** bump the npm-prod group with 2 updates ([#485](https://github.com/mdn/mdn-http-observatory/issues/485)) ([3496925](https://github.com/mdn/mdn-http-observatory/commit/34969257bdd128acd2bd5d66364fde283de28d58))
+
 ## [1.6.0](https://github.com/mdn/mdn-http-observatory/compare/v1.5.4...v1.6.0) (2026-03-26)
 
 

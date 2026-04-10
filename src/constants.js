@@ -4,6 +4,10 @@ import {
   crossOriginResourceSharingTest,
 } from "./analyzer/tests/cors.js";
 import {
+  CrossOriginEmbedderPolicyOutput,
+  crossOriginEmbedderPolicyTest,
+} from "./analyzer/tests/cross-origin-embedder-policy.js";
+import {
   CrossOriginOpenerPolicyOutput,
   crossOriginOpenerPolicyTest,
 } from "./analyzer/tests/cross-origin-opener-policy.js";
@@ -40,6 +44,7 @@ import {
 export const ALL_TESTS = [
   contentSecurityPolicyTest,
   cookiesTest,
+  crossOriginEmbedderPolicyTest,
   crossOriginOpenerPolicyTest,
   crossOriginResourceSharingTest,
   redirectionTest,
@@ -54,6 +59,7 @@ export const ALL_TESTS = [
 export const ALL_RESULTS = [
   CspOutput,
   CookiesOutput,
+  CrossOriginEmbedderPolicyOutput,
   CrossOriginOpenerPolicyOutput,
   CorsOutput,
   RedirectionOutput,

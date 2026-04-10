@@ -34,8 +34,8 @@ describe("Scanner", () => {
     assert.equal(scanResult.scan.grade, "A+");
     assert.equal(scanResult.scan.score, 110);
     assert.equal(scanResult.scan.testsFailed, 0);
-    assert.equal(scanResult.scan.testsPassed, 11);
-    assert.equal(scanResult.scan.testsQuantity, 11);
+    assert.equal(scanResult.scan.testsPassed, 12);
+    assert.equal(scanResult.scan.testsQuantity, 12);
     assert.equal(scanResult.scan.statusCode, 200);
     assert.equal(scanResult.scan.responseHeaders["content-type"], "text/html");
   });
@@ -48,8 +48,8 @@ describe("Scanner", () => {
     assert.equal(scanResult.scan.grade, "B");
     assert.equal(scanResult.scan.score, 75);
     assert.equal(scanResult.scan.testsFailed, 2);
-    assert.equal(scanResult.scan.testsPassed, 9);
-    assert.equal(scanResult.scan.testsQuantity, 11);
+    assert.equal(scanResult.scan.testsPassed, 10);
+    assert.equal(scanResult.scan.testsQuantity, 12);
     assert.equal(scanResult.scan.statusCode, 200);
     assert.equal(
       scanResult.scan.responseHeaders["content-type"],

@@ -37,6 +37,7 @@ export const GRADES = new Set(GRADE_CHART.values());
 /** @type {import("../types.js").StringMap} */
 export const TEST_TITLES = {
   "cross-origin-resource-sharing": "Cross Origin Resource Sharing (CORS)",
+  "cross-origin-embedder-policy": "Cross Origin Embedder Policy",
   "cross-origin-opener-policy": "Cross Origin Opener Policy",
   "cross-origin-resource-policy": "Cross Origin Resource Policy",
   "content-security-policy": "Content Security Policy (CSP)",
@@ -57,6 +58,10 @@ export const TEST_TOPIC_LINKS = new Map([
   [
     "cookies",
     "/en-US/docs/Web/Security/Practical_implementation_guides/Cookies",
+  ],
+  [
+    "cross-origin-embedder-policy",
+    "/en-US/docs/Web/HTTP/Reference/Headers/Cross-Origin-Embedder-Policy",
   ],
   [
     "cross-origin-opener-policy",
@@ -851,6 +856,65 @@ export const SCORE_TABLE = new Map([
       </p>`,
       modifier: 0,
       recommendation: ``,
+    },
+  ],
+
+  // Cross Origin Embedder Policy
+
+  [
+    Expectation.CoepImplementedWithRequireCorp,
+    {
+      description: `<p>
+      <code>Cross-Origin-Embedder-Policy</code> header set to <code>require-corp</code>, restricting loading cross-origin resources.
+      </p>`,
+      modifier: 10,
+      recommendation: ``,
+    },
+  ],
+  [
+    Expectation.CoepImplementedWithCredentialless,
+    {
+      description: `<p>
+      <code>Cross-Origin-Embedder-Policy</code> header set to <code>credentialless</code>, allowing loading cross-origin resources but without sending credentials in the requests.
+      </p>`,
+      modifier: 10,
+      recommendation: ``,
+    },
+  ],
+  [
+    Expectation.CoepImplementedWithUnsafeNone,
+    {
+      description: `<p>
+      <code>Cross-Origin-Embedder-Policy</code> header set to <code>unsafe-none</code>, allowing loading cross-origin resources, which is the default value.
+      </p>`,
+      modifier: 0,
+      recommendation: `<p>
+      Set to <code>require-corp</code> or <code>credentialless</code>.
+      </p>`,
+    },
+  ],
+  [
+    Expectation.CoepNotImplemented,
+    {
+      description: `<p>
+      <code>Cross-Origin-Embedder-Policy</code> header not implemented.
+      </p>`,
+      modifier: 0,
+      recommendation: `<p>
+      Set to <code>require-corp</code> or <code>credentialless</code>.
+      </p>`,
+    },
+  ],
+  [
+    Expectation.CoepHeaderInvalid,
+    {
+      description: `<p>
+      <code>Cross-Origin-Embedder-Policy</code> header cannot be recognized.
+      </p>`,
+      modifier: -5,
+      recommendation: `<p>
+      Set to <code>require-corp</code>, <code>credentialless</code>, or <code>unsafe-none</code>.
+      </p>`,
     },
   ],
 

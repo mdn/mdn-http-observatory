@@ -234,6 +234,14 @@ export const Expectation = {
     "coop-implemented-with-noopener-allow-popups",
   CoopImplementedWithUnsafeNone: "coop-implemented-with-unsafe-none",
   CoopHeaderInvalid: "coop-header-invalid",
+
+  // CROSS ORIGIN EMBEDDER POLICY
+
+  CoepNotImplemented: "coep-not-implemented",
+  CoepImplementedWithRequireCorp: "coep-implemented-with-require-corp",
+  CoepImplementedWithCredentialless: "coep-implemented-with-credentialless",
+  CoepImplementedWithUnsafeNone: "coep-implemented-with-unsafe-none",
+  CoepHeaderInvalid: "coep-header-invalid",
 };
 
 /**
@@ -276,6 +284,7 @@ export class Policy {
  * @typedef {import("./analyzer/tests/cookies.js").CookiesOutput
  * | import("./analyzer/tests/cors.js").CorsOutput
  * | import("./analyzer/tests/csp.js").CspOutput
+ * | import("./analyzer/tests/cross-origin-embedder-policy.js").CrossOriginEmbedderPolicyOutput
  * | import("./analyzer/tests/cross-origin-opener-policy.js").CrossOriginOpenerPolicyOutput
  * | import("./analyzer/tests/redirection.js").RedirectionOutput
  * | import("./analyzer/tests/referrer-policy.js").ReferrerOutput

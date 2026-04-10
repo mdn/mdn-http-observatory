@@ -38,6 +38,9 @@ jobs:
           registry-url: https://registry.npmjs.org
           package-manager-cache: false
 
+      - name: Install npm@^11.8.0
+        run: npm install -g npm@^11.8.0
+
       - name: Install
         run: npm ci
 

@@ -37,6 +37,7 @@ export const GRADES = new Set(GRADE_CHART.values());
 /** @type {import("../types.js").StringMap} */
 export const TEST_TITLES = {
   "cross-origin-resource-sharing": "Cross Origin Resource Sharing (CORS)",
+  "cross-origin-opener-policy": "Cross Origin Opener Policy",
   "cross-origin-resource-policy": "Cross Origin Resource Policy",
   "content-security-policy": "Content Security Policy (CSP)",
   redirection: "Redirection",
@@ -56,6 +57,10 @@ export const TEST_TOPIC_LINKS = new Map([
   [
     "cookies",
     "/en-US/docs/Web/Security/Practical_implementation_guides/Cookies",
+  ],
+  [
+    "cross-origin-opener-policy",
+    "/en-US/docs/Web/HTTP/Reference/Headers/Cross-Origin-Opener-Policy",
   ],
   [
     "cross-origin-resource-policy",
@@ -846,6 +851,75 @@ export const SCORE_TABLE = new Map([
       </p>`,
       modifier: 0,
       recommendation: ``,
+    },
+  ],
+
+  // Cross Origin Opener Policy
+
+  [
+    Expectation.CoopImplementedWithSameOrigin,
+    {
+      description: `<p>
+      <code>Cross-Origin-Opener-Policy</code> header set to <code>same-origin</code>, enforcing site isolation from the opener.
+      </p>`,
+      modifier: 10,
+      recommendation: ``,
+    },
+  ],
+  [
+    Expectation.CoopImplementedWithSameOriginAllowPopups,
+    {
+      description: `<p>
+      <code>Cross-Origin-Opener-Policy</code> header set to <code>same-origin-allow-popups</code>, enforcing site isolation from the opener but allowing trusted resources such as for OAuth or payments.
+      </p>`,
+      modifier: 10,
+      recommendation: ``,
+    },
+  ],
+  [
+    Expectation.CoopImplementedWithNoopenerAllowPopups,
+    {
+      description: `<p>
+      <code>Cross-Origin-Opener-Policy</code> header set to <code>noopener-allow-popups</code>, enforcing site isolation from the opener even if they are same origin.
+      </p>`,
+      modifier: 10,
+      recommendation: ``,
+    },
+  ],
+  [
+    Expectation.CoopImplementedWithUnsafeNone,
+    {
+      description: `<p>
+      <code>Cross-Origin-Opener-Policy</code> header set to <code>unsafe-none</code>, the document permits sharing its browsing context group with any other document, and may therefore be unsafe.
+      </p>`,
+      modifier: 0,
+      recommendation: `<p>
+      Set to <code>same-origin</code> or <code>same-origin-allow-popups</code>.
+      </p>`,
+    },
+  ],
+  [
+    Expectation.CoopNotImplemented,
+    {
+      description: `<p>
+      <code>Cross-Origin-Opener-Policy</code> header not implemented.
+      </p>`,
+      modifier: 0,
+      recommendation: `<p>
+      Set to <code>same-origin</code> or <code>same-origin-allow-popups</code>.
+      </p>`,
+    },
+  ],
+  [
+    Expectation.CoopHeaderInvalid,
+    {
+      description: `<p>
+      <code>Cross-Origin-Opener-Policy</code> header cannot be recognized.
+      </p>`,
+      modifier: -5,
+      recommendation: `<p>
+      Set to <code>same-origin</code>, <code>same-origin-allow-popups</code>, <code>noopener-allow-popups</code>, or <code>unsafe-none</code>.
+      </p>`,
     },
   ],
 

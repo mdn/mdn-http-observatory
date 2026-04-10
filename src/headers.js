@@ -8,6 +8,7 @@ export const ORIGIN = "origin";
 export const ACCESS_CONTROL_ALLOW_CREDENTIALS =
   "access-control-allow-credentials";
 export const CROSS_ORIGIN_RESOURCE_POLICY = "cross-origin-resource-policy";
+export const CROSS_ORIGIN_OPENER_POLICY = "cross-origin-opener-policy";
 export const STRICT_TRANSPORT_SECURITY = "strict-transport-security";
 export const CONTENT_TYPE = "content-type";
 export const X_CONTENT_TYPE_OPTIONS = "x-content-type-options";

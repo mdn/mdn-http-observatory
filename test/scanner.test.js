@@ -30,7 +30,7 @@ describe("Scanner", () => {
     const requests = fixtureRequests("observatory-mozilla-org");
     const scanResult = scanWithRequests(requests);
 
-    assert.equal(scanResult.scan.algorithmVersion, 5);
+    assert.equal(scanResult.scan.algorithmVersion, 6);
     assert.equal(scanResult.scan.grade, "A+");
     assert.equal(scanResult.scan.score, 110);
     assert.equal(scanResult.scan.testsFailed, 0);
@@ -44,7 +44,7 @@ describe("Scanner", () => {
     const requests = fixtureRequests("mozilla-org");
     const scanResult = scanWithRequests(requests);
 
-    assert.equal(scanResult.scan.algorithmVersion, 5);
+    assert.equal(scanResult.scan.algorithmVersion, 6);
     assert.equal(scanResult.scan.grade, "B");
     assert.equal(scanResult.scan.score, 75);
     assert.equal(scanResult.scan.testsFailed, 2);

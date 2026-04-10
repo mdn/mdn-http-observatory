@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.6.2](https://github.com/mdn/mdn-http-observatory/compare/v1.6.1...v1.6.2) (2026-04-10)
+
+
+### Miscellaneous
+
+* **package:** set repository field ([#492](https://github.com/mdn/mdn-http-observatory/issues/492)) ([e34202f](https://github.com/mdn/mdn-http-observatory/commit/e34202f53bc8884624ae3392202a9c4d884e15df))
+
 ## [1.6.1](https://github.com/mdn/mdn-http-observatory/compare/v1.6.0...v1.6.1) (2026-04-07)
 
 

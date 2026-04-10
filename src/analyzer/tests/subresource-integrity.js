@@ -74,6 +74,16 @@ export function subresourceIntegrityTest(
     }
     // Track to see if any scripts were on foreign TLDs.
     let scriptsOnForeignOrigin = false;
+
+    // Protocol-relative URLs (//cdn.example.com/…) inherit the page's scheme.
+    // They are only safe when the site ensures HTTP is never served: either
+    // there is no HTTP server at all, or HTTP always redirects to HTTPS.
+    const httpRedirects = requests.responses.httpRedirects;
+    const httpEnforcesHttps =
+      !requests.responses.http ||
+      (httpRedirects.length > 1 &&
+        httpRedirects.at(-1)?.url.protocol === "https:");
+
     for (const script of scripts) {
       const scriptSrc = getAttribute(script, "src");
       if (scriptSrc) {
@@ -91,7 +101,9 @@ export function subresourceIntegrityTest(
         if (relativeProtocolRegex.test(scriptSrc)) {
           // relative protocol(src="//example.com/script.js")
           relativeProtocol = true;
-          sameSecondLevelDomain = true;
+          sameSecondLevelDomain =
+            parse("https:" + scriptSrc).domain ===
+            parse(requests.site.hostname).domain;
         } else if (fullUrlRegex.test(scriptSrc)) {
           // full URL (src="https://example.com/script.js")
           sameSecondLevelDomain =
@@ -119,7 +131,8 @@ export function subresourceIntegrityTest(
         let secureScheme = false;
         if (
           scheme === "https:" ||
-          (relativeOrigin && requests.session?.url.protocol === "https:")
+          (relativeOrigin && requests.session?.url.protocol === "https:") ||
+          (relativeProtocol && httpEnforcesHttps)
         ) {
           secureScheme = true;
         }

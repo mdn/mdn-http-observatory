@@ -14,7 +14,9 @@ on:
         required: true
         type: string
 
-permissions: {}
+permissions:
+  contents: read
+  id-token: write # OIDC for npm Trusted Publishing
 
 jobs:
   publish:

@@ -44,5 +44,14 @@ jobs:
       - name: Install
         run: npm ci
 
+      # Backfill repository field for older tags.
+      # Otherwise npm provenance fails with error code E422.
+      - name: Ensure repository field in package.json
+        env:
+          REPO_URL: ${{ github.server_url }}/${{ github.repository }}
+        run: |
+          npm pkg set repository="$REPO_URL"
+          npm pkg fix
+
       - name: Publish to npm
         run: npm publish --access public --provenance

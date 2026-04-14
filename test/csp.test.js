@@ -479,6 +479,58 @@ describe("Content Security Policy", () => {
       Expectation.CspNotImplementedButReportingEnabled
     );
   });
+  it("multiple CSP headers combined per RFC 9110 are not treated as invalid", async () => {
+    // Per RFC 9110 section 5.3, when a server sends multiple Content-Security-Policy headers,
+    // HTTP clients may combine them as a comma-separated list in a single field.
+    // Per W3 CSP3 section 8.1, each policy in the list must be enforced independently.
+    // The Observatory must not reject such comma-separated CSP policy lists as invalid.
+    // See: https://github.com/mdn/mdn-http-observatory/issues/463
+    const requests = emptyRequests();
+    setHeader(
+      requests.responses.auto,
+      "Content-Security-Policy",
+      "default-src 'none'; script-src 'self', default-src 'none'; script-src 'self'"
+    );
+
+    const result = contentSecurityPolicyTest(requests);
+
+    assert.notEqual(result["result"], Expectation.CspHeaderInvalid);
+    assert.equal(result["numPolicies"], 2);
+    assert.isTrue(result["pass"]);
+    assert.deepEqual(result["data"], {
+      "default-src": ["'none'"],
+      "script-src": ["'self'"],
+    });
+  });
+
+  it("multiple CSP headers with differing policies produce correct intersection", async () => {
+    // Per W3 CSP3 section 8.1, when multiple policies are in effect, all must be satisfied.
+    // The restrictive middle policy (no 'unsafe-inline', no script-src) is sandwiched between
+    // two permissive outer policies. The effective policy (intersection) must restrict
+    // style-src to only 'self' and may not be satisfied by simply taking the first or last policy.
+    // See: https://github.com/mdn/mdn-http-observatory/issues/463
+    const requests = emptyRequests();
+    setHeader(
+      requests.responses.auto,
+      "Content-Security-Policy",
+      "default-src 'none'; script-src 'self'; style-src 'self' 'unsafe-inline', " +
+        "default-src 'none'; style-src 'self', " +
+        "default-src 'none'; script-src 'self'; style-src 'self' 'unsafe-inline'"
+    );
+
+    const result = contentSecurityPolicyTest(requests);
+
+    assert.notEqual(result["result"], Expectation.CspHeaderInvalid);
+    assert.equal(result["numPolicies"], 3);
+    assert.isFalse(result["policy"]?.unsafeInlineStyle);
+    assert.isTrue(result["pass"]);
+    assert.deepEqual(result["data"], {
+      "default-src": ["'none'"],
+      "script-src": ["'self'"],
+      "style-src": ["'self'"],
+    });
+  });
+
   it("ignore frame-anchestors in http-equiv", async () => {
     let requests = emptyRequests(
       "test_parse_http_equiv_headers_not_allowed.html"

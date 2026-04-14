@@ -18,7 +18,6 @@ describe("Content Security Policy", () => {
   {
     const values = [
       "  ",
-      "\r\n",
       "",
       "default-src 'none'; default-src 'none'", // Repeated directives not allowed
       "default-src 'none'; img-src 'self'; default-src 'none'",

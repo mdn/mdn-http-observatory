@@ -506,21 +506,23 @@ describe("Content Security Policy", () => {
 
   it("multiple CSP headers with differing policies produce correct intersection", async () => {
     // Per W3 CSP3 section 8.1, when multiple policies are in effect, all must be satisfied.
-    // Policy 1 allows 'unsafe-inline' in style-src; policy 2 does not.
-    // The effective policy (intersection) should restrict style-src to only 'self'.
+    // The restrictive middle policy (no 'unsafe-inline', no script-src) is sandwiched between
+    // two permissive outer policies. The effective policy (intersection) must restrict
+    // style-src to only 'self' and may not be satisfied by simply taking the first or last policy.
     // See: https://github.com/mdn/mdn-http-observatory/issues/463
     const requests = emptyRequests();
     setHeader(
       requests.responses.auto,
       "Content-Security-Policy",
       "default-src 'none'; script-src 'self'; style-src 'self' 'unsafe-inline', " +
-        "default-src 'none'; script-src 'self'; style-src 'self'"
+        "default-src 'none'; style-src 'self', " +
+        "default-src 'none'; script-src 'self'; style-src 'self' 'unsafe-inline'"
     );
 
     const result = contentSecurityPolicyTest(requests);
 
     assert.notEqual(result["result"], Expectation.CspHeaderInvalid);
-    assert.equal(result["numPolicies"], 2);
+    assert.equal(result["numPolicies"], 3);
     assert.isFalse(result["policy"]?.unsafeInlineStyle);
     assert.isTrue(result["pass"]);
     assert.deepEqual(result["data"], {

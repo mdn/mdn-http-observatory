@@ -141,6 +141,27 @@ describe("Redirections", () => {
     assert.isFalse(res.pass);
   });
 
+  it("uses https redirects as fallback for destination and route when http redirects are empty", function () {
+    reqs.responses.httpRedirects = [];
+    reqs.responses.httpsRedirects = [
+      {
+        url: new URL("https://mozilla.org/"),
+        status: 301,
+      },
+      {
+        url: new URL("https://www.mozilla.org/"),
+        status: 200,
+      },
+    ];
+
+    const res = redirectionTest(reqs);
+    assert.equal(res.destination, "https://www.mozilla.org/");
+    assert.deepEqual(res.route, [
+      "https://mozilla.org/",
+      "https://www.mozilla.org/",
+    ]);
+  });
+
   it("checks for all redirections preloaded", function () {
     reqs.responses.httpRedirects = [
       {

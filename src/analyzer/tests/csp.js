@@ -11,6 +11,18 @@ import {
 } from "../cspParser.js";
 import { getHttpHeaders } from "../utils.js";
 
+/**
+ * Split a list of raw CSP header values into individual policies.
+ * Per RFC 9110 §5.3, clients may combine multiple headers as a comma-separated
+ * string. Per W3C CSP3 §2.2, commas are policy-list delimiters and are excluded
+ * from the directive-value grammar, so splitting on comma is unambiguous.
+ * @param {string[]} rawHeaders
+ * @returns {string[]}
+ */
+function splitCspHeaders(rawHeaders) {
+  return rawHeaders.flatMap((v) => v.split(",").map((s) => s.trim()));
+}
+
 const DANGEROUSLY_BROAD = new Set([
   "ftp:",
   "http:",
@@ -99,7 +111,10 @@ export function contentSecurityPolicyTest(
   const equivCspHeader =
     response?.httpEquiv?.get(CONTENT_SECURITY_POLICY) ?? [];
 
-  output.numPolicies = equivCspHeader.length + httpCspHeader.length;
+  const httpCspPolicies = splitCspHeaders(httpCspHeader);
+  const equivCspPolicies = splitCspHeaders(equivCspHeader);
+
+  output.numPolicies = equivCspPolicies.length + httpCspPolicies.length;
 
   /** @type {Map<string, Set<string>>} */
   let csp;
@@ -110,7 +125,7 @@ export function contentSecurityPolicyTest(
 
   try {
     csp = parseCsp(
-      [...httpCspHeader, ...equivCspHeader].filter((x) => x !== null)
+      [...httpCspPolicies, ...equivCspPolicies].filter((x) => x !== null)
     );
   } catch (e) {
     output.result = Expectation.CspHeaderInvalid;
@@ -118,13 +133,13 @@ export function contentSecurityPolicyTest(
   }
 
   try {
-    httpHeaderOnlyCsp = parseCsp(httpCspHeader);
+    httpHeaderOnlyCsp = parseCsp(httpCspPolicies);
   } catch (e) {
     httpHeaderOnlyCsp = new Map();
   }
 
   try {
-    metaCsp = parseCspMeta(equivCspHeader);
+    metaCsp = parseCspMeta(equivCspPolicies);
   } catch (e) {
     metaCsp = new Map();
   }
@@ -149,8 +164,8 @@ export function contentSecurityPolicyTest(
   output.policy = new Policy();
 
   // mark whether we saw csp there or not
-  output.http = httpCspHeader?.length > 0;
-  output.meta = equivCspHeader?.length > 0;
+  output.http = httpCspPolicies?.length > 0;
+  output.meta = equivCspPolicies?.length > 0;
 
   // Get the various directives we look at
   const base_uri = csp.get("base-uri") || new Set(["*"]);

@@ -1,7 +1,7 @@
 import { CROSS_ORIGIN_OPENER_POLICY } from "../../headers.js";
 import { BaseOutput, Requests } from "../../types.js";
 import { Expectation } from "../../types.js";
-import { getFirstHttpHeader } from "../utils.js";
+import { getHttpHeaders } from "../utils.js";
 
 export class CrossOriginOpenerPolicyOutput extends BaseOutput {
   /** @type {string | null} */
@@ -43,10 +43,13 @@ export function crossOriginOpenerPolicyTest(
     return output;
   }
 
-  const httpHeader = getFirstHttpHeader(resp, CROSS_ORIGIN_OPENER_POLICY);
-  output.http = !!httpHeader;
+  const httpHeaders = getHttpHeaders(resp, CROSS_ORIGIN_OPENER_POLICY);
+  const [httpHeader] = httpHeaders;
+  output.http = httpHeaders.length > 0;
 
-  if (httpHeader) {
+  if (httpHeaders.length > 1) {
+    output.result = Expectation.CoopHeaderInvalid;
+  } else if (httpHeader) {
     const headerValue = httpHeader.slice(0, 256).trim().toLowerCase();
     output.data = headerValue;
 

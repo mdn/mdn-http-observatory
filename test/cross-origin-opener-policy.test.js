@@ -64,4 +64,15 @@ describe("Cross Origin Opener Policy", () => {
     assert.equal(result.result, Expectation.CoopImplementedWithUnsafeNone);
     assert.isTrue(result.pass);
   });
+
+  it("checks for multiple headers", function () {
+    assert.isNotNull(reqs.responses.auto);
+    reqs.responses.auto.headers["cross-origin-opener-policy"] = [
+      "same-origin",
+      "unsafe-none",
+    ];
+    const result = crossOriginOpenerPolicyTest(reqs);
+    assert.equal(result.result, Expectation.CoopHeaderInvalid);
+    assert.isFalse(result.pass);
+  });
 });

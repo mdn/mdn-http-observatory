@@ -50,4 +50,15 @@ describe("Cross Origin Embedder Policy", () => {
     assert.equal(result.result, Expectation.CoepImplementedWithUnsafeNone);
     assert.isTrue(result.pass);
   });
+
+  it("checks for multiple headers", function () {
+    assert.isNotNull(reqs.responses.auto);
+    reqs.responses.auto.headers["cross-origin-embedder-policy"] = [
+      "require-corp",
+      "unsafe-none",
+    ];
+    const result = crossOriginEmbedderPolicyTest(reqs);
+    assert.equal(result.result, Expectation.CoepHeaderInvalid);
+    assert.isFalse(result.pass);
+  });
 });

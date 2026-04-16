@@ -7,12 +7,22 @@ on:
         description: "Git tag to publish (e.g. v1.6.0)"
         required: true
         type: string
+      dist-tag:
+        description: "npm dist-tag (e.g. latest, next, beta)"
+        required: false
+        type: string
+        default: "latest"
   workflow_call:
     inputs:
       tag:
         description: "Git tag to publish (e.g. v1.6.0)"
         required: true
         type: string
+      dist-tag:
+        description: "npm dist-tag (e.g. latest, next, beta)"
+        required: false
+        type: string
+        default: "latest"
 
 permissions:
   contents: read
@@ -54,4 +64,4 @@ jobs:
           npm pkg fix
 
       - name: Publish to npm
-        run: npm publish --access public --provenance
+        run: npm publish --access public --provenance --tag ${{ inputs.dist-tag }}

@@ -51,8 +51,9 @@ export function redirectionTest(
       ? requests.responses.httpRedirects
       : requests.responses.httpsRedirects;
 
-  if (redirects.length > 0) {
-    output.destination = redirects[redirects.length - 1]?.url?.href || null;
+  const destination = redirects.at(-1)?.url?.href;
+  if (destination) {
+    output.destination = destination;
   }
   output.statusCode = response ? response.status : null;
 

@@ -44,7 +44,7 @@ export function redirectionTest(
   expectation = Expectation.RedirectionToHttps
 ) {
   const output = new RedirectionOutput(expectation);
-  const response = requests.responses.http;
+  const httpResponse = requests.responses.http;
 
   const redirects =
     requests.responses.httpRedirects.length > 0
@@ -55,11 +55,11 @@ export function redirectionTest(
   if (destination) {
     output.destination = destination;
   }
-  output.statusCode = response ? response.status : null;
+  output.statusCode = httpResponse ? httpResponse.status : null;
 
-  if (!response) {
+  if (!httpResponse) {
     output.result = Expectation.RedirectionNotNeededNoHttp;
-  } else if (!response.verified) {
+  } else if (!httpResponse.verified) {
     output.result = Expectation.RedirectionInvalidCert;
   } else {
     const route = redirects;

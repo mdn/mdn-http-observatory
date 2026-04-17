@@ -141,6 +141,77 @@ describe("Redirections", () => {
     assert.isFalse(res.pass);
   });
 
+  it("uses https redirects as fallback for destination and route when http redirects are empty", function () {
+    reqs.responses.httpRedirects = [];
+    reqs.responses.httpsRedirects = [
+      {
+        url: new URL("https://mozilla.org/"),
+        status: 301,
+      },
+      {
+        url: new URL("https://www.mozilla.org/"),
+        status: 200,
+      },
+    ];
+
+    const res = redirectionTest(reqs);
+    assert.equal(res.destination, "https://www.mozilla.org/");
+    assert.deepEqual(res.route, [
+      "https://mozilla.org/",
+      "https://www.mozilla.org/",
+    ]);
+  });
+
+  it("fails when https redirects back to http even if http redirects look fine", function () {
+    // HTTP chain correctly redirects to HTTPS on the same hostname
+    reqs.responses.httpRedirects = [
+      {
+        url: new URL("http://mozilla.org/"),
+        status: 301,
+      },
+      {
+        url: new URL("https://mozilla.org/"),
+        status: 200,
+      },
+    ];
+    // But the independent HTTPS session ends on HTTP — that should be an error
+    reqs.responses.httpsRedirects = [
+      {
+        url: new URL("https://mozilla.org/"),
+        status: 301,
+      },
+      {
+        url: new URL("http://mozilla.org/"),
+        status: 200,
+      },
+    ];
+
+    const res = redirectionTest(reqs);
+    assert.equal(res.result, Expectation.RedirectionNotToHttps);
+    assert.isFalse(res.pass);
+  });
+
+  it("fails with redirection-missing when http redirects are empty but http response exists", function () {
+    // The OR fallback previously caused httpsRedirects to be used for pass/fail
+    // logic when httpRedirects is empty, which could produce a spurious pass.
+    reqs.responses.httpRedirects = [];
+    reqs.responses.httpsRedirects = [
+      {
+        url: new URL("https://mozilla.org/"),
+        status: 301,
+      },
+      {
+        url: new URL("https://www.mozilla.org/"),
+        status: 200,
+      },
+    ];
+    // responses.http is still set (from emptyRequests), so the site is reachable over HTTP
+
+    const res = redirectionTest(reqs);
+    assert.equal(res.result, Expectation.RedirectionMissing);
+    assert.isFalse(res.pass);
+  });
+
   it("checks for all redirections preloaded", function () {
     reqs.responses.httpRedirects = [
       {

@@ -8,15 +8,12 @@ on:
 permissions:
   contents: write
   pull-requests: write
-  id-token: write
+  actions: write
 
 jobs:
   release-please:
     if: github.repository == 'mdn/mdn-http-observatory'
     runs-on: ubuntu-latest
-    outputs:
-      release_created: ${{ steps.release.outputs.release_created }}
-      tag_name: ${{ steps.release.outputs.tag_name }}
     steps:
       - name: Release
         uses: GoogleCloudPlatform/release-please-action@5c625bfb5d1ff62eadeeb3772007f7f66fdcf071 # v4.4.1
@@ -26,9 +23,12 @@ jobs:
           manifest-file: .github/release-please-manifest.json
           token: ${{ secrets.RELEASE_PLEASE_GITHUB_TOKEN }}
 
-  publish:
-    needs: release-please
-    if: needs.release-please.outputs.release_created == 'true'
-    uses: ./.github/workflows/npm-publish.yml
-    with:
-      tag: ${{ needs.release-please.outputs.tag_name }}
+      - name: Publish
+        if: steps.release.outputs.release_created == 'true'
+        run: |
+          gh workflow run npm-publish.yml \
+            --repo ${{ github.repository }} \
+            --ref "$TAG_NAME" \
+            -f tag="$TAG_NAME"
+        env:
+          TAG_NAME: ${{ steps.release.outputs.outputs.tag_name }}

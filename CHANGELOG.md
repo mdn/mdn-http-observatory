@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.6.3](https://github.com/mdn/mdn-http-observatory/compare/v1.6.2...v1.6.3) (2026-04-17)
+
+
+### Miscellaneous
+
+* **deps:** bump @fastify/static from 9.1.0 to 9.1.1 ([#507](https://github.com/mdn/mdn-http-observatory/issues/507)) ([78e9a7f](https://github.com/mdn/mdn-http-observatory/commit/78e9a7f0c7ed89b5956c40d16ec36892d724c27e))
+
 ## [1.6.2](https://github.com/mdn/mdn-http-observatory/compare/v1.6.1...v1.6.2) (2026-04-14)
 
 

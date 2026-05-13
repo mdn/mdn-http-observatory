@@ -58,7 +58,7 @@
     "@fastify/static": "^9.0.0",
     "@sentry/node": "^10.1.0",
     "axios": "^1.10.0",
-    "axios-cookiejar-support": "^6.0.2",
+    "axios-cookiejar-support": "^7.0.0",
     "change-case": "^5.4.4",
     "commander": "^14.0.0",
     "convict": "^6.2.4",

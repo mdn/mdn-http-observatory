@@ -60,7 +60,7 @@
     "axios": "^1.10.0",
     "axios-cookiejar-support": "^7.0.0",
     "change-case": "^5.4.4",
-    "commander": "^14.0.0",
+    "commander": "^15.0.0",
     "convict": "^6.2.4",
     "dayjs": "^1.11.13",
     "fastify": "^5.4.0",

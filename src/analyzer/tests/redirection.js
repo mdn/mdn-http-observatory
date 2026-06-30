@@ -44,50 +44,55 @@ export function redirectionTest(
   expectation = Expectation.RedirectionToHttps
 ) {
   const output = new RedirectionOutput(expectation);
-  const response = requests.responses.http;
+  const httpResponse = requests.responses.http;
 
-  if (requests.responses.httpRedirects.length > 0) {
-    output.destination =
-      requests.responses.httpRedirects[
-        requests.responses.httpRedirects.length - 1
-      ]?.url?.href || null;
-  } else if (requests.responses.httpsRedirects.length > 0) {
-    output.destination =
-      requests.responses.httpsRedirects[
-        requests.responses.httpsRedirects.length - 1
-      ]?.url?.href || null;
+  const httpRoute = requests.responses.httpRedirects;
+  const httpsRoute = requests.responses.httpsRedirects;
+
+  // For display only: prefer the HTTP chain, fall back to HTTPS chain when HTTP is absent
+  const displayRoute = httpRoute.length > 0 ? httpRoute : httpsRoute;
+
+  const destination = displayRoute.at(-1)?.url?.href;
+  if (destination) {
+    output.destination = destination;
   }
-  output.statusCode = response ? response.status : null;
+  output.statusCode = httpResponse ? httpResponse.status : null;
 
-  if (!response) {
+  if (!httpResponse) {
     output.result = Expectation.RedirectionNotNeededNoHttp;
-  } else if (!response.verified) {
+  } else if (!httpResponse.verified) {
     output.result = Expectation.RedirectionInvalidCert;
   } else {
-    const route = requests.responses.httpRedirects;
-    output.route = route.map((r) => r.url.href);
+    output.route = displayRoute.map((r) => r.url.href);
 
-    // Check to see if every redirection was covered by the preload list
-    const allRedirectsPreloaded = route.every((re) =>
-      isHstsPreloaded(Site.fromSiteString(re.url.hostname))
-    );
+    // Check to see if every redirection was covered by the preload list.
+    // Guard httpRoute.length > 1 to avoid vacuous truth on an empty array.
+    const allRedirectsPreloaded =
+      httpRoute.length > 1 &&
+      httpRoute.every((re) =>
+        isHstsPreloaded(Site.fromSiteString(re.url.hostname))
+      );
     if (allRedirectsPreloaded) {
       output.result = Expectation.RedirectionAllRedirectsPreloaded;
-    } else if (route.length === 1) {
+    } else if (httpRoute.length < 2) {
       // No redirection, so you just stayed on the http website
       output.result = Expectation.RedirectionMissing;
       output.redirects = false;
-    } else if (route[route.length - 1]?.url.protocol !== "https:") {
-      // Final destination wasn't an https website
+    } else if (
+      httpRoute.at(-1)?.url.protocol !== "https:" ||
+      (httpsRoute.length > 0 && httpsRoute.at(-1)?.url.protocol !== "https:")
+    ) {
+      // Final destination wasn't https — checked for both the HTTP chain and
+      // the independent HTTPS chain (catches HTTPS redirecting back to HTTP)
       output.result = Expectation.RedirectionNotToHttps;
-    } else if (route[1]?.url.protocol === "http:") {
+    } else if (httpRoute[1]?.url.protocol === "http:") {
       // http should never redirect to another http location -- should always go to https first
       output.result = Expectation.RedirectionNotToHttpsOnInitialRedirection;
-      output.statusCode = route[route.length - 1]?.status || null;
+      output.statusCode = httpRoute.at(-1)?.status || null;
     } else if (
-      route[0]?.url.protocol === "http:" &&
-      route[1]?.url.protocol === "https:" &&
-      route[0]?.url.hostname !== route[1]?.url.hostname
+      httpRoute[0]?.url.protocol === "http:" &&
+      httpRoute[1]?.url.protocol === "https:" &&
+      httpRoute[0]?.url.hostname !== httpRoute[1]?.url.hostname
     ) {
       output.result = Expectation.RedirectionOffHostFromHttp;
     } else {

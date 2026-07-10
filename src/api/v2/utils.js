@@ -1,5 +1,5 @@
-import ip from "ip";
 import dns from "node:dns";
+import net from "node:net";
 import fs from "fs";
 import { fileURLToPath } from "node:url";
 import path from "node:path";
@@ -35,9 +35,7 @@ import { scan } from "../../scanner/index.js";
  * @returns {boolean}
  */
 export function isIp(hostname) {
-  if (ip.isV4Format(hostname)) return true;
-  if (ip.isV6Format(hostname)) return true;
-  return false;
+  return net.isIP(hostname) !== 0;
 }
 
 /**

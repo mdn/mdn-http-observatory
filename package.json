@@ -68,7 +68,6 @@
     "fastify-simple-form": "^3.0.0",
     "htmlparser2": "^12.0.0",
     "http-cookie-agent": "^8.0.0",
-    "ip": "^2.0.1",
     "node_extra_ca_certs_mozilla_bundle": "^1.0.7",
     "pg": "^8.16.2",
     "pg-format": "^1.0.4",

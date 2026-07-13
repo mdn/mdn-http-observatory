@@ -1,6 +1,8 @@
 import { describe, it } from "node:test";
-import { assert } from "chai";
+
 import { AxiosHeaders } from "axios";
+import { assert } from "chai";
+
 import { getFirstHttpHeader, getHttpHeaders } from "../src/analyzer/utils.js";
 
 function emptyResponse() {

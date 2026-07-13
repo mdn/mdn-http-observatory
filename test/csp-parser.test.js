@@ -1,4 +1,5 @@
 import { describe, it } from "node:test";
+
 import { assert } from "chai";
 
 import { parseCsp } from "../src/analyzer/cspParser.js";

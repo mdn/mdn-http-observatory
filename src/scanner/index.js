@@ -1,3 +1,6 @@
+import { ALGORITHM_VERSION } from "../constants.js";
+import { NUM_TESTS } from "../constants.js";
+import { ALL_TESTS } from "../constants.js";
 import { MINIMUM_SCORE_FOR_EXTRA_CREDIT } from "../grader/charts.js";
 import {
   getGradeForScore,
@@ -5,9 +8,6 @@ import {
   getScoreModifier,
 } from "../grader/grader.js";
 import { retrieve } from "../retriever/retriever.js";
-import { ALGORITHM_VERSION } from "../constants.js";
-import { NUM_TESTS } from "../constants.js";
-import { ALL_TESTS } from "../constants.js";
 
 /**
  * @typedef {import("../types.js").ScanResult} ScanResult

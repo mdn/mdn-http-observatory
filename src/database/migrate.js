@@ -1,6 +1,8 @@
-import Postgrator from "postgrator";
 import path, { dirname } from "node:path";
 import { fileURLToPath } from "node:url";
+
+import Postgrator from "postgrator";
+
 import { createPool } from "./repository.js";
 
 const MIGRATION_PATTERN = path.join(

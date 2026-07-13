@@ -1,4 +1,5 @@
 import { CONFIG } from "../config.js";
+
 import { createServer } from "./server.js";
 
 async function main() {

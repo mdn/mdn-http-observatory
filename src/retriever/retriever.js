@@ -1,6 +1,8 @@
 import { AxiosHeaders } from "axios";
+
 import { CONFIG } from "../config.js";
 import { HTML_TYPES, Requests } from "../types.js";
+
 import { Session, getPageText } from "./session.js";
 import { urls } from "./url.js";
 import { parseHttpEquivHeaders } from "./utils.js";

@@ -1,7 +1,9 @@
 import axios, { AxiosHeaders } from "axios";
-import { CONFIG } from "../config.js";
+
 import { HttpCookieAgent, HttpsCookieAgent } from "http-cookie-agent/http";
 import { CookieJar } from "tough-cookie";
+
+import { CONFIG } from "../config.js";
 
 const ABORT_TIMEOUT = CONFIG.retriever.abortTimeout;
 const CLIENT_TIMEOUT = CONFIG.retriever.clientTimeout;

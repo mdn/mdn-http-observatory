@@ -1,9 +1,11 @@
 #!/usr/bin/env node
 
+import { pathToFileURL } from "node:url";
+
 import { Command } from "commander";
+
 import { scan } from "./scanner/index.js";
 import { Site } from "./site.js";
-import { pathToFileURL } from "node:url";
 
 /**
  * @param {string} json

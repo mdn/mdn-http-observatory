@@ -1,33 +1,36 @@
+import fs from "fs";
 import dns from "node:dns";
 import net from "node:net";
-import fs from "fs";
-import { fileURLToPath } from "node:url";
 import path from "node:path";
+import { fileURLToPath } from "node:url";
+
+import { snakeCase } from "change-case";
+
+import {
+  ScanState,
+  ensureSite,
+  insertScan,
+  insertTestResults,
+  selectScanHostHistory,
+  selectTestResults,
+  updateScanState,
+} from "../../database/repository.js";
+import { TEST_TITLES } from "../../grader/charts.js";
+import {
+  getRecommendation,
+  getScoreDescription,
+  getTopicLink,
+} from "../../grader/grader.js";
+import { scan } from "../../scanner/index.js";
+import { Expectation } from "../../types.js";
 import {
   InvalidHostNameError,
   InvalidHostNameIpError,
   InvalidHostNameLookupError,
   ScanFailedError,
 } from "../errors.js";
-import {
-  ensureSite,
-  insertScan,
-  insertTestResults,
-  ScanState,
-  selectScanHostHistory,
-  selectTestResults,
-  updateScanState,
-} from "../../database/repository.js";
-import {
-  getRecommendation,
-  getScoreDescription,
-  getTopicLink,
-} from "../../grader/grader.js";
-import { snakeCase } from "change-case";
+
 import { PolicyResponse } from "./schemas.js";
-import { Expectation } from "../../types.js";
-import { TEST_TITLES } from "../../grader/charts.js";
-import { scan } from "../../scanner/index.js";
 
 /**
  *

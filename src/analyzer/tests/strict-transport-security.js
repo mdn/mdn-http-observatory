@@ -1,5 +1,5 @@
 import { STRICT_TRANSPORT_SECURITY } from "../../headers.js";
-import { Requests, BaseOutput } from "../../types.js";
+import { BaseOutput, Requests } from "../../types.js";
 import { Expectation } from "../../types.js";
 import { isHstsPreloaded } from "../hsts.js";
 import { getHttpHeaders } from "../utils.js";

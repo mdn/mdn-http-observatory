@@ -1,13 +1,18 @@
-import { describe, it, before, beforeEach, after } from "node:test";
+import { after, before, beforeEach, describe, it } from "node:test";
+
+import { faker } from "@faker-js/faker";
 import { assert } from "chai";
+
+import { ALGORITHM_VERSION } from "../src/constants.js";
+import { migrateDatabase } from "../src/database/migrate.js";
 import {
+  ScanState,
   createPool,
   ensureSite,
   insertScan,
   insertTestResults,
   isConfigured,
   refreshMaterializedViews,
-  ScanState,
   selectGradeDistribution,
   selectScan,
   selectScanHostHistory,
@@ -15,9 +20,7 @@ import {
   selectTestResults,
   updateScanState,
 } from "../src/database/repository.js";
-import { ALGORITHM_VERSION } from "../src/constants.js";
-import { faker } from "@faker-js/faker";
-import { migrateDatabase } from "../src/database/migrate.js";
+
 import { insertSeeds } from "./helpers/db.js";
 
 const dbConfigured = isConfigured();

@@ -1,12 +1,13 @@
 import { describe, it } from "node:test";
+
 import { assert } from "chai";
 
-import { retrieve, buildRequestHeaders } from "../src/retriever/retriever.js";
-import { Session } from "../src/retriever/session.js";
-import { Resources } from "../src/types.js";
-import { Site } from "../src/site.js";
-import { detectTlsSupport } from "../src/retriever/url.js";
 import { CONFIG } from "../src/config.js";
+import { buildRequestHeaders, retrieve } from "../src/retriever/retriever.js";
+import { Session } from "../src/retriever/session.js";
+import { detectTlsSupport } from "../src/retriever/url.js";
+import { Site } from "../src/site.js";
+import { Resources } from "../src/types.js";
 
 describe("buildRequestHeaders", () => {
   const customHeaders = ["Authorization: Bearer secret", "X-Custom: value"];

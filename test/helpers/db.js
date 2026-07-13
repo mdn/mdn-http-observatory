@@ -1,8 +1,9 @@
 import { faker } from "@faker-js/faker";
-import { ensureSite, ScanState } from "../../src/database/repository.js";
+
+import { ALGORITHM_VERSION } from "../../src/constants.js";
+import { ScanState, ensureSite } from "../../src/database/repository.js";
 import { GRADE_CHART } from "../../src/grader/charts.js";
 import { Expectation } from "../../src/types.js";
-import { ALGORITHM_VERSION } from "../../src/constants.js";
 
 /**
  * @typedef {import("pg").Pool} Pool

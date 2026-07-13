@@ -2,7 +2,7 @@ import {
   CONTENT_SECURITY_POLICY,
   CONTENT_SECURITY_POLICY_REPORT_ONLY,
 } from "../../headers.js";
-import { Requests, Policy, BaseOutput } from "../../types.js";
+import { BaseOutput, Policy, Requests } from "../../types.js";
 import { Expectation } from "../../types.js";
 import {
   DUPLICATE_WARNINGS_KEY,

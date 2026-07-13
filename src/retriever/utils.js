@@ -1,9 +1,9 @@
+import { CONTENT_SECURITY_POLICY, REFERRER_POLICY } from "../headers.js";
 import {
   collectElements,
   getAttribute,
   hasAttribute,
 } from "../utils/html-parser.js";
-import { CONTENT_SECURITY_POLICY, REFERRER_POLICY } from "../headers.js";
 
 /**
  *

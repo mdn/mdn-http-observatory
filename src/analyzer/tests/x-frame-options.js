@@ -2,6 +2,7 @@ import { X_FRAME_OPTIONS } from "../../headers.js";
 import { BaseOutput, Requests } from "../../types.js";
 import { Expectation } from "../../types.js";
 import { getFirstHttpHeader } from "../utils.js";
+
 import { contentSecurityPolicyTest } from "./csp.js";
 
 export class XFrameOptionsOutput extends BaseOutput {

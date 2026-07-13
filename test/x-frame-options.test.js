@@ -1,9 +1,12 @@
-import { describe, it, beforeEach } from "node:test";
+import { beforeEach, describe, it } from "node:test";
+
 import { assert } from "chai";
-import { emptyRequests } from "./helpers.js";
+
 import { xFrameOptionsTest } from "../src/analyzer/tests/x-frame-options.js";
-import { Expectation } from "../src/types.js";
 import { getScoreModifier } from "../src/grader/grader.js";
+import { Expectation } from "../src/types.js";
+
+import { emptyRequests } from "./helpers.js";
 
 describe("X-Frame-Options", () => {
   /** @type {import("../src/types.js").Requests} */

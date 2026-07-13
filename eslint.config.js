@@ -125,7 +125,6 @@ export default defineConfig([
       "@typescript-eslint/no-misused-promises": "off",
       "@typescript-eslint/no-unused-vars": "off",
       "@typescript-eslint/no-useless-constructor": "off",
-      "import-x/order": "off",
       "jsdoc/check-alignment": "off",
       "jsdoc/check-param-names": "off",
       "jsdoc/check-tag-names": "off",

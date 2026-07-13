@@ -3,11 +3,11 @@ import path from "node:path";
 
 import { AxiosHeaders } from "axios";
 
-import { Requests } from "../src/types.js";
 import { Session } from "../src/retriever/session.js";
 import { parseHttpEquivHeaders } from "../src/retriever/utils.js";
-import { Site } from "../src/site.js";
 import { analyzeScan } from "../src/scanner/index.js";
+import { Site } from "../src/site.js";
+import { Requests } from "../src/types.js";
 
 /**
  *

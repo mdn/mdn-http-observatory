@@ -1,9 +1,10 @@
+import { parse } from "tldts";
+
+import { CONTENT_TYPE } from "../../headers.js";
 import { BaseOutput, HTML_TYPES, Requests } from "../../types.js";
 import { Expectation } from "../../types.js";
 import { collectElements, getAttribute } from "../../utils/html-parser.js";
-import { parse } from "tldts";
 import { getFirstHttpHeader, onlyIfWorse } from "../utils.js";
-import { CONTENT_TYPE } from "../../headers.js";
 
 export class SubresourceIntegrityOutput extends BaseOutput {
   /** @type {import("../../types.js").ScriptMap} */

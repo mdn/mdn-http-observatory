@@ -1,19 +1,20 @@
-import Fastify from "fastify";
-import simpleFormPlugin from "fastify-simple-form";
 import cors from "@fastify/cors";
 import helmet from "@fastify/helmet";
+import pool from "@fastify/postgres";
 import * as Sentry from "@sentry/node";
+import Fastify from "fastify";
+import simpleFormPlugin from "fastify-simple-form";
 
 // import analyzeApiV1 from "./v1/analyze/index.js";
+import { CONFIG } from "../config.js";
+import { poolOptions } from "../database/repository.js";
+
+import globalErrorHandler from "./global-error-handler.js";
 import analyzeApiV2 from "./v2/analyze/index.js";
+import recommendationMatrixApiV2 from "./v2/recommendations/index.js";
 import scanApiV2 from "./v2/scan/index.js";
 import statsApiV2 from "./v2/stats/index.js";
-import recommendationMatrixApiV2 from "./v2/recommendations/index.js";
 import version from "./version/index.js";
-import globalErrorHandler from "./global-error-handler.js";
-import pool from "@fastify/postgres";
-import { poolOptions } from "../database/repository.js";
-import { CONFIG } from "../config.js";
 
 const FILTERED_ERROR_TYPES = [
   "invalid-hostname",

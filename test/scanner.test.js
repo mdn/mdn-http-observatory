@@ -1,7 +1,10 @@
 import { describe, it } from "node:test";
+
 import { assert } from "chai";
+
 import { scan } from "../src/scanner/index.js";
 import { Site } from "../src/site.js";
+
 import { fixtureRequests, scanWithRequests } from "./helpers.js";
 
 /** @typedef {import("../src/scanner/index.js").ScanResult} ScanResult */

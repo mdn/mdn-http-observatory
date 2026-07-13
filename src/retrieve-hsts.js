@@ -1,7 +1,8 @@
-import axios from "axios";
 import { writeFile } from "fs/promises";
 import path from "node:path";
 import { fileURLToPath, pathToFileURL } from "node:url";
+
+import axios from "axios";
 
 const HSTS_URL = new URL(
   "https://raw.githubusercontent.com/chromium/chromium/main/net/http/transport_security_state_static.json"

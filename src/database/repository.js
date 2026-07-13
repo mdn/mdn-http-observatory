@@ -1,7 +1,8 @@
-import { CONFIG } from "../config.js";
-import format from "pg-format";
-import { ALGORITHM_VERSION } from "../constants.js";
 import pg from "pg";
+import format from "pg-format";
+
+import { CONFIG } from "../config.js";
+import { ALGORITHM_VERSION } from "../constants.js";
 
 // Use native bindings instead of standard bindings
 // @ts-ignore - pg.native is optional and may not be in types

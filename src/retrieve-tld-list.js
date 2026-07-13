@@ -1,7 +1,8 @@
-import axios from "axios";
 import { writeFile } from "fs/promises";
 import path from "node:path";
 import { fileURLToPath, pathToFileURL } from "node:url";
+
+import axios from "axios";
 
 const TLD_LIST_URL = new URL(
   "https://data.iana.org/TLD/tlds-alpha-by-domain.txt"

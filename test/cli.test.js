@@ -1,5 +1,7 @@
 import { describe, it } from "node:test";
+
 import { assert } from "chai";
+
 import { parseHeadersOption } from "../src/scan.js";
 
 describe("parseHeadersOption", () => {

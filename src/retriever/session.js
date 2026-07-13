@@ -8,7 +8,7 @@ import { CONFIG } from "../config.js";
 const ABORT_TIMEOUT = CONFIG.retriever.abortTimeout;
 const CLIENT_TIMEOUT = CONFIG.retriever.clientTimeout;
 
-const CERT_ERROR_CODES = [
+const CERT_ERROR_CODES = new Set([
   "UNABLE_TO_GET_ISSUER_CERT",
   "UNABLE_TO_GET_CRL",
   "UNABLE_TO_DECRYPT_CERT_SIGNATURE",
@@ -38,7 +38,7 @@ const CERT_ERROR_CODES = [
   "CERT_REJECTED",
   "HOSTNAME_MISMATCH",
   "ERR_TLS_CERT_ALTNAME_INVALID",
-];
+]);
 
 const REDIRECT_STATUS_CODES = new Set([301, 302, 303, 307, 308]);
 
@@ -172,7 +172,7 @@ export class Session {
       }
       if (
         code &&
-        CERT_ERROR_CODES.indexOf(code) !== -1 &&
+        CERT_ERROR_CODES.has(code) &&
         this.clientInstanceRecordingRedirects.defaults.httpsAgent.options
           .rejectUnauthorized
       ) {

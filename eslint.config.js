@@ -141,7 +141,6 @@ export default defineConfig([
       "unicorn/no-process-exit": "off",
       "unicorn/no-this-assignment": "off",
       "unicorn/prefer-code-point": "off",
-      "unicorn/prefer-includes": "off",
       "unicorn/prefer-module": "off",
       "unicorn/prefer-string-slice": "off",
       "unicorn/prefer-switch": "off",

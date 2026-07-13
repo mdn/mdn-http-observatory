@@ -46,7 +46,7 @@ export class Resources {
 export class BaseOutput {
   /** @type {Expectation} */
   expectation;
-  /** @type boolean | null */
+  /** @type {boolean | null} */
   pass = false;
   /** @type {Expectation | null} */
   result = null;

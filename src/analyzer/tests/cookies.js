@@ -11,18 +11,19 @@ const COOKIES_TO_DELETE = new Set(["heroku-session-affinity"]);
 
 /**
  * @typedef {{ [key: string]: CookieDataItem }} CookieMap
- * /
- 
+ */
+
 /**
- * @typedef {object} CookieDataItem
- * @property {string} domain
- * @property {number} expires
- * @property {boolean} httponly
- * @property {number | "Infinity" | "-Infinity"} `max-age``
- * @property {string} path
- * @property {null} port
- * @property {string} samesite
- * @property {boolean} secure
+ * @typedef {{
+ *   domain: string;
+ *   expires: number;
+ *   httponly: boolean;
+ *   "max-age": number | "Infinity" | "-Infinity";
+ *   path: string;
+ *   port: null;
+ *   samesite: string;
+ *   secure: boolean;
+ * }} CookieDataItem
  */
 
 export class CookiesOutput extends BaseOutput {

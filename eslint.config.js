@@ -120,7 +120,6 @@ export default defineConfig([
     // temporarily disabled so the tree lints clean. They are being re-enabled
     // and fixed one at a time, each in its own commit.
     rules: {
-      "jsdoc/valid-types": "off",
       "n/no-process-exit": "off",
       "no-useless-assignment": "off",
       "no-useless-escape": "off",

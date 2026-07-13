@@ -50,7 +50,7 @@ export async function retrieveAndStoreHsts() {
     return;
   }
   const data = removeJsonComments(r.data);
-  /** @type RawData */
+  /** @type {RawData} */
   const rawData = JSON.parse(data);
 
   const hstsMap = rawData.entries.reduce((acc, entry) => {

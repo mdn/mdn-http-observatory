@@ -17,14 +17,6 @@ export class ReferrerOutput extends BaseOutput {
     Expectation.ReferrerPolicyUnsafe,
     Expectation.ReferrerPolicyHeaderInvalid,
   ];
-
-  /**
-   *
-   * @param {Expectation} expectation
-   */
-  constructor(expectation) {
-    super(expectation);
-  }
 }
 
 /**

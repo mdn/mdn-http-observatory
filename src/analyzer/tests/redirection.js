@@ -24,14 +24,6 @@ export class RedirectionOutput extends BaseOutput {
     Expectation.RedirectionMissing,
     Expectation.RedirectionInvalidCert,
   ];
-
-  /**
-   *
-   * @param {Expectation} expectation
-   */
-  constructor(expectation) {
-    super(expectation);
-  }
 }
 
 /**

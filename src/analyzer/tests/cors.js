@@ -19,14 +19,6 @@ export class CorsOutput extends BaseOutput {
     Expectation.CrossOriginResourceSharingImplementedWithRestrictedAccess,
     Expectation.CrossOriginResourceSharingImplementedWithUniversalAccess,
   ];
-
-  /**
-   *
-   * @param {Expectation} expectation
-   */
-  constructor(expectation) {
-    super(expectation);
-  }
 }
 
 /**

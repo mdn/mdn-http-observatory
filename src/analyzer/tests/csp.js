@@ -69,13 +69,6 @@ export class CspOutput extends BaseOutput {
     Expectation.CspNotImplemented,
     Expectation.CspNotImplementedButReportingEnabled,
   ];
-  /**
-   *
-   * @param {Expectation} expectation
-   */
-  constructor(expectation) {
-    super(expectation);
-  }
 }
 
 /**

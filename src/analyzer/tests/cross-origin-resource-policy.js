@@ -18,14 +18,6 @@ export class CrossOriginResourcePolicyOutput extends BaseOutput {
     Expectation.CrossOriginResourcePolicyImplementedWithCrossOrigin,
     Expectation.CrossOriginResourcePolicyHeaderInvalid,
   ];
-
-  /**
-   *
-   * @param {Expectation} expectation
-   */
-  constructor(expectation) {
-    super(expectation);
-  }
 }
 
 /**

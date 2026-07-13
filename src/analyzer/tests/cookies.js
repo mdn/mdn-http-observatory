@@ -45,11 +45,6 @@ export class CookiesOutput extends BaseOutput {
     Expectation.CookiesSessionWithoutHttponlyFlag,
     Expectation.CookiesSessionWithoutSecureFlag,
   ];
-
-  /** @param {Expectation} expectation */
-  constructor(expectation) {
-    super(expectation);
-  }
 }
 
 /**

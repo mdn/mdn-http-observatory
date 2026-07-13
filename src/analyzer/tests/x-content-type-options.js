@@ -14,14 +14,6 @@ export class XContentTypeOptionsOutput extends BaseOutput {
     Expectation.XContentTypeOptionsHeaderInvalid,
     Expectation.XContentTypeOptionsNotImplemented,
   ];
-
-  /**
-   *
-   * @param {Expectation} expectation
-   */
-  constructor(expectation) {
-    super(expectation);
-  }
 }
 
 /**

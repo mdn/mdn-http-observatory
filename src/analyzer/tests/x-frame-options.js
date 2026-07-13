@@ -18,14 +18,6 @@ export class XFrameOptionsOutput extends BaseOutput {
     Expectation.XFrameOptionsNotImplemented,
     Expectation.XFrameOptionsHeaderInvalid,
   ];
-
-  /**
-   *
-   * @param {Expectation} expectation
-   */
-  constructor(expectation) {
-    super(expectation);
-  }
 }
 
 /**

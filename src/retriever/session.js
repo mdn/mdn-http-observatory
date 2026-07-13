@@ -64,7 +64,7 @@ export class Session {
   /**
    *
    * @param {URL} url
-   * @param {{ headers?: string[]; cookies?: string[]; }} [options = {}]
+   * @param {{ headers?: string[]; cookies?: string[]; }} [options]
    */
   constructor(url, { headers: headerParams, cookies: _cookies } = {}) {
     this.redirectHistory = [];
@@ -218,7 +218,7 @@ export class Session {
   /**
    *
    * @param {URL} url
-   * @param {{ headers?: string[]; cookies?: string[]; }} [options = {}]
+   * @param {{ headers?: string[]; cookies?: string[]; }} [options]
    * @returns Session
    */
   static async fromUrl(url, { headers: headerParams, cookies } = {}) {

@@ -280,6 +280,7 @@ export async function selectScanRecentScan(
  * Returns the most recent scan for a host
  * @param {Pool} pool
  * @param {string} host
+ * @param maxAge
  * @returns {Promise<ScanRow | undefined>}
  */
 export async function selectScanLatestScanByHost(

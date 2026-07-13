@@ -17,100 +17,54 @@ describe("Cross Origin Opener Policy", () => {
     assert.isTrue(result.pass);
   });
 
-  it("checks header validity", function () {
-    assert.isNotNull(reqs.responses.auto);
-    reqs.responses.auto.headers["cross-origin-opener-policy"] = "whimsy";
-    const result = crossOriginOpenerPolicyTest(reqs);
-    assert.equal(result.result, Expectation.CoopHeaderInvalid);
-    assert.isFalse(result.pass);
-  });
+  const invalidHeaders = {
+    "an unknown policy": "whimsy",
+    "a quoted string": '"same-origin"',
+    "a capitalized policy": "Same-Origin",
+    "an uppercased policy": "SAME-ORIGIN",
+    "a malformed structured field": "same-origin; report-to=coop endpoint",
+  };
+  for (const [description, value] of Object.entries(invalidHeaders)) {
+    it(`rejects ${description}`, function () {
+      assert.isNotNull(reqs.responses.auto);
+      reqs.responses.auto.headers["cross-origin-opener-policy"] = value;
+      const result = crossOriginOpenerPolicyTest(reqs);
+      assert.equal(result.result, Expectation.CoopHeaderInvalid);
+      assert.isFalse(result.pass);
+    });
+  }
 
-  it("checks for same-origin", function () {
-    assert.isNotNull(reqs.responses.auto);
-    reqs.responses.auto.headers["cross-origin-opener-policy"] = "same-origin";
-    const result = crossOriginOpenerPolicyTest(reqs);
-    assert.equal(result.result, Expectation.CoopImplementedWithSameOrigin);
-    assert.isTrue(result.pass);
-  });
-
-  it("checks for same-origin-allow-popups", function () {
-    assert.isNotNull(reqs.responses.auto);
-    reqs.responses.auto.headers["cross-origin-opener-policy"] =
-      "same-origin-allow-popups";
-    const result = crossOriginOpenerPolicyTest(reqs);
-    assert.equal(
-      result.result,
-      Expectation.CoopImplementedWithSameOriginAllowPopups
-    );
-    assert.isTrue(result.pass);
-  });
-
-  it("checks for noopener-allow-popups", function () {
-    assert.isNotNull(reqs.responses.auto);
-    reqs.responses.auto.headers["cross-origin-opener-policy"] =
-      "noopener-allow-popups";
-    const result = crossOriginOpenerPolicyTest(reqs);
-    assert.equal(
-      result.result,
-      Expectation.CoopImplementedWithNoopenerAllowPopups
-    );
-    assert.isTrue(result.pass);
-  });
-
-  it("checks for unsafe-none", function () {
-    assert.isNotNull(reqs.responses.auto);
-    reqs.responses.auto.headers["cross-origin-opener-policy"] = "unsafe-none";
-    const result = crossOriginOpenerPolicyTest(reqs);
-    assert.equal(result.result, Expectation.CoopImplementedWithUnsafeNone);
-    assert.isTrue(result.pass);
-  });
-
-  it("checks for same-origin with report-to directive", function () {
-    assert.isNotNull(reqs.responses.auto);
-    reqs.responses.auto.headers["cross-origin-opener-policy"] =
-      'same-origin; report-to="coop-endpoint"';
-    const result = crossOriginOpenerPolicyTest(reqs);
-    assert.equal(result.result, Expectation.CoopImplementedWithSameOrigin);
-    assert.isTrue(result.pass);
-  });
-
-  it("checks for same-origin-allow-popups with report-to directive", function () {
-    assert.isNotNull(reqs.responses.auto);
-    reqs.responses.auto.headers["cross-origin-opener-policy"] =
-      'same-origin-allow-popups; report-to="coop-endpoint"';
-    const result = crossOriginOpenerPolicyTest(reqs);
-    assert.equal(
-      result.result,
-      Expectation.CoopImplementedWithSameOriginAllowPopups
-    );
-    assert.isTrue(result.pass);
-  });
-
-  it("checks for same-origin with a value-less report-to parameter", function () {
-    assert.isNotNull(reqs.responses.auto);
-    reqs.responses.auto.headers["cross-origin-opener-policy"] =
-      "same-origin; report-to";
-    const result = crossOriginOpenerPolicyTest(reqs);
-    assert.equal(result.result, Expectation.CoopImplementedWithSameOrigin);
-    assert.isTrue(result.pass);
-  });
-
-  it("checks for a malformed structured field", function () {
-    assert.isNotNull(reqs.responses.auto);
-    reqs.responses.auto.headers["cross-origin-opener-policy"] =
-      "same-origin; report-to=coop endpoint";
-    const result = crossOriginOpenerPolicyTest(reqs);
-    assert.equal(result.result, Expectation.CoopHeaderInvalid);
-    assert.isFalse(result.pass);
-  });
-
-  it("checks that a quoted string is not a valid token", function () {
-    assert.isNotNull(reqs.responses.auto);
-    reqs.responses.auto.headers["cross-origin-opener-policy"] = '"same-origin"';
-    const result = crossOriginOpenerPolicyTest(reqs);
-    assert.equal(result.result, Expectation.CoopHeaderInvalid);
-    assert.isFalse(result.pass);
-  });
+  const validHeaders = [
+    ["same-origin", Expectation.CoopImplementedWithSameOrigin],
+    [
+      "same-origin-allow-popups",
+      Expectation.CoopImplementedWithSameOriginAllowPopups,
+    ],
+    [
+      "noopener-allow-popups",
+      Expectation.CoopImplementedWithNoopenerAllowPopups,
+    ],
+    ["unsafe-none", Expectation.CoopImplementedWithUnsafeNone],
+    [
+      'same-origin; report-to="coop-endpoint"',
+      Expectation.CoopImplementedWithSameOrigin,
+    ],
+    [
+      'same-origin-allow-popups; report-to="coop-endpoint"',
+      Expectation.CoopImplementedWithSameOriginAllowPopups,
+    ],
+    // Note: An invalid report-to parameter doesn't invalidate the whole header.
+    ["same-origin; report-to", Expectation.CoopImplementedWithSameOrigin],
+  ];
+  for (const [value, expected] of validHeaders) {
+    it(`accepts ${value}`, function () {
+      assert.isNotNull(reqs.responses.auto);
+      reqs.responses.auto.headers["cross-origin-opener-policy"] = value;
+      const result = crossOriginOpenerPolicyTest(reqs);
+      assert.equal(result.result, expected);
+      assert.isTrue(result.pass);
+    });
+  }
 
   it("checks for multiple headers", function () {
     assert.isNotNull(reqs.responses.auto);

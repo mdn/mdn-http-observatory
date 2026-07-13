@@ -17,84 +17,47 @@ describe("Cross Origin Embedder Policy", () => {
     assert.isTrue(result.pass);
   });
 
-  it("checks header validity", function () {
-    assert.isNotNull(reqs.responses.auto);
-    reqs.responses.auto.headers["cross-origin-embedder-policy"] = "whimsy";
-    const result = crossOriginEmbedderPolicyTest(reqs);
-    assert.equal(result.result, Expectation.CoepHeaderInvalid);
-    assert.isFalse(result.pass);
-  });
+  const invalidHeaders = {
+    "an unknown policy": "whimsy",
+    "a quoted string": '"require-corp"',
+    "a capitalized policy": "Require-Corp",
+    "an uppercased policy": "REQUIRE-CORP",
+    "a malformed structured field": "require-corp; report-to=coep endpoint",
+  };
+  for (const [description, value] of Object.entries(invalidHeaders)) {
+    it(`rejects ${description}`, function () {
+      assert.isNotNull(reqs.responses.auto);
+      reqs.responses.auto.headers["cross-origin-embedder-policy"] = value;
+      const result = crossOriginEmbedderPolicyTest(reqs);
+      assert.equal(result.result, Expectation.CoepHeaderInvalid);
+      assert.isFalse(result.pass);
+    });
+  }
 
-  it("checks for require-corp", function () {
-    assert.isNotNull(reqs.responses.auto);
-    reqs.responses.auto.headers["cross-origin-embedder-policy"] =
-      "require-corp";
-    const result = crossOriginEmbedderPolicyTest(reqs);
-    assert.equal(result.result, Expectation.CoepImplementedWithRequireCorp);
-    assert.isTrue(result.pass);
-  });
-
-  it("checks for credentialless", function () {
-    assert.isNotNull(reqs.responses.auto);
-    reqs.responses.auto.headers["cross-origin-embedder-policy"] =
-      "credentialless";
-    const result = crossOriginEmbedderPolicyTest(reqs);
-    assert.equal(result.result, Expectation.CoepImplementedWithCredentialless);
-    assert.isTrue(result.pass);
-  });
-
-  it("checks for unsafe-none", function () {
-    assert.isNotNull(reqs.responses.auto);
-    reqs.responses.auto.headers["cross-origin-embedder-policy"] = "unsafe-none";
-    const result = crossOriginEmbedderPolicyTest(reqs);
-    assert.equal(result.result, Expectation.CoepImplementedWithUnsafeNone);
-    assert.isTrue(result.pass);
-  });
-
-  it("checks for require-corp with report-to directive", function () {
-    assert.isNotNull(reqs.responses.auto);
-    reqs.responses.auto.headers["cross-origin-embedder-policy"] =
-      'require-corp; report-to="coep-endpoint"';
-    const result = crossOriginEmbedderPolicyTest(reqs);
-    assert.equal(result.result, Expectation.CoepImplementedWithRequireCorp);
-    assert.isTrue(result.pass);
-  });
-
-  it("checks for credentialless with report-to directive", function () {
-    assert.isNotNull(reqs.responses.auto);
-    reqs.responses.auto.headers["cross-origin-embedder-policy"] =
-      'credentialless; report-to="coep-endpoint"';
-    const result = crossOriginEmbedderPolicyTest(reqs);
-    assert.equal(result.result, Expectation.CoepImplementedWithCredentialless);
-    assert.isTrue(result.pass);
-  });
-
-  it("checks for require-corp with a value-less report-to parameter", function () {
-    assert.isNotNull(reqs.responses.auto);
-    reqs.responses.auto.headers["cross-origin-embedder-policy"] =
-      "require-corp; report-to";
-    const result = crossOriginEmbedderPolicyTest(reqs);
-    assert.equal(result.result, Expectation.CoepImplementedWithRequireCorp);
-    assert.isTrue(result.pass);
-  });
-
-  it("checks for a malformed structured field", function () {
-    assert.isNotNull(reqs.responses.auto);
-    reqs.responses.auto.headers["cross-origin-embedder-policy"] =
-      "require-corp; report-to=coep endpoint";
-    const result = crossOriginEmbedderPolicyTest(reqs);
-    assert.equal(result.result, Expectation.CoepHeaderInvalid);
-    assert.isFalse(result.pass);
-  });
-
-  it("checks that a quoted string is not a valid token", function () {
-    assert.isNotNull(reqs.responses.auto);
-    reqs.responses.auto.headers["cross-origin-embedder-policy"] =
-      '"require-corp"';
-    const result = crossOriginEmbedderPolicyTest(reqs);
-    assert.equal(result.result, Expectation.CoepHeaderInvalid);
-    assert.isFalse(result.pass);
-  });
+  const validHeaders = [
+    ["require-corp", Expectation.CoepImplementedWithRequireCorp],
+    ["credentialless", Expectation.CoepImplementedWithCredentialless],
+    ["unsafe-none", Expectation.CoepImplementedWithUnsafeNone],
+    [
+      'require-corp; report-to="coep-endpoint"',
+      Expectation.CoepImplementedWithRequireCorp,
+    ],
+    [
+      'credentialless; report-to="coep-endpoint"',
+      Expectation.CoepImplementedWithCredentialless,
+    ],
+    // Note: An invalid report-to parameter doesn't invalidate the whole header.
+    ["require-corp; report-to", Expectation.CoepImplementedWithRequireCorp],
+  ];
+  for (const [value, expected] of validHeaders) {
+    it(`accepts ${value}`, function () {
+      assert.isNotNull(reqs.responses.auto);
+      reqs.responses.auto.headers["cross-origin-embedder-policy"] = value;
+      const result = crossOriginEmbedderPolicyTest(reqs);
+      assert.equal(result.result, expected);
+      assert.isTrue(result.pass);
+    });
+  }
 
   it("checks for multiple headers", function () {
     assert.isNotNull(reqs.responses.auto);

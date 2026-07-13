@@ -87,7 +87,7 @@ export function subresourceIntegrityTest(
         let relativeProtocol = false;
         let sameSecondLevelDomain = false;
 
-        const relativeProtocolRegex = /^(\/\/)[^\/]/;
+        const relativeProtocolRegex = /^(\/\/)[^/]/;
         const fullUrlRegex = /^https?:\/\//;
 
         if (relativeProtocolRegex.test(scriptSrc)) {

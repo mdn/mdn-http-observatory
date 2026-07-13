@@ -122,7 +122,6 @@ export default defineConfig([
     rules: {
       "n/no-process-exit": "off",
       "no-useless-assignment": "off",
-      "no-useless-escape": "off",
       "preserve-caught-error": "off",
       "unicorn/filename-case": "off",
       "unicorn/import-style": "off",

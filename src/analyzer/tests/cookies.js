@@ -11,7 +11,7 @@ const COOKIES_TO_DELETE = ["heroku-session-affinity"];
 /**
  * @typedef {{ [key: string]: CookieDataItem }} CookieMap
  * /
-
+ 
 /**
  * @typedef {object} CookieDataItem
  * @property {string} domain

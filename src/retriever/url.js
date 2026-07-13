@@ -21,10 +21,11 @@ export async function detectTlsSupport(site) {
   };
 
   // Run both requests concurrently
+  const { Agent } = await import("node:https");
   const [httpsResult, httpResult] = await Promise.allSettled([
     axios.head(httpsUrl, {
       ...config,
-      httpsAgent: new (await import("node:https")).Agent({
+      httpsAgent: new Agent({
         rejectUnauthorized: false, // Accept self-signed certs for detection
       }),
     }),

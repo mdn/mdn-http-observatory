@@ -136,7 +136,6 @@ export default defineConfig([
       "unicorn/no-anonymous-default-export": "off",
       "unicorn/no-array-for-each": "off",
       "unicorn/no-array-reduce": "off",
-      "unicorn/no-await-expression-member": "off",
       "unicorn/no-for-loop": "off",
       "unicorn/no-lonely-if": "off",
       "unicorn/no-negated-condition": "off",

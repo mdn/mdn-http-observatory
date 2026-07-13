@@ -37,15 +37,14 @@ export async function insertSeeds(pool) {
     })
   );
   // make some random scans for those
-  const scanIds = (
-    await Promise.all(
-      [...Array.from({ length: 20 }).keys()].map(async (i) => {
-        let score = Math.floor(Math.random() * 120);
-        score -= score % 5;
-        const grade = GRADE_CHART.get(Math.min(score, 100));
-        const siteId = siteIds[i % siteIds.length];
-        return pool.query(
-          `INSERT INTO scans (site_id, state, start_time, end_time, grade, score, tests_quantity, algorithm_version, status_code)
+  const scanRows = await Promise.all(
+    [...Array.from({ length: 20 }).keys()].map(async (i) => {
+      let score = Math.floor(Math.random() * 120);
+      score -= score % 5;
+      const grade = GRADE_CHART.get(Math.min(score, 100));
+      const siteId = siteIds[i % siteIds.length];
+      return pool.query(
+        `INSERT INTO scans (site_id, state, start_time, end_time, grade, score, tests_quantity, algorithm_version, status_code)
           VALUES ($1,
             $2,
             NOW() - INTERVAL '${(i + 1) * 2000} seconds',
@@ -55,11 +54,11 @@ export async function insertSeeds(pool) {
             9,
             $5,
             200) RETURNING id`,
-          [siteId, ScanState.FINISHED, grade, score, ALGORITHM_VERSION]
-        );
-      })
-    )
-  ).map((r) => r.rows[0].id);
+        [siteId, ScanState.FINISHED, grade, score, ALGORITHM_VERSION]
+      );
+    })
+  );
+  const scanIds = scanRows.map((r) => r.rows[0].id);
 
   await Promise.all(
     [...Array.from({ length: 100 }).keys()].map((i) => {

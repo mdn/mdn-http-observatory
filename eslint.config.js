@@ -134,7 +134,6 @@ export default defineConfig([
       "unicorn/explicit-length-check": "off",
       "unicorn/filename-case": "off",
       "unicorn/import-style": "off",
-      "unicorn/new-for-builtins": "off",
       "unicorn/no-anonymous-default-export": "off",
       "unicorn/no-array-for-each": "off",
       "unicorn/no-array-reduce": "off",

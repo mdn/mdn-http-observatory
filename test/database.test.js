@@ -396,7 +396,7 @@ describe(
       const siteId = await ensureSite(pool, "www.mozilla.org");
       // related scans
       await Promise.all(
-        [...Array(10).keys()].map((i) => {
+        [...Array.from({ length: 10 }).keys()].map((i) => {
           return pool.query(
             `INSERT INTO scans (site_id, state, start_time, end_time, grade, score, tests_quantity, algorithm_version)
           VALUES ($1,
@@ -414,13 +414,13 @@ describe(
 
       // create a bunch of other sites
       const otherIds = await Promise.all(
-        [...Array(10).keys()].map((_i) => {
+        [...Array.from({ length: 10 }).keys()].map((_i) => {
           return ensureSite(pool, faker.internet.domainName());
         })
       );
       // make some random scans for those
       await Promise.all(
-        [...Array(50).keys()].map((i) => {
+        [...Array.from({ length: 50 }).keys()].map((i) => {
           return pool.query(
             `INSERT INTO scans (site_id, state, start_time, end_time, grade, score, tests_quantity, algorithm_version)
           VALUES ($1,

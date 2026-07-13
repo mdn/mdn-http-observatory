@@ -28,7 +28,7 @@ export async function insertSite(pool, site) {
 export async function insertSeeds(pool) {
   // create a bunch of sites
   const siteIds = await Promise.all(
-    [...Array(10).keys()].map((i) => {
+    [...Array.from({ length: 10 }).keys()].map((i) => {
       if (i === 0) {
         return ensureSite(pool, "www.mozilla.org");
       } else {
@@ -39,7 +39,7 @@ export async function insertSeeds(pool) {
   // make some random scans for those
   const scanIds = (
     await Promise.all(
-      [...Array(20).keys()].map(async (i) => {
+      [...Array.from({ length: 20 }).keys()].map(async (i) => {
         let score = Math.floor(Math.random() * 120);
         score -= score % 5;
         const grade = GRADE_CHART.get(Math.min(score, 100));
@@ -62,7 +62,7 @@ export async function insertSeeds(pool) {
   ).map((r) => r.rows[0].id);
 
   await Promise.all(
-    [...Array(100).keys()].map((i) => {
+    [...Array.from({ length: 100 }).keys()].map((i) => {
       const siteId = siteIds[i % siteIds.length];
       const scanId = scanIds[i % scanIds.length];
       const expectation =

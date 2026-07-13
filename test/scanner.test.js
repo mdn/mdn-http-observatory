@@ -12,7 +12,7 @@ import { fixtureRequests, scanWithRequests } from "./helpers.js";
 describe("Scanner", () => {
   it("returns an error on an unknown host", async function () {
     const domain =
-      Array(223)
+      Array.from({ length: 223 })
         .fill(0)
         .map(() => String.fromCharCode(Math.random() * 26 + 97))
         .join("") + ".net";

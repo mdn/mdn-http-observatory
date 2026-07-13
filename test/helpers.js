@@ -114,13 +114,13 @@ export function emptyRequests(httpEquivFile = null) {
 }
 
 /**
- * @typedef {Object} SerializedRedirectEntry
+ * @typedef {object} SerializedRedirectEntry
  * @property {string} url
  * @property {number} status
  */
 
 /**
- * @typedef {Object} SerializedResponse
+ * @typedef {object} SerializedResponse
  * @property {Record<string, string>} headers
  * @property {number} status
  * @property {string} statusText

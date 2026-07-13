@@ -21,15 +21,15 @@ const dirname = path.dirname(fileURLToPath(import.meta.url));
 
 /**
  *
- * @typedef {Object} RawData
+ * @typedef {object} RawData
  * @property {RawEntry[]} entries
- * @typedef {Object} RawEntry
+ * @typedef {object} RawEntry
  * @property {string} name
  * @property {string} policy
  * @property {string} mode
  * @property {string} [include_subdomains]
  * @property {string} [include_subdomains_for_pinning]
- * @typedef {Object} HstsEntry
+ * @typedef {object} HstsEntry
  * @property {boolean} includeSubDomains
  * @property {boolean} includeSubDomainsForPinning
  * @property {string} mode

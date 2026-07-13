@@ -42,7 +42,7 @@ export function isIp(hostname) {
 }
 
 /**
- * @typedef {Object} ValidHostnameResult
+ * @typedef {object} ValidHostnameResult
  * @property {string} [hostname]
  * @property {boolean} [isIpAddress]
  */

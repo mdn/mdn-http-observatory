@@ -2,19 +2,19 @@ import { Session } from "./retriever/session.js";
 import { Site } from "./site.js";
 
 /**
- * @typedef {Object} HttpEquiv
+ * @typedef {object} HttpEquiv
  * @property {Map<string, string[]>} [httpEquiv]
- * @typedef {Object} Verified
+ * @typedef {object} Verified
  * @property {boolean} verified
  * @typedef {import("axios").AxiosResponse & Verified} HttpResponse
  * @typedef {HttpResponse & Partial<HttpEquiv>} Response
- * @typedef {Object} Hst
+ * @typedef {object} Hst
  * @property {boolean} includeSubDomains
  * @property {boolean} includeSubDomainsForPinning
  * @property {string} mode
  * @property {boolean} pinned
  * @typedef {Map<string, Hst>} Hsts
- * @typedef {Object} RedirectEntry
+ * @typedef {object} RedirectEntry
  * @property {URL} url
  * @property {number} status
  */
@@ -226,7 +226,7 @@ export const Expectation = {
 };
 
 /**
- * @typedef {Object} ScanOptions
+ * @typedef {object} ScanOptions
  * @property {string[]} [customHeaders]
  * @property {boolean} [sendHeadersOverHttp]
  * @property {string[]} [cookies]
@@ -290,7 +290,7 @@ export class Policy {
  */
 
 /**
- * @typedef {Object} AnalyzeResult
+ * @typedef {object} AnalyzeResult
  * @property {number} algorithmVersion
  * @property {string | null} error
  * @property {string} grade
@@ -303,13 +303,13 @@ export class Policy {
  */
 
 /**
- * @typedef {Object} ScanResult
+ * @typedef {object} ScanResult
  * @property {AnalyzeResult} scan
  * @property {TestMap} tests
  */
 
 /**
- * @typedef {Object} ScanHistoryRow
+ * @typedef {object} ScanHistoryRow
  * @property {number} id
  * @property {string} grade
  * @property {number} score
@@ -318,25 +318,25 @@ export class Policy {
  */
 
 /**
- * @typedef {Object} ScannerStatisticsResult
+ * @typedef {object} ScannerStatisticsResult
  * @property {NumberMap} grade_distribution
  * @property {NumberMap} grade_distribution_all_scans
  * @property {NumberMap} scan_score_difference_distribution_summation
- * @property {String} most_recent_scan_datetime
+ * @property {string} most_recent_scan_datetime
  * @property {number} scan_count
  * @property {NumberMap} recent_scans
  * @property {NumberMap} states
  */
 
 /**
- * @typedef {Object} SiteHeadersResult
+ * @typedef {object} SiteHeadersResult
  * @property {StringMap} public_headers
  * @property {StringMap} private_headers
  * @property {StringMap} cookies
  */
 
 /**
- * @typedef {Object} TestResult
+ * @typedef {object} TestResult
  * @property {number} id
  * @property {number} site_id
  * @property {number} scan_id

@@ -67,7 +67,7 @@ export const ScanState = {
  * @property {number | null} grade
  * @property {number | null} score
  * @property {string | null} error
- * @property {Object | null} response_headers
+ * @property {object | null} response_headers
  * @property {number | null} status_code
  */
 
@@ -191,7 +191,7 @@ export async function ensureSite(pool, siteKey) {
 }
 
 /**
- * @typedef {Object} HeadersCookiesResult
+ * @typedef {object} HeadersCookiesResult
  * @property {import("../types.js").StringMap} [cookies]
  * @property {import("../types.js").StringMap} [headers]
  */

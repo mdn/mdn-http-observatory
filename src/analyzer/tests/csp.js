@@ -209,10 +209,8 @@ export function contentSecurityPolicyTest(
       }
     }
     output.policy.strictDynamic = true;
-  } else if (script_src.has("'strict-dynamic'")) {
-    if (output.result === null) {
-      output.result = Expectation.CspHeaderInvalid;
-    }
+  } else if (script_src.has("'strict-dynamic'") && output.result === null) {
+    output.result = Expectation.CspHeaderInvalid;
   }
 
   // Some checks look only at active/passive CSP directives

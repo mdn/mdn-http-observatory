@@ -115,7 +115,7 @@ describe("TestRetriever", () => {
     assert.equal(requests.responses.httpRedirects.length, 3);
     assert.equal(
       "text/html",
-      requests.responses.auto.headers["content-type"].substring(0, 9)
+      requests.responses.auto.headers["content-type"].slice(0, 9)
     );
     assert.equal(200, requests.responses.auto.status);
     assert.equal(

@@ -5,6 +5,19 @@ pre-commit:
       run: npx prettier --write --cache --ignore-unknown {staged_files}
       stage_fixed: true
 
+    - name: eslint
+      run: npx eslint --fix --cache {staged_files}
+      glob:
+        - "*.js"
+        - "*.mjs"
+        - "*.cjs"
+      stage_fixed: true
+
+    - name: eslint (global)
+      run: npx eslint --fix --cache .
+      glob: eslint.config.js
+      stage_fixed: true
+
 pre-push:
   piped: true
   jobs:
@@ -14,6 +27,8 @@ pre-push:
       group:
         parallel: true
         jobs:
+          - name: eslint
+            run: npx eslint --cache
           - name: prettier
             run: npx prettier --check .
           - name: tsc

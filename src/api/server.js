@@ -64,7 +64,7 @@ if (CONFIG.sentry.dsn) {
         return null;
       }
       // Filter out errors from query schema validation
-      // @ts-ignore
+      // @ts-expect-error
       const errorMessage = originalError?.code || "";
       if (FILTERED_ERROR_CODES.has(errorMessage)) {
         return null;
@@ -88,7 +88,7 @@ export async function createServer() {
     Sentry.setupFastifyErrorHandler(server);
   }
 
-  // @ts-ignore
+  // @ts-expect-error
   server.register(simpleFormPlugin);
   await server.register(cors, {
     origin: "*",

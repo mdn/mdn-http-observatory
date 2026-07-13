@@ -5,7 +5,6 @@ import { CONFIG } from "../config.js";
 import { ALGORITHM_VERSION } from "../constants.js";
 
 // Use native bindings instead of standard bindings
-// @ts-ignore - pg.native is optional and may not be in types
 const { Pool } = pg.native || pg; // Fallback to standard pg if native not available
 
 /**

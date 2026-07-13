@@ -145,7 +145,6 @@ export function contentSecurityPolicyTest(
     // Content-Security-Policy-Report-Only is only allowed in headers, not in meta tags
     // see https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Content-Security-Policy-Report-Only
     const httpCspReportOnly =
-      // @ts-ignore
       response.headers.get(CONTENT_SECURITY_POLICY_REPORT_ONLY) ?? null;
     if (httpCspReportOnly) {
       output.result = Expectation.CspNotImplementedButReportingEnabled;

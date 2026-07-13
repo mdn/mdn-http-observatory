@@ -230,7 +230,6 @@ describe(
             scoreModifier: 0,
             name: "cookies",
             title: "Cookies",
-            // @ts-ignore
             data: null,
             sameSite: false,
           },
@@ -243,7 +242,6 @@ describe(
             scoreModifier: 0,
             name: "cross-origin-resource-sharing",
             title: "CORS",
-            // @ts-ignore
             data: null,
           },
           redirection: {
@@ -255,7 +253,6 @@ describe(
             scoreModifier: 0,
             name: "redirection",
             title: "Redirection",
-            // @ts-ignore
             destination: null,
             redirects: true,
             route: ["http://www.mozilla.org/", "https://www.mozilla.org/"],

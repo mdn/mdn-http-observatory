@@ -116,21 +116,26 @@ export default defineConfig([
     },
   },
   {
-    // Ratcheting baseline: these rules currently report violations and are
-    // temporarily disabled so the tree lints clean. They are being re-enabled
-    // and fixed one at a time, each in its own commit.
+    // Intentionally disabled: these rules are stylistic/opinionated or would
+    // require behavior-affecting refactors, so they are left off pending a
+    // decision rather than auto-fixed. Counts are violations at time of
+    // writing. Re-enable individually if the team wants to adopt them.
     rules: {
-      "n/no-process-exit": "off",
-      "unicorn/filename-case": "off",
-      "unicorn/no-anonymous-default-export": "off",
-      "unicorn/no-array-for-each": "off",
-      "unicorn/no-array-reduce": "off",
-      "unicorn/no-negated-condition": "off",
-      "unicorn/no-process-exit": "off",
-      "unicorn/no-this-assignment": "off",
-      "unicorn/prefer-module": "off",
-      "unicorn/prefer-ternary": "off",
-      "unicorn/prefer-top-level-await": "off",
+      // Legitimate in a CLI/server entry point that exits with a status code.
+      "n/no-process-exit": "off", // 5
+      "unicorn/no-process-exit": "off", // 4
+      // Stylistic control-flow preferences.
+      "unicorn/prefer-ternary": "off", // 9
+      "unicorn/no-negated-condition": "off", // 6
+      "unicorn/no-array-for-each": "off", // 4
+      "unicorn/no-array-reduce": "off", // 5
+      // Structural / API-shape changes.
+      "unicorn/no-anonymous-default-export": "off", // 5
+      "unicorn/prefer-top-level-await": "off", // 2
+      "unicorn/prefer-module": "off", // 1
+      "unicorn/no-this-assignment": "off", // 1
+      // File rename with import churn.
+      "unicorn/filename-case": "off", // 1
     },
   },
   prettierConfig,

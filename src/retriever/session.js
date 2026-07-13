@@ -264,7 +264,7 @@ export class Session {
         timeout: CLIENT_TIMEOUT,
       });
       return res;
-    } catch (error) {
+    } catch {
       return null;
     }
   }
@@ -285,7 +285,7 @@ export class Session {
         timeout: CLIENT_TIMEOUT,
       });
       return res;
-    } catch (error) {
+    } catch {
       return null;
     }
   }

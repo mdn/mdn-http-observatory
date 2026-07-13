@@ -123,7 +123,6 @@ export default defineConfig([
       "n/no-process-exit": "off",
       "preserve-caught-error": "off",
       "unicorn/filename-case": "off",
-      "unicorn/import-style": "off",
       "unicorn/no-anonymous-default-export": "off",
       "unicorn/no-array-for-each": "off",
       "unicorn/no-array-reduce": "off",

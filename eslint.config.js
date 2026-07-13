@@ -32,7 +32,11 @@ export default defineConfig([
     languageOptions: {
       parser: tseslint.parser,
       parserOptions: {
-        projectService: true,
+        projectService: {
+          // `.github` is a dot-directory, so TypeScript excludes it from the
+          // project; allow its scripts to use the default inferred project.
+          allowDefaultProject: [".github/scripts/*.js"],
+        },
         tsconfigRootDir: __dirname,
       },
     },

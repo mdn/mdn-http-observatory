@@ -39,7 +39,7 @@ export async function retrieveAndStoreTldList() {
  */
 function cleanData(data) {
   const ret = data
-    .replace(/#.*$/gm, "")
+    .replaceAll(/#.*$/gm, "")
     .split("\n")
     .filter((line) => !line.startsWith("#"))
     .filter((line) => line.trim() !== "")

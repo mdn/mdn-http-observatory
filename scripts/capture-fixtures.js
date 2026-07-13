@@ -82,7 +82,7 @@ async function captureFixture(domain) {
   };
 
   // Write to fixture file
-  const fixtureName = domain.replace(/\./g, "-");
+  const fixtureName = domain.replaceAll(".", "-");
   const fixturePath = path.join("test", "fixtures", `${fixtureName}.json`);
 
   console.log(`  Writing to ${fixturePath}...`);

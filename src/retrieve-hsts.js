@@ -82,7 +82,7 @@ export async function retrieveAndStoreHsts() {
  * @returns {string}
  */
 function removeJsonComments(jsonString) {
-  return jsonString.replace(/\/\/.*$/gm, "");
+  return jsonString.replaceAll(/\/\/.*$/gm, "");
 }
 
 // Execute when run directly

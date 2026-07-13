@@ -149,7 +149,6 @@ export default defineConfig([
       "unicorn/prefer-module": "off",
       "unicorn/prefer-number-properties": "off",
       "unicorn/prefer-spread": "off",
-      "unicorn/prefer-string-replace-all": "off",
       "unicorn/prefer-string-slice": "off",
       "unicorn/prefer-switch": "off",
       "unicorn/prefer-ternary": "off",

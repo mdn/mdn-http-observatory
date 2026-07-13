@@ -121,7 +121,6 @@ export default defineConfig([
     // and fixed one at a time, each in its own commit.
     rules: {
       "@typescript-eslint/ban-ts-comment": "off",
-      "@typescript-eslint/no-floating-promises": "off",
       "@typescript-eslint/no-misused-promises": "off",
       "jsdoc/valid-types": "off",
       "n/no-process-exit": "off",

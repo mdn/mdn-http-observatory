@@ -233,10 +233,10 @@ export function contentSecurityPolicyTest(
   // Also don't allow overly broad schemes such as https: in either object-src or script-src
   // Likewise, if you don't have object-src or script-src defined, then all sources are allowed
   if (
-    [...script_src].filter((src) =>
+    [...script_src].some((src) =>
       DANGEROUSLY_BROAD_AND_UNSAFE_INLINE.has(src)
-    ).length > 0 ||
-    [...object_src].filter((src) => DANGEROUSLY_BROAD.has(src)).length > 0
+    ) ||
+    [...object_src].some((src) => DANGEROUSLY_BROAD.has(src))
   ) {
     if (output.result === null) {
       output.result = Expectation.CspImplementedWithUnsafeInline;

@@ -1,7 +1,7 @@
 import { CROSS_ORIGIN_OPENER_POLICY } from "../../headers.js";
 import { BaseOutput, Requests } from "../../types.js";
 import { Expectation } from "../../types.js";
-import { getHttpHeaders } from "../utils.js";
+import { getHttpHeaders, parseStructuredFieldToken } from "../utils.js";
 
 export class CrossOriginOpenerPolicyOutput extends BaseOutput {
   /** @type {string | null} */
@@ -50,16 +50,18 @@ export function crossOriginOpenerPolicyTest(
   if (httpHeaders.length > 1) {
     output.result = Expectation.CoopHeaderInvalid;
   } else if (httpHeader) {
-    const headerValue = httpHeader.slice(0, 256).trim().toLowerCase();
+    const headerValue = httpHeader.slice(0, 1024).trim();
     output.data = headerValue;
 
-    if (headerValue === "same-origin") {
+    const policy = parseStructuredFieldToken(headerValue);
+
+    if (policy === "same-origin") {
       output.result = Expectation.CoopImplementedWithSameOrigin;
-    } else if (headerValue === "same-origin-allow-popups") {
+    } else if (policy === "same-origin-allow-popups") {
       output.result = Expectation.CoopImplementedWithSameOriginAllowPopups;
-    } else if (headerValue === "noopener-allow-popups") {
+    } else if (policy === "noopener-allow-popups") {
       output.result = Expectation.CoopImplementedWithNoopenerAllowPopups;
-    } else if (headerValue === "unsafe-none") {
+    } else if (policy === "unsafe-none") {
       output.result = Expectation.CoopImplementedWithUnsafeNone;
     } else {
       output.result = Expectation.CoopHeaderInvalid;

@@ -65,6 +65,53 @@ describe("Cross Origin Opener Policy", () => {
     assert.isTrue(result.pass);
   });
 
+  it("checks for same-origin with report-to directive", function () {
+    assert.isNotNull(reqs.responses.auto);
+    reqs.responses.auto.headers["cross-origin-opener-policy"] =
+      'same-origin; report-to="coop-endpoint"';
+    const result = crossOriginOpenerPolicyTest(reqs);
+    assert.equal(result.result, Expectation.CoopImplementedWithSameOrigin);
+    assert.isTrue(result.pass);
+  });
+
+  it("checks for same-origin-allow-popups with report-to directive", function () {
+    assert.isNotNull(reqs.responses.auto);
+    reqs.responses.auto.headers["cross-origin-opener-policy"] =
+      'same-origin-allow-popups; report-to="coop-endpoint"';
+    const result = crossOriginOpenerPolicyTest(reqs);
+    assert.equal(
+      result.result,
+      Expectation.CoopImplementedWithSameOriginAllowPopups
+    );
+    assert.isTrue(result.pass);
+  });
+
+  it("checks for same-origin with a value-less report-to parameter", function () {
+    assert.isNotNull(reqs.responses.auto);
+    reqs.responses.auto.headers["cross-origin-opener-policy"] =
+      "same-origin; report-to";
+    const result = crossOriginOpenerPolicyTest(reqs);
+    assert.equal(result.result, Expectation.CoopImplementedWithSameOrigin);
+    assert.isTrue(result.pass);
+  });
+
+  it("checks for a malformed structured field", function () {
+    assert.isNotNull(reqs.responses.auto);
+    reqs.responses.auto.headers["cross-origin-opener-policy"] =
+      "same-origin; report-to=coop endpoint";
+    const result = crossOriginOpenerPolicyTest(reqs);
+    assert.equal(result.result, Expectation.CoopHeaderInvalid);
+    assert.isFalse(result.pass);
+  });
+
+  it("checks that a quoted string is not a valid token", function () {
+    assert.isNotNull(reqs.responses.auto);
+    reqs.responses.auto.headers["cross-origin-opener-policy"] = '"same-origin"';
+    const result = crossOriginOpenerPolicyTest(reqs);
+    assert.equal(result.result, Expectation.CoopHeaderInvalid);
+    assert.isFalse(result.pass);
+  });
+
   it("checks for multiple headers", function () {
     assert.isNotNull(reqs.responses.auto);
     reqs.responses.auto.headers["cross-origin-opener-policy"] = [

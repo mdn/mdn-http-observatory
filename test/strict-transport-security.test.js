@@ -85,7 +85,7 @@ describe("Strict Transport Security", () => {
       result.result,
       Expectation.HstsImplementedMaxAgeAtLeastSixMonths
     );
-    assert.equal(result.maxAge, 15768000);
+    assert.equal(result.maxAge, 15_768_000);
     assert.isTrue(result.includeSubDomains);
     assert.isTrue(result.preload);
     assert.isTrue(result.pass);

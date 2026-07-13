@@ -61,7 +61,7 @@ describe("buildRequestHeaders", () => {
 
 describe("TestRetriever", () => {
   if (CONFIG.tests.hostForPortAndPathChecks !== "") {
-    it("detects tls on a custom port", { timeout: 10000 }, async () => {
+    it("detects tls on a custom port", { timeout: 10_000 }, async () => {
       let site = Site.fromSiteString(
         `${CONFIG.tests.hostForPortAndPathChecks}:8443`
       );
@@ -90,7 +90,7 @@ describe("TestRetriever", () => {
 
   it(
     "correctly uses port and path on retrieving",
-    { timeout: 10000 },
+    { timeout: 10_000 },
     async () => {
       let site = Site.fromSiteString("generalmagic.space:8443/test");
       const requests = await retrieve(site);
@@ -100,7 +100,7 @@ describe("TestRetriever", () => {
     }
   );
 
-  it("test retrieve mdn", { timeout: 10000 }, async () => {
+  it("test retrieve mdn", { timeout: 10_000 }, async () => {
     const site = Site.fromSiteString("developer.mozilla.org/en-US");
     const requests = await retrieve(site);
     // console.log("REQUESTS", requests);
@@ -128,7 +128,7 @@ describe("TestRetriever", () => {
 
   it(
     "test retrieve non-existent domain",
-    { timeout: 10000 },
+    { timeout: 10_000 },
     async function () {
       const domain =
         Array(223)
@@ -149,7 +149,7 @@ describe("TestRetriever", () => {
   );
 
   // test site seems to have outage from time to time, disable for now
-  it("test_retrieve_invalid_cert", { timeout: 10000 }, async function () {
+  it("test_retrieve_invalid_cert", { timeout: 10_000 }, async function () {
     const site = Site.fromSiteString("expired.badssl.com");
     const reqs = await retrieve(site);
     assert.isNotNull(reqs.responses.auto);

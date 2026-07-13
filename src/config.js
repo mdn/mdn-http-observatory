@@ -18,7 +18,7 @@ const SCHEMA = {
     abortTimeout: {
       doc: "The overall timeout for a request, in ms",
       format: "Number",
-      default: 10000,
+      default: 10_000,
       env: "ABORT_TIMEOUT",
     },
     clientTimeout: {
@@ -77,7 +77,7 @@ const SCHEMA = {
     cacheTimeForGet: {
       doc: "Maximum scan age a GET request returns before initiating a new scan, in seconds. Defaults to 24 hours.",
       format: "nat",
-      default: 86400,
+      default: 86_400,
       env: "HTTPOBS_API_GET_CACHE",
     },
     port: {

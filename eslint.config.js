@@ -145,7 +145,6 @@ export default defineConfig([
       "unicorn/no-negated-condition": "off",
       "unicorn/no-process-exit": "off",
       "unicorn/no-this-assignment": "off",
-      "unicorn/numeric-separators-style": "off",
       "unicorn/prefer-array-flat-map": "off",
       "unicorn/prefer-array-some": "off",
       "unicorn/prefer-at": "off",

@@ -285,7 +285,7 @@ describe(
             title: "HSTS",
             data: "max-age=31536000",
             includeSubDomains: false,
-            maxAge: 31536000,
+            maxAge: 31_536_000,
             preloaded: false,
           },
           "subresource-integrity": {
@@ -401,8 +401,8 @@ describe(
             `INSERT INTO scans (site_id, state, start_time, end_time, grade, score, tests_quantity, algorithm_version)
           VALUES ($1,
             $2,
-            NOW() - INTERVAL '${(i + 1) * 20000}',
-            NOW() - INTERVAL '${(i + 1) * 20000}',
+            NOW() - INTERVAL '${(i + 1) * 20_000}',
+            NOW() - INTERVAL '${(i + 1) * 20_000}',
             'A',
             100,
             9,
@@ -425,8 +425,8 @@ describe(
             `INSERT INTO scans (site_id, state, start_time, end_time, grade, score, tests_quantity, algorithm_version)
           VALUES ($1,
             $2,
-            NOW() - INTERVAL '${(i + 1) * 20000}',
-            NOW() - INTERVAL '${(i + 1) * 20000}',
+            NOW() - INTERVAL '${(i + 1) * 20_000}',
+            NOW() - INTERVAL '${(i + 1) * 20_000}',
             'F',
             0,
             9,

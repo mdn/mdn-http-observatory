@@ -180,7 +180,7 @@ export function subresourceIntegrityTest(
   }
 
   // Code defensively on the size of the data
-  output.data = JSON.stringify(output.data).length < 32768 ? output.data : {};
+  output.data = JSON.stringify(output.data).length < 32_768 ? output.data : {};
   // Check to see if the test passed or failed
   if (
     [

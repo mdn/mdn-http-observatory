@@ -185,7 +185,7 @@ export function cookiesTest(
     }
 
     const cookieSize = allCookies.join("").length;
-    if (cookieSize < 32768) {
+    if (cookieSize < 32_768) {
       /** @type {cookieData} */
       let cookieData = {};
       cookieData = allCookies.reduce((acc, cookie) => {

@@ -95,7 +95,7 @@ export async function createServer() {
   await server.register(cors, {
     origin: "*",
     methods: ["GET", "OPTIONS", "HEAD", "POST"],
-    maxAge: 86400,
+    maxAge: 86_400,
   });
   await server.register(helmet, {
     contentSecurityPolicy: {
@@ -109,7 +109,7 @@ export async function createServer() {
     },
 
     hsts: {
-      maxAge: 63072000,
+      maxAge: 63_072_000,
       includeSubDomains: false,
     },
     frameguard: {

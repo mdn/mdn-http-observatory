@@ -23,9 +23,9 @@ export const poolOptions = {
   port: CONFIG.database.port,
   ssl: CONFIG.database.sslmode,
   max: 20, // pg max_connections (100) / k8s maxReplicas (5) = 20
-  idleTimeoutMillis: 60000, // close idle clients after 60 seconds
+  idleTimeoutMillis: 60_000, // close idle clients after 60 seconds
   connectionTimeoutMillis: 2000, // return an error after 2 seconds if connection could not be established
-  maxUses: 10000, // close (and replace) a connection after it has been used 10000 times
+  maxUses: 10_000, // close (and replace) a connection after it has been used 10000 times
   native: true,
 };
 

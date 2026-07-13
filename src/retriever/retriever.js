@@ -78,12 +78,8 @@ export async function retrieve(site, options = {}) {
   });
 
   // Do a CORS preflight request
-  const corsUrl = retrievals.session.redirectHistory[
-    retrievals.session.redirectHistory.length - 1
-  ]
-    ? retrievals.session.redirectHistory[
-        retrievals.session.redirectHistory.length - 1
-      ]?.url.href
+  const corsUrl = retrievals.session.redirectHistory.at(-1)
+    ? retrievals.session.redirectHistory.at(-1)?.url.href
     : retrievals.session.url.href;
   const cors_resp =
     (await retrievals.session?.options({

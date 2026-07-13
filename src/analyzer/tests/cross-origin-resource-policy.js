@@ -64,7 +64,7 @@ export function crossOriginResourcePolicyTest(
       Array.isArray(equivHeaders) &&
       equivHeaders.length > 0
     ) {
-      const h = equivHeaders[equivHeaders.length - 1];
+      const h = equivHeaders.at(-1);
       if (h) {
         corpHeader = h.slice(0, 256).trim().toLowerCase();
       }

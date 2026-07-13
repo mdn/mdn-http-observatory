@@ -146,7 +146,6 @@ export default defineConfig([
       "unicorn/no-this-assignment": "off",
       "unicorn/prefer-array-flat-map": "off",
       "unicorn/prefer-array-some": "off",
-      "unicorn/prefer-at": "off",
       "unicorn/prefer-code-point": "off",
       "unicorn/prefer-includes": "off",
       "unicorn/prefer-module": "off",

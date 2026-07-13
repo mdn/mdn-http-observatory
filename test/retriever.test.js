@@ -120,9 +120,7 @@ describe("TestRetriever", () => {
     assert.equal(200, requests.responses.auto.status);
     assert.equal(
       "https://developer.mozilla.org/en-US/",
-      requests.responses.httpRedirects[
-        requests.responses.httpRedirects.length - 1
-      ]?.url.href
+      requests.responses.httpRedirects.at(-1)?.url.href
     );
   });
 

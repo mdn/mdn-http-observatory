@@ -124,8 +124,7 @@ export class Session {
           response.status &&
           REDIRECT_STATUS_CODES.includes(response.status)
         ) {
-          const url =
-            that.redirectHistory[that.redirectHistory.length - 1]?.url;
+          const url = that.redirectHistory.at(-1)?.url;
           const redirectUrl = response.headers.location;
           const newUrl = new URL(redirectUrl, url);
           that.redirectCount++;

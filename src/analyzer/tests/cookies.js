@@ -97,7 +97,7 @@ export function cookiesTest(
   const allCookies =
     requests.session?.jar?.serializeSync()?.cookies.filter(filterCookies) ?? [];
 
-  if (!allCookies.length) {
+  if (allCookies.length === 0) {
     output.result = Expectation.CookiesNotFound;
     output.data = null;
   } else {

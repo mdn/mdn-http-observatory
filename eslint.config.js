@@ -131,7 +131,6 @@ export default defineConfig([
       "no-useless-assignment": "off",
       "no-useless-escape": "off",
       "preserve-caught-error": "off",
-      "unicorn/explicit-length-check": "off",
       "unicorn/filename-case": "off",
       "unicorn/import-style": "off",
       "unicorn/no-anonymous-default-export": "off",

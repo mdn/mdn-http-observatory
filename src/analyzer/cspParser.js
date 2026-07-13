@@ -83,7 +83,7 @@ export function parseCsp(cspList) {
 
       const values = [];
       const keep = policyIndex === 0;
-      if (valueEntries.length) {
+      if (valueEntries.length > 0) {
         values.push(
           ...valueEntries.map((rawSource) => {
             const source = rawSource.trim().toLocaleLowerCase();
@@ -159,12 +159,12 @@ export function parseCsp(cspList) {
   const finalCsp = new Map(
     [...csp.entries()].map(([directive, sources]) => [
       directive,
-      sources.length
+      sources.length > 0
         ? new Set([...sources.values()].map((source) => source.source))
         : new Set(["'none'"]),
     ])
   );
-  if (duplicate_warnings.size) {
+  if (duplicate_warnings.size > 0) {
     finalCsp.set(DUPLICATE_WARNINGS_KEY, duplicate_warnings);
   }
   return finalCsp;

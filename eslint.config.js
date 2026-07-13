@@ -121,7 +121,6 @@ export default defineConfig([
     // and fixed one at a time, each in its own commit.
     rules: {
       "n/no-process-exit": "off",
-      "no-useless-assignment": "off",
       "preserve-caught-error": "off",
       "unicorn/filename-case": "off",
       "unicorn/import-style": "off",

@@ -85,7 +85,7 @@ export function subresourceIntegrityTest(
 
         let relativeOrigin = false;
         let relativeProtocol = false;
-        let sameSecondLevelDomain = false;
+        let sameSecondLevelDomain;
 
         const relativeProtocolRegex = /^(\/\/)[^/]/;
         const fullUrlRegex = /^https?:\/\//;
@@ -105,7 +105,7 @@ export function subresourceIntegrityTest(
         }
 
         // Check to see if it is the same origin or second level domain
-        let secureOrigin = false;
+        let secureOrigin;
         if (relativeOrigin || (sameSecondLevelDomain && !relativeProtocol)) {
           secureOrigin = true;
         } else {

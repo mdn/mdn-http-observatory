@@ -1,5 +1,5 @@
-import { Session } from "./retriever/session.js";
-import { Site } from "./site.js";
+/** @import { Session } from "./retriever/session.js" */
+/** @import { Site } from "./site.js" */
 
 /**
  * @typedef {object} HttpEquiv

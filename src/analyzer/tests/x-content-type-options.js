@@ -1,5 +1,6 @@
 import { X_CONTENT_TYPE_OPTIONS } from "../../headers.js";
-import { BaseOutput, Requests } from "../../types.js";
+import { BaseOutput } from "../../types.js";
+/** @import { Requests } from "../../types.js" */
 import { Expectation } from "../../types.js";
 import { getFirstHttpHeader } from "../utils.js";
 

@@ -2,7 +2,7 @@ import fs from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 
-import { Site } from "../site.js";
+/** @import { Site } from "../site.js" */
 
 const dirname = path.dirname(fileURLToPath(import.meta.url));
 

@@ -3,7 +3,8 @@ import {
   ACCESS_CONTROL_ALLOW_ORIGIN,
   ORIGIN,
 } from "../../headers.js";
-import { BaseOutput, Requests } from "../../types.js";
+import { BaseOutput } from "../../types.js";
+/** @import { Requests } from "../../types.js" */
 import { Expectation } from "../../types.js";
 import { getFirstHttpHeader } from "../utils.js";
 

@@ -123,7 +123,6 @@ export default defineConfig([
       "@typescript-eslint/ban-ts-comment": "off",
       "@typescript-eslint/no-floating-promises": "off",
       "@typescript-eslint/no-misused-promises": "off",
-      "@typescript-eslint/no-unused-vars": "off",
       "@typescript-eslint/no-useless-constructor": "off",
       "jsdoc/valid-types": "off",
       "n/no-process-exit": "off",

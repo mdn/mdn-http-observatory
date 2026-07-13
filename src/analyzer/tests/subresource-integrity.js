@@ -1,7 +1,8 @@
 import { parse } from "tldts";
 
 import { CONTENT_TYPE } from "../../headers.js";
-import { BaseOutput, HTML_TYPES, Requests } from "../../types.js";
+import { BaseOutput, HTML_TYPES } from "../../types.js";
+/** @import { Requests } from "../../types.js" */
 import { Expectation } from "../../types.js";
 import { collectElements, getAttribute } from "../../utils/html-parser.js";
 import { getFirstHttpHeader, onlyIfWorse } from "../utils.js";

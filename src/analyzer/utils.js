@@ -1,4 +1,4 @@
-import { Expectation } from "../types.js";
+/** @import { Expectation } from "../types.js" */
 
 /**
  * Return the new result if it's worse than the existing result, otherwise just the current result.

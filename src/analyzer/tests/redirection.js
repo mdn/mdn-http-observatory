@@ -1,5 +1,6 @@
 import { Site } from "../../site.js";
-import { BaseOutput, Requests } from "../../types.js";
+import { BaseOutput } from "../../types.js";
+/** @import { Requests } from "../../types.js" */
 import { Expectation } from "../../types.js";
 import { isHstsPreloaded } from "../hsts.js";
 

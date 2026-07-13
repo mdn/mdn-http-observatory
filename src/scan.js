@@ -49,7 +49,7 @@ program
       const result = await scan(site, scanOptions);
       const tests = Object.fromEntries(
         Object.entries(result.tests).map(([key, test]) => {
-          const { scoreDescription, ...rest } = test;
+          const { scoreDescription: _scoreDescription, ...rest } = test;
           return [key, rest];
         })
       );

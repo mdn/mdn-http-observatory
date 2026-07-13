@@ -2,7 +2,7 @@ import axios from "axios";
 
 import { SiteIsDownError } from "../api/errors.js";
 import { CONFIG } from "../config.js";
-import { Site } from "../site.js";
+/** @import { Site } from "../site.js" */
 
 /**
  * Detects if a port supports TLS by making simple test requests

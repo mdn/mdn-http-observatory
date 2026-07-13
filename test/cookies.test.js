@@ -5,7 +5,7 @@ import { assert } from "chai";
 import { Cookie } from "tough-cookie";
 
 import { cookiesTest } from "../src/analyzer/tests/cookies.js";
-import { Requests } from "../src/types.js";
+/** @import { Requests } from "../src/types.js" */
 import { Expectation } from "../src/types.js";
 
 import { emptyRequests } from "./helpers.js";

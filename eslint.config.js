@@ -144,7 +144,6 @@ export default defineConfig([
       "unicorn/prefer-code-point": "off",
       "unicorn/prefer-includes": "off",
       "unicorn/prefer-module": "off",
-      "unicorn/prefer-number-properties": "off",
       "unicorn/prefer-string-slice": "off",
       "unicorn/prefer-switch": "off",
       "unicorn/prefer-ternary": "off",

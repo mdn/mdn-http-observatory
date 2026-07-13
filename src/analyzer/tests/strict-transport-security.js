@@ -67,7 +67,7 @@ export function strictTransportSecurityTest(
         if (parameter.startsWith("max-age=")) {
           // Use slice to get the part of the string after 'max-age='
           // Parse it to an integer. We're slicing up to 128 characters as a defense mechanism.
-          output.maxAge = parseInt(parameter.slice(8, 128), 10);
+          output.maxAge = Number.parseInt(parameter.slice(8, 128), 10);
         } else if (parameter === "includesubdomains") {
           output.includeSubDomains = true;
         } else if (parameter === "preload") {

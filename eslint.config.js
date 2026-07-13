@@ -150,7 +150,6 @@ export default defineConfig([
       "unicorn/prefer-code-point": "off",
       "unicorn/prefer-includes": "off",
       "unicorn/prefer-module": "off",
-      "unicorn/prefer-node-protocol": "off",
       "unicorn/prefer-number-properties": "off",
       "unicorn/prefer-optional-catch-binding": "off",
       "unicorn/prefer-set-has": "off",

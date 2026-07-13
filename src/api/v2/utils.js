@@ -1,5 +1,5 @@
-import fs from "fs";
 import dns from "node:dns";
+import fs from "node:fs";
 import net from "node:net";
 import path from "node:path";
 import { fileURLToPath } from "node:url";

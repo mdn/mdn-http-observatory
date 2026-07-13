@@ -1,4 +1,4 @@
-import { EventEmitter } from "events";
+import { EventEmitter } from "node:events";
 import fs from "node:fs";
 import { after, afterEach, before, beforeEach, describe, it } from "node:test";
 

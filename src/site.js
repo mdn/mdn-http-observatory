@@ -1,4 +1,4 @@
-import { domainToASCII } from "url";
+import { domainToASCII } from "node:url";
 
 import { InvalidSiteError } from "./api/errors.js";
 

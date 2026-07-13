@@ -141,7 +141,6 @@ export default defineConfig([
       "unicorn/no-this-assignment": "off",
       "unicorn/prefer-code-point": "off",
       "unicorn/prefer-module": "off",
-      "unicorn/prefer-switch": "off",
       "unicorn/prefer-ternary": "off",
       "unicorn/prefer-top-level-await": "off",
     },

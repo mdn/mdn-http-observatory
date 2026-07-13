@@ -72,17 +72,28 @@ export function crossOriginResourcePolicyTest(
 
   if (corpHeader) {
     output.data = corpHeader;
-    if (corpHeader === "same-site") {
-      output.result =
-        Expectation.CrossOriginResourcePolicyImplementedWithSameSite;
-    } else if (corpHeader === "same-origin") {
-      output.result =
-        Expectation.CrossOriginResourcePolicyImplementedWithSameOrigin;
-    } else if (corpHeader === "cross-origin") {
-      output.result =
-        Expectation.CrossOriginResourcePolicyImplementedWithCrossOrigin;
-    } else {
-      output.result = Expectation.CrossOriginResourcePolicyHeaderInvalid;
+    switch (corpHeader) {
+      case "same-site": {
+        output.result =
+          Expectation.CrossOriginResourcePolicyImplementedWithSameSite;
+
+        break;
+      }
+      case "same-origin": {
+        output.result =
+          Expectation.CrossOriginResourcePolicyImplementedWithSameOrigin;
+
+        break;
+      }
+      case "cross-origin": {
+        output.result =
+          Expectation.CrossOriginResourcePolicyImplementedWithCrossOrigin;
+
+        break;
+      }
+      default: {
+        output.result = Expectation.CrossOriginResourcePolicyHeaderInvalid;
+      }
     }
   }
 

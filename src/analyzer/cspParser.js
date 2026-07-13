@@ -195,8 +195,7 @@ function pathPartMatch(pathA, pathB) {
   if (!exactMatch) {
     pathListA.pop();
   }
-  for (let i = 0; i < pathListA.length; i++) {
-    const pathAElement = pathListA[i];
+  for (const [i, pathAElement] of pathListA.entries()) {
     const pathBElement = pathListB[i];
     if (pathAElement === undefined || pathBElement === undefined) {
       return false;

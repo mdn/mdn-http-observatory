@@ -128,7 +128,6 @@ export default defineConfig([
       "jsdoc/check-alignment": "off",
       "jsdoc/check-param-names": "off",
       "jsdoc/no-defaults": "off",
-      "jsdoc/no-multi-asterisks": "off",
       "jsdoc/require-param": "off",
       "jsdoc/valid-types": "off",
       "n/hashbang": "off",

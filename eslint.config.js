@@ -126,7 +126,6 @@ export default defineConfig([
       "@typescript-eslint/no-unused-vars": "off",
       "@typescript-eslint/no-useless-constructor": "off",
       "jsdoc/valid-types": "off",
-      "n/hashbang": "off",
       "n/no-process-exit": "off",
       "no-useless-assignment": "off",
       "no-useless-escape": "off",

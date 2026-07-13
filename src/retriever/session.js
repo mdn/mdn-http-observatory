@@ -192,7 +192,7 @@ export class Session {
           ic.error
         );
         if (!this.clientInstance) {
-          throw new Error("clientInstance is null");
+          throw new Error("clientInstance is null", { cause: error });
         }
         this.clientInstance = axios.create({
           ...this.clientInstance.defaults,

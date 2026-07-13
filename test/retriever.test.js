@@ -82,7 +82,7 @@ describe("TestRetriever", () => {
         if (error instanceof Error) {
           assert.equal(error.name, "site-down");
         } else {
-          throw new Error("Unexpected error type");
+          throw new Error("Unexpected error type", { cause: error });
         }
       }
     });

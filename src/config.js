@@ -125,7 +125,7 @@ export function load(configFile) {
     configuration.validate({ allowed: "strict" });
     return configuration.getProperties();
   } catch (error) {
-    throw new Error(`error reading config: ${error}`);
+    throw new Error(`error reading config: ${error}`, { cause: error });
   }
 }
 

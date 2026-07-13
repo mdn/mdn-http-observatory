@@ -24,7 +24,7 @@ describe("Scanner", () => {
       if (error instanceof Error) {
         assert.equal(error.message, "The site seems to be down.");
       } else {
-        throw new Error("Unexpected error type");
+        throw new Error("Unexpected error type", { cause: error });
       }
     }
   });

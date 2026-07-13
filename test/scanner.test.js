@@ -14,7 +14,7 @@ describe("Scanner", () => {
     const domain =
       Array.from({ length: 223 })
         .fill(0)
-        .map(() => String.fromCharCode(Math.random() * 26 + 97))
+        .map(() => String.fromCodePoint(Math.floor(Math.random() * 26) + 97))
         .join("") + ".net";
     const site = Site.fromSiteString(domain);
     try {

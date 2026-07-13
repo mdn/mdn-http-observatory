@@ -128,7 +128,6 @@ export default defineConfig([
       "unicorn/no-negated-condition": "off",
       "unicorn/no-process-exit": "off",
       "unicorn/no-this-assignment": "off",
-      "unicorn/prefer-code-point": "off",
       "unicorn/prefer-module": "off",
       "unicorn/prefer-ternary": "off",
       "unicorn/prefer-top-level-await": "off",

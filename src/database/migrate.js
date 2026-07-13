@@ -38,8 +38,8 @@ export async function migrateDatabase(version, pool) {
       execQuery: (query) => pool.query(query),
     });
     await postgrator.migrate(version);
-  } catch (e) {
-    console.error(e);
+  } catch (error) {
+    console.error(error);
   } finally {
     if (owned_pool) {
       await pool.end();

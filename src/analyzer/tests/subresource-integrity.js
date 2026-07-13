@@ -68,7 +68,7 @@ export function subresourceIntegrityTest(
     let scripts;
     try {
       scripts = collectElements(requests.resources.path || "", "script");
-    } catch (e) {
+    } catch (error) {
       // severe parser error
       output.result = Expectation.HtmlNotParseable;
       return output;

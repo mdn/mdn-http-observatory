@@ -162,12 +162,12 @@ export class Session {
           this.clientInstanceRecordingRedirects.defaults.httpsAgent.options
             .rejectUnauthorized,
       };
-    } catch (e) {
+    } catch (error) {
       // Check for a cert error and replace the httpsAgent with
       // a non-verifying one
       let code;
-      if (e && typeof e === "object" && "code" in e) {
-        code = String(e.code);
+      if (error && typeof error === "object" && "code" in error) {
+        code = String(error.code);
       } else {
         code = null;
       }
@@ -265,7 +265,7 @@ export class Session {
         timeout: CLIENT_TIMEOUT,
       });
       return res;
-    } catch (e) {
+    } catch (error) {
       return null;
     }
   }
@@ -286,7 +286,7 @@ export class Session {
         timeout: CLIENT_TIMEOUT,
       });
       return res;
-    } catch (e) {
+    } catch (error) {
       return null;
     }
   }

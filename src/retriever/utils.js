@@ -37,8 +37,8 @@ export function parseHttpEquivHeaders(html, _baseUrl) {
         }
       }
     }
-  } catch (e) {
-    console.error("Error parsing HTTP Equiv headers", e);
+  } catch (error) {
+    console.error("Error parsing HTTP Equiv headers", error);
   }
   return httpEquivHeaders;
 }

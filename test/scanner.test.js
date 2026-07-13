@@ -20,9 +20,9 @@ describe("Scanner", () => {
     try {
       await scan(site);
       throw new Error("scan should throw");
-    } catch (e) {
-      if (e instanceof Error) {
-        assert.equal(e.message, "The site seems to be down.");
+    } catch (error) {
+      if (error instanceof Error) {
+        assert.equal(error.message, "The site seems to be down.");
       } else {
         throw new Error("Unexpected error type");
       }

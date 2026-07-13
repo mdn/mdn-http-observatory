@@ -78,9 +78,9 @@ describe("TestRetriever", () => {
       try {
         await detectTlsSupport(site);
         throw new Error("scan should throw");
-      } catch (e) {
-        if (e instanceof Error) {
-          assert.equal(e.name, "site-down");
+      } catch (error) {
+        if (error instanceof Error) {
+          assert.equal(error.name, "site-down");
         } else {
           throw new Error("Unexpected error type");
         }

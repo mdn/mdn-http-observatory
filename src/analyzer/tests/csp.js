@@ -127,20 +127,20 @@ export function contentSecurityPolicyTest(
     csp = parseCsp(
       [...httpCspPolicies, ...equivCspPolicies].filter((x) => x !== null)
     );
-  } catch (e) {
+  } catch (error) {
     output.result = Expectation.CspHeaderInvalid;
     return output;
   }
 
   try {
     httpHeaderOnlyCsp = parseCsp(httpCspPolicies);
-  } catch (e) {
+  } catch (error) {
     httpHeaderOnlyCsp = new Map();
   }
 
   try {
     metaCsp = parseCspMeta(equivCspPolicies);
-  } catch (e) {
+  } catch (error) {
     metaCsp = new Map();
   }
 

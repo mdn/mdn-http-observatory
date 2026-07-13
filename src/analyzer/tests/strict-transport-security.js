@@ -83,7 +83,7 @@ export function strictTransportSecurityTest(
       } else {
         throw new Error("MaxAge missing");
       }
-    } catch (e) {
+    } catch (error) {
       output.result = Expectation.HstsHeaderInvalid;
     }
   }

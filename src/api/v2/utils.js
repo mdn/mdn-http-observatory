@@ -125,16 +125,16 @@ export async function checkSitename(site) {
   // Try prefixing with `www.` if it fails on first try
   try {
     site.hostname = await validHostname(site.hostname);
-  } catch (e) {
-    if (e instanceof InvalidHostNameLookupError) {
+  } catch (error) {
+    if (error instanceof InvalidHostNameLookupError) {
       try {
         site.hostname = await validHostname(`www.${site.hostname}`);
-      } catch (e2) {
+      } catch (error_) {
         // If the www. fallback also fails to resolve, report the original hostname
-        throw e2 instanceof InvalidHostNameLookupError ? e : e2;
+        throw error_ instanceof InvalidHostNameLookupError ? error : error_;
       }
     } else {
-      throw e;
+      throw error;
     }
   }
   return site;
@@ -255,10 +255,10 @@ export async function executeScan(pool, site) {
   let scanResult;
   try {
     scanResult = await scan(site);
-  } catch (e) {
-    if (e instanceof Error) {
-      await updateScanState(pool, scanId, ScanState.FAILED, e.message);
-      throw new ScanFailedError(e);
+  } catch (error) {
+    if (error instanceof Error) {
+      await updateScanState(pool, scanId, ScanState.FAILED, error.message);
+      throw new ScanFailedError(error);
     } else {
       const unknownError = new Error("Unknown error occurred");
       await updateScanState(

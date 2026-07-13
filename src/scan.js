@@ -60,9 +60,9 @@ program
         tests: tests,
       };
       console.log(JSON.stringify(ret, null, 2));
-    } catch (e) {
-      if (e instanceof Error) {
-        console.log(JSON.stringify({ error: e.message }));
+    } catch (error) {
+      if (error instanceof Error) {
+        console.log(JSON.stringify({ error: error.message }));
         process.exit(1);
       }
     }

@@ -127,7 +127,6 @@ export default defineConfig([
       "@typescript-eslint/no-useless-constructor": "off",
       "jsdoc/check-alignment": "off",
       "jsdoc/check-param-names": "off",
-      "jsdoc/check-tag-names": "off",
       "jsdoc/check-types": "off",
       "jsdoc/no-defaults": "off",
       "jsdoc/no-multi-asterisks": "off",

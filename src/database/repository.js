@@ -192,8 +192,8 @@ export async function ensureSite(pool, siteKey) {
 
 /**
  * @typedef {Object} HeadersCookiesResult
- * @prop {import("../types.js").StringMap} [cookies]
- * @prop {import("../types.js").StringMap} [headers]
+ * @property {import("../types.js").StringMap} [cookies]
+ * @property {import("../types.js").StringMap} [headers]
  */
 
 /**

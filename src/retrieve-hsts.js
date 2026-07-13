@@ -8,14 +8,14 @@ const HSTS_URL = new URL(
   "https://raw.githubusercontent.com/chromium/chromium/main/net/http/transport_security_state_static.json"
 );
 
-const SCANNER_PINNED_DOMAINS = [
+const SCANNER_PINNED_DOMAINS = new Set([
   "accounts.firefox.com",
   "addons.mozilla.org",
   "aus4.mozilla.org",
   "aus5.mozilla.org",
   "cdn.mozilla.org",
   "services.mozilla.com",
-];
+]);
 
 const dirname = path.dirname(fileURLToPath(import.meta.url));
 
@@ -61,7 +61,7 @@ export async function retrieveAndStoreHsts() {
         !!entry.include_subdomains || !!entry.include_subdomains_for_pinning,
       mode: entry.mode,
       // Add in the manually pinned domains
-      pinned: SCANNER_PINNED_DOMAINS.includes(domain),
+      pinned: SCANNER_PINNED_DOMAINS.has(domain),
     };
     return acc;
   }, /** @type {HstsMap} */ ({}));

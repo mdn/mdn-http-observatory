@@ -224,17 +224,17 @@ export function hydrateTests(tests) {
   // For some tests whose pass flag is "not applicable", we
   // return null on the pass field.
 
-  const noneResults = [
+  const noneResults = new Set([
     Expectation.ReferrerPolicyNotImplemented,
     Expectation.SriNotImplementedResponseNotHtml,
     Expectation.SriNotImplementedButNoScriptsLoaded,
     Expectation.SriNotImplementedButAllScriptsLoadedFromSecureOrigin,
     Expectation.CookiesNotFound,
     Expectation.CrossOriginResourcePolicyNotImplemented,
-  ];
+  ]);
 
   for (const [k, v] of Object.entries(tests)) {
-    if (v.result && noneResults.includes(v.result)) {
+    if (v.result && noneResults.has(v.result)) {
       tests[k].pass = null;
     }
   }

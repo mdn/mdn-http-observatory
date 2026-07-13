@@ -16,19 +16,19 @@ import scanApiV2 from "./v2/scan/index.js";
 import statsApiV2 from "./v2/stats/index.js";
 import version from "./version/index.js";
 
-const FILTERED_ERROR_TYPES = [
+const FILTERED_ERROR_TYPES = new Set([
   "invalid-hostname",
   "invalid-hostname-lookup",
   "invalid-hostname-ip",
   "scan-failed",
   "site-down",
-];
-const FILTERED_ERROR_CODES = [
+]);
+const FILTERED_ERROR_CODES = new Set([
   "FST_ERR_VALIDATION",
   "FST_ERR_CTP_INVALID_MEDIA_TYPE",
   "FST_ERR_CTP_EMPTY_JSON_BODY",
-];
-const FILTERED_STATUS_CODES = [422];
+]);
+const FILTERED_STATUS_CODES = new Set([422]);
 
 if (CONFIG.sentry.dsn) {
   Sentry.init({
@@ -45,30 +45,28 @@ if (CONFIG.sentry.dsn) {
       const originalError = hint.originalException;
       if (
         // @ts-expect-error
-        FILTERED_STATUS_CODES.includes(originalError?.statusCode) ||
+        FILTERED_STATUS_CODES.has(originalError?.statusCode) ||
         // @ts-expect-error
-        FILTERED_STATUS_CODES.includes(originalError?.originalError?.status)
+        FILTERED_STATUS_CODES.has(originalError?.originalError?.status)
       ) {
         return null;
       }
       // Also check event tags for HTTP status
       if (
-        FILTERED_STATUS_CODES.includes(
-          Number(event.tags?.["http.status_code"] || 0)
-        )
+        FILTERED_STATUS_CODES.has(Number(event.tags?.["http.status_code"] || 0))
       ) {
         return null;
       }
       // Filter out common user errors
       // @ts-expect-error
       const errorType = originalError?.name || "";
-      if (FILTERED_ERROR_TYPES.includes(errorType)) {
+      if (FILTERED_ERROR_TYPES.has(errorType)) {
         return null;
       }
       // Filter out errors from query schema validation
       // @ts-ignore
       const errorMessage = originalError?.code || "";
-      if (FILTERED_ERROR_CODES.includes(errorMessage)) {
+      if (FILTERED_ERROR_CODES.has(errorMessage)) {
         return null;
       }
       return event;

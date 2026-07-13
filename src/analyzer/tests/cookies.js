@@ -6,7 +6,7 @@ import { getHttpHeaders, onlyIfWorse } from "../utils.js";
 import { strictTransportSecurityTest } from "./strict-transport-security.js";
 
 // See: https://github.com/mozilla/http-observatory/issues/282 for the heroku-session-affinity insanity
-const COOKIES_TO_DELETE = ["heroku-session-affinity"];
+const COOKIES_TO_DELETE = new Set(["heroku-session-affinity"]);
 
 /**
  * @typedef {{ [key: string]: CookieDataItem }} CookieMap
@@ -246,5 +246,5 @@ function containsInvalidSameSiteCookie(cookieString) {
  */
 function filterCookies(cookie) {
   const key = cookie.key;
-  return key && !COOKIES_TO_DELETE.includes(key);
+  return key && !COOKIES_TO_DELETE.has(key);
 }

@@ -40,7 +40,7 @@ const CERT_ERROR_CODES = [
   "ERR_TLS_CERT_ALTNAME_INVALID",
 ];
 
-const REDIRECT_STATUS_CODES = [301, 302, 303, 307, 308];
+const REDIRECT_STATUS_CODES = new Set([301, 302, 303, 307, 308]);
 
 const MAX_REDIRECTS = 10;
 
@@ -122,7 +122,7 @@ export class Session {
         if (
           that.redirectCount < MAX_REDIRECTS &&
           response.status &&
-          REDIRECT_STATUS_CODES.includes(response.status)
+          REDIRECT_STATUS_CODES.has(response.status)
         ) {
           const url = that.redirectHistory.at(-1)?.url;
           const redirectUrl = response.headers.location;

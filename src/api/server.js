@@ -134,11 +134,12 @@ export async function createServer() {
     server.register(version, { prefix: "/api/v2" }),
   ]);
 
+  const shutdown = async () => {
+    await server.close();
+    process.exit(0);
+  };
   ["SIGINT", "SIGTERM"].forEach((signal) => {
-    process.on(signal, async () => {
-      await server.close();
-      process.exit(0);
-    });
+    process.on(signal, () => void shutdown());
   });
 
   return server;

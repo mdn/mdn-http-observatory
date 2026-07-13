@@ -146,8 +146,8 @@ export async function checkSitename(site) {
 
 /**
  * Return API-formatted test results for a single scan.
- * @param {number} scanId
  * @param {Pool} pool
+ * @param {number} scanId
  */
 export async function testsForScan(pool, scanId) {
   const testRows = await selectTestResults(pool, scanId);

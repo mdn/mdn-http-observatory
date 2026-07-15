@@ -85,7 +85,7 @@ export function subresourceIntegrityTest(
     // (an attacker could MITM the sub-resource origin) — see issue #464. It is
     // safe whenever a visitor lands on HTTPS: no HTTP server, or the HTTP request
     // ultimately redirects to HTTPS. A downgradeable intermediate hop
-    // (http → http → https) still lands on HTTPS and is penalised by the
+    // (http → http → https) still lands on HTTPS and is penalized by the
     // redirection test, so it is not docked again here.
     const httpRedirects = requests.responses.httpRedirects;
     const httpEnforcesHttps =

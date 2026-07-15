@@ -129,7 +129,7 @@ export function subresourceIntegrityTest(
           (relativeProtocol && httpEnforcesHttps) ||
           (!relativeProtocol && resolvedScheme === "https:");
 
-        // Add it to the scripts data result, if it's not a relative URI
+        // Record and score off-origin scripts; same-origin ones are trusted.
         if (!secureOrigin) {
           output.data[scriptSrc] = { crossorigin, integrity };
 

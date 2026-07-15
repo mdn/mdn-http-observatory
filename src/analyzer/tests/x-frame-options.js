@@ -1,10 +1,10 @@
 import { X_FRAME_OPTIONS } from "../../headers.js";
-import { BaseOutput } from "../../types.js";
-/** @import { Requests } from "../../types.js" */
-import { Expectation } from "../../types.js";
+import { BaseOutput, Expectation } from "../../types.js";
 import { getFirstHttpHeader } from "../utils.js";
 
 import { contentSecurityPolicyTest } from "./csp.js";
+
+/** @import { Requests } from "../../types.js" */
 
 export class XFrameOptionsOutput extends BaseOutput {
   /** @type {string | null} */

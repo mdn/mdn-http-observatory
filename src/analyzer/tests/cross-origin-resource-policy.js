@@ -1,8 +1,8 @@
 import { CROSS_ORIGIN_RESOURCE_POLICY } from "../../headers.js";
-import { BaseOutput } from "../../types.js";
-/** @import { Requests } from "../../types.js" */
-import { Expectation } from "../../types.js";
+import { BaseOutput, Expectation } from "../../types.js";
 import { getFirstHttpHeader } from "../utils.js";
+
+/** @import { Requests } from "../../types.js" */
 
 export class CrossOriginResourcePolicyOutput extends BaseOutput {
   /** @type {string | null} */

@@ -1,10 +1,10 @@
 import { SET_COOKIE } from "../../headers.js";
-import { BaseOutput } from "../../types.js";
-/** @import { Requests } from "../../types.js" */
-import { Expectation } from "../../types.js";
+import { BaseOutput, Expectation } from "../../types.js";
 import { getHttpHeaders, onlyIfWorse } from "../utils.js";
 
 import { strictTransportSecurityTest } from "./strict-transport-security.js";
+
+/** @import { Requests } from "../../types.js" */
 
 // See: https://github.com/mozilla/http-observatory/issues/282 for the heroku-session-affinity insanity
 const COOKIES_TO_DELETE = new Set(["heroku-session-affinity"]);

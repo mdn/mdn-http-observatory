@@ -5,8 +5,7 @@ import { after, afterEach, before, beforeEach, describe, it } from "node:test";
 import { assert } from "chai";
 
 import { createServer } from "../src/api/server.js";
-import { ALGORITHM_VERSION } from "../src/constants.js";
-import { NUM_TESTS } from "../src/constants.js";
+import { ALGORITHM_VERSION, NUM_TESTS } from "../src/constants.js";
 import { migrateDatabase } from "../src/database/migrate.js";
 import {
   createPool,

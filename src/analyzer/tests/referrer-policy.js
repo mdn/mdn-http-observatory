@@ -1,8 +1,8 @@
 import { REFERRER_POLICY } from "../../headers.js";
-import { BaseOutput } from "../../types.js";
-/** @import { Requests } from "../../types.js" */
-import { Expectation } from "../../types.js";
+import { BaseOutput, Expectation } from "../../types.js";
 import { getHttpHeaders } from "../utils.js";
+
+/** @import { Requests } from "../../types.js" */
 
 export class ReferrerOutput extends BaseOutput {
   /** @type {string | null} */

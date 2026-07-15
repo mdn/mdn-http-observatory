@@ -2,15 +2,15 @@ import {
   CONTENT_SECURITY_POLICY,
   CONTENT_SECURITY_POLICY_REPORT_ONLY,
 } from "../../headers.js";
-import { BaseOutput, Policy } from "../../types.js";
-/** @import { Requests } from "../../types.js" */
-import { Expectation } from "../../types.js";
+import { BaseOutput, Expectation, Policy } from "../../types.js";
 import {
   DUPLICATE_WARNINGS_KEY,
   parseCsp,
   parseCspMeta,
 } from "../cspParser.js";
 import { getHttpHeaders } from "../utils.js";
+
+/** @import { Requests } from "../../types.js" */
 
 /**
  * Split a list of raw CSP header values into individual policies.

@@ -80,6 +80,23 @@ describe("Subresource Integrity", () => {
     assert.isFalse(result.pass);
   });
 
+  it("derives the base origin from the final redirect", function () {
+    // The www.mozilla.org script is foreign against the requested
+    // mozilla.org origin, but same-origin once the page redirects to
+    // www.mozilla.org — the base origin must follow the final served URL.
+    reqs = emptyRequests("test_content_sri_www_subdomain.html");
+    assert.isNotNull(reqs.session);
+    reqs.session.redirectHistory = [
+      { url: new URL("https://www.mozilla.org/"), status: 200 },
+    ];
+    const result = subresourceIntegrityTest(reqs);
+    assert.equal(
+      result.result,
+      Expectation.SriNotImplementedButAllScriptsLoadedFromSecureOrigin
+    );
+    assert.isTrue(result.pass);
+  });
+
   it("checks if implemented with external scripts and https", function () {
     // load from a remote site
     reqs = emptyRequests("test_content_sri_impl_external_https1.html");

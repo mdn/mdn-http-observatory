@@ -3,9 +3,10 @@ import {
   ACCESS_CONTROL_ALLOW_ORIGIN,
   ORIGIN,
 } from "../../headers.js";
-import { BaseOutput, Requests } from "../../types.js";
-import { Expectation } from "../../types.js";
+import { BaseOutput, Expectation } from "../../types.js";
 import { getFirstHttpHeader } from "../utils.js";
+
+/** @import { Requests } from "../../types.js" */
 
 export class CorsOutput extends BaseOutput {
   /** @type {string | null} */
@@ -18,14 +19,6 @@ export class CorsOutput extends BaseOutput {
     Expectation.CrossOriginResourceSharingImplementedWithRestrictedAccess,
     Expectation.CrossOriginResourceSharingImplementedWithUniversalAccess,
   ];
-
-  /**
-   *
-   * @param {Expectation} expectation
-   */
-  constructor(expectation) {
-    super(expectation);
-  }
 }
 
 /**

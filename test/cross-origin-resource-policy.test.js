@@ -1,8 +1,11 @@
-import { describe, it, beforeEach } from "node:test";
+import { beforeEach, describe, it } from "node:test";
+
 import { assert } from "chai";
-import { emptyRequests } from "./helpers.js";
-import { Expectation } from "../src/types.js";
+
 import { crossOriginResourcePolicyTest } from "../src/analyzer/tests/cross-origin-resource-policy.js";
+import { Expectation } from "../src/types.js";
+
+import { emptyRequests } from "./helpers.js";
 
 describe("Cross Origin Resource Policy", () => {
   /** @type {import("../src/types.js").Requests} */

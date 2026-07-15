@@ -2,14 +2,27 @@ import {
   CONTENT_SECURITY_POLICY,
   CONTENT_SECURITY_POLICY_REPORT_ONLY,
 } from "../../headers.js";
-import { Requests, Policy, BaseOutput } from "../../types.js";
-import { Expectation } from "../../types.js";
+import { BaseOutput, Expectation, Policy } from "../../types.js";
 import {
   DUPLICATE_WARNINGS_KEY,
   parseCsp,
   parseCspMeta,
 } from "../cspParser.js";
 import { getHttpHeaders } from "../utils.js";
+
+/** @import { Requests } from "../../types.js" */
+
+/**
+ * Split a list of raw CSP header values into individual policies.
+ * Per RFC 9110 §5.3, clients may combine multiple headers as a comma-separated
+ * string. Per W3C CSP3 §2.2, commas are policy-list delimiters and are excluded
+ * from the directive-value grammar, so splitting on comma is unambiguous.
+ * @param {string[]} rawHeaders
+ * @returns {string[]}
+ */
+function splitCspHeaders(rawHeaders) {
+  return rawHeaders.flatMap((v) => v.split(",").map((s) => s.trim()));
+}
 
 const DANGEROUSLY_BROAD = new Set([
   "ftp:",
@@ -56,13 +69,6 @@ export class CspOutput extends BaseOutput {
     Expectation.CspNotImplemented,
     Expectation.CspNotImplementedButReportingEnabled,
   ];
-  /**
-   *
-   * @param {Expectation} expectation
-   */
-  constructor(expectation) {
-    super(expectation);
-  }
 }
 
 /**
@@ -99,7 +105,10 @@ export function contentSecurityPolicyTest(
   const equivCspHeader =
     response?.httpEquiv?.get(CONTENT_SECURITY_POLICY) ?? [];
 
-  output.numPolicies = equivCspHeader.length + httpCspHeader.length;
+  const httpCspPolicies = splitCspHeaders(httpCspHeader);
+  const equivCspPolicies = splitCspHeaders(equivCspHeader);
+
+  output.numPolicies = equivCspPolicies.length + httpCspPolicies.length;
 
   /** @type {Map<string, Set<string>>} */
   let csp;
@@ -110,22 +119,22 @@ export function contentSecurityPolicyTest(
 
   try {
     csp = parseCsp(
-      [...httpCspHeader, ...equivCspHeader].filter((x) => x !== null)
+      [...httpCspPolicies, ...equivCspPolicies].filter((x) => x !== null)
     );
-  } catch (e) {
+  } catch {
     output.result = Expectation.CspHeaderInvalid;
     return output;
   }
 
   try {
-    httpHeaderOnlyCsp = parseCsp(httpCspHeader);
-  } catch (e) {
+    httpHeaderOnlyCsp = parseCsp(httpCspPolicies);
+  } catch {
     httpHeaderOnlyCsp = new Map();
   }
 
   try {
-    metaCsp = parseCspMeta(equivCspHeader);
-  } catch (e) {
+    metaCsp = parseCspMeta(equivCspPolicies);
+  } catch {
     metaCsp = new Map();
   }
 
@@ -136,7 +145,6 @@ export function contentSecurityPolicyTest(
     // Content-Security-Policy-Report-Only is only allowed in headers, not in meta tags
     // see https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Content-Security-Policy-Report-Only
     const httpCspReportOnly =
-      // @ts-ignore
       response.headers.get(CONTENT_SECURITY_POLICY_REPORT_ONLY) ?? null;
     if (httpCspReportOnly) {
       output.result = Expectation.CspNotImplementedButReportingEnabled;
@@ -149,8 +157,8 @@ export function contentSecurityPolicyTest(
   output.policy = new Policy();
 
   // mark whether we saw csp there or not
-  output.http = httpCspHeader?.length > 0;
-  output.meta = equivCspHeader?.length > 0;
+  output.http = httpCspPolicies?.length > 0;
+  output.meta = equivCspPolicies?.length > 0;
 
   // Get the various directives we look at
   const base_uri = csp.get("base-uri") || new Set(["*"]);
@@ -194,10 +202,8 @@ export function contentSecurityPolicyTest(
       }
     }
     output.policy.strictDynamic = true;
-  } else if (script_src.has("'strict-dynamic'")) {
-    if (output.result === null) {
-      output.result = Expectation.CspHeaderInvalid;
-    }
+  } else if (script_src.has("'strict-dynamic'") && output.result === null) {
+    output.result = Expectation.CspHeaderInvalid;
   }
 
   // Some checks look only at active/passive CSP directives
@@ -218,10 +224,10 @@ export function contentSecurityPolicyTest(
   // Also don't allow overly broad schemes such as https: in either object-src or script-src
   // Likewise, if you don't have object-src or script-src defined, then all sources are allowed
   if (
-    [...script_src].filter((src) =>
+    [...script_src].some((src) =>
       DANGEROUSLY_BROAD_AND_UNSAFE_INLINE.has(src)
-    ).length > 0 ||
-    [...object_src].filter((src) => DANGEROUSLY_BROAD.has(src)).length > 0
+    ) ||
+    [...object_src].some((src) => DANGEROUSLY_BROAD.has(src))
   ) {
     if (output.result === null) {
       output.result = Expectation.CspImplementedWithUnsafeInline;

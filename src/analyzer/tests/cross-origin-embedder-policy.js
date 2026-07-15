@@ -1,7 +1,8 @@
 import { CROSS_ORIGIN_EMBEDDER_POLICY } from "../../headers.js";
-import { BaseOutput, Requests } from "../../types.js";
-import { Expectation } from "../../types.js";
+import { BaseOutput, Expectation } from "../../types.js";
 import { getHttpHeaders, parseStructuredFieldToken } from "../utils.js";
+
+/** @import { Requests } from "../../types.js" */
 
 export class CrossOriginEmbedderPolicyOutput extends BaseOutput {
   /** @type {string | null} */
@@ -16,13 +17,6 @@ export class CrossOriginEmbedderPolicyOutput extends BaseOutput {
     Expectation.CoepImplementedWithUnsafeNone,
     Expectation.CoepHeaderInvalid,
   ];
-
-  /**
-   * @param {Expectation} expectation
-   */
-  constructor(expectation) {
-    super(expectation);
-  }
 }
 
 /**
@@ -54,14 +48,25 @@ export function crossOriginEmbedderPolicyTest(
 
     const policy = parseStructuredFieldToken(headerValue);
 
-    if (policy === "require-corp") {
-      output.result = Expectation.CoepImplementedWithRequireCorp;
-    } else if (policy === "credentialless") {
-      output.result = Expectation.CoepImplementedWithCredentialless;
-    } else if (policy === "unsafe-none") {
-      output.result = Expectation.CoepImplementedWithUnsafeNone;
-    } else {
-      output.result = Expectation.CoepHeaderInvalid;
+    switch (policy) {
+      case "require-corp": {
+        output.result = Expectation.CoepImplementedWithRequireCorp;
+
+        break;
+      }
+      case "credentialless": {
+        output.result = Expectation.CoepImplementedWithCredentialless;
+
+        break;
+      }
+      case "unsafe-none": {
+        output.result = Expectation.CoepImplementedWithUnsafeNone;
+
+        break;
+      }
+      default: {
+        output.result = Expectation.CoepHeaderInvalid;
+      }
     }
   }
 

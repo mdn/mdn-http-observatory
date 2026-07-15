@@ -1,7 +1,8 @@
-import { SCHEMAS } from "../v2/schemas.js";
 import fs from "node:fs";
-import path from "path";
-import { fileURLToPath } from "url";
+import path from "node:path";
+import { fileURLToPath } from "node:url";
+
+import { SCHEMAS } from "../v2/schemas.js";
 
 // Get the directory name of the current module
 const __filename = fileURLToPath(import.meta.url);

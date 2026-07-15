@@ -1,7 +1,8 @@
 import { REFERRER_POLICY } from "../../headers.js";
-import { Requests, BaseOutput } from "../../types.js";
-import { Expectation } from "../../types.js";
+import { BaseOutput, Expectation } from "../../types.js";
 import { getHttpHeaders } from "../utils.js";
+
+/** @import { Requests } from "../../types.js" */
 
 export class ReferrerOutput extends BaseOutput {
   /** @type {string | null} */
@@ -16,14 +17,6 @@ export class ReferrerOutput extends BaseOutput {
     Expectation.ReferrerPolicyUnsafe,
     Expectation.ReferrerPolicyHeaderInvalid,
   ];
-
-  /**
-   *
-   * @param {Expectation} expectation
-   */
-  constructor(expectation) {
-    super(expectation);
-  }
 }
 
 /**
@@ -49,7 +42,7 @@ export function referrerPolicyTest(
     "unsafe-url",
     "no-referrer-when-downgrade",
   ];
-  const valid = goodness.concat(badness);
+  const valid = new Set([...goodness, ...badness]);
 
   const response = requests.responses.auto;
   if (!response) {
@@ -77,7 +70,7 @@ export function referrerPolicyTest(
   let policy =
     output.data
       ?.split(",")
-      .filter((e) => valid.includes(e.toLowerCase().trim()))
+      .filter((e) => valid.has(e.toLowerCase().trim()))
       .reverse()[0]
       ?.toLowerCase()
       .trim() ?? "";

@@ -1,7 +1,9 @@
+import axios from "axios";
+
 import { SiteIsDownError } from "../api/errors.js";
 import { CONFIG } from "../config.js";
-import { Site } from "../site.js";
-import axios from "axios";
+
+/** @import { Site } from "../site.js" */
 
 /**
  * Detects if a port supports TLS by making simple test requests
@@ -20,10 +22,11 @@ export async function detectTlsSupport(site) {
   };
 
   // Run both requests concurrently
+  const { Agent } = await import("node:https");
   const [httpsResult, httpResult] = await Promise.allSettled([
     axios.head(httpsUrl, {
       ...config,
-      httpsAgent: new (await import("https")).Agent({
+      httpsAgent: new Agent({
         rejectUnauthorized: false, // Accept self-signed certs for detection
       }),
     }),

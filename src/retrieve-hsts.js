@@ -1,34 +1,35 @@
-import axios from "axios";
-import { writeFile } from "fs/promises";
+import { writeFile } from "node:fs/promises";
 import path from "node:path";
 import { fileURLToPath, pathToFileURL } from "node:url";
+
+import axios from "axios";
 
 const HSTS_URL = new URL(
   "https://raw.githubusercontent.com/chromium/chromium/main/net/http/transport_security_state_static.json"
 );
 
-const SCANNER_PINNED_DOMAINS = [
+const SCANNER_PINNED_DOMAINS = new Set([
   "accounts.firefox.com",
   "addons.mozilla.org",
   "aus4.mozilla.org",
   "aus5.mozilla.org",
   "cdn.mozilla.org",
   "services.mozilla.com",
-];
+]);
 
 const dirname = path.dirname(fileURLToPath(import.meta.url));
 
 /**
  *
- * @typedef {Object} RawData
+ * @typedef {object} RawData
  * @property {RawEntry[]} entries
- * @typedef {Object} RawEntry
+ * @typedef {object} RawEntry
  * @property {string} name
  * @property {string} policy
  * @property {string} mode
  * @property {string} [include_subdomains]
  * @property {string} [include_subdomains_for_pinning]
- * @typedef {Object} HstsEntry
+ * @typedef {object} HstsEntry
  * @property {boolean} includeSubDomains
  * @property {boolean} includeSubDomainsForPinning
  * @property {string} mode
@@ -49,7 +50,7 @@ export async function retrieveAndStoreHsts() {
     return;
   }
   const data = removeJsonComments(r.data);
-  /** @type RawData */
+  /** @type {RawData} */
   const rawData = JSON.parse(data);
 
   const hstsMap = rawData.entries.reduce((acc, entry) => {
@@ -60,7 +61,7 @@ export async function retrieveAndStoreHsts() {
         !!entry.include_subdomains || !!entry.include_subdomains_for_pinning,
       mode: entry.mode,
       // Add in the manually pinned domains
-      pinned: SCANNER_PINNED_DOMAINS.includes(domain),
+      pinned: SCANNER_PINNED_DOMAINS.has(domain),
     };
     return acc;
   }, /** @type {HstsMap} */ ({}));
@@ -81,7 +82,7 @@ export async function retrieveAndStoreHsts() {
  * @returns {string}
  */
 function removeJsonComments(jsonString) {
-  return jsonString.replace(/\/\/.*$/gm, "");
+  return jsonString.replaceAll(/\/\/.*$/gm, "");
 }
 
 // Execute when run directly

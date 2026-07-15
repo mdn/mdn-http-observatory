@@ -1,9 +1,12 @@
-import { describe, it, beforeEach } from "node:test";
+import { beforeEach, describe, it } from "node:test";
+
 import { assert } from "chai";
-import { emptyRequests } from "./helpers.js";
+
 import { strictTransportSecurityTest } from "../src/analyzer/tests/strict-transport-security.js";
-import { Expectation } from "../src/types.js";
 import { Site } from "../src/site.js";
+import { Expectation } from "../src/types.js";
+
+import { emptyRequests } from "./helpers.js";
 
 describe("Strict Transport Security", () => {
   /**
@@ -82,7 +85,7 @@ describe("Strict Transport Security", () => {
       result.result,
       Expectation.HstsImplementedMaxAgeAtLeastSixMonths
     );
-    assert.equal(result.maxAge, 15768000);
+    assert.equal(result.maxAge, 15_768_000);
     assert.isTrue(result.includeSubDomains);
     assert.isTrue(result.preload);
     assert.isTrue(result.pass);

@@ -1,7 +1,8 @@
 import { CROSS_ORIGIN_OPENER_POLICY } from "../../headers.js";
-import { BaseOutput, Requests } from "../../types.js";
-import { Expectation } from "../../types.js";
+import { BaseOutput, Expectation } from "../../types.js";
 import { getHttpHeaders, parseStructuredFieldToken } from "../utils.js";
+
+/** @import { Requests } from "../../types.js" */
 
 export class CrossOriginOpenerPolicyOutput extends BaseOutput {
   /** @type {string | null} */
@@ -17,13 +18,6 @@ export class CrossOriginOpenerPolicyOutput extends BaseOutput {
     Expectation.CoopImplementedWithUnsafeNone,
     Expectation.CoopHeaderInvalid,
   ];
-
-  /**
-   * @param {Expectation} expectation
-   */
-  constructor(expectation) {
-    super(expectation);
-  }
 }
 
 /**
@@ -55,16 +49,30 @@ export function crossOriginOpenerPolicyTest(
 
     const policy = parseStructuredFieldToken(headerValue);
 
-    if (policy === "same-origin") {
-      output.result = Expectation.CoopImplementedWithSameOrigin;
-    } else if (policy === "same-origin-allow-popups") {
-      output.result = Expectation.CoopImplementedWithSameOriginAllowPopups;
-    } else if (policy === "noopener-allow-popups") {
-      output.result = Expectation.CoopImplementedWithNoopenerAllowPopups;
-    } else if (policy === "unsafe-none") {
-      output.result = Expectation.CoopImplementedWithUnsafeNone;
-    } else {
-      output.result = Expectation.CoopHeaderInvalid;
+    switch (policy) {
+      case "same-origin": {
+        output.result = Expectation.CoopImplementedWithSameOrigin;
+
+        break;
+      }
+      case "same-origin-allow-popups": {
+        output.result = Expectation.CoopImplementedWithSameOriginAllowPopups;
+
+        break;
+      }
+      case "noopener-allow-popups": {
+        output.result = Expectation.CoopImplementedWithNoopenerAllowPopups;
+
+        break;
+      }
+      case "unsafe-none": {
+        output.result = Expectation.CoopImplementedWithUnsafeNone;
+
+        break;
+      }
+      default: {
+        output.result = Expectation.CoopHeaderInvalid;
+      }
     }
   }
 

@@ -1,12 +1,13 @@
 import { describe, it } from "node:test";
+
 import { assert } from "chai";
 
-import { retrieve, buildRequestHeaders } from "../src/retriever/retriever.js";
-import { Session } from "../src/retriever/session.js";
-import { Resources } from "../src/types.js";
-import { Site } from "../src/site.js";
-import { detectTlsSupport } from "../src/retriever/url.js";
 import { CONFIG } from "../src/config.js";
+import { buildRequestHeaders, retrieve } from "../src/retriever/retriever.js";
+import { Session } from "../src/retriever/session.js";
+import { detectTlsSupport } from "../src/retriever/url.js";
+import { Site } from "../src/site.js";
+import { Resources } from "../src/types.js";
 
 describe("buildRequestHeaders", () => {
   const customHeaders = ["Authorization: Bearer secret", "X-Custom: value"];
@@ -60,7 +61,7 @@ describe("buildRequestHeaders", () => {
 
 describe("TestRetriever", () => {
   if (CONFIG.tests.hostForPortAndPathChecks !== "") {
-    it("detects tls on a custom port", { timeout: 10000 }, async () => {
+    it("detects tls on a custom port", { timeout: 10_000 }, async () => {
       let site = Site.fromSiteString(
         `${CONFIG.tests.hostForPortAndPathChecks}:8443`
       );
@@ -77,11 +78,11 @@ describe("TestRetriever", () => {
       try {
         await detectTlsSupport(site);
         throw new Error("scan should throw");
-      } catch (e) {
-        if (e instanceof Error) {
-          assert.equal(e.name, "site-down");
+      } catch (error) {
+        if (error instanceof Error) {
+          assert.equal(error.name, "site-down");
         } else {
-          throw new Error("Unexpected error type");
+          throw new Error("Unexpected error type", { cause: error });
         }
       }
     });
@@ -89,7 +90,7 @@ describe("TestRetriever", () => {
 
   it(
     "correctly uses port and path on retrieving",
-    { timeout: 10000 },
+    { timeout: 10_000 },
     async () => {
       let site = Site.fromSiteString("generalmagic.space:8443/test");
       const requests = await retrieve(site);
@@ -99,7 +100,7 @@ describe("TestRetriever", () => {
     }
   );
 
-  it("test retrieve mdn", { timeout: 10000 }, async () => {
+  it("test retrieve mdn", { timeout: 10_000 }, async () => {
     const site = Site.fromSiteString("developer.mozilla.org/en-US");
     const requests = await retrieve(site);
     // console.log("REQUESTS", requests);
@@ -114,25 +115,23 @@ describe("TestRetriever", () => {
     assert.equal(requests.responses.httpRedirects.length, 3);
     assert.equal(
       "text/html",
-      requests.responses.auto.headers["content-type"].substring(0, 9)
+      requests.responses.auto.headers["content-type"].slice(0, 9)
     );
     assert.equal(200, requests.responses.auto.status);
     assert.equal(
       "https://developer.mozilla.org/en-US/",
-      requests.responses.httpRedirects[
-        requests.responses.httpRedirects.length - 1
-      ]?.url.href
+      requests.responses.httpRedirects.at(-1)?.url.href
     );
   });
 
   it(
     "test retrieve non-existent domain",
-    { timeout: 10000 },
+    { timeout: 10_000 },
     async function () {
       const domain =
-        Array(223)
+        Array.from({ length: 223 })
           .fill(0)
-          .map(() => String.fromCharCode(Math.random() * 26 + 97))
+          .map(() => String.fromCodePoint(Math.floor(Math.random() * 26) + 97))
           .join("") + ".net";
       const site = Site.fromSiteString(domain);
       const requests = await retrieve(site);
@@ -148,7 +147,7 @@ describe("TestRetriever", () => {
   );
 
   // test site seems to have outage from time to time, disable for now
-  it("test_retrieve_invalid_cert", { timeout: 10000 }, async function () {
+  it("test_retrieve_invalid_cert", { timeout: 10_000 }, async function () {
     const site = Site.fromSiteString("expired.badssl.com");
     const reqs = await retrieve(site);
     assert.isNotNull(reqs.responses.auto);

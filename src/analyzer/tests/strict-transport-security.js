@@ -1,8 +1,10 @@
 import { STRICT_TRANSPORT_SECURITY } from "../../headers.js";
-import { Requests, BaseOutput } from "../../types.js";
-import { Expectation } from "../../types.js";
+import { BaseOutput, Expectation } from "../../types.js";
 import { isHstsPreloaded } from "../hsts.js";
 import { getHttpHeaders } from "../utils.js";
+
+/** @import { Requests } from "../../types.js" */
+
 export class StrictTransportSecurityOutput extends BaseOutput {
   /** @type {string | null} */
   data = null;
@@ -22,17 +24,10 @@ export class StrictTransportSecurityOutput extends BaseOutput {
     Expectation.HstsNotImplementedNoHttps,
     Expectation.HstsInvalidCert,
   ];
-  /**
-   *
-   * @param {Expectation} expectation
-   */
-  constructor(expectation) {
-    super(expectation);
-  }
 }
 
 // 15768000 is six months, but a lot of sites use 15552000, so a white lie is in order
-const SIX_MONTHS = 15552000;
+const SIX_MONTHS = 15_552_000;
 
 /**
  *
@@ -67,7 +62,7 @@ export function strictTransportSecurityTest(
         if (parameter.startsWith("max-age=")) {
           // Use slice to get the part of the string after 'max-age='
           // Parse it to an integer. We're slicing up to 128 characters as a defense mechanism.
-          output.maxAge = parseInt(parameter.slice(8, 128), 10);
+          output.maxAge = Number.parseInt(parameter.slice(8, 128), 10);
         } else if (parameter === "includesubdomains") {
           output.includeSubDomains = true;
         } else if (parameter === "preload") {
@@ -83,7 +78,7 @@ export function strictTransportSecurityTest(
       } else {
         throw new Error("MaxAge missing");
       }
-    } catch (e) {
+    } catch {
       output.result = Expectation.HstsHeaderInvalid;
     }
   }

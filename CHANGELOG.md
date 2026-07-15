@@ -1,5 +1,20 @@
 # Changelog
 
+## [1.6.2](https://github.com/mdn/mdn-http-observatory/compare/v1.6.1...v1.6.2) (2026-04-14)
+
+
+### Bug Fixes
+
+* **analyzer/csp:** split CSP headers into policies ([#496](https://github.com/mdn/mdn-http-observatory/issues/496)) ([08a2456](https://github.com/mdn/mdn-http-observatory/commit/08a2456a1654247b450bba9a098a3bdf4d9d7662))
+
+
+### Miscellaneous
+
+* **deps:** bump axios from 1.14.0 to 1.15.0 ([#489](https://github.com/mdn/mdn-http-observatory/issues/489)) ([9635e55](https://github.com/mdn/mdn-http-observatory/commit/9635e554b92e442fc9f4b92536e4daac4c1b8df2))
+* **deps:** bump follow-redirects from 1.15.11 to 1.16.0 ([#504](https://github.com/mdn/mdn-http-observatory/issues/504)) ([1a9835d](https://github.com/mdn/mdn-http-observatory/commit/1a9835d33f682dda14733c932621c3e4599b088c))
+* **deps:** bump the npm-prod group across 1 directory with 3 updates ([#505](https://github.com/mdn/mdn-http-observatory/issues/505)) ([eb4b813](https://github.com/mdn/mdn-http-observatory/commit/eb4b813472b918c1412b6a98fd68b5b3765ff631))
+* **package:** set repository field ([#492](https://github.com/mdn/mdn-http-observatory/issues/492)) ([e34202f](https://github.com/mdn/mdn-http-observatory/commit/e34202f53bc8884624ae3392202a9c4d884e15df))
+
 ## [1.6.1](https://github.com/mdn/mdn-http-observatory/compare/v1.6.0...v1.6.1) (2026-04-07)
 
 

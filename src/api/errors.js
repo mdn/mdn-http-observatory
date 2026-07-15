@@ -1,7 +1,7 @@
 import { STATUS_CODES } from "./utils.js";
 
 export class AppError extends Error {
-  // @ts-ignore
+  // @ts-expect-error
   constructor(...args) {
     super(...args);
     this.name = "error-unknown";

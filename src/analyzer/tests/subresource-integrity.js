@@ -96,21 +96,23 @@ export function subresourceIntegrityTest(
         const fullUrlRegex = /^https?:\/\//;
 
         if (relativeProtocolRegex.test(scriptSrc)) {
-          // relative protocol(src="//example.com/script.js")
+          // relative protocol (src="//example.com/script.js"); inherits the
+          // page scheme and is treated as a foreign origin here — its risk is
+          // scored separately (issue #464).
           relativeProtocol = true;
-          sameOrigin = true;
+          sameOrigin = false;
         } else if (fullUrlRegex.test(scriptSrc)) {
           // full URL (src="https://example.com/script.js")
           sameOrigin = new URL(scriptSrc).origin === baseOrigin;
         } else {
-          // relative URL (src="/path" etc.)
+          // relative URL (src="/path" etc.) — always same origin
           relativeOrigin = true;
           sameOrigin = true;
         }
 
         // Check to see if it is the same origin
         let secureOrigin;
-        if (relativeOrigin || (sameOrigin && !relativeProtocol)) {
+        if (relativeOrigin || sameOrigin) {
           secureOrigin = true;
         } else {
           secureOrigin = false;

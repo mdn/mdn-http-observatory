@@ -196,6 +196,23 @@ describe("Redirections", () => {
     assert.isFalse(res.pass);
   });
 
+  it("does not treat a single preloaded redirect as all-redirects-preloaded", function () {
+    // A route of length 1 means there was no redirection at all. Guarding on
+    // httpRoute.length > 1 avoids the vacuous `[].every(...) === true` that
+    // would otherwise report RedirectionAllRedirectsPreloaded for a single
+    // preloaded host.
+    reqs.responses.httpRedirects = [
+      {
+        url: new URL("https://cloudflare.com/"),
+        status: 200,
+      },
+    ];
+
+    const res = redirectionTest(reqs);
+    assert.equal(res.result, Expectation.RedirectionMissing);
+    assert.isFalse(res.pass);
+  });
+
   it("checks for all redirections preloaded", function () {
     reqs.responses.httpRedirects = [
       {

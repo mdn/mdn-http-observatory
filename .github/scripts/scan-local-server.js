@@ -1,5 +1,5 @@
-import http from "node:http";
 import { spawn } from "node:child_process";
+import http from "node:http";
 
 /** @param {{ info: (msg: string) => void }} core */
 export async function scanLocalServer(core) {

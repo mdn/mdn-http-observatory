@@ -1,7 +1,8 @@
 import { CROSS_ORIGIN_RESOURCE_POLICY } from "../../headers.js";
-import { BaseOutput, Requests } from "../../types.js";
-import { Expectation } from "../../types.js";
+import { BaseOutput, Expectation } from "../../types.js";
 import { getFirstHttpHeader } from "../utils.js";
+
+/** @import { Requests } from "../../types.js" */
 
 export class CrossOriginResourcePolicyOutput extends BaseOutput {
   /** @type {string | null} */
@@ -17,14 +18,6 @@ export class CrossOriginResourcePolicyOutput extends BaseOutput {
     Expectation.CrossOriginResourcePolicyImplementedWithCrossOrigin,
     Expectation.CrossOriginResourcePolicyHeaderInvalid,
   ];
-
-  /**
-   *
-   * @param {Expectation} expectation
-   */
-  constructor(expectation) {
-    super(expectation);
-  }
 }
 
 /**
@@ -58,32 +51,42 @@ export function crossOriginResourcePolicyTest(
   let corpHeader;
   if (output.http && httpHeader) {
     corpHeader = httpHeader.slice(0, 256).trim().toLowerCase();
-  } else if (output.meta) {
-    if (
-      equivHeaders &&
-      Array.isArray(equivHeaders) &&
-      equivHeaders.length > 0
-    ) {
-      const h = equivHeaders[equivHeaders.length - 1];
-      if (h) {
-        corpHeader = h.slice(0, 256).trim().toLowerCase();
-      }
+  } else if (
+    output.meta &&
+    equivHeaders &&
+    Array.isArray(equivHeaders) &&
+    equivHeaders.length > 0
+  ) {
+    const h = equivHeaders.at(-1);
+    if (h) {
+      corpHeader = h.slice(0, 256).trim().toLowerCase();
     }
   }
 
   if (corpHeader) {
     output.data = corpHeader;
-    if (corpHeader === "same-site") {
-      output.result =
-        Expectation.CrossOriginResourcePolicyImplementedWithSameSite;
-    } else if (corpHeader === "same-origin") {
-      output.result =
-        Expectation.CrossOriginResourcePolicyImplementedWithSameOrigin;
-    } else if (corpHeader === "cross-origin") {
-      output.result =
-        Expectation.CrossOriginResourcePolicyImplementedWithCrossOrigin;
-    } else {
-      output.result = Expectation.CrossOriginResourcePolicyHeaderInvalid;
+    switch (corpHeader) {
+      case "same-site": {
+        output.result =
+          Expectation.CrossOriginResourcePolicyImplementedWithSameSite;
+
+        break;
+      }
+      case "same-origin": {
+        output.result =
+          Expectation.CrossOriginResourcePolicyImplementedWithSameOrigin;
+
+        break;
+      }
+      case "cross-origin": {
+        output.result =
+          Expectation.CrossOriginResourcePolicyImplementedWithCrossOrigin;
+
+        break;
+      }
+      default: {
+        output.result = Expectation.CrossOriginResourcePolicyHeaderInvalid;
+      }
     }
   }
 

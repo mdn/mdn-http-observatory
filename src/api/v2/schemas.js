@@ -1,4 +1,4 @@
-import { Policy } from "../../types.js";
+/** @import { Policy } from "../../types.js" */
 
 const scan = {
   type: "object",

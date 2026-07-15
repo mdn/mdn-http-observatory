@@ -1,8 +1,11 @@
-import { describe, it, beforeEach } from "node:test";
+import { beforeEach, describe, it } from "node:test";
+
 import { assert } from "chai";
-import { emptyRequests } from "./helpers.js";
+
 import { subresourceIntegrityTest } from "../src/analyzer/tests/subresource-integrity.js";
 import { Expectation } from "../src/types.js";
+
+import { emptyRequests } from "./helpers.js";
 
 describe("Subresource Integrity", () => {
   /** @type {import("../src/types.js").Requests} */

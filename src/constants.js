@@ -7,7 +7,7 @@ import {
   CrossOriginResourcePolicyOutput,
   crossOriginResourcePolicyTest,
 } from "./analyzer/tests/cross-origin-resource-policy.js";
-import { contentSecurityPolicyTest, CspOutput } from "./analyzer/tests/csp.js";
+import { CspOutput, contentSecurityPolicyTest } from "./analyzer/tests/csp.js";
 import {
   RedirectionOutput,
   redirectionTest,

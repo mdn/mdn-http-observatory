@@ -1,13 +1,18 @@
-import { describe, it, before, beforeEach, after } from "node:test";
+import { after, before, beforeEach, describe, it } from "node:test";
+
+import { faker } from "@faker-js/faker";
 import { assert } from "chai";
+
+import { ALGORITHM_VERSION } from "../src/constants.js";
+import { migrateDatabase } from "../src/database/migrate.js";
 import {
+  ScanState,
   createPool,
   ensureSite,
   insertScan,
   insertTestResults,
   isConfigured,
   refreshMaterializedViews,
-  ScanState,
   selectGradeDistribution,
   selectScan,
   selectScanHostHistory,
@@ -15,9 +20,7 @@ import {
   selectTestResults,
   updateScanState,
 } from "../src/database/repository.js";
-import { ALGORITHM_VERSION } from "../src/constants.js";
-import { faker } from "@faker-js/faker";
-import { migrateDatabase } from "../src/database/migrate.js";
+
 import { insertSeeds } from "./helpers/db.js";
 
 const dbConfigured = isConfigured();
@@ -227,7 +230,6 @@ describe(
             scoreModifier: 0,
             name: "cookies",
             title: "Cookies",
-            // @ts-ignore
             data: null,
             sameSite: false,
           },
@@ -240,7 +242,6 @@ describe(
             scoreModifier: 0,
             name: "cross-origin-resource-sharing",
             title: "CORS",
-            // @ts-ignore
             data: null,
           },
           redirection: {
@@ -252,7 +253,6 @@ describe(
             scoreModifier: 0,
             name: "redirection",
             title: "Redirection",
-            // @ts-ignore
             destination: null,
             redirects: true,
             route: ["http://www.mozilla.org/", "https://www.mozilla.org/"],
@@ -282,7 +282,7 @@ describe(
             title: "HSTS",
             data: "max-age=31536000",
             includeSubDomains: false,
-            maxAge: 31536000,
+            maxAge: 31_536_000,
             preloaded: false,
           },
           "subresource-integrity": {
@@ -393,13 +393,13 @@ describe(
       const siteId = await ensureSite(pool, "www.mozilla.org");
       // related scans
       await Promise.all(
-        [...Array(10).keys()].map((i) => {
+        [...Array.from({ length: 10 }).keys()].map((i) => {
           return pool.query(
             `INSERT INTO scans (site_id, state, start_time, end_time, grade, score, tests_quantity, algorithm_version)
           VALUES ($1,
             $2,
-            NOW() - INTERVAL '${(i + 1) * 20000}',
-            NOW() - INTERVAL '${(i + 1) * 20000}',
+            NOW() - INTERVAL '${(i + 1) * 20_000}',
+            NOW() - INTERVAL '${(i + 1) * 20_000}',
             'A',
             100,
             9,
@@ -411,19 +411,19 @@ describe(
 
       // create a bunch of other sites
       const otherIds = await Promise.all(
-        [...Array(10).keys()].map((_i) => {
+        [...Array.from({ length: 10 }).keys()].map((_i) => {
           return ensureSite(pool, faker.internet.domainName());
         })
       );
       // make some random scans for those
       await Promise.all(
-        [...Array(50).keys()].map((i) => {
+        [...Array.from({ length: 50 }).keys()].map((i) => {
           return pool.query(
             `INSERT INTO scans (site_id, state, start_time, end_time, grade, score, tests_quantity, algorithm_version)
           VALUES ($1,
             $2,
-            NOW() - INTERVAL '${(i + 1) * 20000}',
-            NOW() - INTERVAL '${(i + 1) * 20000}',
+            NOW() - INTERVAL '${(i + 1) * 20_000}',
+            NOW() - INTERVAL '${(i + 1) * 20_000}',
             'F',
             0,
             9,

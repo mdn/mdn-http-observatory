@@ -1,4 +1,4 @@
-import { Expectation } from "../types.js";
+/** @import { Expectation } from "../types.js" */
 
 /**
  * Return the new result if it's worse than the existing result, otherwise just the current result.
@@ -35,8 +35,7 @@ export function getHttpHeaders(response, name) {
     .filter(([headerName, _value]) => {
       return headerName.toLowerCase() === lcName;
     })
-    .map(([_headerName, value]) => value)
-    .flat();
+    .flatMap(([_headerName, value]) => value);
   return headers;
 }
 

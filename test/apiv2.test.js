@@ -1,16 +1,18 @@
-import { describe, it, before, beforeEach, afterEach, after } from "node:test";
-import { createServer } from "../src/api/server.js";
+import { EventEmitter } from "node:events";
+import fs from "node:fs";
+import { after, afterEach, before, beforeEach, describe, it } from "node:test";
+
 import { assert } from "chai";
-import { ALGORITHM_VERSION } from "../src/constants.js";
+
+import { createServer } from "../src/api/server.js";
+import { ALGORITHM_VERSION, NUM_TESTS } from "../src/constants.js";
 import { migrateDatabase } from "../src/database/migrate.js";
 import {
   createPool,
   isConfigured,
   refreshMaterializedViews,
 } from "../src/database/repository.js";
-import { EventEmitter } from "events";
-import { NUM_TESTS } from "../src/constants.js";
-import fs from "node:fs";
+
 EventEmitter.defaultMaxListeners = 20;
 
 const dbConfigured = isConfigured();

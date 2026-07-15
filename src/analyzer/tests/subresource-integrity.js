@@ -72,68 +72,62 @@ export function subresourceIntegrityTest(
       output.result = Expectation.HtmlNotParseable;
       return output;
     }
-    // The origin the page was ultimately served from. Scripts are same-origin
-    // only when their exact scheme + host + port match this, not merely when
-    // they share the same registrable domain (e.g. a different subdomain is a
-    // distinct origin).
+    // Origin the page was ultimately served from. Same-origin requires an exact
+    // scheme + host + port match, so a different subdomain is a distinct origin.
     const baseUrl =
       requests.session?.redirectHistory.at(-1)?.url ?? requests.session?.url;
     const baseOrigin = baseUrl?.origin ?? null;
 
-    // Track to see if any scripts were on foreign origins.
     let scriptsOnForeignOrigin = false;
+
+    // A protocol-relative URL (//cdn.example.com/…) inherits the page's scheme,
+    // so it only adds risk when an off-origin sub-resource is served over HTTP
+    // (an attacker could MITM the sub-resource origin) — see issue #464. It is
+    // safe whenever a visitor lands on HTTPS: no HTTP server, or the HTTP request
+    // ultimately redirects to HTTPS. A downgradeable intermediate hop
+    // (http → http → https) still lands on HTTPS and is penalized by the
+    // redirection test, so it is not docked again here.
+    const httpRedirects = requests.responses.httpRedirects;
+    const httpEnforcesHttps =
+      !requests.responses.http ||
+      httpRedirects.at(-1)?.url.protocol === "https:";
+
     for (const script of scripts) {
       const scriptSrc = getAttribute(script, "src");
       if (scriptSrc) {
         const integrity = getAttribute(script, "integrity") || null;
         const crossorigin = getAttribute(script, "crossorigin") || null;
 
-        let relativeOrigin = false;
-        let relativeProtocol = false;
-        let sameOrigin;
+        // Protocol-relative URLs inherit the page scheme, so their security is
+        // judged by httpEnforcesHttps below; other URLs carry a concrete scheme.
+        const relativeProtocol = /^(\/\/)[^/]/.test(scriptSrc);
 
-        const relativeProtocolRegex = /^(\/\/)[^/]/;
-        const fullUrlRegex = /^https?:\/\//;
-
-        if (relativeProtocolRegex.test(scriptSrc)) {
-          // relative protocol (src="//example.com/script.js"); inherits the
-          // page scheme and is treated as a foreign origin here — its risk is
-          // scored separately (issue #464).
-          relativeProtocol = true;
-          sameOrigin = false;
-        } else if (fullUrlRegex.test(scriptSrc)) {
-          // full URL (src="https://example.com/script.js")
-          sameOrigin = new URL(scriptSrc).origin === baseOrigin;
-        } else {
-          // relative URL (src="/path" etc.) — always same origin
-          relativeOrigin = true;
-          sameOrigin = true;
+        // Resolving against baseUrl covers relative and protocol-relative URLs;
+        // without a session there is no base, so treat the script as foreign.
+        // A src that fails to resolve (e.g. src="//") is not a loadable
+        // sub-resource, so skip it rather than crashing the whole scan.
+        let scriptUrl = null;
+        if (baseUrl) {
+          try {
+            scriptUrl = new URL(scriptSrc, baseUrl);
+          } catch {
+            continue;
+          }
         }
 
-        // Check to see if it is the same origin
-        let secureOrigin;
-        if (relativeOrigin || sameOrigin) {
-          secureOrigin = true;
-        } else {
-          secureOrigin = false;
+        const sameOrigin = scriptUrl?.origin === baseOrigin;
+        if (!sameOrigin) {
           scriptsOnForeignOrigin = true;
         }
 
-        // Check if it is a secure scheme
-        let scheme = null;
-        if (!relativeProtocol && !relativeOrigin) {
-          scheme = new URL(scriptSrc).protocol;
-        }
-        let secureScheme = false;
-        if (
-          scheme === "https:" ||
-          (relativeOrigin && requests.session?.url.protocol === "https:")
-        ) {
-          secureScheme = true;
-        }
+        // Protocol-relative URLs are secure only when httpEnforcesHttps; others
+        // are secure when their resolved scheme is https.
+        const secureScheme = relativeProtocol
+          ? httpEnforcesHttps
+          : scriptUrl?.protocol === "https:";
 
-        // Add it to the scripts data result, if it's not a relative URI
-        if (!secureOrigin) {
+        // Record and score off-origin scripts; same-origin ones are trusted.
+        if (!sameOrigin) {
           output.data[scriptSrc] = { crossorigin, integrity };
 
           if (integrity && !secureScheme) {
@@ -156,7 +150,7 @@ export function subresourceIntegrityTest(
             );
           }
         } else {
-          // Grant bonus even if they use SRI on the same origin
+          // Reward SRI on same-origin scripts too, even if not required.
           if (integrity && secureScheme && !output.result) {
             output.result =
               Expectation.SriImplementedAndAllScriptsLoadedSecurely;

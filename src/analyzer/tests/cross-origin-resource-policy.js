@@ -51,7 +51,8 @@ export function crossOriginResourcePolicyTest(
   /** @type {string | undefined}  */
   let corpHeader;
   if (httpHeaders.length > 1) {
-    // A browser considers multiple conflicting values invalid.
+    // A browser combines repeated headers into a single value that matches no
+    // valid policy, so treat any repetition as invalid.
     output.data = httpHeaders.join(", ").slice(0, 256).toLowerCase();
     output.result = Expectation.CrossOriginResourcePolicyHeaderInvalid;
   } else if (output.http && httpHeader) {

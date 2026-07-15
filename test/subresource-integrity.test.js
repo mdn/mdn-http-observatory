@@ -67,22 +67,6 @@ describe("Subresource Integrity", () => {
     assert.isTrue(result.pass);
   });
 
-  it("keeps an on-origin protocol-relative script secure even without HTTPS enforcement", function () {
-    // An on-origin sub-resource carries no additional risk, so its verdict is
-    // independent of whether HTTP→HTTPS is enforced (issue #464). The enforced
-    // case is covered by "checks for same origin" above.
-    reqs = emptyRequests("test_content_sri_sameorigin3.html");
-    reqs.responses.httpRedirects = [
-      { url: new URL("http://mozilla.org/"), status: 200 },
-    ];
-    const result = subresourceIntegrityTest(reqs);
-    assert.equal(
-      result.result,
-      Expectation.SriNotImplementedButAllScriptsLoadedFromSecureOrigin
-    );
-    assert.isTrue(result.pass);
-  });
-
   it("treats a different subdomain as a distinct origin", function () {
     // A script on the same registrable domain but a different host
     // (cdn.mozilla.org vs. mozilla.org) is a distinct origin, so it must

@@ -189,5 +189,17 @@ describe("Subresource Integrity", () => {
       Expectation.SriNotImplementedAndExternalScriptsNotLoadedSecurely
     );
     assert.isFalse(result.pass);
+
+    // When there is no HTTP server at all, //cdn.example.com/script.js can only
+    // resolve to https://, so it should score like https:// (-5) (issue #464).
+    reqs = emptyRequests("test_content_sri_notimpl_external_noproto.html");
+    reqs.responses.http = null;
+    reqs.responses.httpRedirects = [];
+    result = subresourceIntegrityTest(reqs);
+    assert.equal(
+      result.result,
+      Expectation.SriNotImplementedButExternalScriptsLoadedSecurely
+    );
+    assert.isFalse(result.pass);
   });
 });

@@ -85,15 +85,20 @@ export function subresourceIntegrityTest(
 
     // Protocol-relative URLs (//cdn.example.com/…) inherit the page's scheme.
     // Per the security team's analysis (issue #464), only an off-origin
-    // sub-resource on an HTTP-reachable document adds risk (an attacker could
-    // MITM its origin and serve it over HTTP). So HTTP is "never served" — and
-    // such a URL is safe — only when there is no HTTP server, or every redirect
-    // hop after the initial HTTP request is already HTTPS (no downgradeable hop).
+    // sub-resource on a document served over HTTP adds risk (an attacker could
+    // MITM the sub-resource's origin and serve it over HTTP). So such a URL is
+    // safe whenever a normal visitor ends up on HTTPS: when there is no HTTP
+    // server, or the HTTP request ultimately redirects to HTTPS.
+    //
+    // A downgradeable intermediate hop (http → http → https) is not this test's
+    // concern: the visitor still lands on HTTPS, so the script loads over HTTPS.
+    // That insecure hop is already penalised by the redirection test
+    // (RedirectionNotToHttpsOnInitialRedirection); judging it here as well would
+    // dock one redirect flaw twice.
     const httpRedirects = requests.responses.httpRedirects;
     const httpEnforcesHttps =
       !requests.responses.http ||
-      (httpRedirects.length > 1 &&
-        httpRedirects.slice(1).every((r) => r.url.protocol === "https:"));
+      httpRedirects.at(-1)?.url.protocol === "https:";
 
     for (const script of scripts) {
       const scriptSrc = getAttribute(script, "src");

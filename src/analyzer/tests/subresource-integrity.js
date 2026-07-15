@@ -104,21 +104,18 @@ export function subresourceIntegrityTest(
 
         // Resolving against baseUrl covers relative and protocol-relative URLs;
         // without a session there is no base, so treat the script as foreign.
-        const sameOrigin = baseUrl
-          ? new URL(scriptSrc, baseUrl).origin === baseOrigin
-          : false;
+        const scriptUrl = baseUrl ? new URL(scriptSrc, baseUrl) : null;
+
+        const sameOrigin = scriptUrl?.origin === baseOrigin;
         if (!sameOrigin) {
           scriptsOnForeignOrigin = true;
         }
 
         // Protocol-relative URLs are secure only when httpEnforcesHttps; others
         // are secure when their resolved scheme is https.
-        const resolvedScheme = baseUrl
-          ? new URL(scriptSrc, baseUrl).protocol
-          : null;
-        const secureScheme =
-          (relativeProtocol && httpEnforcesHttps) ||
-          (!relativeProtocol && resolvedScheme === "https:");
+        const secureScheme = relativeProtocol
+          ? httpEnforcesHttps
+          : scriptUrl?.protocol === "https:";
 
         // Record and score off-origin scripts; same-origin ones are trusted.
         if (!sameOrigin) {

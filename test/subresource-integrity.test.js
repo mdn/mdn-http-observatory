@@ -201,5 +201,20 @@ describe("Subresource Integrity", () => {
       Expectation.SriNotImplementedButExternalScriptsLoadedSecurely
     );
     assert.isFalse(result.pass);
+
+    // When the redirect to HTTPS goes through an intermediate HTTP hop, that hop
+    // could be downgraded, so HTTPS is not enforced and the URL is still penalised.
+    reqs = emptyRequests("test_content_sri_notimpl_external_noproto.html");
+    reqs.responses.httpRedirects = [
+      { url: new URL("http://mozilla.org/"), status: 301 },
+      { url: new URL("http://www.mozilla.org/"), status: 301 },
+      { url: new URL("https://www.mozilla.org/"), status: 200 },
+    ];
+    result = subresourceIntegrityTest(reqs);
+    assert.equal(
+      result.result,
+      Expectation.SriNotImplementedAndExternalScriptsNotLoadedSecurely
+    );
+    assert.isFalse(result.pass);
   });
 });

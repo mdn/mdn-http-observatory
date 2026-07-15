@@ -85,12 +85,14 @@ export function subresourceIntegrityTest(
     // (any attack on them also applies to the document), and neither does an
     // off-origin sub-resource when the document is always HTTPS. So an off-origin
     // protocol-relative URL is only safe when HTTP is never served: either there
-    // is no HTTP server at all, or HTTP always redirects to HTTPS.
+    // is no HTTP server at all, or HTTP redirects to HTTPS without any
+    // intermediate HTTP hop that could be downgraded (every hop after the
+    // initial HTTP request is HTTPS).
     const httpRedirects = requests.responses.httpRedirects;
     const httpEnforcesHttps =
       !requests.responses.http ||
       (httpRedirects.length > 1 &&
-        httpRedirects.at(-1)?.url.protocol === "https:");
+        httpRedirects.slice(1).every((r) => r.url.protocol === "https:"));
 
     const siteDomain = parse(requests.site.hostname).domain;
 

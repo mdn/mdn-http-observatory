@@ -104,7 +104,16 @@ export function subresourceIntegrityTest(
 
         // Resolving against baseUrl covers relative and protocol-relative URLs;
         // without a session there is no base, so treat the script as foreign.
-        const scriptUrl = baseUrl ? new URL(scriptSrc, baseUrl) : null;
+        // A src that fails to resolve (e.g. src="//") is not a loadable
+        // sub-resource, so skip it rather than crashing the whole scan.
+        let scriptUrl = null;
+        if (baseUrl) {
+          try {
+            scriptUrl = new URL(scriptSrc, baseUrl);
+          } catch {
+            continue;
+          }
+        }
 
         const sameOrigin = scriptUrl?.origin === baseOrigin;
         if (!sameOrigin) {

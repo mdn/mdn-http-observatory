@@ -92,6 +92,8 @@ export function subresourceIntegrityTest(
       (httpRedirects.length > 1 &&
         httpRedirects.at(-1)?.url.protocol === "https:");
 
+    const siteDomain = parse(requests.site.hostname).domain;
+
     for (const script of scripts) {
       const scriptSrc = getAttribute(script, "src");
       if (scriptSrc) {
@@ -110,12 +112,10 @@ export function subresourceIntegrityTest(
           // relative protocol(src="//example.com/script.js")
           relativeProtocol = true;
           sameSecondLevelDomain =
-            parse("https:" + scriptSrc).domain ===
-            parse(requests.site.hostname).domain;
+            parse("https:" + scriptSrc).domain === siteDomain;
         } else if (fullUrlRegex.test(scriptSrc)) {
           // full URL (src="https://example.com/script.js")
-          sameSecondLevelDomain =
-            src.domain === parse(requests.site.hostname).domain;
+          sameSecondLevelDomain = src.domain === siteDomain;
         } else {
           // relative URL (src="/path" etc.)
           relativeOrigin = true;

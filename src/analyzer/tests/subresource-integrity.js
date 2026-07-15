@@ -101,22 +101,11 @@ export function subresourceIntegrityTest(
         const integrity = getAttribute(script, "integrity") || null;
         const crossorigin = getAttribute(script, "crossorigin") || null;
 
-        let relativeOrigin = false;
-        let relativeProtocol = false;
-
-        const relativeProtocolRegex = /^(\/\/)[^/]/;
-        const fullUrlRegex = /^https?:\/\//;
-
-        if (relativeProtocolRegex.test(scriptSrc)) {
-          // relative protocol (src="//example.com/script.js"); inherits the
-          // page scheme, so a same-host URL resolves to the page's own origin.
-          relativeProtocol = true;
-        } else if (fullUrlRegex.test(scriptSrc)) {
-          // full URL (src="https://example.com/script.js")
-        } else {
-          // relative URL (src="/path" etc.)
-          relativeOrigin = true;
-        }
+        // Only protocol-relative URLs (src="//example.com/script.js") need
+        // special scheme handling: they inherit the page scheme, so their
+        // security is judged by HTTP reachability below. Full and path-relative
+        // URLs carry a concrete scheme that is read directly.
+        const relativeProtocol = /^(\/\/)[^/]/.test(scriptSrc);
 
         // Same origin when the resolved script origin exactly matches the
         // page's (scheme + host + port). Resolving against baseUrl also covers
@@ -129,19 +118,16 @@ export function subresourceIntegrityTest(
           scriptsOnForeignOrigin = true;
         }
 
-        // Check if it is a secure scheme
-        let scheme = null;
-        if (!relativeProtocol && !relativeOrigin) {
-          scheme = new URL(scriptSrc).protocol;
-        }
-        let secureScheme = false;
-        if (
-          scheme === "https:" ||
-          (relativeOrigin && requests.session?.url.protocol === "https:") ||
-          (relativeProtocol && httpEnforcesHttps)
-        ) {
-          secureScheme = true;
-        }
+        // Check if it is a secure scheme. Protocol-relative URLs are secure
+        // only when HTTP is never served (httpEnforcesHttps); other URLs are
+        // secure when the scheme they resolve to — explicit for full URLs,
+        // inherited from baseUrl for path-relative ones — is https.
+        const resolvedScheme = baseUrl
+          ? new URL(scriptSrc, baseUrl).protocol
+          : null;
+        const secureScheme =
+          (relativeProtocol && httpEnforcesHttps) ||
+          (!relativeProtocol && resolvedScheme === "https:");
 
         // Add it to the scripts data result, if it's not a relative URI
         if (!secureOrigin) {

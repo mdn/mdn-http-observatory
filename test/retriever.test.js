@@ -113,6 +113,10 @@ describe("TestRetriever", () => {
     assert.instanceOf(requests.session, Session);
     assert.equal(requests.site.hostname, "developer.mozilla.org");
     assert.equal(requests.responses.httpRedirects.length, 3);
+    // The HTTPS redirect chain must come from the HTTPS session, so it starts
+    // on https: (a regression here would start on http:, as the HTTP chain does).
+    assert.isNotEmpty(requests.responses.httpsRedirects);
+    assert.equal("https:", requests.responses.httpsRedirects[0]?.url.protocol);
     assert.equal(
       "text/html",
       requests.responses.auto.headers["content-type"].slice(0, 9)

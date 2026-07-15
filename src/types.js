@@ -14,7 +14,7 @@
  * @property {string} mode
  * @property {boolean} pinned
  * @typedef {Map<string, Hst>} Hsts
- * @typedef {object} RedirectEntry
+ * @typedef {object} RouteEntry
  * @property {URL} url
  * @property {number} status
  */
@@ -30,10 +30,10 @@ export class Responses {
   http = null;
   /** @type {HttpResponse | null} */
   https = null;
-  /** @type {RedirectEntry[]} */
-  httpRedirects = [];
-  /** @type {RedirectEntry[]} */
-  httpsRedirects = [];
+  /** @type {RouteEntry[]} */
+  httpRoute = [];
+  /** @type {RouteEntry[]} */
+  httpsRoute = [];
 }
 
 export class Resources {

@@ -37,8 +37,8 @@ export const GRADES = new Set(GRADE_CHART.values());
 /** @type {import("../types.js").StringMap} */
 export const TEST_TITLES = {
   "cross-origin-resource-sharing": "Cross Origin Resource Sharing (CORS)",
-  "cross-origin-embedder-policy": "Cross Origin Embedder Policy",
   "cross-origin-opener-policy": "Cross Origin Opener Policy",
+  "cross-origin-embedder-policy": "Cross Origin Embedder Policy",
   "cross-origin-resource-policy": "Cross Origin Resource Policy",
   "content-security-policy": "Content Security Policy (CSP)",
   redirection: "Redirection",

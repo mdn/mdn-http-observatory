@@ -1,9 +1,9 @@
-#!/usr/bin/env node
+import { pathToFileURL } from "node:url";
 
 import { Command } from "commander";
+
 import { scan } from "./scanner/index.js";
 import { Site } from "./site.js";
-import { pathToFileURL } from "node:url";
 
 /**
  * @param {string} json
@@ -49,7 +49,7 @@ program
       const result = await scan(site, scanOptions);
       const tests = Object.fromEntries(
         Object.entries(result.tests).map(([key, test]) => {
-          const { scoreDescription, ...rest } = test;
+          const { scoreDescription: _scoreDescription, ...rest } = test;
           return [key, rest];
         })
       );
@@ -58,9 +58,9 @@ program
         tests: tests,
       };
       console.log(JSON.stringify(ret, null, 2));
-    } catch (e) {
-      if (e instanceof Error) {
-        console.log(JSON.stringify({ error: e.message }));
+    } catch (error) {
+      if (error instanceof Error) {
+        console.log(JSON.stringify({ error: error.message }));
         process.exit(1);
       }
     }

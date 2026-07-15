@@ -1,7 +1,8 @@
 import { Site } from "../../site.js";
-import { BaseOutput, Requests } from "../../types.js";
-import { Expectation } from "../../types.js";
+import { BaseOutput, Expectation } from "../../types.js";
 import { isHstsPreloaded } from "../hsts.js";
+
+/** @import { Requests } from "../../types.js" */
 
 export class RedirectionOutput extends BaseOutput {
   /** @type {string | null} */
@@ -23,14 +24,6 @@ export class RedirectionOutput extends BaseOutput {
     Expectation.RedirectionMissing,
     Expectation.RedirectionInvalidCert,
   ];
-
-  /**
-   *
-   * @param {Expectation} expectation
-   */
-  constructor(expectation) {
-    super(expectation);
-  }
 }
 
 /**

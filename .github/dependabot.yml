@@ -30,4 +30,5 @@ updates:
           - "@mdn/*"
     commit-message:
       prefix: chore
+      prefix-development: build
       include: scope

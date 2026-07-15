@@ -1,8 +1,9 @@
 import { faker } from "@faker-js/faker";
-import { ensureSite, ScanState } from "../../src/database/repository.js";
+
+import { ALGORITHM_VERSION } from "../../src/constants.js";
+import { ScanState, ensureSite } from "../../src/database/repository.js";
 import { GRADE_CHART } from "../../src/grader/charts.js";
 import { Expectation } from "../../src/types.js";
-import { ALGORITHM_VERSION } from "../../src/constants.js";
 
 /**
  * @typedef {import("pg").Pool} Pool
@@ -27,7 +28,7 @@ export async function insertSite(pool, site) {
 export async function insertSeeds(pool) {
   // create a bunch of sites
   const siteIds = await Promise.all(
-    [...Array(10).keys()].map((i) => {
+    [...Array.from({ length: 10 }).keys()].map((i) => {
       if (i === 0) {
         return ensureSite(pool, "www.mozilla.org");
       } else {
@@ -36,15 +37,14 @@ export async function insertSeeds(pool) {
     })
   );
   // make some random scans for those
-  const scanIds = (
-    await Promise.all(
-      [...Array(20).keys()].map(async (i) => {
-        let score = Math.floor(Math.random() * 120);
-        score -= score % 5;
-        const grade = GRADE_CHART.get(Math.min(score, 100));
-        const siteId = siteIds[i % siteIds.length];
-        return pool.query(
-          `INSERT INTO scans (site_id, state, start_time, end_time, grade, score, tests_quantity, algorithm_version, status_code)
+  const scanRows = await Promise.all(
+    [...Array.from({ length: 20 }).keys()].map(async (i) => {
+      let score = Math.floor(Math.random() * 120);
+      score -= score % 5;
+      const grade = GRADE_CHART.get(Math.min(score, 100));
+      const siteId = siteIds[i % siteIds.length];
+      return pool.query(
+        `INSERT INTO scans (site_id, state, start_time, end_time, grade, score, tests_quantity, algorithm_version, status_code)
           VALUES ($1,
             $2,
             NOW() - INTERVAL '${(i + 1) * 2000} seconds',
@@ -54,14 +54,14 @@ export async function insertSeeds(pool) {
             9,
             $5,
             200) RETURNING id`,
-          [siteId, ScanState.FINISHED, grade, score, ALGORITHM_VERSION]
-        );
-      })
-    )
-  ).map((r) => r.rows[0].id);
+        [siteId, ScanState.FINISHED, grade, score, ALGORITHM_VERSION]
+      );
+    })
+  );
+  const scanIds = scanRows.map((r) => r.rows[0].id);
 
   await Promise.all(
-    [...Array(100).keys()].map((i) => {
+    [...Array.from({ length: 100 }).keys()].map((i) => {
       const siteId = siteIds[i % siteIds.length];
       const scanId = scanIds[i % scanIds.length];
       const expectation =

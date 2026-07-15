@@ -1,10 +1,12 @@
-import Postgrator from "postgrator";
-import path, { dirname } from "node:path";
+import path from "node:path";
 import { fileURLToPath } from "node:url";
+
+import Postgrator from "postgrator";
+
 import { createPool } from "./repository.js";
 
 const MIGRATION_PATTERN = path.join(
-  dirname(fileURLToPath(import.meta.url)),
+  path.dirname(fileURLToPath(import.meta.url)),
   "..",
   "..",
   "migrations",
@@ -36,8 +38,8 @@ export async function migrateDatabase(version, pool) {
       execQuery: (query) => pool.query(query),
     });
     await postgrator.migrate(version);
-  } catch (e) {
-    console.error(e);
+  } catch (error) {
+    console.error(error);
   } finally {
     if (owned_pool) {
       await pool.end();

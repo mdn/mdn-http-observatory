@@ -1,20 +1,20 @@
-import { Session } from "./retriever/session.js";
-import { Site } from "./site.js";
+/** @import { Session } from "./retriever/session.js" */
+/** @import { Site } from "./site.js" */
 
 /**
- * @typedef {Object} HttpEquiv
- * @prop {Map<string, string[]>} [httpEquiv]
- * @typedef {Object} Verified
- * @prop {boolean} verified
+ * @typedef {object} HttpEquiv
+ * @property {Map<string, string[]>} [httpEquiv]
+ * @typedef {object} Verified
+ * @property {boolean} verified
  * @typedef {import("axios").AxiosResponse & Verified} HttpResponse
  * @typedef {HttpResponse & Partial<HttpEquiv>} Response
- * @typedef {Object} Hst
+ * @typedef {object} Hst
  * @property {boolean} includeSubDomains
  * @property {boolean} includeSubDomainsForPinning
  * @property {string} mode
  * @property {boolean} pinned
  * @typedef {Map<string, Hst>} Hsts
- * @typedef {Object} RedirectEntry
+ * @typedef {object} RedirectEntry
  * @property {URL} url
  * @property {number} status
  */
@@ -46,7 +46,7 @@ export class Resources {
 export class BaseOutput {
   /** @type {Expectation} */
   expectation;
-  /** @type boolean | null */
+  /** @type {boolean | null} */
   pass = false;
   /** @type {Expectation | null} */
   result = null;
@@ -226,13 +226,13 @@ export const Expectation = {
 };
 
 /**
- * @typedef {Object} ScanOptions
- * @prop {string[]} [customHeaders]
- * @prop {boolean} [sendHeadersOverHttp]
- * @prop {string[]} [cookies]
- * @prop {number} [httpPort]
- * @prop {number} [httpsPort]
- * @prop {string} [path]
+ * @typedef {object} ScanOptions
+ * @property {string[]} [customHeaders]
+ * @property {boolean} [sendHeadersOverHttp]
+ * @property {string[]} [cookies]
+ * @property {number} [httpPort]
+ * @property {number} [httpsPort]
+ * @property {string} [path]
  */
 
 // MIME types for HTML requests
@@ -290,62 +290,62 @@ export class Policy {
  */
 
 /**
- * @typedef {Object} AnalyzeResult
- * @prop {number} algorithmVersion
- * @prop {string | null} error
- * @prop {string} grade
- * @prop {StringMap} responseHeaders
- * @prop {number} score
- * @prop {number} testsFailed
- * @prop {number} testsPassed
- * @prop {number} testsQuantity
- * @prop {number} statusCode
+ * @typedef {object} AnalyzeResult
+ * @property {number} algorithmVersion
+ * @property {string | null} error
+ * @property {string} grade
+ * @property {StringMap} responseHeaders
+ * @property {number} score
+ * @property {number} testsFailed
+ * @property {number} testsPassed
+ * @property {number} testsQuantity
+ * @property {number} statusCode
  */
 
 /**
- * @typedef {Object} ScanResult
- * @prop {AnalyzeResult} scan
- * @prop {TestMap} tests
+ * @typedef {object} ScanResult
+ * @property {AnalyzeResult} scan
+ * @property {TestMap} tests
  */
 
 /**
- * @typedef {Object} ScanHistoryRow
- * @prop {number} id
- * @prop {string} grade
- * @prop {number} score
- * @prop {string} end_time
- * @prop {number} end_time_unix_timestamp
+ * @typedef {object} ScanHistoryRow
+ * @property {number} id
+ * @property {string} grade
+ * @property {number} score
+ * @property {string} end_time
+ * @property {number} end_time_unix_timestamp
  */
 
 /**
- * @typedef {Object} ScannerStatisticsResult
- * @prop {NumberMap} grade_distribution
- * @prop {NumberMap} grade_distribution_all_scans
- * @prop {NumberMap} scan_score_difference_distribution_summation
- * @prop {String} most_recent_scan_datetime
- * @prop {number} scan_count
- * @prop {NumberMap} recent_scans
- * @prop {NumberMap} states
+ * @typedef {object} ScannerStatisticsResult
+ * @property {NumberMap} grade_distribution
+ * @property {NumberMap} grade_distribution_all_scans
+ * @property {NumberMap} scan_score_difference_distribution_summation
+ * @property {string} most_recent_scan_datetime
+ * @property {number} scan_count
+ * @property {NumberMap} recent_scans
+ * @property {NumberMap} states
  */
 
 /**
- * @typedef {Object} SiteHeadersResult
- * @prop {StringMap} public_headers
- * @prop {StringMap} private_headers
- * @prop {StringMap} cookies
+ * @typedef {object} SiteHeadersResult
+ * @property {StringMap} public_headers
+ * @property {StringMap} private_headers
+ * @property {StringMap} cookies
  */
 
 /**
- * @typedef {Object} TestResult
- * @prop {number} id
- * @prop {number} site_id
- * @prop {number} scan_id
- * @prop {string} name
- * @prop {string} expectation
- * @prop {string} result
- * @prop {number} score_modifier
- * @prop {boolean} pass
- * @prop {Output} output
+ * @typedef {object} TestResult
+ * @property {number} id
+ * @property {number} site_id
+ * @property {number} scan_id
+ * @property {string} name
+ * @property {string} expectation
+ * @property {string} result
+ * @property {number} score_modifier
+ * @property {boolean} pass
+ * @property {Output} output
  */
 
 /**

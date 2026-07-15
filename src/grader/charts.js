@@ -2,7 +2,7 @@ import { Expectation } from "../types.js";
 
 /**
  * @type {Map<number, string>}
- * */
+ */
 export const GRADE_CHART = new Map([
   [100, "A+"],
   [95, "A"],
@@ -31,7 +31,7 @@ export const MINIMUM_SCORE_FOR_EXTRA_CREDIT = 90;
 
 /**
  * @type {Set<string>}
- * */
+ */
 export const GRADES = new Set(GRADE_CHART.values());
 
 /** @type {import("../types.js").StringMap} */
@@ -93,7 +93,7 @@ export const TEST_TOPIC_LINKS = new Map([
 
 /**
  * @type {Map<Expectation, {description: string, modifier: number, recommendation: string}>}
- * */
+ */
 export const SCORE_TABLE = new Map([
   // CSP
   [

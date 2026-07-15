@@ -1,6 +1,8 @@
 import { AxiosHeaders } from "axios";
+
 import { CONFIG } from "../config.js";
 import { HTML_TYPES, Requests } from "../types.js";
+
 import { Session, getPageText } from "./session.js";
 import { urls } from "./url.js";
 import { parseHttpEquivHeaders } from "./utils.js";
@@ -76,12 +78,8 @@ export async function retrieve(site, options = {}) {
   });
 
   // Do a CORS preflight request
-  const corsUrl = retrievals.session.redirectHistory[
-    retrievals.session.redirectHistory.length - 1
-  ]
-    ? retrievals.session.redirectHistory[
-        retrievals.session.redirectHistory.length - 1
-      ]?.url.href
+  const corsUrl = retrievals.session.redirectHistory.at(-1)
+    ? retrievals.session.redirectHistory.at(-1)?.url.href
     : retrievals.session.url.href;
   const cors_resp =
     (await retrievals.session?.options({

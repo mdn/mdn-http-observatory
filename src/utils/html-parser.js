@@ -7,7 +7,7 @@
 import { Parser } from "htmlparser2";
 
 /**
- * @typedef {Object.<string, string>} Attributes
+ * @typedef {{[key: string]: string}} Attributes
  * An object mapping attribute names to their values
  */
 

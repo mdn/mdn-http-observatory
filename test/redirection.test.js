@@ -1,8 +1,11 @@
-import { describe, it, beforeEach } from "node:test";
+import { beforeEach, describe, it } from "node:test";
+
 import { assert } from "chai";
-import { emptyRequests } from "./helpers.js";
-import { Expectation } from "../src/types.js";
+
 import { redirectionTest } from "../src/analyzer/tests/redirection.js";
+import { Expectation } from "../src/types.js";
+
+import { emptyRequests } from "./helpers.js";
 
 describe("Redirections", () => {
   /** @type {import("../src/types.js").Requests} */

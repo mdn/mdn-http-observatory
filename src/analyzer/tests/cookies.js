@@ -1,26 +1,29 @@
 import { SET_COOKIE } from "../../headers.js";
-import { Requests, BaseOutput } from "../../types.js";
-import { Expectation } from "../../types.js";
+import { BaseOutput, Expectation } from "../../types.js";
 import { getHttpHeaders, onlyIfWorse } from "../utils.js";
+
 import { strictTransportSecurityTest } from "./strict-transport-security.js";
 
+/** @import { Requests } from "../../types.js" */
+
 // See: https://github.com/mozilla/http-observatory/issues/282 for the heroku-session-affinity insanity
-const COOKIES_TO_DELETE = ["heroku-session-affinity"];
+const COOKIES_TO_DELETE = new Set(["heroku-session-affinity"]);
 
 /**
  * @typedef {{ [key: string]: CookieDataItem }} CookieMap
- * /
+ */
 
 /**
- * @typedef {object} CookieDataItem
- * @property {string} domain
- * @property {number} expires
- * @property {boolean} httponly
- * @property {number | "Infinity" | "-Infinity"} `max-age``
- * @property {string} path
- * @property {null} port
- * @property {string} samesite
- * @property {boolean} secure
+ * @typedef {{
+ *   domain: string;
+ *   expires: number;
+ *   httponly: boolean;
+ *   "max-age": number | "Infinity" | "-Infinity";
+ *   path: string;
+ *   port: null;
+ *   samesite: string;
+ *   secure: boolean;
+ * }} CookieDataItem
  */
 
 export class CookiesOutput extends BaseOutput {
@@ -43,11 +46,6 @@ export class CookiesOutput extends BaseOutput {
     Expectation.CookiesSessionWithoutHttponlyFlag,
     Expectation.CookiesSessionWithoutSecureFlag,
   ];
-
-  /** @param {Expectation} expectation */
-  constructor(expectation) {
-    super(expectation);
-  }
 }
 
 /**
@@ -96,7 +94,7 @@ export function cookiesTest(
   const allCookies =
     requests.session?.jar?.serializeSync()?.cookies.filter(filterCookies) ?? [];
 
-  if (!allCookies.length) {
+  if (allCookies.length === 0) {
     output.result = Expectation.CookiesNotFound;
     output.data = null;
   } else {
@@ -184,7 +182,7 @@ export function cookiesTest(
     }
 
     const cookieSize = allCookies.join("").length;
-    if (cookieSize < 32768) {
+    if (cookieSize < 32_768) {
       /** @type {cookieData} */
       let cookieData = {};
       cookieData = allCookies.reduce((acc, cookie) => {
@@ -245,5 +243,5 @@ function containsInvalidSameSiteCookie(cookieString) {
  */
 function filterCookies(cookie) {
   const key = cookie.key;
-  return key && !COOKIES_TO_DELETE.includes(key);
+  return key && !COOKIES_TO_DELETE.has(key);
 }

@@ -153,7 +153,7 @@ export function subresourceIntegrityTest(
             );
           }
         } else {
-          // Grant bonus even if they use SRI on the same origin
+          // Reward SRI on same-origin scripts too, even if not required.
           if (integrity && secureScheme && !output.result) {
             output.result =
               Expectation.SriImplementedAndAllScriptsLoadedSecurely;

@@ -72,29 +72,21 @@ export function subresourceIntegrityTest(
       output.result = Expectation.HtmlNotParseable;
       return output;
     }
-    // The origin the page was ultimately served from. Scripts are same-origin
-    // only when their exact scheme + host + port match this, not merely when
-    // they share the same registrable domain (e.g. a different subdomain is a
-    // distinct origin).
+    // Origin the page was ultimately served from. Same-origin requires an exact
+    // scheme + host + port match, so a different subdomain is a distinct origin.
     const baseUrl =
       requests.session?.redirectHistory.at(-1)?.url ?? requests.session?.url;
     const baseOrigin = baseUrl?.origin ?? null;
 
-    // Track to see if any scripts were on foreign origins.
     let scriptsOnForeignOrigin = false;
 
-    // Protocol-relative URLs (//cdn.example.com/…) inherit the page's scheme.
-    // Per the security team's analysis (issue #464), only an off-origin
-    // sub-resource on a document served over HTTP adds risk (an attacker could
-    // MITM the sub-resource's origin and serve it over HTTP). So such a URL is
-    // safe whenever a normal visitor ends up on HTTPS: when there is no HTTP
-    // server, or the HTTP request ultimately redirects to HTTPS.
-    //
-    // A downgradeable intermediate hop (http → http → https) is not this test's
-    // concern: the visitor still lands on HTTPS, so the script loads over HTTPS.
-    // That insecure hop is already penalised by the redirection test
-    // (RedirectionNotToHttpsOnInitialRedirection); judging it here as well would
-    // dock one redirect flaw twice.
+    // A protocol-relative URL (//cdn.example.com/…) inherits the page's scheme,
+    // so it only adds risk when an off-origin sub-resource is served over HTTP
+    // (an attacker could MITM the sub-resource origin) — see issue #464. It is
+    // safe whenever a visitor lands on HTTPS: no HTTP server, or the HTTP request
+    // ultimately redirects to HTTPS. A downgradeable intermediate hop
+    // (http → http → https) still lands on HTTPS and is penalised by the
+    // redirection test, so it is not docked again here.
     const httpRedirects = requests.responses.httpRedirects;
     const httpEnforcesHttps =
       !requests.responses.http ||
@@ -106,16 +98,12 @@ export function subresourceIntegrityTest(
         const integrity = getAttribute(script, "integrity") || null;
         const crossorigin = getAttribute(script, "crossorigin") || null;
 
-        // Only protocol-relative URLs (src="//example.com/script.js") need
-        // special scheme handling: they inherit the page scheme, so their
-        // security is judged by HTTP reachability below. Full and path-relative
-        // URLs carry a concrete scheme that is read directly.
+        // Protocol-relative URLs inherit the page scheme, so their security is
+        // judged by httpEnforcesHttps below; other URLs carry a concrete scheme.
         const relativeProtocol = /^(\/\/)[^/]/.test(scriptSrc);
 
-        // Same origin when the resolved script origin exactly matches the
-        // page's (scheme + host + port). Resolving against baseUrl also covers
-        // relative and protocol-relative URLs; without a session there is no
-        // base to resolve against, so treat it as a foreign origin.
+        // Resolving against baseUrl covers relative and protocol-relative URLs;
+        // without a session there is no base, so treat the script as foreign.
         const sameOrigin = baseUrl
           ? new URL(scriptSrc, baseUrl).origin === baseOrigin
           : false;
@@ -123,10 +111,8 @@ export function subresourceIntegrityTest(
           scriptsOnForeignOrigin = true;
         }
 
-        // Check if it is a secure scheme. Protocol-relative URLs are secure
-        // only when HTTP is never served (httpEnforcesHttps); other URLs are
-        // secure when the scheme they resolve to — explicit for full URLs,
-        // inherited from baseUrl for path-relative ones — is https.
+        // Protocol-relative URLs are secure only when httpEnforcesHttps; others
+        // are secure when their resolved scheme is https.
         const resolvedScheme = baseUrl
           ? new URL(scriptSrc, baseUrl).protocol
           : null;

@@ -88,6 +88,7 @@ describe("Cross Origin Resource Policy", () => {
       result.result,
       Expectation.CrossOriginResourcePolicyHeaderInvalid
     );
+    assert.equal(result.data, "same-origin, cross-origin");
     assert.isFalse(result.pass);
   });
 });

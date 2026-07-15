@@ -2,14 +2,15 @@ import {
   CONTENT_SECURITY_POLICY,
   CONTENT_SECURITY_POLICY_REPORT_ONLY,
 } from "../../headers.js";
-import { Requests, Policy, BaseOutput } from "../../types.js";
-import { Expectation } from "../../types.js";
+import { BaseOutput, Expectation, Policy } from "../../types.js";
 import {
   DUPLICATE_WARNINGS_KEY,
   parseCsp,
   parseCspMeta,
 } from "../cspParser.js";
 import { getHttpHeaders } from "../utils.js";
+
+/** @import { Requests } from "../../types.js" */
 
 /**
  * Split a list of raw CSP header values into individual policies.
@@ -68,13 +69,6 @@ export class CspOutput extends BaseOutput {
     Expectation.CspNotImplemented,
     Expectation.CspNotImplementedButReportingEnabled,
   ];
-  /**
-   *
-   * @param {Expectation} expectation
-   */
-  constructor(expectation) {
-    super(expectation);
-  }
 }
 
 /**
@@ -127,20 +121,20 @@ export function contentSecurityPolicyTest(
     csp = parseCsp(
       [...httpCspPolicies, ...equivCspPolicies].filter((x) => x !== null)
     );
-  } catch (e) {
+  } catch {
     output.result = Expectation.CspHeaderInvalid;
     return output;
   }
 
   try {
     httpHeaderOnlyCsp = parseCsp(httpCspPolicies);
-  } catch (e) {
+  } catch {
     httpHeaderOnlyCsp = new Map();
   }
 
   try {
     metaCsp = parseCspMeta(equivCspPolicies);
-  } catch (e) {
+  } catch {
     metaCsp = new Map();
   }
 
@@ -151,7 +145,6 @@ export function contentSecurityPolicyTest(
     // Content-Security-Policy-Report-Only is only allowed in headers, not in meta tags
     // see https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Content-Security-Policy-Report-Only
     const httpCspReportOnly =
-      // @ts-ignore
       response.headers.get(CONTENT_SECURITY_POLICY_REPORT_ONLY) ?? null;
     if (httpCspReportOnly) {
       output.result = Expectation.CspNotImplementedButReportingEnabled;
@@ -209,10 +202,8 @@ export function contentSecurityPolicyTest(
       }
     }
     output.policy.strictDynamic = true;
-  } else if (script_src.has("'strict-dynamic'")) {
-    if (output.result === null) {
-      output.result = Expectation.CspHeaderInvalid;
-    }
+  } else if (script_src.has("'strict-dynamic'") && output.result === null) {
+    output.result = Expectation.CspHeaderInvalid;
   }
 
   // Some checks look only at active/passive CSP directives
@@ -233,10 +224,10 @@ export function contentSecurityPolicyTest(
   // Also don't allow overly broad schemes such as https: in either object-src or script-src
   // Likewise, if you don't have object-src or script-src defined, then all sources are allowed
   if (
-    [...script_src].filter((src) =>
+    [...script_src].some((src) =>
       DANGEROUSLY_BROAD_AND_UNSAFE_INLINE.has(src)
-    ).length > 0 ||
-    [...object_src].filter((src) => DANGEROUSLY_BROAD.has(src)).length > 0
+    ) ||
+    [...object_src].some((src) => DANGEROUSLY_BROAD.has(src))
   ) {
     if (output.result === null) {
       output.result = Expectation.CspImplementedWithUnsafeInline;

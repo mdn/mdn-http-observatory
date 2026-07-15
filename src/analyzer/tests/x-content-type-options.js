@@ -1,7 +1,8 @@
 import { X_CONTENT_TYPE_OPTIONS } from "../../headers.js";
-import { BaseOutput, Requests } from "../../types.js";
-import { Expectation } from "../../types.js";
+import { BaseOutput, Expectation } from "../../types.js";
 import { getFirstHttpHeader } from "../utils.js";
+
+/** @import { Requests } from "../../types.js" */
 
 export class XContentTypeOptionsOutput extends BaseOutput {
   /** @type {string | null} */
@@ -13,14 +14,6 @@ export class XContentTypeOptionsOutput extends BaseOutput {
     Expectation.XContentTypeOptionsHeaderInvalid,
     Expectation.XContentTypeOptionsNotImplemented,
   ];
-
-  /**
-   *
-   * @param {Expectation} expectation
-   */
-  constructor(expectation) {
-    super(expectation);
-  }
 }
 
 /**

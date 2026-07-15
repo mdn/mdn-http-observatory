@@ -1,9 +1,9 @@
+import { CONTENT_SECURITY_POLICY, REFERRER_POLICY } from "../headers.js";
 import {
   collectElements,
   getAttribute,
   hasAttribute,
 } from "../utils/html-parser.js";
-import { CONTENT_SECURITY_POLICY, REFERRER_POLICY } from "../headers.js";
 
 /**
  *
@@ -37,8 +37,8 @@ export function parseHttpEquivHeaders(html, _baseUrl) {
         }
       }
     }
-  } catch (e) {
-    console.error("Error parsing HTTP Equiv headers", e);
+  } catch (error) {
+    console.error("Error parsing HTTP Equiv headers", error);
   }
   return httpEquivHeaders;
 }

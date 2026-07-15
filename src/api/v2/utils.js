@@ -1,33 +1,36 @@
 import dns from "node:dns";
+import fs from "node:fs";
 import net from "node:net";
-import fs from "fs";
-import { fileURLToPath } from "node:url";
 import path from "node:path";
+import { fileURLToPath } from "node:url";
+
+import { snakeCase } from "change-case";
+
+import {
+  ScanState,
+  ensureSite,
+  insertScan,
+  insertTestResults,
+  selectScanHostHistory,
+  selectTestResults,
+  updateScanState,
+} from "../../database/repository.js";
+import { TEST_TITLES } from "../../grader/charts.js";
+import {
+  getRecommendation,
+  getScoreDescription,
+  getTopicLink,
+} from "../../grader/grader.js";
+import { scan } from "../../scanner/index.js";
+import { Expectation } from "../../types.js";
 import {
   InvalidHostNameError,
   InvalidHostNameIpError,
   InvalidHostNameLookupError,
   ScanFailedError,
 } from "../errors.js";
-import {
-  ensureSite,
-  insertScan,
-  insertTestResults,
-  ScanState,
-  selectScanHostHistory,
-  selectTestResults,
-  updateScanState,
-} from "../../database/repository.js";
-import {
-  getRecommendation,
-  getScoreDescription,
-  getTopicLink,
-} from "../../grader/grader.js";
-import { snakeCase } from "change-case";
+
 import { PolicyResponse } from "./schemas.js";
-import { Expectation } from "../../types.js";
-import { TEST_TITLES } from "../../grader/charts.js";
-import { scan } from "../../scanner/index.js";
 
 /**
  *
@@ -39,7 +42,7 @@ export function isIp(hostname) {
 }
 
 /**
- * @typedef {Object} ValidHostnameResult
+ * @typedef {object} ValidHostnameResult
  * @property {string} [hostname]
  * @property {boolean} [isIpAddress]
  */
@@ -122,16 +125,16 @@ export async function checkSitename(site) {
   // Try prefixing with `www.` if it fails on first try
   try {
     site.hostname = await validHostname(site.hostname);
-  } catch (e) {
-    if (e instanceof InvalidHostNameLookupError) {
+  } catch (error) {
+    if (error instanceof InvalidHostNameLookupError) {
       try {
         site.hostname = await validHostname(`www.${site.hostname}`);
-      } catch (e2) {
+      } catch (error_) {
         // If the www. fallback also fails to resolve, report the original hostname
-        throw e2 instanceof InvalidHostNameLookupError ? e : e2;
+        throw error_ instanceof InvalidHostNameLookupError ? error : error_;
       }
     } else {
-      throw e;
+      throw error;
     }
   }
   return site;
@@ -143,8 +146,8 @@ export async function checkSitename(site) {
 
 /**
  * Return API-formatted test results for a single scan.
- * @param {number} scanId
  * @param {Pool} pool
+ * @param {number} scanId
  */
 export async function testsForScan(pool, scanId) {
   const testRows = await selectTestResults(pool, scanId);
@@ -221,17 +224,17 @@ export function hydrateTests(tests) {
   // For some tests whose pass flag is "not applicable", we
   // return null on the pass field.
 
-  const noneResults = [
+  const noneResults = new Set([
     Expectation.ReferrerPolicyNotImplemented,
     Expectation.SriNotImplementedResponseNotHtml,
     Expectation.SriNotImplementedButNoScriptsLoaded,
     Expectation.SriNotImplementedButAllScriptsLoadedFromSecureOrigin,
     Expectation.CookiesNotFound,
     Expectation.CrossOriginResourcePolicyNotImplemented,
-  ];
+  ]);
 
   for (const [k, v] of Object.entries(tests)) {
-    if (v.result && noneResults.includes(v.result)) {
+    if (v.result && noneResults.has(v.result)) {
       tests[k].pass = null;
     }
   }
@@ -252,10 +255,10 @@ export async function executeScan(pool, site) {
   let scanResult;
   try {
     scanResult = await scan(site);
-  } catch (e) {
-    if (e instanceof Error) {
-      await updateScanState(pool, scanId, ScanState.FAILED, e.message);
-      throw new ScanFailedError(e);
+  } catch (error) {
+    if (error instanceof Error) {
+      await updateScanState(pool, scanId, ScanState.FAILED, error.message);
+      throw new ScanFailedError(error);
     } else {
       const unknownError = new Error("Unknown error occurred");
       await updateScanState(

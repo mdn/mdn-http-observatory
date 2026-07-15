@@ -1,7 +1,8 @@
-import axios from "axios";
-import { writeFile } from "fs/promises";
+import { writeFile } from "node:fs/promises";
 import path from "node:path";
 import { fileURLToPath, pathToFileURL } from "node:url";
+
+import axios from "axios";
 
 const TLD_LIST_URL = new URL(
   "https://data.iana.org/TLD/tlds-alpha-by-domain.txt"
@@ -38,7 +39,7 @@ export async function retrieveAndStoreTldList() {
  */
 function cleanData(data) {
   const ret = data
-    .replace(/#.*$/gm, "")
+    .replaceAll(/#.*$/gm, "")
     .split("\n")
     .filter((line) => !line.startsWith("#"))
     .filter((line) => line.trim() !== "")

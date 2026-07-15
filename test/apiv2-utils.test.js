@@ -1,5 +1,7 @@
 import { describe, it } from "node:test";
+
 import { assert } from "chai";
+
 import { isIp } from "../src/api/v2/utils.js";
 
 describe("isIp", () => {

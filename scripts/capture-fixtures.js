@@ -1,5 +1,6 @@
 import fs from "node:fs";
 import path from "node:path";
+
 import { retrieve } from "../src/retriever/retriever.js";
 import { scan } from "../src/scanner/index.js";
 import { Site } from "../src/site.js";
@@ -81,7 +82,7 @@ async function captureFixture(domain) {
   };
 
   // Write to fixture file
-  const fixtureName = domain.replace(/\./g, "-");
+  const fixtureName = domain.replaceAll(".", "-");
   const fixturePath = path.join("test", "fixtures", `${fixtureName}.json`);
 
   console.log(`  Writing to ${fixturePath}...`);
@@ -118,4 +119,4 @@ async function main() {
   );
 }
 
-main();
+await main();

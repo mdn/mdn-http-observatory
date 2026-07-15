@@ -1,7 +1,8 @@
 import { Site } from "../../site.js";
-import { BaseOutput, Requests } from "../../types.js";
-import { Expectation } from "../../types.js";
+import { BaseOutput, Expectation } from "../../types.js";
 import { isHstsPreloaded } from "../hsts.js";
+
+/** @import { Requests } from "../../types.js" */
 
 export class RedirectionOutput extends BaseOutput {
   /** @type {string | null} */
@@ -23,14 +24,6 @@ export class RedirectionOutput extends BaseOutput {
     Expectation.RedirectionMissing,
     Expectation.RedirectionInvalidCert,
   ];
-
-  /**
-   *
-   * @param {Expectation} expectation
-   */
-  constructor(expectation) {
-    super(expectation);
-  }
 }
 
 /**
@@ -48,14 +41,10 @@ export function redirectionTest(
 
   if (requests.responses.httpRedirects.length > 0) {
     output.destination =
-      requests.responses.httpRedirects[
-        requests.responses.httpRedirects.length - 1
-      ]?.url?.href || null;
+      requests.responses.httpRedirects.at(-1)?.url?.href || null;
   } else if (requests.responses.httpsRedirects.length > 0) {
     output.destination =
-      requests.responses.httpsRedirects[
-        requests.responses.httpsRedirects.length - 1
-      ]?.url?.href || null;
+      requests.responses.httpsRedirects.at(-1)?.url?.href || null;
   }
   output.statusCode = response ? response.status : null;
 
@@ -77,13 +66,13 @@ export function redirectionTest(
       // No redirection, so you just stayed on the http website
       output.result = Expectation.RedirectionMissing;
       output.redirects = false;
-    } else if (route[route.length - 1]?.url.protocol !== "https:") {
+    } else if (route.at(-1)?.url.protocol !== "https:") {
       // Final destination wasn't an https website
       output.result = Expectation.RedirectionNotToHttps;
     } else if (route[1]?.url.protocol === "http:") {
       // http should never redirect to another http location -- should always go to https first
       output.result = Expectation.RedirectionNotToHttpsOnInitialRedirection;
-      output.statusCode = route[route.length - 1]?.status || null;
+      output.statusCode = route.at(-1)?.status || null;
     } else if (
       route[0]?.url.protocol === "http:" &&
       route[1]?.url.protocol === "https:" &&

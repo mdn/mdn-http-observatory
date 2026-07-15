@@ -1,9 +1,11 @@
 import { describe, it } from "node:test";
+
 import { assert } from "chai";
 
-import { emptyRequests, setHeader } from "./helpers.js";
 import { contentSecurityPolicyTest } from "../src/analyzer/tests/csp.js";
 import { Expectation } from "../src/types.js";
+
+import { emptyRequests, setHeader } from "./helpers.js";
 
 describe("Content Security Policy", () => {
   it("missing", async () => {

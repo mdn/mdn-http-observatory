@@ -1,8 +1,11 @@
-import { describe, it, beforeEach } from "node:test";
+import { beforeEach, describe, it } from "node:test";
+
 import { assert } from "chai";
-import { emptyRequests } from "./helpers.js";
-import { Expectation } from "../src/types.js";
+
 import { referrerPolicyTest } from "../src/analyzer/tests/referrer-policy.js";
+import { Expectation } from "../src/types.js";
+
+import { emptyRequests } from "./helpers.js";
 
 describe("ReferrerPolicy", () => {
   /** @type {import("../src/types.js").Requests} */

@@ -1,9 +1,11 @@
-import { BaseOutput, HTML_TYPES, Requests } from "../../types.js";
-import { Expectation } from "../../types.js";
-import { collectElements, getAttribute } from "../../utils/html-parser.js";
 import { parse } from "tldts";
-import { getFirstHttpHeader, onlyIfWorse } from "../utils.js";
+
 import { CONTENT_TYPE } from "../../headers.js";
+import { BaseOutput, Expectation, HTML_TYPES } from "../../types.js";
+import { collectElements, getAttribute } from "../../utils/html-parser.js";
+import { getFirstHttpHeader, onlyIfWorse } from "../utils.js";
+
+/** @import { Requests } from "../../types.js" */
 
 export class SubresourceIntegrityOutput extends BaseOutput {
   /** @type {import("../../types.js").ScriptMap} */
@@ -67,7 +69,7 @@ export function subresourceIntegrityTest(
     let scripts;
     try {
       scripts = collectElements(requests.resources.path || "", "script");
-    } catch (e) {
+    } catch {
       // severe parser error
       output.result = Expectation.HtmlNotParseable;
       return output;
@@ -83,9 +85,9 @@ export function subresourceIntegrityTest(
 
         let relativeOrigin = false;
         let relativeProtocol = false;
-        let sameSecondLevelDomain = false;
+        let sameSecondLevelDomain;
 
-        const relativeProtocolRegex = /^(\/\/)[^\/]/;
+        const relativeProtocolRegex = /^(\/\/)[^/]/;
         const fullUrlRegex = /^https?:\/\//;
 
         if (relativeProtocolRegex.test(scriptSrc)) {
@@ -103,7 +105,7 @@ export function subresourceIntegrityTest(
         }
 
         // Check to see if it is the same origin or second level domain
-        let secureOrigin = false;
+        let secureOrigin;
         if (relativeOrigin || (sameSecondLevelDomain && !relativeProtocol)) {
           secureOrigin = true;
         } else {
@@ -179,7 +181,7 @@ export function subresourceIntegrityTest(
   }
 
   // Code defensively on the size of the data
-  output.data = JSON.stringify(output.data).length < 32768 ? output.data : {};
+  output.data = JSON.stringify(output.data).length < 32_768 ? output.data : {};
   // Check to see if the test passed or failed
   if (
     [

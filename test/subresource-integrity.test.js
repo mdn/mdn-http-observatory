@@ -30,7 +30,8 @@ describe("Subresource Integrity", () => {
   });
 
   it("checks for same origin", function () {
-    reqs = emptyRequests("test_content_sri_sameorigin1.html");
+    // On the same origin with relative path
+    reqs = emptyRequests("test_content_sri_sameorigin_relative.html");
     let result = subresourceIntegrityTest(reqs);
     assert.equal(
       result.result,
@@ -39,7 +40,7 @@ describe("Subresource Integrity", () => {
     assert.isTrue(result.pass);
 
     // On the same origin, but without a protocol
-    reqs = emptyRequests("test_content_sri_sameorigin3.html");
+    reqs = emptyRequests("test_content_sri_sameorigin_noproto.html");
     result = subresourceIntegrityTest(reqs);
     assert.equal(
       result.result,
@@ -48,7 +49,7 @@ describe("Subresource Integrity", () => {
     assert.isTrue(result.pass);
 
     // On the same origin, but with https:// specified
-    reqs = emptyRequests("test_content_sri_sameorigin2.html");
+    reqs = emptyRequests("test_content_sri_sameorigin_https.html");
     result = subresourceIntegrityTest(reqs);
     assert.equal(
       result.result,

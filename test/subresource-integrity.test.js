@@ -38,6 +38,16 @@ describe("Subresource Integrity", () => {
     );
     assert.isTrue(result.pass);
 
+    // On the same origin, but without a protocol (//mozilla.org resolves to the
+    // page's own origin)
+    reqs = emptyRequests("test_content_sri_onorigin_noproto.html");
+    result = subresourceIntegrityTest(reqs);
+    assert.equal(
+      result.result,
+      Expectation.SriNotImplementedButAllScriptsLoadedFromSecureOrigin
+    );
+    assert.isTrue(result.pass);
+
     // On the same origin, but with https:// specified
     reqs = emptyRequests("test_content_sri_sameorigin2.html");
     result = subresourceIntegrityTest(reqs);
@@ -58,24 +68,15 @@ describe("Subresource Integrity", () => {
     assert.isTrue(result.pass);
   });
 
-  it("treats an on-origin protocol-relative script as a secure origin regardless of HTTPS enforcement", function () {
-    // //mozilla.org resolves to the page's own origin (https://mozilla.org),
-    // so it is same-origin and carries no additional risk — HTTP→HTTPS
-    // enforcement is irrelevant to the verdict (issue #464).
-    reqs = emptyRequests("test_content_sri_onorigin_noproto.html");
-    let result = subresourceIntegrityTest(reqs);
-    assert.equal(
-      result.result,
-      Expectation.SriNotImplementedButAllScriptsLoadedFromSecureOrigin
-    );
-    assert.isTrue(result.pass);
-
-    // Without HTTP→HTTPS enforcement the on-origin verdict is unchanged.
+  it("keeps an on-origin protocol-relative script secure even without HTTPS enforcement", function () {
+    // An on-origin sub-resource carries no additional risk, so its verdict is
+    // independent of whether HTTP→HTTPS is enforced (issue #464). The enforced
+    // case is covered by "checks for same origin" above.
     reqs = emptyRequests("test_content_sri_onorigin_noproto.html");
     reqs.responses.httpRedirects = [
       { url: new URL("http://mozilla.org/"), status: 200 },
     ];
-    result = subresourceIntegrityTest(reqs);
+    const result = subresourceIntegrityTest(reqs);
     assert.equal(
       result.result,
       Expectation.SriNotImplementedButAllScriptsLoadedFromSecureOrigin

@@ -38,7 +38,7 @@ describe("Subresource Integrity", () => {
     );
     assert.isTrue(result.pass);
 
-    // On the same second-level domain, but with https:// specified
+    // On the same origin, but with https:// specified
     reqs = emptyRequests("test_content_sri_sameorigin2.html");
     result = subresourceIntegrityTest(reqs);
     assert.equal(
@@ -58,10 +58,11 @@ describe("Subresource Integrity", () => {
     assert.isTrue(result.pass);
   });
 
-  it("treats on-origin protocol-relative scripts as a secure origin regardless of HTTPS enforcement", function () {
-    // On-origin sub-resources carry no additional risk, so enforcement is
-    // irrelevant to the verdict (issue #464).
-    reqs = emptyRequests("test_content_sri_sameorigin3.html");
+  it("treats an on-origin protocol-relative script as a secure origin regardless of HTTPS enforcement", function () {
+    // //mozilla.org resolves to the page's own origin (https://mozilla.org),
+    // so it is same-origin and carries no additional risk — HTTP→HTTPS
+    // enforcement is irrelevant to the verdict (issue #464).
+    reqs = emptyRequests("test_content_sri_onorigin_noproto.html");
     let result = subresourceIntegrityTest(reqs);
     assert.equal(
       result.result,
@@ -69,12 +70,68 @@ describe("Subresource Integrity", () => {
     );
     assert.isTrue(result.pass);
 
-    // Without HTTP→HTTPS enforcement:
+    // Without HTTP→HTTPS enforcement the on-origin verdict is unchanged.
+    reqs = emptyRequests("test_content_sri_onorigin_noproto.html");
+    reqs.responses.httpRedirects = [
+      { url: new URL("http://mozilla.org/"), status: 200 },
+    ];
+    result = subresourceIntegrityTest(reqs);
+    assert.equal(
+      result.result,
+      Expectation.SriNotImplementedButAllScriptsLoadedFromSecureOrigin
+    );
+    assert.isTrue(result.pass);
+  });
+
+  it("classifies an off-origin protocol-relative script by the scheme dimension", function () {
+    // //www.mozilla.org is a distinct host from the mozilla.org page, so it is
+    // off-origin and scored by its scheme: secure when HTTP→HTTPS is enforced
+    // (issue #464).
+    reqs = emptyRequests("test_content_sri_sameorigin3.html");
+    let result = subresourceIntegrityTest(reqs);
+    assert.equal(
+      result.result,
+      Expectation.SriNotImplementedButExternalScriptsLoadedSecurely
+    );
+    assert.isFalse(result.pass);
+
+    // Without HTTP→HTTPS enforcement it can resolve to http://, so it is
+    // penalised.
     reqs = emptyRequests("test_content_sri_sameorigin3.html");
     reqs.responses.httpRedirects = [
       { url: new URL("http://mozilla.org/"), status: 200 },
     ];
     result = subresourceIntegrityTest(reqs);
+    assert.equal(
+      result.result,
+      Expectation.SriNotImplementedAndExternalScriptsNotLoadedSecurely
+    );
+    assert.isFalse(result.pass);
+  });
+
+  it("treats a different subdomain as a distinct origin", function () {
+    // A script on the same registrable domain but a different host
+    // (cdn.mozilla.org vs. mozilla.org) is a distinct origin, so it must
+    // not be exempted from the SRI penalty as if it were same-origin.
+    reqs = emptyRequests("test_content_sri_cross_origin_subdomain.html");
+    const result = subresourceIntegrityTest(reqs);
+    assert.equal(
+      result.result,
+      Expectation.SriNotImplementedButExternalScriptsLoadedSecurely
+    );
+    assert.isFalse(result.pass);
+  });
+
+  it("derives the base origin from the final redirect", function () {
+    // The www.mozilla.org script is foreign against the requested
+    // mozilla.org origin, but same-origin once the page redirects to
+    // www.mozilla.org — the base origin must follow the final served URL.
+    reqs = emptyRequests("test_content_sri_www_subdomain.html");
+    assert.isNotNull(reqs.session);
+    reqs.session.redirectHistory = [
+      { url: new URL("https://www.mozilla.org/"), status: 200 },
+    ];
+    const result = subresourceIntegrityTest(reqs);
     assert.equal(
       result.result,
       Expectation.SriNotImplementedButAllScriptsLoadedFromSecureOrigin

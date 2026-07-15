@@ -1,5 +1,3 @@
-import { parse } from "tldts";
-
 import { CONTENT_TYPE } from "../../headers.js";
 import { BaseOutput, Expectation, HTML_TYPES } from "../../types.js";
 import { collectElements, getAttribute } from "../../utils/html-parser.js";
@@ -74,7 +72,15 @@ export function subresourceIntegrityTest(
       output.result = Expectation.HtmlNotParseable;
       return output;
     }
-    // Track to see if any scripts were on foreign TLDs.
+    // The origin the page was ultimately served from. Scripts are same-origin
+    // only when their exact scheme + host + port match this, not merely when
+    // they share the same registrable domain (e.g. a different subdomain is a
+    // distinct origin).
+    const baseUrl =
+      requests.session?.redirectHistory.at(-1)?.url ?? requests.session?.url;
+    const baseOrigin = baseUrl?.origin ?? null;
+
+    // Track to see if any scripts were on foreign origins.
     let scriptsOnForeignOrigin = false;
 
     // Protocol-relative URLs (//cdn.example.com/…) inherit the page's scheme.
@@ -89,42 +95,37 @@ export function subresourceIntegrityTest(
       (httpRedirects.length > 1 &&
         httpRedirects.slice(1).every((r) => r.url.protocol === "https:"));
 
-    const siteDomain = parse(requests.site.hostname).domain;
-
     for (const script of scripts) {
       const scriptSrc = getAttribute(script, "src");
       if (scriptSrc) {
-        const src = parse(scriptSrc);
         const integrity = getAttribute(script, "integrity") || null;
         const crossorigin = getAttribute(script, "crossorigin") || null;
 
         let relativeOrigin = false;
         let relativeProtocol = false;
-        let sameSecondLevelDomain;
 
         const relativeProtocolRegex = /^(\/\/)[^/]/;
         const fullUrlRegex = /^https?:\/\//;
 
         if (relativeProtocolRegex.test(scriptSrc)) {
-          // relative protocol(src="//example.com/script.js")
+          // relative protocol (src="//example.com/script.js"); inherits the
+          // page scheme, so a same-host URL resolves to the page's own origin.
           relativeProtocol = true;
-          sameSecondLevelDomain =
-            parse("https:" + scriptSrc).domain === siteDomain;
         } else if (fullUrlRegex.test(scriptSrc)) {
           // full URL (src="https://example.com/script.js")
-          sameSecondLevelDomain = src.domain === siteDomain;
         } else {
           // relative URL (src="/path" etc.)
           relativeOrigin = true;
-          sameSecondLevelDomain = true;
         }
 
-        // Check to see if it is the same origin or second level domain
-        let secureOrigin;
-        if (relativeOrigin || sameSecondLevelDomain) {
-          secureOrigin = true;
-        } else {
-          secureOrigin = false;
+        // Same origin when the resolved script origin exactly matches the
+        // page's (scheme + host + port). Resolving against baseUrl also covers
+        // relative and protocol-relative URLs; without a session there is no
+        // base to resolve against, so treat it as a foreign origin.
+        const secureOrigin = baseUrl
+          ? new URL(scriptSrc, baseUrl).origin === baseOrigin
+          : false;
+        if (!secureOrigin) {
           scriptsOnForeignOrigin = true;
         }
 
@@ -155,12 +156,6 @@ export function subresourceIntegrityTest(
           } else if (!integrity && secureScheme) {
             output.result = onlyIfWorse(
               Expectation.SriNotImplementedButExternalScriptsLoadedSecurely,
-              output.result,
-              goodness
-            );
-          } else if (!integrity && !secureScheme && sameSecondLevelDomain) {
-            output.result = onlyIfWorse(
-              Expectation.SriNotImplementedAndExternalScriptsNotLoadedSecurely,
               output.result,
               goodness
             );

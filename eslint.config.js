@@ -94,6 +94,7 @@ export default defineConfig([
     plugins: { "import-x": importX },
     rules: {
       "sort-imports": "off",
+      "import-x/no-duplicates": "error",
       "import-x/order": [
         "error",
         {

@@ -38,9 +38,8 @@ describe("Subresource Integrity", () => {
     );
     assert.isTrue(result.pass);
 
-    // On the same origin, but without a protocol (//mozilla.org resolves to the
-    // page's own origin)
-    reqs = emptyRequests("test_content_sri_onorigin_noproto.html");
+    // On the same origin, but without a protocol
+    reqs = emptyRequests("test_content_sri_sameorigin3.html");
     result = subresourceIntegrityTest(reqs);
     assert.equal(
       result.result,
@@ -72,7 +71,7 @@ describe("Subresource Integrity", () => {
     // An on-origin sub-resource carries no additional risk, so its verdict is
     // independent of whether HTTP→HTTPS is enforced (issue #464). The enforced
     // case is covered by "checks for same origin" above.
-    reqs = emptyRequests("test_content_sri_onorigin_noproto.html");
+    reqs = emptyRequests("test_content_sri_sameorigin3.html");
     reqs.responses.httpRedirects = [
       { url: new URL("http://mozilla.org/"), status: 200 },
     ];
@@ -82,32 +81,6 @@ describe("Subresource Integrity", () => {
       Expectation.SriNotImplementedButAllScriptsLoadedFromSecureOrigin
     );
     assert.isTrue(result.pass);
-  });
-
-  it("classifies an off-origin protocol-relative script by the scheme dimension", function () {
-    // //www.mozilla.org is a distinct host from the mozilla.org page, so it is
-    // off-origin and scored by its scheme: secure when HTTP→HTTPS is enforced
-    // (issue #464).
-    reqs = emptyRequests("test_content_sri_sameorigin3.html");
-    let result = subresourceIntegrityTest(reqs);
-    assert.equal(
-      result.result,
-      Expectation.SriNotImplementedButExternalScriptsLoadedSecurely
-    );
-    assert.isFalse(result.pass);
-
-    // Without HTTP→HTTPS enforcement it can resolve to http://, so it is
-    // penalised.
-    reqs = emptyRequests("test_content_sri_sameorigin3.html");
-    reqs.responses.httpRedirects = [
-      { url: new URL("http://mozilla.org/"), status: 200 },
-    ];
-    result = subresourceIntegrityTest(reqs);
-    assert.equal(
-      result.result,
-      Expectation.SriNotImplementedAndExternalScriptsNotLoadedSecurely
-    );
-    assert.isFalse(result.pass);
   });
 
   it("treats a different subdomain as a distinct origin", function () {

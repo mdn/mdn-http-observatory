@@ -87,7 +87,6 @@
     "postgrator": "^8.0.0",
     "postgrator-cli": "^10.0.0",
     "structured-headers": "^2.0.3",
-    "tldts": "^7.0.12",
     "tough-cookie": "^5.0.0"
   },
   "optionalDependencies": {

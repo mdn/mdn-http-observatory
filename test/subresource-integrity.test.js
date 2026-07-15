@@ -38,17 +38,18 @@ describe("Subresource Integrity", () => {
     );
     assert.isTrue(result.pass);
 
-    // On the same second-level domain, but without a protocol — when HTTP
-    // redirects to HTTPS the protocol-relative URL is safe, so only -5 (issue #464).
+    // On the same second-level domain, but without a protocol — an on-origin
+    // protocol-relative URL carries no additional risk, so it is treated like a
+    // secure-origin script (0) regardless of HTTP→HTTPS enforcement (issue #464).
     reqs = emptyRequests("test_content_sri_sameorigin3.html");
     result = subresourceIntegrityTest(reqs);
     assert.equal(
       result.result,
-      Expectation.SriNotImplementedButExternalScriptsLoadedSecurely
+      Expectation.SriNotImplementedButAllScriptsLoadedFromSecureOrigin
     );
-    assert.isFalse(result.pass);
+    assert.isTrue(result.pass);
 
-    // Without HTTP→HTTPS enforcement the protocol-relative URL is still penalised at -50.
+    // Even without HTTP→HTTPS enforcement, the on-origin verdict is unchanged.
     reqs = emptyRequests("test_content_sri_sameorigin3.html");
     reqs.responses.httpRedirects = [
       { url: new URL("http://mozilla.org/"), status: 200 },
@@ -56,9 +57,9 @@ describe("Subresource Integrity", () => {
     result = subresourceIntegrityTest(reqs);
     assert.equal(
       result.result,
-      Expectation.SriNotImplementedAndExternalScriptsNotLoadedSecurely
+      Expectation.SriNotImplementedButAllScriptsLoadedFromSecureOrigin
     );
-    assert.isFalse(result.pass);
+    assert.isTrue(result.pass);
 
     // On the same second-level domain, but with https:// specified
     reqs = emptyRequests("test_content_sri_sameorigin2.html");

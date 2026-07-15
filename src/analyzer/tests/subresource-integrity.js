@@ -78,8 +78,14 @@ export function subresourceIntegrityTest(
     let scriptsOnForeignOrigin = false;
 
     // Protocol-relative URLs (//cdn.example.com/…) inherit the page's scheme.
-    // They are only safe when the site ensures HTTP is never served: either
-    // there is no HTTP server at all, or HTTP always redirects to HTTPS.
+    // Following the security team's analysis (issue #464), the only case that
+    // carries additional risk is a document that can be served over HTTP loading
+    // an off-origin sub-resource: an attacker able to MITM the sub-resource
+    // origin could then serve it over HTTP. On-origin sub-resources add no risk
+    // (any attack on them also applies to the document), and neither does an
+    // off-origin sub-resource when the document is always HTTPS. So an off-origin
+    // protocol-relative URL is only safe when HTTP is never served: either there
+    // is no HTTP server at all, or HTTP always redirects to HTTPS.
     const httpRedirects = requests.responses.httpRedirects;
     const httpEnforcesHttps =
       !requests.responses.http ||
@@ -118,7 +124,7 @@ export function subresourceIntegrityTest(
 
         // Check to see if it is the same origin or second level domain
         let secureOrigin;
-        if (relativeOrigin || (sameSecondLevelDomain && !relativeProtocol)) {
+        if (relativeOrigin || sameSecondLevelDomain) {
           secureOrigin = true;
         } else {
           secureOrigin = false;

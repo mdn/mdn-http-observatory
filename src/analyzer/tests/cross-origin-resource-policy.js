@@ -1,6 +1,6 @@
 import { CROSS_ORIGIN_RESOURCE_POLICY } from "../../headers.js";
 import { BaseOutput, Expectation } from "../../types.js";
-import { getFirstHttpHeader } from "../utils.js";
+import { getHttpHeaders } from "../utils.js";
 
 /** @import { Requests } from "../../types.js" */
 
@@ -38,54 +38,60 @@ export function crossOriginResourcePolicyTest(
     return output;
   }
 
-  const httpHeader = getFirstHttpHeader(resp, CROSS_ORIGIN_RESOURCE_POLICY);
+  const httpHeaders = getHttpHeaders(resp, CROSS_ORIGIN_RESOURCE_POLICY);
+  const [httpHeader] = httpHeaders;
   const equivHeaders =
     resp.httpEquiv?.get(CROSS_ORIGIN_RESOURCE_POLICY) ?? null;
 
   // Store whether the header or the meta tag were present
-  output.http = !!httpHeader;
+  output.http = httpHeaders.length > 0;
   output.meta = equivHeaders ? equivHeaders.length > 0 : false;
 
-  // If it is both a header and a http-equiv, http-equiv has precedence (last value)
-  /** @type {string | undefined}  */
-  let corpHeader;
-  if (output.http && httpHeader) {
-    corpHeader = httpHeader.slice(0, 256).trim().toLowerCase();
-  } else if (
-    output.meta &&
-    equivHeaders &&
-    Array.isArray(equivHeaders) &&
-    equivHeaders.length > 0
-  ) {
-    const h = equivHeaders.at(-1);
-    if (h) {
-      corpHeader = h.slice(0, 256).trim().toLowerCase();
+  // A browser considers multiple conflicting values invalid.
+  if (httpHeaders.length > 1) {
+    output.result = Expectation.CrossOriginResourcePolicyHeaderInvalid;
+  } else {
+    // If it is both a header and a http-equiv, the header has precedence
+    /** @type {string | undefined}  */
+    let corpHeader;
+    if (output.http && httpHeader) {
+      corpHeader = httpHeader.slice(0, 256).trim().toLowerCase();
+    } else if (
+      output.meta &&
+      equivHeaders &&
+      Array.isArray(equivHeaders) &&
+      equivHeaders.length > 0
+    ) {
+      const h = equivHeaders.at(-1);
+      if (h) {
+        corpHeader = h.slice(0, 256).trim().toLowerCase();
+      }
     }
-  }
 
-  if (corpHeader) {
-    output.data = corpHeader;
-    switch (corpHeader) {
-      case "same-site": {
-        output.result =
-          Expectation.CrossOriginResourcePolicyImplementedWithSameSite;
+    if (corpHeader) {
+      output.data = corpHeader;
+      switch (corpHeader) {
+        case "same-site": {
+          output.result =
+            Expectation.CrossOriginResourcePolicyImplementedWithSameSite;
 
-        break;
-      }
-      case "same-origin": {
-        output.result =
-          Expectation.CrossOriginResourcePolicyImplementedWithSameOrigin;
+          break;
+        }
+        case "same-origin": {
+          output.result =
+            Expectation.CrossOriginResourcePolicyImplementedWithSameOrigin;
 
-        break;
-      }
-      case "cross-origin": {
-        output.result =
-          Expectation.CrossOriginResourcePolicyImplementedWithCrossOrigin;
+          break;
+        }
+        case "cross-origin": {
+          output.result =
+            Expectation.CrossOriginResourcePolicyImplementedWithCrossOrigin;
 
-        break;
-      }
-      default: {
-        output.result = Expectation.CrossOriginResourcePolicyHeaderInvalid;
+          break;
+        }
+        default: {
+          output.result = Expectation.CrossOriginResourcePolicyHeaderInvalid;
+        }
       }
     }
   }

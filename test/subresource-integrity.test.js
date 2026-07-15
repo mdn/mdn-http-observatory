@@ -38,29 +38,6 @@ describe("Subresource Integrity", () => {
     );
     assert.isTrue(result.pass);
 
-    // On the same second-level domain, but without a protocol — an on-origin
-    // protocol-relative URL carries no additional risk, so it is treated like a
-    // secure-origin script (0) regardless of HTTP→HTTPS enforcement (issue #464).
-    reqs = emptyRequests("test_content_sri_sameorigin3.html");
-    result = subresourceIntegrityTest(reqs);
-    assert.equal(
-      result.result,
-      Expectation.SriNotImplementedButAllScriptsLoadedFromSecureOrigin
-    );
-    assert.isTrue(result.pass);
-
-    // Even without HTTP→HTTPS enforcement, the on-origin verdict is unchanged.
-    reqs = emptyRequests("test_content_sri_sameorigin3.html");
-    reqs.responses.httpRedirects = [
-      { url: new URL("http://mozilla.org/"), status: 200 },
-    ];
-    result = subresourceIntegrityTest(reqs);
-    assert.equal(
-      result.result,
-      Expectation.SriNotImplementedButAllScriptsLoadedFromSecureOrigin
-    );
-    assert.isTrue(result.pass);
-
     // On the same second-level domain, but with https:// specified
     reqs = emptyRequests("test_content_sri_sameorigin2.html");
     result = subresourceIntegrityTest(reqs);
@@ -73,6 +50,30 @@ describe("Subresource Integrity", () => {
     // And the same, but with a 404 status code
     assert.isNotNull(reqs.responses.auto);
     reqs.responses.auto.status = 404;
+    result = subresourceIntegrityTest(reqs);
+    assert.equal(
+      result.result,
+      Expectation.SriNotImplementedButAllScriptsLoadedFromSecureOrigin
+    );
+    assert.isTrue(result.pass);
+  });
+
+  it("treats on-origin protocol-relative scripts as a secure origin regardless of HTTPS enforcement", function () {
+    // On-origin sub-resources carry no additional risk, so enforcement is
+    // irrelevant to the verdict (issue #464).
+    reqs = emptyRequests("test_content_sri_sameorigin3.html");
+    let result = subresourceIntegrityTest(reqs);
+    assert.equal(
+      result.result,
+      Expectation.SriNotImplementedButAllScriptsLoadedFromSecureOrigin
+    );
+    assert.isTrue(result.pass);
+
+    // Without HTTP→HTTPS enforcement:
+    reqs = emptyRequests("test_content_sri_sameorigin3.html");
+    reqs.responses.httpRedirects = [
+      { url: new URL("http://mozilla.org/"), status: 200 },
+    ];
     result = subresourceIntegrityTest(reqs);
     assert.equal(
       result.result,

@@ -958,7 +958,7 @@ export const SCORE_TABLE = new Map([
       </p>`,
       modifier: 0,
       recommendation: `<p>
-      Set to <code>same-origin</code> or <code>same-origin-allow-popups</code>.
+      Set to <code>same-origin</code>, <code>same-origin-allow-popups</code>, or <code>noopener-allow-popups</code>.
       </p>`,
     },
   ],
@@ -970,7 +970,7 @@ export const SCORE_TABLE = new Map([
       </p>`,
       modifier: 0,
       recommendation: `<p>
-      Set to <code>same-origin</code> or <code>same-origin-allow-popups</code>.
+      Set to <code>same-origin</code>, <code>same-origin-allow-popups</code>, or <code>noopener-allow-popups</code>.
       </p>`,
     },
   ],

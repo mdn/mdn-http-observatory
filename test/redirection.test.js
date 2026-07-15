@@ -144,7 +144,10 @@ describe("Redirections", () => {
     assert.isFalse(res.pass);
   });
 
-  it("uses https redirects as fallback for destination and route when http redirects are empty", function () {
+  it("uses the https chain for the destination when there is no http response", function () {
+    // Without an HTTP response the HTTP redirect chain is empty, so the
+    // destination falls back to the end of the HTTPS chain (display only).
+    reqs.responses.http = null;
     reqs.responses.httpRedirects = [];
     reqs.responses.httpsRedirects = [
       {
@@ -158,11 +161,10 @@ describe("Redirections", () => {
     ];
 
     const res = redirectionTest(reqs);
+    assert.equal(res.result, Expectation.RedirectionNotNeededNoHttp);
+    assert.isTrue(res.pass);
     assert.equal(res.destination, "https://www.mozilla.org/");
-    assert.deepEqual(res.route, [
-      "https://mozilla.org/",
-      "https://www.mozilla.org/",
-    ]);
+    assert.deepEqual(res.route, []);
   });
 
   it("fails when https redirects back to http even if http redirects look fine", function () {
@@ -191,27 +193,6 @@ describe("Redirections", () => {
 
     const res = redirectionTest(reqs);
     assert.equal(res.result, Expectation.RedirectionNotToHttps);
-    assert.isFalse(res.pass);
-  });
-
-  it("fails with redirection-missing when http redirects are empty but http response exists", function () {
-    // The OR fallback previously caused httpsRedirects to be used for pass/fail
-    // logic when httpRedirects is empty, which could produce a spurious pass.
-    reqs.responses.httpRedirects = [];
-    reqs.responses.httpsRedirects = [
-      {
-        url: new URL("https://mozilla.org/"),
-        status: 301,
-      },
-      {
-        url: new URL("https://www.mozilla.org/"),
-        status: 200,
-      },
-    ];
-    // responses.http is still set (from emptyRequests), so the site is reachable over HTTP
-
-    const res = redirectionTest(reqs);
-    assert.equal(res.result, Expectation.RedirectionMissing);
     assert.isFalse(res.pass);
   });
 

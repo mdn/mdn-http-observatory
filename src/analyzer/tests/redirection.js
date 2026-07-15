@@ -42,10 +42,9 @@ export function redirectionTest(
   const httpRoute = requests.responses.httpRedirects;
   const httpsRoute = requests.responses.httpsRedirects;
 
-  // For display only: prefer the HTTP chain, fall back to HTTPS chain when HTTP is absent
-  const displayRoute = httpRoute.length > 0 ? httpRoute : httpsRoute;
-
-  const destination = displayRoute.at(-1)?.url?.href;
+  // For display only: prefer the HTTP chain's destination, falling back to the
+  // HTTPS chain when there is no HTTP response.
+  const destination = (httpRoute.at(-1) ?? httpsRoute.at(-1))?.url?.href;
   if (destination) {
     output.destination = destination;
   }
@@ -56,7 +55,7 @@ export function redirectionTest(
   } else if (!httpResponse.verified) {
     output.result = Expectation.RedirectionInvalidCert;
   } else {
-    output.route = displayRoute.map((r) => r.url.href);
+    output.route = httpRoute.map((r) => r.url.href);
 
     // Check to see if every redirection was covered by the preload list.
     // Guard httpRoute.length > 1 to avoid vacuous truth on an empty array.

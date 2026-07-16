@@ -50,12 +50,7 @@ export function crossOriginResourcePolicyTest(
   // If it is both a header and a http-equiv, the header has precedence.
   /** @type {string | undefined}  */
   let corpHeader;
-  if (httpHeaders.length > 1) {
-    // A browser combines repeated headers into a single value that matches no
-    // valid policy, so treat any repetition as invalid.
-    output.data = httpHeader.slice(0, 256).toLowerCase();
-    output.result = Expectation.CrossOriginResourcePolicyHeaderInvalid;
-  } else if (output.http && httpHeader) {
+  if (output.http && httpHeader) {
     corpHeader = httpHeader.slice(0, 256).trim().toLowerCase();
   } else if (
     output.meta &&

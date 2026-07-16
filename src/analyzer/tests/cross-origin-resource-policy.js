@@ -39,12 +39,12 @@ export function crossOriginResourcePolicyTest(
   }
 
   const httpHeaders = getHttpHeaders(resp, CROSS_ORIGIN_RESOURCE_POLICY);
-  const [httpHeader] = httpHeaders;
+  const httpHeader = httpHeaders.join(", ");
   const equivHeaders =
     resp.httpEquiv?.get(CROSS_ORIGIN_RESOURCE_POLICY) ?? null;
 
   // Store whether the header or the meta tag were present
-  output.http = httpHeaders.length > 0;
+  output.http = !!httpHeader;
   output.meta = equivHeaders ? equivHeaders.length > 0 : false;
 
   // If it is both a header and a http-equiv, the header has precedence.
@@ -53,7 +53,7 @@ export function crossOriginResourcePolicyTest(
   if (httpHeaders.length > 1) {
     // A browser combines repeated headers into a single value that matches no
     // valid policy, so treat any repetition as invalid.
-    output.data = httpHeaders.join(", ").slice(0, 256).toLowerCase();
+    output.data = httpHeader.slice(0, 256).toLowerCase();
     output.result = Expectation.CrossOriginResourcePolicyHeaderInvalid;
   } else if (output.http && httpHeader) {
     corpHeader = httpHeader.slice(0, 256).trim().toLowerCase();

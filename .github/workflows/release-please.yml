@@ -31,4 +31,5 @@ jobs:
             --ref "$TAG_NAME" \
             -f tag="$TAG_NAME"
         env:
-          TAG_NAME: ${{ steps.release.outputs.outputs.tag_name }}
+          GH_TOKEN: ${{ github.token }}
+          TAG_NAME: ${{ steps.release.outputs.tag_name }}

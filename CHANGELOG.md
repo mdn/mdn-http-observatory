@@ -1,5 +1,22 @@
 # Changelog
 
+## [1.6.4](https://github.com/mdn/mdn-http-observatory/compare/v1.6.3...v1.6.4) (2026-08-03)
+
+
+### Miscellaneous
+
+* **deps:** bump @fastify/static from 10.1.0 to 10.1.2 ([#576](https://github.com/mdn/mdn-http-observatory/issues/576)) ([235f0a6](https://github.com/mdn/mdn-http-observatory/commit/235f0a617c4ea0c78fd15bede30641f1c51f7385))
+* **deps:** bump @sentry/node from 10.67.0 to 10.68.0 in the npm-prod group ([#580](https://github.com/mdn/mdn-http-observatory/issues/580)) ([5c2222c](https://github.com/mdn/mdn-http-observatory/commit/5c2222c9aefd8d847448ad10deae55eb7aab23e9))
+* **deps:** bump @sentry/node in the npm-prod group ([5c2222c](https://github.com/mdn/mdn-http-observatory/commit/5c2222c9aefd8d847448ad10deae55eb7aab23e9))
+* **deps:** bump brace-expansion from 5.0.6 to 5.0.7 ([#573](https://github.com/mdn/mdn-http-observatory/issues/573)) ([fe95f15](https://github.com/mdn/mdn-http-observatory/commit/fe95f152a27efe19823100d5a5718121628a5c06))
+* **deps:** bump brace-expansion from 5.0.7 to 5.0.8 ([#577](https://github.com/mdn/mdn-http-observatory/issues/577)) ([bc8b18c](https://github.com/mdn/mdn-http-observatory/commit/bc8b18c8f6769f6a73fe925f493f4fef9928eaa4))
+* **deps:** bump brace-expansion from 5.0.8 to 5.0.9 ([#585](https://github.com/mdn/mdn-http-observatory/issues/585)) ([afcf8f5](https://github.com/mdn/mdn-http-observatory/commit/afcf8f51690697638533841a03103d459873240a))
+* **deps:** bump fast-uri from 3.1.2 to 3.1.4 ([#575](https://github.com/mdn/mdn-http-observatory/issues/575)) ([515771f](https://github.com/mdn/mdn-http-observatory/commit/515771f056d15a0470b618c7bf642e07a1da2c26))
+* **deps:** bump fast-uri from 3.1.4 to 3.1.5 ([#586](https://github.com/mdn/mdn-http-observatory/issues/586)) ([e0ee963](https://github.com/mdn/mdn-http-observatory/commit/e0ee963e93ea87ec8e94bed5c431622d0d3f71e4))
+* **deps:** bump find-my-way from 9.6.0 to 9.7.0 ([#578](https://github.com/mdn/mdn-http-observatory/issues/578)) ([b65b7f0](https://github.com/mdn/mdn-http-observatory/commit/b65b7f02aca3dabb538ca6e4a8612bdb00eae2b1))
+* **deps:** bump the npm-prod group across 1 directory with 2 updates ([#568](https://github.com/mdn/mdn-http-observatory/issues/568)) ([3cd48ed](https://github.com/mdn/mdn-http-observatory/commit/3cd48edd2f8d641728b3c50ace6ef2ad74ab8161))
+* **deps:** bump the npm-prod group with 4 updates ([#583](https://github.com/mdn/mdn-http-observatory/issues/583)) ([7426488](https://github.com/mdn/mdn-http-observatory/commit/74264885f0001666e0c21a1d93dac857802b5984))
+
 ## [1.6.3](https://github.com/mdn/mdn-http-observatory/compare/v1.6.2...v1.6.3) (2026-07-16)
 
 

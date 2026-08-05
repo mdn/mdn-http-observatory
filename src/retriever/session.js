@@ -54,7 +54,7 @@ export class Session {
   clientInstance;
   /** @type {import("../types.js").HttpResponse | null} */
   response = null;
-  /** @type {import("../types.js").RedirectEntry[]} */
+  /** @type {import("../types.js").RouteEntry[]} */
   redirectHistory;
   /** @type {number} */
   redirectCount;

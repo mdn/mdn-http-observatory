@@ -1,4 +1,5 @@
 node_modules/
+coverage/
 .env
 conf/config.json
 conf/hsts-preload.json

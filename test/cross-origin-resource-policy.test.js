@@ -76,4 +76,19 @@ describe("Cross Origin Resource Policy", () => {
       assert.isTrue(result.pass);
     }
   });
+
+  it("checks for multiple headers", function () {
+    assert.isNotNull(reqs.responses.auto);
+    reqs.responses.auto.headers["cross-origin-resource-policy"] = [
+      "same-origin",
+      "cross-origin",
+    ];
+    const result = crossOriginResourcePolicyTest(reqs);
+    assert.equal(
+      result.result,
+      Expectation.CrossOriginResourcePolicyHeaderInvalid
+    );
+    assert.equal(result.data, "same-origin, cross-origin");
+    assert.isFalse(result.pass);
+  });
 });

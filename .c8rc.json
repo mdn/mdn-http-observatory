@@ -1,0 +1,9 @@
+{
+  "all": true,
+  "exclude": [
+    "eslint.config.js",
+    "**/coverage/**",
+    "**/node_modules/**",
+    "test/**"
+  ]
+}

@@ -136,11 +136,37 @@ export default defineConfig([
       "unicorn/no-negated-condition": "off", // 6
       "unicorn/no-for-each": "off",
       "unicorn/no-array-reduce": "off", // 5
+      "unicorn/no-break-in-nested-loop": "off",
+      "unicorn/prefer-simple-condition-first": "off",
+      "unicorn/max-nested-calls": "off",
+      "unicorn/no-useless-else": "off",
+      "unicorn/prefer-hoisting-branch-code": "off",
+      "unicorn/no-unreadable-for-of-expression": "off",
+      "unicorn/no-useless-template-literals": "off",
+      // Iteration and array-building preferences.
+      "unicorn/prefer-iterator-to-array": "off",
+      "unicorn/no-array-from-fill": "off",
+      "unicorn/no-duplicate-loops": "off",
+      "unicorn/require-array-sort-compare": "off",
+      // Naming and member-order preferences.
+      "unicorn/consistent-boolean-name": "off",
+      "unicorn/consistent-class-member-order": "off",
+      // Off pending a fix rather than by preference: these flag likely defects.
+      "unicorn/no-duplicate-if-branches": "off",
+      "unicorn/no-multiple-promise-resolver-calls": "off",
+      "unicorn/no-computed-property-existence-check": "off",
       // Structural / API-shape changes.
       "unicorn/no-anonymous-default-export": "off", // 5
       "unicorn/prefer-top-level-await": "off", // 2
+      "unicorn/prefer-await": "off",
       "unicorn/prefer-module": "off", // 1
       "unicorn/no-this-assignment": "off", // 1
+      "unicorn/no-top-level-side-effects": "off",
+      // Lazily populated module-level caches.
+      "unicorn/no-top-level-assignment-in-function": "off",
+      // `parseInt` stops at the first non-digit, which the `max-age` parsing
+      // relies on.
+      "unicorn/prefer-number-coercion": "off",
       // File rename with import churn.
       "unicorn/filename-case": "off", // 1
     },

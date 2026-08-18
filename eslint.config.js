@@ -80,11 +80,11 @@ export default defineConfig([
       "n/no-missing-import": "off",
       "n/no-unsupported-features/node-builtins": ["off"],
       "n/no-unpublished-import": "off",
+      "unicorn/name-replacements": ["off"],
       "unicorn/no-array-reverse": "off",
       "unicorn/no-array-sort": "off",
       "unicorn/no-array-callback-reference": "off",
       "unicorn/no-null": ["off"],
-      "unicorn/prevent-abbreviations": ["off"],
       "unicorn/switch-case-braces": "off",
       "unicorn/template-indent": ["off"],
     },
@@ -128,7 +128,7 @@ export default defineConfig([
       // Stylistic control-flow preferences.
       "unicorn/prefer-ternary": "off", // 9
       "unicorn/no-negated-condition": "off", // 6
-      "unicorn/no-array-for-each": "off", // 4
+      "unicorn/no-for-each": "off",
       "unicorn/no-array-reduce": "off", // 5
       // Structural / API-shape changes.
       "unicorn/no-anonymous-default-export": "off", // 5

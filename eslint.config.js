@@ -117,6 +117,12 @@ export default defineConfig([
     },
   },
   {
+    rules: {
+      // The codebase writes one-line JSDoc annotations on a single line.
+      "unicorn/single-line-block-comment-style": ["error", "single-line"],
+    },
+  },
+  {
     // Intentionally disabled: these rules are stylistic/opinionated or would
     // require behavior-affecting refactors, so they are left off pending a
     // decision rather than auto-fixed. Counts are violations at time of

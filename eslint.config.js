@@ -114,6 +114,8 @@ export default defineConfig([
     rules: {
       "@typescript-eslint/no-floating-promises": "off",
       "@typescript-eslint/no-misused-promises": "off",
+      // The tests scan and assert on `http://` URLs on purpose.
+      "unicorn/prefer-https": "off",
     },
   },
   {

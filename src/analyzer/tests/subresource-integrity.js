@@ -1,5 +1,3 @@
-import { parse } from "tldts";
-
 import { CONTENT_TYPE } from "../../headers.js";
 import { BaseOutput, Expectation, HTML_TYPES } from "../../types.js";
 import { collectElements, getAttribute } from "../../utils/html-parser.js";
@@ -74,39 +72,47 @@ export function subresourceIntegrityTest(
       output.result = Expectation.HtmlNotParseable;
       return output;
     }
-    // Track to see if any scripts were on foreign TLDs.
+    // The origin the page was ultimately served from. Scripts are same-origin
+    // only when their exact scheme + host + port match this, not merely when
+    // they share the same registrable domain (e.g. a different subdomain is a
+    // distinct origin).
+    const baseUrl =
+      requests.session?.redirectHistory.at(-1)?.url ?? requests.session?.url;
+    const baseOrigin = baseUrl?.origin ?? null;
+
+    // Track to see if any scripts were on foreign origins.
     let scriptsOnForeignOrigin = false;
     for (const script of scripts) {
       const scriptSrc = getAttribute(script, "src");
       if (scriptSrc) {
-        const src = parse(scriptSrc);
         const integrity = getAttribute(script, "integrity") || null;
         const crossorigin = getAttribute(script, "crossorigin") || null;
 
         let relativeOrigin = false;
         let relativeProtocol = false;
-        let sameSecondLevelDomain;
+        let sameOrigin;
 
         const relativeProtocolRegex = /^(\/\/)[^/]/;
         const fullUrlRegex = /^https?:\/\//;
 
         if (relativeProtocolRegex.test(scriptSrc)) {
-          // relative protocol(src="//example.com/script.js")
+          // relative protocol (src="//example.com/script.js"); inherits the
+          // page scheme and is treated as a foreign origin here — its risk is
+          // scored separately (issue #464).
           relativeProtocol = true;
-          sameSecondLevelDomain = true;
+          sameOrigin = false;
         } else if (fullUrlRegex.test(scriptSrc)) {
           // full URL (src="https://example.com/script.js")
-          sameSecondLevelDomain =
-            src.domain === parse(requests.site.hostname).domain;
+          sameOrigin = new URL(scriptSrc).origin === baseOrigin;
         } else {
-          // relative URL (src="/path" etc.)
+          // relative URL (src="/path" etc.) — always same origin
           relativeOrigin = true;
-          sameSecondLevelDomain = true;
+          sameOrigin = true;
         }
 
-        // Check to see if it is the same origin or second level domain
+        // Check to see if it is the same origin
         let secureOrigin;
-        if (relativeOrigin || (sameSecondLevelDomain && !relativeProtocol)) {
+        if (relativeOrigin || sameOrigin) {
           secureOrigin = true;
         } else {
           secureOrigin = false;
@@ -139,12 +145,6 @@ export function subresourceIntegrityTest(
           } else if (!integrity && secureScheme) {
             output.result = onlyIfWorse(
               Expectation.SriNotImplementedButExternalScriptsLoadedSecurely,
-              output.result,
-              goodness
-            );
-          } else if (!integrity && !secureScheme && sameSecondLevelDomain) {
-            output.result = onlyIfWorse(
-              Expectation.SriNotImplementedAndExternalScriptsNotLoadedSecurely,
               output.result,
               goodness
             );

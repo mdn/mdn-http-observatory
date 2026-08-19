@@ -127,17 +127,17 @@ export default defineConfig([
   {
     // Intentionally disabled: these rules are stylistic/opinionated or would
     // require behavior-affecting refactors, so they are left off pending a
-    // decision rather than auto-fixed. Counts are violations at time of
-    // writing. Re-enable individually if the team wants to adopt them.
+    // decision rather than auto-fixed. Re-enable individually if the team
+    // wants to adopt them.
     rules: {
       // Legitimate in a CLI/server entry point that exits with a status code.
-      "n/no-process-exit": "off", // 5
-      "unicorn/no-process-exit": "off", // 4
+      "n/no-process-exit": "off",
+      "unicorn/no-process-exit": "off",
       // Stylistic control-flow preferences.
-      "unicorn/prefer-ternary": "off", // 9
-      "unicorn/no-negated-condition": "off", // 6
+      "unicorn/prefer-ternary": "off",
+      "unicorn/no-negated-condition": "off",
       "unicorn/no-for-each": "off",
-      "unicorn/no-array-reduce": "off", // 5
+      "unicorn/no-array-reduce": "off",
       "unicorn/no-break-in-nested-loop": "off",
       "unicorn/prefer-simple-condition-first": "off",
       "unicorn/max-nested-calls": "off",
@@ -158,11 +158,11 @@ export default defineConfig([
       "unicorn/no-multiple-promise-resolver-calls": "off",
       "unicorn/no-computed-property-existence-check": "off",
       // Structural / API-shape changes.
-      "unicorn/no-anonymous-default-export": "off", // 5
-      "unicorn/prefer-top-level-await": "off", // 2
+      "unicorn/no-anonymous-default-export": "off",
+      "unicorn/prefer-top-level-await": "off",
       "unicorn/prefer-await": "off",
-      "unicorn/prefer-module": "off", // 1
-      "unicorn/no-this-assignment": "off", // 1
+      "unicorn/prefer-module": "off",
+      "unicorn/no-this-assignment": "off",
       "unicorn/no-top-level-side-effects": "off",
       // Lazily populated module-level caches.
       "unicorn/no-top-level-assignment-in-function": "off",
@@ -170,7 +170,7 @@ export default defineConfig([
       // relies on.
       "unicorn/prefer-number-coercion": "off",
       // File rename with import churn.
-      "unicorn/filename-case": "off", // 1
+      "unicorn/filename-case": "off",
     },
   },
   prettierConfig,

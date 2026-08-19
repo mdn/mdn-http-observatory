@@ -1,4 +1,4 @@
-const compareString = Intl.Collator("en").compare;
+const compareString = new Intl.Collator("en").compare;
 
 const SHORTEST_DIRECTIVE = "img-src";
 const SHORTEST_DIRECTIVE_LENGTH = SHORTEST_DIRECTIVE.length - 1; // the shortest policy accepted by the CSP test
@@ -157,10 +157,10 @@ export function parseCsp(cspList) {
   // now we need to flatten out all the CSP directives (e.g. (source, index, False) back into actual values
   // if they had defined a directive and didn't have a value remaining, then force it to none
   const finalCsp = new Map(
-    [...csp.entries()].map(([directive, sources]) => [
+    [...csp].map(([directive, sources]) => [
       directive,
       sources.length > 0
-        ? new Set([...sources.values()].map((source) => source.source))
+        ? new Set([...sources].map((source) => source.source))
         : new Set(["'none'"]),
     ])
   );

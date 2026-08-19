@@ -54,14 +54,16 @@ export function analyzeScan(requests) {
   let uncurvedScore = scoreWithExtraCredit;
 
   results.forEach((result) => {
-    if (result.result) {
-      result.scoreDescription = getScoreDescription(result.result);
-      result.scoreModifier = getScoreModifier(result.result);
-      testsPassed += result.pass ? 1 : 0;
-      scoreWithExtraCredit += result.scoreModifier;
-      if (result.scoreModifier < 0) {
-        uncurvedScore += result.scoreModifier;
-      }
+    if (!result.result) {
+      return;
+    }
+
+    result.scoreDescription = getScoreDescription(result.result);
+    result.scoreModifier = getScoreModifier(result.result);
+    testsPassed += result.pass ? 1 : 0;
+    scoreWithExtraCredit += result.scoreModifier;
+    if (result.scoreModifier < 0) {
+      uncurvedScore += result.scoreModifier;
     }
   });
 

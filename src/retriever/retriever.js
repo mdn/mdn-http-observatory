@@ -102,7 +102,7 @@ export async function retrieve(site, options = {}) {
   if (retrievals.responses.auto) {
     if (
       HTML_TYPES.has(
-        retrievals.responses.auto.headers["content-type"]?.split(";")[0]
+        retrievals.responses.auto.headers["content-type"]?.split(";", 1)[0]
       ) &&
       retrievals.resources.path
     ) {

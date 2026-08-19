@@ -144,6 +144,75 @@ describe("Redirections", () => {
     assert.isFalse(res.pass);
   });
 
+  it("uses the https chain for the destination when there is no http response", function () {
+    // Without an HTTP response the HTTP redirect chain is empty, so the
+    // destination falls back to the end of the HTTPS chain (display only).
+    reqs.responses.http = null;
+    reqs.responses.httpRedirects = [];
+    reqs.responses.httpsRedirects = [
+      {
+        url: new URL("https://mozilla.org/"),
+        status: 301,
+      },
+      {
+        url: new URL("https://www.mozilla.org/"),
+        status: 200,
+      },
+    ];
+
+    const res = redirectionTest(reqs);
+    assert.equal(res.result, Expectation.RedirectionNotNeededNoHttp);
+    assert.isTrue(res.pass);
+    assert.equal(res.destination, "https://www.mozilla.org/");
+    assert.deepEqual(res.route, []);
+  });
+
+  it("fails when https redirects back to http even if http redirects look fine", function () {
+    // HTTP chain correctly redirects to HTTPS on the same hostname
+    reqs.responses.httpRedirects = [
+      {
+        url: new URL("http://mozilla.org/"),
+        status: 301,
+      },
+      {
+        url: new URL("https://mozilla.org/"),
+        status: 200,
+      },
+    ];
+    // But the independent HTTPS session ends on HTTP — that should be an error
+    reqs.responses.httpsRedirects = [
+      {
+        url: new URL("https://mozilla.org/"),
+        status: 301,
+      },
+      {
+        url: new URL("http://mozilla.org/"),
+        status: 200,
+      },
+    ];
+
+    const res = redirectionTest(reqs);
+    assert.equal(res.result, Expectation.RedirectionNotToHttps);
+    assert.isFalse(res.pass);
+  });
+
+  it("does not treat a single preloaded redirect as all-redirects-preloaded", function () {
+    // A route of length 1 means there was no redirection at all. Guarding on
+    // httpRoute.length > 1 avoids the vacuous `[].every(...) === true` that
+    // would otherwise report RedirectionAllRedirectsPreloaded for a single
+    // preloaded host.
+    reqs.responses.httpRedirects = [
+      {
+        url: new URL("https://cloudflare.com/"),
+        status: 200,
+      },
+    ];
+
+    const res = redirectionTest(reqs);
+    assert.equal(res.result, Expectation.RedirectionMissing);
+    assert.isFalse(res.pass);
+  });
+
   it("checks for all redirections preloaded", function () {
     reqs.responses.httpRedirects = [
       {

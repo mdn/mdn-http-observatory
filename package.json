@@ -4,7 +4,7 @@
   "author": "Mozilla Developer Network",
   "description": "The MDN HTTP Observatory is a set of tools to analyze your website and inform you if you are utilizing the many available methods to secure it.",
   "main": "src/index.js",
-  "packageManager": "npm@11.9.0",
+  "packageManager": "npm@11.17.0",
   "engines": {
     "node": ">=24"
   },
@@ -54,7 +54,7 @@
     "eslint": "^10.7.0",
     "eslint-config-prettier": "^10.1.8",
     "eslint-plugin-import-x": "^4.17.1",
-    "eslint-plugin-jsdoc": "^63.3.2",
+    "eslint-plugin-jsdoc": "^64.2.0",
     "eslint-plugin-n": "^18.2.2",
     "eslint-plugin-unicorn": "^64.0.0",
     "json-schema-to-jsdoc": "^1.1.1",

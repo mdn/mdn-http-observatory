@@ -35,10 +35,12 @@ describe("API V2", { skip: !dbConfigured && !process.env.CI }, () => {
   });
 
   afterEach(async () => {
-    if (app) {
-      await app.close();
-      app = null;
+    if (!app) {
+      return;
     }
+
+    await app.close();
+    app = null;
   });
 
   after(async () => {

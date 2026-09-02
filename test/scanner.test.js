@@ -2,10 +2,11 @@ import { describe, it } from "node:test";
 
 import { assert } from "chai";
 
-import { scan } from "../src/scanner/index.js";
+import { AppError } from "../src/api/errors.js";
+import { analyzeScan, scan } from "../src/scanner/index.js";
 import { Site } from "../src/site.js";
 
-import { fixtureRequests, scanWithRequests } from "./helpers.js";
+import { emptyRequests, fixtureRequests, scanWithRequests } from "./helpers.js";
 
 /** @typedef {import("../src/scanner/index.js").ScanResult} ScanResult */
 
@@ -21,11 +22,57 @@ describe("Scanner", () => {
       await scan(site);
       throw new Error("scan should throw");
     } catch (error) {
-      if (error instanceof Error) {
+      if (error instanceof AppError) {
         assert.equal(error.message, "The site seems to be down.");
+        assert.equal(error.statusCode, 422);
       } else {
         throw new Error("Unexpected error type", { cause: error });
       }
+    }
+  });
+
+  describe("reports unusable sites as unprocessable", () => {
+    /**
+     * @type {{ label: string, status: number | null, name: string, message: string }[]}
+     */
+    const cases = [
+      {
+        label: "no response at all",
+        status: null,
+        name: "site-down",
+        message: "The site seems to be down.",
+      },
+      ...[100, 400, 404, 500].map((status) => ({
+        label: `a ${status} response`,
+        status,
+        name: "unexpected-status-code",
+        message: `Site did respond with an unexpected HTTP status code ${status}.`,
+      })),
+    ];
+
+    for (const { label, status, name, message } of cases) {
+      it(label, function () {
+        const requests = emptyRequests();
+        if (status === null) {
+          requests.responses.auto = null;
+        } else {
+          assert(requests.responses.auto);
+          requests.responses.auto.status = status;
+        }
+
+        try {
+          analyzeScan(requests);
+          throw new Error("analyzeScan should throw");
+        } catch (error) {
+          if (error instanceof AppError) {
+            assert.equal(error.name, name);
+            assert.equal(error.message, message);
+            assert.equal(error.statusCode, 422);
+          } else {
+            throw new Error("Unexpected error type", { cause: error });
+          }
+        }
+      });
     }
   });
 

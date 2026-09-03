@@ -46,7 +46,7 @@ describe("Scanner", () => {
         label: `a ${status} response`,
         status,
         name: "unexpected-status-code",
-        message: `Site did respond with an unexpected HTTP status code ${status}.`,
+        message: `Site responded with an unexpected HTTP status code ${status}.`,
       })),
     ];
 

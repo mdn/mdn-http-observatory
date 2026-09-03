@@ -1,5 +1,17 @@
 # Changelog
 
+## [1.7.1](https://github.com/mdn/mdn-http-observatory/compare/v1.7.0...v1.7.1) (2026-09-03)
+
+
+### Bug Fixes
+
+* **api:** report unscannable sites as 422 instead of 500 ([#602](https://github.com/mdn/mdn-http-observatory/issues/602)) ([c7f586f](https://github.com/mdn/mdn-http-observatory/commit/c7f586f125e88fd056263301f54b333c13d5b000))
+
+
+### Miscellaneous
+
+* **deps:** bump fast-uri from 3.1.5 to 3.1.7 ([#603](https://github.com/mdn/mdn-http-observatory/issues/603)) ([1534b0a](https://github.com/mdn/mdn-http-observatory/commit/1534b0a030f08672bc5359d9759e6a5b53c35b74))
+
 ## [1.7.0](https://github.com/mdn/mdn-http-observatory/compare/v1.6.3...v1.7.0) (2026-09-01)
 
 

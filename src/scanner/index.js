@@ -1,3 +1,4 @@
+import { SiteIsDownError, UnexpectedStatusCodeError } from "../api/errors.js";
 import { ALGORITHM_VERSION, ALL_TESTS, NUM_TESTS } from "../constants.js";
 import { MINIMUM_SCORE_FOR_EXTRA_CREDIT } from "../grader/charts.js";
 import {
@@ -23,15 +24,13 @@ import { retrieve } from "../retriever/retriever.js";
 export function analyzeScan(requests) {
   if (!requests.responses.auto) {
     // We cannot connect at all, abort the test.
-    throw new Error("The site seems to be down.");
+    throw new SiteIsDownError();
   }
 
   // We allow 2xx, 3xx, 401 and 403 status codes
   const { status } = requests.responses.auto;
   if (status < 200 || (status >= 400 && ![401, 403].includes(status))) {
-    throw new Error(
-      `Site did respond with an unexpected HTTP status code ${status}.`
-    );
+    throw new UnexpectedStatusCodeError(status);
   }
 
   // Run all the tests on the result

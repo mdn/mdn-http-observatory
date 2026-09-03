@@ -39,12 +39,11 @@ export function redirectionTest(
   const output = new RedirectionOutput(expectation);
   const response = requests.responses.http;
 
-  if (requests.responses.httpRedirects.length > 0) {
+  if (requests.responses.httpRoute.length > 0) {
+    output.destination = requests.responses.httpRoute.at(-1)?.url?.href || null;
+  } else if (requests.responses.httpsRoute.length > 0) {
     output.destination =
-      requests.responses.httpRedirects.at(-1)?.url?.href || null;
-  } else if (requests.responses.httpsRedirects.length > 0) {
-    output.destination =
-      requests.responses.httpsRedirects.at(-1)?.url?.href || null;
+      requests.responses.httpsRoute.at(-1)?.url?.href || null;
   }
   output.statusCode = response ? response.status : null;
 
@@ -53,7 +52,7 @@ export function redirectionTest(
   } else if (!response.verified) {
     output.result = Expectation.RedirectionInvalidCert;
   } else {
-    const route = requests.responses.httpRedirects;
+    const route = requests.responses.httpRoute;
     output.route = route.map((r) => r.url.href);
 
     // Check to see if every redirection was covered by the preload list

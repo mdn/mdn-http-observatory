@@ -96,7 +96,7 @@ describe("TestRetriever", () => {
       const requests = await retrieve(site);
       assert(requests.responses.auto);
       assert(requests.responses.auto.verified);
-      assert.equal(requests.responses.httpRedirects.length, 3);
+      assert.equal(requests.responses.httpRoute.length, 3);
     }
   );
 
@@ -112,7 +112,7 @@ describe("TestRetriever", () => {
     assert.isNumber(requests.responses.https.status);
     assert.instanceOf(requests.session, Session);
     assert.equal(requests.site.hostname, "developer.mozilla.org");
-    assert.equal(requests.responses.httpRedirects.length, 3);
+    assert.equal(requests.responses.httpRoute.length, 3);
     assert.equal(
       "text/html",
       requests.responses.auto.headers["content-type"].slice(0, 9)
@@ -120,7 +120,7 @@ describe("TestRetriever", () => {
     assert.equal(200, requests.responses.auto.status);
     assert.equal(
       "https://developer.mozilla.org/en-US/",
-      requests.responses.httpRedirects.at(-1)?.url.href
+      requests.responses.httpRoute.at(-1)?.url.href
     );
   });
 

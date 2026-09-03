@@ -23,7 +23,7 @@ export class UnexpectedStatusCodeError extends AppError {
    */
   constructor(responseStatusCode) {
     super(
-      `Site did respond with an unexpected HTTP status code ${responseStatusCode}.`
+      `Site responded with an unexpected HTTP status code ${responseStatusCode}.`
     );
     this.name = "unexpected-status-code";
     this.statusCode = STATUS_CODES.unprocessableEntity;
@@ -44,9 +44,6 @@ export class ScanFailedError extends AppError {
   constructor(e) {
     super("Scan Failed");
     this.name = "scan-failed";
-    // A scan can fail because the scanned site is unusable, which is not our
-    // fault. Keep the status code of the underlying `AppError` in that case,
-    // and only report a server error for genuinely unexpected failures.
     this.statusCode =
       e instanceof AppError ? e.statusCode : STATUS_CODES.internalServerError;
     this.message = e.message;

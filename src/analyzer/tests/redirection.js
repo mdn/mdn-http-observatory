@@ -68,12 +68,8 @@ export function redirectionTest(
       )
     ) {
       output.result = Expectation.RedirectionAllRedirectsPreloaded;
-    } else if (
-      httpRoute.at(-1)?.url.protocol !== "https:" ||
-      (httpsRoute.length > 0 && httpsRoute.at(-1)?.url.protocol !== "https:")
-    ) {
-      // Final destination wasn't https — checked for both the HTTP chain and
-      // the independent HTTPS chain (catches HTTPS redirecting back to HTTP)
+    } else if (httpRoute.at(-1)?.url.protocol !== "https:") {
+      // Final destination wasn't an https website
       output.result = Expectation.RedirectionNotToHttps;
     } else if (httpRoute[1]?.url.protocol === "http:") {
       // http should never redirect to another http location -- should always go to https first

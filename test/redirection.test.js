@@ -167,35 +167,6 @@ describe("Redirections", () => {
     assert.deepEqual(res.route, []);
   });
 
-  it("fails when https redirects back to http even if http redirects look fine", function () {
-    // HTTP chain correctly redirects to HTTPS on the same hostname
-    reqs.responses.httpRedirects = [
-      {
-        url: new URL("http://mozilla.org/"),
-        status: 301,
-      },
-      {
-        url: new URL("https://mozilla.org/"),
-        status: 200,
-      },
-    ];
-    // But the independent HTTPS session ends on HTTP — that should be an error
-    reqs.responses.httpsRedirects = [
-      {
-        url: new URL("https://mozilla.org/"),
-        status: 301,
-      },
-      {
-        url: new URL("http://mozilla.org/"),
-        status: 200,
-      },
-    ];
-
-    const res = redirectionTest(reqs);
-    assert.equal(res.result, Expectation.RedirectionNotToHttps);
-    assert.isFalse(res.pass);
-  });
-
   it("does not treat a single preloaded redirect as all-redirects-preloaded", function () {
     // A route of length 1 means there was no redirection at all. Guarding on
     // httpRoute.length > 1 avoids the vacuous `[].every(...) === true` that

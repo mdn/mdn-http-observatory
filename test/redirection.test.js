@@ -145,8 +145,6 @@ describe("Redirections", () => {
   });
 
   it("uses the https chain for the destination when there is no http response", function () {
-    // Without an HTTP response the HTTP redirect chain is empty, so the
-    // destination falls back to the end of the HTTPS chain (display only).
     reqs.responses.http = null;
     reqs.responses.httpRedirects = [];
     reqs.responses.httpsRedirects = [
@@ -168,10 +166,6 @@ describe("Redirections", () => {
   });
 
   it("does not treat a single preloaded redirect as all-redirects-preloaded", function () {
-    // A route of length 1 means there was no redirection at all. Guarding on
-    // httpRoute.length > 1 avoids the vacuous `[].every(...) === true` that
-    // would otherwise report RedirectionAllRedirectsPreloaded for a single
-    // preloaded host.
     reqs.responses.httpRedirects = [
       {
         url: new URL("https://cloudflare.com/"),

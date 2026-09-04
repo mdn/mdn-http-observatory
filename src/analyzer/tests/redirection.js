@@ -57,19 +57,17 @@ export function redirectionTest(
   } else {
     output.route = httpRoute.map((r) => r.url.href);
 
-    // Check to see if every redirection was covered by the preload list.
-    // Guard httpRoute.length > 1 to avoid vacuous truth on an empty array.
-    const allRedirectsPreloaded =
-      httpRoute.length > 1 &&
-      httpRoute.every((re) =>
-        isHstsPreloaded(Site.fromSiteString(re.url.hostname))
-      );
-    if (allRedirectsPreloaded) {
-      output.result = Expectation.RedirectionAllRedirectsPreloaded;
-    } else if (httpRoute.length < 2) {
+    if (httpRoute.length === 1) {
       // No redirection, so you just stayed on the http website
       output.result = Expectation.RedirectionMissing;
       output.redirects = false;
+    } else if (
+      // Check to see if every redirection was covered by the preload list
+      httpRoute.every((re) =>
+        isHstsPreloaded(Site.fromSiteString(re.url.hostname))
+      )
+    ) {
+      output.result = Expectation.RedirectionAllRedirectsPreloaded;
     } else if (
       httpRoute.at(-1)?.url.protocol !== "https:" ||
       (httpsRoute.length > 0 && httpsRoute.at(-1)?.url.protocol !== "https:")

@@ -60,7 +60,7 @@ export function subresourceIntegrityTest(
     return output;
   }
 
-  const mime = (getFirstHttpHeader(resp, CONTENT_TYPE) ?? "").split(";")[0];
+  const mime = (getFirstHttpHeader(resp, CONTENT_TYPE) ?? "").split(";", 1)[0];
   if (mime && !HTML_TYPES.has(mime)) {
     // If the content isn't HTML, there's no scripts to load; this is okay
     output.result = Expectation.SriNotImplementedResponseNotHtml;

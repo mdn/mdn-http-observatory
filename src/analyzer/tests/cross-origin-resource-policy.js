@@ -1,6 +1,6 @@
 import { CROSS_ORIGIN_RESOURCE_POLICY } from "../../headers.js";
 import { BaseOutput, Expectation } from "../../types.js";
-import { getFirstHttpHeader } from "../utils.js";
+import { getHttpHeaders } from "../utils.js";
 
 /** @import { Requests } from "../../types.js" */
 
@@ -38,7 +38,8 @@ export function crossOriginResourcePolicyTest(
     return output;
   }
 
-  const httpHeader = getFirstHttpHeader(resp, CROSS_ORIGIN_RESOURCE_POLICY);
+  const httpHeaders = getHttpHeaders(resp, CROSS_ORIGIN_RESOURCE_POLICY);
+  const httpHeader = httpHeaders.join(", ");
   const equivHeaders =
     resp.httpEquiv?.get(CROSS_ORIGIN_RESOURCE_POLICY) ?? null;
 
@@ -46,7 +47,7 @@ export function crossOriginResourcePolicyTest(
   output.http = !!httpHeader;
   output.meta = equivHeaders ? equivHeaders.length > 0 : false;
 
-  // If it is both a header and a http-equiv, http-equiv has precedence (last value)
+  // If it is both a header and a http-equiv, the header has precedence.
   /** @type {string | undefined}  */
   let corpHeader;
   if (output.http && httpHeader) {

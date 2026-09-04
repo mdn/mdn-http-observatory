@@ -1,5 +1,78 @@
 # Changelog
 
+## [1.7.1](https://github.com/mdn/mdn-http-observatory/compare/v1.7.0...v1.7.1) (2026-09-03)
+
+
+### Bug Fixes
+
+* **api:** report unscannable sites as 422 instead of 500 ([#602](https://github.com/mdn/mdn-http-observatory/issues/602)) ([c7f586f](https://github.com/mdn/mdn-http-observatory/commit/c7f586f125e88fd056263301f54b333c13d5b000))
+
+
+### Miscellaneous
+
+* **deps:** bump fast-uri from 3.1.5 to 3.1.7 ([#603](https://github.com/mdn/mdn-http-observatory/issues/603)) ([1534b0a](https://github.com/mdn/mdn-http-observatory/commit/1534b0a030f08672bc5359d9759e6a5b53c35b74))
+
+## [1.7.0](https://github.com/mdn/mdn-http-observatory/compare/v1.6.3...v1.7.0) (2026-09-01)
+
+
+### Features
+
+* **analyzer:** add COOP + COEP scoring ([#498](https://github.com/mdn/mdn-http-observatory/issues/498)) ([2d230d2](https://github.com/mdn/mdn-http-observatory/commit/2d230d2bb613d50d5b81df3345f86e0cfb7be64a))
+
+
+### Bug Fixes
+
+* **corp:** treat duplicate headers as invalid ([#562](https://github.com/mdn/mdn-http-observatory/issues/562)) ([50e6769](https://github.com/mdn/mdn-http-observatory/commit/50e67695bdf29227b2a649b40155be0814dd1cc8))
+
+
+### Miscellaneous
+
+* **deps:** bump @fastify/static from 10.1.0 to 10.1.2 ([#576](https://github.com/mdn/mdn-http-observatory/issues/576)) ([235f0a6](https://github.com/mdn/mdn-http-observatory/commit/235f0a617c4ea0c78fd15bede30641f1c51f7385))
+* **deps:** bump @sentry/node from 10.67.0 to 10.68.0 in the npm-prod group ([#580](https://github.com/mdn/mdn-http-observatory/issues/580)) ([5c2222c](https://github.com/mdn/mdn-http-observatory/commit/5c2222c9aefd8d847448ad10deae55eb7aab23e9))
+* **deps:** bump @sentry/node in the npm-prod group ([5c2222c](https://github.com/mdn/mdn-http-observatory/commit/5c2222c9aefd8d847448ad10deae55eb7aab23e9))
+* **deps:** bump brace-expansion from 5.0.6 to 5.0.7 ([#573](https://github.com/mdn/mdn-http-observatory/issues/573)) ([fe95f15](https://github.com/mdn/mdn-http-observatory/commit/fe95f152a27efe19823100d5a5718121628a5c06))
+* **deps:** bump brace-expansion from 5.0.7 to 5.0.8 ([#577](https://github.com/mdn/mdn-http-observatory/issues/577)) ([bc8b18c](https://github.com/mdn/mdn-http-observatory/commit/bc8b18c8f6769f6a73fe925f493f4fef9928eaa4))
+* **deps:** bump brace-expansion from 5.0.8 to 5.0.9 ([#585](https://github.com/mdn/mdn-http-observatory/issues/585)) ([afcf8f5](https://github.com/mdn/mdn-http-observatory/commit/afcf8f51690697638533841a03103d459873240a))
+* **deps:** bump fast-uri from 3.1.2 to 3.1.4 ([#575](https://github.com/mdn/mdn-http-observatory/issues/575)) ([515771f](https://github.com/mdn/mdn-http-observatory/commit/515771f056d15a0470b618c7bf642e07a1da2c26))
+* **deps:** bump fast-uri from 3.1.4 to 3.1.5 ([#586](https://github.com/mdn/mdn-http-observatory/issues/586)) ([e0ee963](https://github.com/mdn/mdn-http-observatory/commit/e0ee963e93ea87ec8e94bed5c431622d0d3f71e4))
+* **deps:** bump find-my-way from 9.6.0 to 9.7.0 ([#578](https://github.com/mdn/mdn-http-observatory/issues/578)) ([b65b7f0](https://github.com/mdn/mdn-http-observatory/commit/b65b7f02aca3dabb538ca6e4a8612bdb00eae2b1))
+* **deps:** bump postgrator-cli from 9.1.0 to 10.0.0 ([#571](https://github.com/mdn/mdn-http-observatory/issues/571)) ([a0710b2](https://github.com/mdn/mdn-http-observatory/commit/a0710b26d594e80e71abd85f4f29d5cba6528c21))
+* **deps:** bump the npm-prod group across 1 directory with 2 updates ([#568](https://github.com/mdn/mdn-http-observatory/issues/568)) ([3cd48ed](https://github.com/mdn/mdn-http-observatory/commit/3cd48edd2f8d641728b3c50ace6ef2ad74ab8161))
+* **deps:** bump the npm-prod group across 1 directory with 3 updates ([#597](https://github.com/mdn/mdn-http-observatory/issues/597)) ([e03c695](https://github.com/mdn/mdn-http-observatory/commit/e03c69584bb86c7282ee7e7c85099c2880ba3aae))
+* **deps:** bump the npm-prod group with 2 updates ([#587](https://github.com/mdn/mdn-http-observatory/issues/587)) ([72b3b79](https://github.com/mdn/mdn-http-observatory/commit/72b3b7937b6332270982021a2d523b084e43f1be))
+* **deps:** bump the npm-prod group with 3 updates ([#599](https://github.com/mdn/mdn-http-observatory/issues/599)) ([00c8ed4](https://github.com/mdn/mdn-http-observatory/commit/00c8ed44280d3e087628836d7d10cff7fc2a2f8f))
+* **deps:** bump the npm-prod group with 4 updates ([#583](https://github.com/mdn/mdn-http-observatory/issues/583)) ([7426488](https://github.com/mdn/mdn-http-observatory/commit/74264885f0001666e0c21a1d93dac857802b5984))
+* **deps:** bump the npm-prod group with 4 updates ([#590](https://github.com/mdn/mdn-http-observatory/issues/590)) ([8f4653b](https://github.com/mdn/mdn-http-observatory/commit/8f4653b2da994f4d60f931919fb63f5132818b35))
+
+## [1.6.3](https://github.com/mdn/mdn-http-observatory/compare/v1.6.2...v1.6.3) (2026-07-16)
+
+
+### Miscellaneous
+
+* **deps:** bump @fastify/static from 9.1.0 to 9.1.1 ([#507](https://github.com/mdn/mdn-http-observatory/issues/507)) ([78e9a7f](https://github.com/mdn/mdn-http-observatory/commit/78e9a7f0c7ed89b5956c40d16ec36892d724c27e))
+* **deps:** bump @fastify/static from 9.1.3 to 10.1.0 ([#552](https://github.com/mdn/mdn-http-observatory/issues/552)) ([42c6b8e](https://github.com/mdn/mdn-http-observatory/commit/42c6b8e627ef64167aa7015d75d82cb1e35dba22))
+* **deps:** bump @sentry/node from 10.51.0 to 10.52.0 in the npm-prod group ([#517](https://github.com/mdn/mdn-http-observatory/issues/517)) ([1dc9b42](https://github.com/mdn/mdn-http-observatory/commit/1dc9b421f364d35369066ae804fd1bf581697642))
+* **deps:** bump @sentry/node in the npm-prod group ([1dc9b42](https://github.com/mdn/mdn-http-observatory/commit/1dc9b421f364d35369066ae804fd1bf581697642))
+* **deps:** bump axios-cookiejar-support from 6.0.5 to 7.0.0 ([#519](https://github.com/mdn/mdn-http-observatory/issues/519)) ([f7176f4](https://github.com/mdn/mdn-http-observatory/commit/f7176f49f5bec8deb8fdbf0b51a7214996567fcb))
+* **deps:** bump commander from 14.0.3 to 15.0.0 ([#532](https://github.com/mdn/mdn-http-observatory/issues/532)) ([957e21a](https://github.com/mdn/mdn-http-observatory/commit/957e21a2958350b96385cd040190cd5836b1b9ef))
+* **deps:** bump fast-uri and fast-json-stringify ([#516](https://github.com/mdn/mdn-http-observatory/issues/516)) ([93aad8a](https://github.com/mdn/mdn-http-observatory/commit/93aad8ab01f60ef0ff617668724f002a76193a8e))
+* **deps:** bump form-data from 4.0.5 to 4.0.6 ([#535](https://github.com/mdn/mdn-http-observatory/issues/535)) ([f529d4e](https://github.com/mdn/mdn-http-observatory/commit/f529d4e12d66d0de06e3345fe56142575bb575d6))
+* **deps:** bump http-cookie-agent from 7.0.3 to 8.0.0 ([#518](https://github.com/mdn/mdn-http-observatory/issues/518)) ([9133e37](https://github.com/mdn/mdn-http-observatory/commit/9133e37252e5c278cfef0ff3c2585a7904e0103b))
+* **deps:** bump the npm-prod group across 1 directory with 4 updates ([#530](https://github.com/mdn/mdn-http-observatory/issues/530)) ([f29bd45](https://github.com/mdn/mdn-http-observatory/commit/f29bd45671ed159179c61c3dbbdfcac08471bc51))
+* **deps:** bump the npm-prod group across 1 directory with 5 updates ([#549](https://github.com/mdn/mdn-http-observatory/issues/549)) ([29949ac](https://github.com/mdn/mdn-http-observatory/commit/29949ac100bede713d0025a33985f47c3185b284))
+* **deps:** bump the npm-prod group with 3 updates ([#511](https://github.com/mdn/mdn-http-observatory/issues/511)) ([4046e15](https://github.com/mdn/mdn-http-observatory/commit/4046e150ea2667f6507317e1a3168989706a727f))
+* **deps:** bump the npm-prod group with 3 updates ([#514](https://github.com/mdn/mdn-http-observatory/issues/514)) ([c4f9bf3](https://github.com/mdn/mdn-http-observatory/commit/c4f9bf3c7f920c92614122b72b68d693caeda1fa))
+* **deps:** bump the npm-prod group with 3 updates ([#515](https://github.com/mdn/mdn-http-observatory/issues/515)) ([3210312](https://github.com/mdn/mdn-http-observatory/commit/32103123aef150e5a815f4734aa4f9d66f8ad99a))
+* **deps:** bump the npm-prod group with 3 updates ([#533](https://github.com/mdn/mdn-http-observatory/issues/533)) ([a4c4db1](https://github.com/mdn/mdn-http-observatory/commit/a4c4db1c2ddf8ca6050818b1cc4e831855d107a1))
+* **deps:** bump the npm-prod group with 3 updates ([#538](https://github.com/mdn/mdn-http-observatory/issues/538)) ([78b27d4](https://github.com/mdn/mdn-http-observatory/commit/78b27d491829561382f2ba4f5554867d8708a450))
+* **deps:** bump the npm-prod group with 3 updates ([#540](https://github.com/mdn/mdn-http-observatory/issues/540)) ([2b87eaf](https://github.com/mdn/mdn-http-observatory/commit/2b87eafdab9e92019aecd3cdee0901bcee897248))
+* **deps:** bump the npm-prod group with 3 updates ([#545](https://github.com/mdn/mdn-http-observatory/issues/545)) ([6d6e1a7](https://github.com/mdn/mdn-http-observatory/commit/6d6e1a7594a10f2baf330d72edf33a2da57e4876))
+* **deps:** bump the npm-prod group with 5 updates ([#521](https://github.com/mdn/mdn-http-observatory/issues/521)) ([ddfb693](https://github.com/mdn/mdn-http-observatory/commit/ddfb6935d9f0d297e0448b56e33b2073bf823f12))
+* **deps:** bump tldts from 7.0.30 to 7.4.0 in the npm-prod group across 1 directory ([#526](https://github.com/mdn/mdn-http-observatory/issues/526)) ([1502506](https://github.com/mdn/mdn-http-observatory/commit/1502506be08c91f6b98cb46f0fa34f76ecf39a0d))
+* **deps:** bump tldts in the npm-prod group across 1 directory ([1502506](https://github.com/mdn/mdn-http-observatory/commit/1502506be08c91f6b98cb46f0fa34f76ecf39a0d))
+* **deps:** remove leftover `@types/ip` ([#546](https://github.com/mdn/mdn-http-observatory/issues/546)) ([f399b1c](https://github.com/mdn/mdn-http-observatory/commit/f399b1c1b8847db009148eb6d6ee60326b8e455a))
+* **deps:** run `npm audit fix` ([#528](https://github.com/mdn/mdn-http-observatory/issues/528)) ([d41356f](https://github.com/mdn/mdn-http-observatory/commit/d41356f003eccc919690d0976f0066e4401937a0))
+
 ## [1.6.2](https://github.com/mdn/mdn-http-observatory/compare/v1.6.1...v1.6.2) (2026-04-14)
 
 

@@ -144,6 +144,40 @@ describe("Redirections", () => {
     assert.isFalse(res.pass);
   });
 
+  it("uses the https chain for the destination when there is no http response", function () {
+    reqs.responses.http = null;
+    reqs.responses.httpRedirects = [];
+    reqs.responses.httpsRedirects = [
+      {
+        url: new URL("https://mozilla.org/"),
+        status: 301,
+      },
+      {
+        url: new URL("https://www.mozilla.org/"),
+        status: 200,
+      },
+    ];
+
+    const res = redirectionTest(reqs);
+    assert.equal(res.result, Expectation.RedirectionNotNeededNoHttp);
+    assert.isTrue(res.pass);
+    assert.equal(res.destination, "https://www.mozilla.org/");
+    assert.deepEqual(res.route, []);
+  });
+
+  it("does not treat a single preloaded redirect as all-redirects-preloaded", function () {
+    reqs.responses.httpRedirects = [
+      {
+        url: new URL("http://cloudflare.com/"),
+        status: 200,
+      },
+    ];
+
+    const res = redirectionTest(reqs);
+    assert.equal(res.result, Expectation.RedirectionMissing);
+    assert.isFalse(res.pass);
+  });
+
   it("checks for all redirections preloaded", function () {
     reqs.responses.httpRedirects = [
       {

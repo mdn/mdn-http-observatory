@@ -37,14 +37,16 @@ export function redirectionTest(
   expectation = Expectation.RedirectionToHttps
 ) {
   const output = new RedirectionOutput(expectation);
-  const httpResponse = requests.responses.http;
-
-  const httpRoute = requests.responses.httpRedirects;
-  const httpsRoute = requests.responses.httpsRedirects;
+  const {
+    http: httpResponse,
+    httpRedirects,
+    httpsRedirects,
+  } = requests.responses;
 
   // For display only: prefer the HTTP chain's destination, falling back to the
   // HTTPS chain when there is no HTTP response.
-  const destination = (httpRoute.at(-1) ?? httpsRoute.at(-1))?.url?.href;
+  const lastRedirect = httpRedirects.at(-1) ?? httpsRedirects.at(-1);
+  const destination = lastRedirect?.url?.href;
   if (destination) {
     output.destination = destination;
   }
@@ -55,30 +57,30 @@ export function redirectionTest(
   } else if (!httpResponse.verified) {
     output.result = Expectation.RedirectionInvalidCert;
   } else {
-    output.route = httpRoute.map((r) => r.url.href);
+    output.route = httpRedirects.map((r) => r.url.href);
 
-    if (httpRoute.length === 1) {
+    if (httpRedirects.length === 1) {
       // No redirection, so you just stayed on the http website
       output.result = Expectation.RedirectionMissing;
       output.redirects = false;
     } else if (
       // Check to see if every redirection was covered by the preload list
-      httpRoute.every((re) =>
+      httpRedirects.every((re) =>
         isHstsPreloaded(Site.fromSiteString(re.url.hostname))
       )
     ) {
       output.result = Expectation.RedirectionAllRedirectsPreloaded;
-    } else if (httpRoute.at(-1)?.url.protocol !== "https:") {
+    } else if (httpRedirects.at(-1)?.url.protocol !== "https:") {
       // Final destination wasn't an https website
       output.result = Expectation.RedirectionNotToHttps;
-    } else if (httpRoute[1]?.url.protocol === "http:") {
+    } else if (httpRedirects[1]?.url.protocol === "http:") {
       // http should never redirect to another http location -- should always go to https first
       output.result = Expectation.RedirectionNotToHttpsOnInitialRedirection;
-      output.statusCode = httpRoute.at(-1)?.status || null;
+      output.statusCode = httpRedirects.at(-1)?.status || null;
     } else if (
-      httpRoute[0]?.url.protocol === "http:" &&
-      httpRoute[1]?.url.protocol === "https:" &&
-      httpRoute[0]?.url.hostname !== httpRoute[1]?.url.hostname
+      httpRedirects[0]?.url.protocol === "http:" &&
+      httpRedirects[1]?.url.protocol === "https:" &&
+      httpRedirects[0]?.url.hostname !== httpRedirects[1]?.url.hostname
     ) {
       output.result = Expectation.RedirectionOffHostFromHttp;
     } else {

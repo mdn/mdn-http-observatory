@@ -168,7 +168,7 @@ describe("Redirections", () => {
   it("does not treat a single preloaded redirect as all-redirects-preloaded", function () {
     reqs.responses.httpRedirects = [
       {
-        url: new URL("https://cloudflare.com/"),
+        url: new URL("http://cloudflare.com/"),
         status: 200,
       },
     ];

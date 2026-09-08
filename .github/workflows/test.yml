@@ -135,7 +135,9 @@ jobs:
         shell: bash
         run: |
           TARBALL=$(ls mdn-mdn-http-observatory-*.tgz)
-          npm install -g "$TARBALL"
+          # npm >= 12 blocks install scripts by default, and a global install has
+          # no root package.json to read an `allowScripts` allowlist from.
+          npm install -g --dangerously-allow-all-scripts "$TARBALL"
 
       - name: Test --help output
         shell: bash

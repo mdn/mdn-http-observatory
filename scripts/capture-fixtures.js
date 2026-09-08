@@ -70,8 +70,8 @@ async function captureFixture(domain) {
       http: serializeResponse(requests.responses.http),
       https: serializeResponse(requests.responses.https),
       cors: serializeResponse(requests.responses.cors),
-      httpRedirects: serializeRedirects(requests.responses.httpRedirects),
-      httpsRedirects: serializeRedirects(requests.responses.httpsRedirects),
+      httpRoute: serializeRedirects(requests.responses.httpRoute),
+      httpsRoute: serializeRedirects(requests.responses.httpsRoute),
     },
     resources: {
       path: requests.resources.path || "",

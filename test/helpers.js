@@ -58,7 +58,7 @@ export function emptyRequests(httpEquivFile = null) {
   req.responses.http = structuredClone(req.responses.auto);
   req.responses.https = structuredClone(req.responses.auto);
 
-  req.responses.httpRedirects = [
+  req.responses.httpRoute = [
     {
       url: new URL("http://mozilla.org/"),
       status: 301,
@@ -72,7 +72,7 @@ export function emptyRequests(httpEquivFile = null) {
       status: 200,
     },
   ];
-  req.responses.httpsRedirects = [
+  req.responses.httpsRoute = [
     {
       url: new URL("https://mozilla.org/"),
       status: 301,
@@ -114,7 +114,7 @@ export function emptyRequests(httpEquivFile = null) {
 }
 
 /**
- * @typedef {object} SerializedRedirectEntry
+ * @typedef {object} SerializedRouteEntry
  * @property {string} url
  * @property {number} status
  */
@@ -179,18 +179,18 @@ export function fixtureRequests(fixtureName) {
   req.responses.cors = reconstructResponse(fixtureData.responses.cors);
 
   // Reconstruct redirect chains
-  req.responses.httpRedirects = (fixtureData.responses.httpRedirects || []).map(
-    (/** @type {SerializedRedirectEntry} */ r) => ({
+  req.responses.httpRoute = (fixtureData.responses.httpRoute || []).map(
+    (/** @type {SerializedRouteEntry} */ r) => ({
       url: new URL(r.url),
       status: r.status,
     })
   );
-  req.responses.httpsRedirects = (
-    fixtureData.responses.httpsRedirects || []
-  ).map((/** @type {SerializedRedirectEntry} */ r) => ({
-    url: new URL(r.url),
-    status: r.status,
-  }));
+  req.responses.httpsRoute = (fixtureData.responses.httpsRoute || []).map(
+    (/** @type {SerializedRouteEntry} */ r) => ({
+      url: new URL(r.url),
+      status: r.status,
+    })
+  );
 
   // Set resources
   req.resources.path = fixtureData.resources.path || "";

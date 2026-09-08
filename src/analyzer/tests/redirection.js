@@ -43,8 +43,7 @@ export function redirectionTest(
     httpsRedirects,
   } = requests.responses;
 
-  // For display only: prefer the HTTP chain's destination, falling back to the
-  // HTTPS chain when there is no HTTP response.
+  // Display only; pass/fail is decided by the HTTP chain below.
   const lastRedirect = httpRedirects.at(-1) ?? httpsRedirects.at(-1);
   const destination = lastRedirect?.url?.href;
   if (destination) {
@@ -60,14 +59,12 @@ export function redirectionTest(
     output.route = httpRedirects.map((r) => r.url.href);
 
     if (httpRedirects.length === 1) {
-      // No redirection, so you just stayed on the http website
       output.result = Expectation.RedirectionMissing;
       output.redirects = false;
     } else if (httpRedirects.at(-1)?.url.protocol !== "https:") {
-      // Final destination wasn't an https website
       output.result = Expectation.RedirectionNotToHttps;
     } else if (httpRedirects[1]?.url.protocol === "http:") {
-      // http should never redirect to another http location -- should always go to https first
+      // The first hop must go to https, not to another http location.
       output.result = Expectation.RedirectionNotToHttpsOnInitialRedirection;
       output.statusCode = httpRedirects.at(-1)?.status || null;
     } else if (
@@ -83,7 +80,6 @@ export function redirectionTest(
     ) {
       output.result = Expectation.RedirectionAllRedirectsPreloaded;
     } else {
-      // Yeah, you're good
       output.result = Expectation.RedirectionToHttps;
     }
   }

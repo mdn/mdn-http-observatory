@@ -165,17 +165,48 @@ describe("Redirections", () => {
     assert.deepEqual(res.route, []);
   });
 
-  it("does not treat a single preloaded redirect as all-redirects-preloaded", function () {
-    reqs.responses.httpRedirects = [
+  it("does not mask other checks with a preloaded redirect chain", function () {
+    const cases = [
       {
-        url: new URL("http://cloudflare.com/"),
-        status: 200,
+        name: "missing redirection",
+        httpRedirects: [
+          { url: new URL("http://cloudflare.com/"), status: 200 },
+        ],
+        expected: Expectation.RedirectionMissing,
+      },
+      {
+        name: "redirection not to https",
+        httpRedirects: [
+          { url: new URL("http://cloudflare.com/"), status: 301 },
+          { url: new URL("http://www.cloudflare.com/"), status: 200 },
+        ],
+        expected: Expectation.RedirectionNotToHttps,
+      },
+      {
+        name: "first redirection to http",
+        httpRedirects: [
+          { url: new URL("http://cloudflare.com/"), status: 301 },
+          { url: new URL("http://www.cloudflare.com/"), status: 301 },
+          { url: new URL("https://www.cloudflare.com/"), status: 200 },
+        ],
+        expected: Expectation.RedirectionNotToHttpsOnInitialRedirection,
+      },
+      {
+        name: "first redirection off host",
+        httpRedirects: [
+          { url: new URL("http://cloudflare.com/"), status: 301 },
+          { url: new URL("https://www.cloudflare.com/"), status: 200 },
+        ],
+        expected: Expectation.RedirectionOffHostFromHttp,
       },
     ];
 
-    const res = redirectionTest(reqs);
-    assert.equal(res.result, Expectation.RedirectionMissing);
-    assert.isFalse(res.pass);
+    for (const { name, httpRedirects, expected } of cases) {
+      reqs.responses.httpRedirects = httpRedirects;
+      const res = redirectionTest(reqs);
+      assert.equal(res.result, expected, name);
+      assert.isFalse(res.pass, name);
+    }
   });
 
   it("checks for all redirections preloaded", function () {

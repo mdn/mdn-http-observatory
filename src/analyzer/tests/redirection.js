@@ -63,13 +63,6 @@ export function redirectionTest(
       // No redirection, so you just stayed on the http website
       output.result = Expectation.RedirectionMissing;
       output.redirects = false;
-    } else if (
-      // Check to see if every redirection was covered by the preload list
-      httpRedirects.every((re) =>
-        isHstsPreloaded(Site.fromSiteString(re.url.hostname))
-      )
-    ) {
-      output.result = Expectation.RedirectionAllRedirectsPreloaded;
     } else if (httpRedirects.at(-1)?.url.protocol !== "https:") {
       // Final destination wasn't an https website
       output.result = Expectation.RedirectionNotToHttps;
@@ -83,6 +76,12 @@ export function redirectionTest(
       httpRedirects[0]?.url.hostname !== httpRedirects[1]?.url.hostname
     ) {
       output.result = Expectation.RedirectionOffHostFromHttp;
+    } else if (
+      httpRedirects.every((re) =>
+        isHstsPreloaded(Site.fromSiteString(re.url.hostname))
+      )
+    ) {
+      output.result = Expectation.RedirectionAllRedirectsPreloaded;
     } else {
       // Yeah, you're good
       output.result = Expectation.RedirectionToHttps;

@@ -37,11 +37,8 @@ export function redirectionTest(
   expectation = Expectation.RedirectionToHttps
 ) {
   const output = new RedirectionOutput(expectation);
-  const {
-    http: httpResponse,
-    httpRedirects,
-    httpsRedirects,
-  } = requests.responses;
+  const response = requests.responses.http;
+  const { httpRedirects, httpsRedirects } = requests.responses;
 
   // Display only; pass/fail is decided by the HTTP chain below.
   const lastRedirect = httpRedirects.at(-1) ?? httpsRedirects.at(-1);
@@ -49,11 +46,11 @@ export function redirectionTest(
   if (destination) {
     output.destination = destination;
   }
-  output.statusCode = httpResponse ? httpResponse.status : null;
+  output.statusCode = response ? response.status : null;
 
-  if (!httpResponse) {
+  if (!response) {
     output.result = Expectation.RedirectionNotNeededNoHttp;
-  } else if (!httpResponse.verified) {
+  } else if (!response.verified) {
     output.result = Expectation.RedirectionInvalidCert;
   } else {
     output.route = httpRedirects.map((r) => r.url.href);

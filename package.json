@@ -92,5 +92,12 @@
   },
   "optionalDependencies": {
     "pg-native": "^3.7.0"
+  },
+  "allowScripts": {
+    "fsevents": true,
+    "lefthook": true,
+    "libpq": true,
+    "node_extra_ca_certs_mozilla_bundle": true,
+    "unrs-resolver": true
   }
 }

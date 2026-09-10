@@ -135,7 +135,8 @@ jobs:
         shell: bash
         run: |
           TARBALL=$(ls mdn-mdn-http-observatory-*.tgz)
-          npm install -g "$TARBALL"
+          # Global installs cannot read the `allowScripts` allowlist.
+          npm install -g --dangerously-allow-all-scripts "$TARBALL"
 
       - name: Test --help output
         shell: bash

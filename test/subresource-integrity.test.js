@@ -30,7 +30,8 @@ describe("Subresource Integrity", () => {
   });
 
   it("checks for same origin", function () {
-    reqs = emptyRequests("test_content_sri_sameorigin1.html");
+    // On the same origin with relative path
+    reqs = emptyRequests("test_content_sri_sameorigin_relative.html");
     let result = subresourceIntegrityTest(reqs);
     assert.equal(
       result.result,
@@ -38,17 +39,17 @@ describe("Subresource Integrity", () => {
     );
     assert.isTrue(result.pass);
 
-    // On the same second-level domain, but without a protocol
-    reqs = emptyRequests("test_content_sri_sameorigin3.html");
+    // On the same origin, but without a protocol
+    reqs = emptyRequests("test_content_sri_sameorigin_noproto.html");
     result = subresourceIntegrityTest(reqs);
     assert.equal(
       result.result,
-      Expectation.SriNotImplementedAndExternalScriptsNotLoadedSecurely
+      Expectation.SriNotImplementedButAllScriptsLoadedFromSecureOrigin
     );
-    assert.isFalse(result.pass);
+    assert.isTrue(result.pass);
 
     // On the same origin, but with https:// specified
-    reqs = emptyRequests("test_content_sri_sameorigin2.html");
+    reqs = emptyRequests("test_content_sri_sameorigin_https.html");
     result = subresourceIntegrityTest(reqs);
     assert.equal(
       result.result,
@@ -60,6 +61,18 @@ describe("Subresource Integrity", () => {
     assert.isNotNull(reqs.responses.auto);
     reqs.responses.auto.status = 404;
     result = subresourceIntegrityTest(reqs);
+    assert.equal(
+      result.result,
+      Expectation.SriNotImplementedButAllScriptsLoadedFromSecureOrigin
+    );
+    assert.isTrue(result.pass);
+  });
+
+  it("skips a src that fails to resolve instead of crashing", function () {
+    // A malformed src like "//" cannot be resolved into a URL; it is not a
+    // loadable sub-resource, so it must be skipped rather than throwing.
+    reqs = emptyRequests("test_content_sri_malformed_src.html");
+    const result = subresourceIntegrityTest(reqs);
     assert.equal(
       result.result,
       Expectation.SriNotImplementedButAllScriptsLoadedFromSecureOrigin
@@ -148,8 +161,23 @@ describe("Subresource Integrity", () => {
   });
 
   it("checks if implemented with external scripts and no protocol", function () {
+    // When HTTP redirects to HTTPS, //cdn.example.com/script.js always resolves to https://,
+    // so protocol-relative URLs should be treated the same as https:// (issue #464).
     reqs = emptyRequests("test_content_sri_impl_external_noproto.html");
     let result = subresourceIntegrityTest(reqs);
+    assert.equal(
+      result.result,
+      Expectation.SriImplementedAndExternalScriptsLoadedSecurely
+    );
+    assert.isTrue(result.pass);
+
+    // When HTTP does NOT redirect to HTTPS, //cdn.example.com/script.js can resolve to http://
+    // on an HTTP visit, so it must still be penalised.
+    reqs = emptyRequests("test_content_sri_impl_external_noproto.html");
+    reqs.responses.httpRedirects = [
+      { url: new URL("http://mozilla.org/"), status: 200 },
+    ];
+    result = subresourceIntegrityTest(reqs);
     assert.equal(
       result.result,
       Expectation.SriImplementedButExternalScriptsNotLoadedSecurely
@@ -168,11 +196,55 @@ describe("Subresource Integrity", () => {
   });
 
   it("checks if not implemented with external scripts and no protocol", function () {
+    // When HTTP redirects to HTTPS, //cdn.example.com/script.js always resolves to https://,
+    // so it should score like https:// (-5), not like http:// (-50) (issue #464).
     reqs = emptyRequests("test_content_sri_notimpl_external_noproto.html");
     let result = subresourceIntegrityTest(reqs);
     assert.equal(
       result.result,
+      Expectation.SriNotImplementedButExternalScriptsLoadedSecurely
+    );
+    assert.isFalse(result.pass);
+
+    // When HTTP does NOT redirect to HTTPS, //cdn.example.com/script.js can resolve to http://
+    // on an HTTP visit, so it must still be penalised at -50.
+    reqs = emptyRequests("test_content_sri_notimpl_external_noproto.html");
+    reqs.responses.httpRedirects = [
+      { url: new URL("http://mozilla.org/"), status: 200 },
+    ];
+    result = subresourceIntegrityTest(reqs);
+    assert.equal(
+      result.result,
       Expectation.SriNotImplementedAndExternalScriptsNotLoadedSecurely
+    );
+    assert.isFalse(result.pass);
+
+    // When there is no HTTP server at all, //cdn.example.com/script.js can only
+    // resolve to https://, so it should score like https:// (-5) (issue #464).
+    reqs = emptyRequests("test_content_sri_notimpl_external_noproto.html");
+    reqs.responses.http = null;
+    reqs.responses.httpRedirects = [];
+    result = subresourceIntegrityTest(reqs);
+    assert.equal(
+      result.result,
+      Expectation.SriNotImplementedButExternalScriptsLoadedSecurely
+    );
+    assert.isFalse(result.pass);
+
+    // When the redirect to HTTPS goes through an intermediate HTTP hop, a normal
+    // visitor still lands on HTTPS, so //cdn.example.com/script.js resolves to
+    // https:// and scores like https:// (-5). The downgradeable hop is penalised
+    // by the redirection test, not double-counted here (issue #464).
+    reqs = emptyRequests("test_content_sri_notimpl_external_noproto.html");
+    reqs.responses.httpRedirects = [
+      { url: new URL("http://mozilla.org/"), status: 301 },
+      { url: new URL("http://www.mozilla.org/"), status: 301 },
+      { url: new URL("https://www.mozilla.org/"), status: 200 },
+    ];
+    result = subresourceIntegrityTest(reqs);
+    assert.equal(
+      result.result,
+      Expectation.SriNotImplementedButExternalScriptsLoadedSecurely
     );
     assert.isFalse(result.pass);
   });

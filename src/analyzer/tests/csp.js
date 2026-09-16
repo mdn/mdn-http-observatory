@@ -35,10 +35,8 @@ const DANGEROUSLY_BROAD = new Set([
   "https://*.*",
 ]);
 const UNSAFE_INLINE = new Set(["'unsafe-inline'", "data:"]);
-const DANGEROUSLY_BROAD_AND_UNSAFE_INLINE = new Set([
-  ...DANGEROUSLY_BROAD,
-  ...UNSAFE_INLINE,
-]);
+const DANGEROUSLY_BROAD_AND_UNSAFE_INLINE =
+  DANGEROUSLY_BROAD.union(UNSAFE_INLINE);
 
 // Passive content check
 const PASSIVE_DIRECTIVES = new Set(["img-src", "media-src"]);
@@ -208,7 +206,7 @@ export function contentSecurityPolicyTest(
 
   // Some checks look only at active/passive CSP directives
   // This could be inlined, but the code is quite hard to read at that point
-  const active_csp_sources = [...csp.entries()]
+  const active_csp_sources = [...csp]
     .filter(
       ([directive]) =>
         !PASSIVE_DIRECTIVES.has(directive) && directive !== "script-src"
@@ -250,7 +248,7 @@ export function contentSecurityPolicyTest(
   }
 
   // Don't allow 'unsafe-eval' in script-src or style-src
-  if (new Set([...script_src, ...style_src]).has("'unsafe-eval'")) {
+  if (script_src.union(style_src).has("'unsafe-eval'")) {
     if (output.result === null) {
       output.result = Expectation.CspImplementedWithUnsafeEval;
     }
@@ -298,8 +296,8 @@ export function contentSecurityPolicyTest(
   }
 
   // Some other checks for the CSP analyzer
-  output.policy.antiClickjacking = ![...frame_ancestors].some((source) =>
-    DANGEROUSLY_BROAD.has(source)
+  output.policy.antiClickjacking = [...frame_ancestors].every(
+    (source) => !DANGEROUSLY_BROAD.has(source)
   );
   output.policy.insecureBaseUri = [...base_uri].some((source) =>
     DANGEROUSLY_BROAD_AND_UNSAFE_INLINE.has(source)

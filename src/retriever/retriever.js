@@ -57,7 +57,7 @@ export async function retrieve(site, options = {}) {
 
   // use the http redirect chain
   retrievals.responses.httpRedirects = httpSession.redirectHistory;
-  retrievals.responses.httpsRedirects = httpSession.redirectHistory;
+  retrievals.responses.httpsRedirects = httpsSession.redirectHistory;
 
   if (httpsSession.clientInstanceRecordingRedirects) {
     retrievals.responses.auto = httpsSession.response;
@@ -102,7 +102,7 @@ export async function retrieve(site, options = {}) {
   if (retrievals.responses.auto) {
     if (
       HTML_TYPES.has(
-        retrievals.responses.auto.headers["content-type"]?.split(";")[0]
+        retrievals.responses.auto.headers["content-type"]?.split(";", 1)[0]
       ) &&
       retrievals.resources.path
     ) {

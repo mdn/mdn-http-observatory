@@ -1,0 +1,82 @@
+import { CROSS_ORIGIN_EMBEDDER_POLICY } from "../../headers.js";
+import { BaseOutput, Expectation } from "../../types.js";
+import { getHttpHeaders, parseStructuredFieldToken } from "../utils.js";
+
+/** @import { Requests } from "../../types.js" */
+
+export class CrossOriginEmbedderPolicyOutput extends BaseOutput {
+  /** @type {string | null} */
+  data = null;
+  http = false;
+  static name = "cross-origin-embedder-policy";
+  static title = "Cross Origin Embedder Policy";
+  static possibleResults = [
+    Expectation.CoepNotImplemented,
+    Expectation.CoepImplementedWithRequireCorp,
+    Expectation.CoepImplementedWithCredentialless,
+    Expectation.CoepImplementedWithUnsafeNone,
+    Expectation.CoepHeaderInvalid,
+  ];
+}
+
+/**
+ * @param {Requests} requests
+ * @param {Expectation} expectation
+ * @returns {CrossOriginEmbedderPolicyOutput}
+ */
+export function crossOriginEmbedderPolicyTest(
+  requests,
+  expectation = Expectation.CoepNotImplemented
+) {
+  const output = new CrossOriginEmbedderPolicyOutput(expectation);
+  output.result = Expectation.CoepNotImplemented;
+
+  const resp = requests.responses.auto;
+  if (!resp) {
+    return output;
+  }
+
+  const httpHeaders = getHttpHeaders(resp, CROSS_ORIGIN_EMBEDDER_POLICY);
+  const [httpHeader] = httpHeaders;
+  output.http = httpHeaders.length > 0;
+
+  if (httpHeaders.length > 1) {
+    output.result = Expectation.CoepHeaderInvalid;
+  } else if (httpHeader) {
+    const headerValue = httpHeader.slice(0, 1024).trim();
+    output.data = headerValue;
+
+    const policy = parseStructuredFieldToken(headerValue);
+
+    switch (policy) {
+      case "require-corp": {
+        output.result = Expectation.CoepImplementedWithRequireCorp;
+
+        break;
+      }
+      case "credentialless": {
+        output.result = Expectation.CoepImplementedWithCredentialless;
+
+        break;
+      }
+      case "unsafe-none": {
+        output.result = Expectation.CoepImplementedWithUnsafeNone;
+
+        break;
+      }
+      default: {
+        output.result = Expectation.CoepHeaderInvalid;
+      }
+    }
+  }
+
+  output.pass = [
+    expectation,
+    Expectation.CoepNotImplemented,
+    Expectation.CoepImplementedWithRequireCorp,
+    Expectation.CoepImplementedWithCredentialless,
+    Expectation.CoepImplementedWithUnsafeNone,
+  ].includes(output.result ?? "");
+
+  return output;
+}

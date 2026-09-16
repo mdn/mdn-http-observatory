@@ -150,6 +150,8 @@ If an error occurred, an object like this is returned:
 }
 ```
 
+Hosts that cannot be scanned, because they are invalid, unresolvable, unreachable, or answer with an unexpected HTTP status code, are reported with a `422 Unprocessable Content` status. A `500 Internal Server Error` status indicates a problem on our side.
+
 ## Migrating from the public V1 API to the V2 API
 
 ### Sunset of the V1 API

@@ -222,10 +222,8 @@ export function contentSecurityPolicyTest(
   // Also don't allow overly broad schemes such as https: in either object-src or script-src
   // Likewise, if you don't have object-src or script-src defined, then all sources are allowed
   if (
-    [...script_src].some((src) =>
-      DANGEROUSLY_BROAD_AND_UNSAFE_INLINE.has(src)
-    ) ||
-    [...object_src].some((src) => DANGEROUSLY_BROAD.has(src))
+    !script_src.isDisjointFrom(DANGEROUSLY_BROAD_AND_UNSAFE_INLINE) ||
+    !object_src.isDisjointFrom(DANGEROUSLY_BROAD)
   ) {
     if (output.result === null) {
       output.result = Expectation.CspImplementedWithUnsafeInline;
@@ -270,11 +268,7 @@ export function contentSecurityPolicyTest(
   }
 
   // Don't allow 'unsafe-inline', data:, or overly broad sources in style-src
-  if (
-    [...style_src].some((source) =>
-      DANGEROUSLY_BROAD_AND_UNSAFE_INLINE.has(source)
-    )
-  ) {
+  if (!style_src.isDisjointFrom(DANGEROUSLY_BROAD_AND_UNSAFE_INLINE)) {
     if (output.result === null) {
       output.result = Expectation.CspImplementedWithUnsafeInlineInStyleSrcOnly;
     }
@@ -296,18 +290,14 @@ export function contentSecurityPolicyTest(
   }
 
   // Some other checks for the CSP analyzer
-  output.policy.antiClickjacking = [...frame_ancestors].every(
-    (source) => !DANGEROUSLY_BROAD.has(source)
+  output.policy.antiClickjacking =
+    frame_ancestors.isDisjointFrom(DANGEROUSLY_BROAD);
+  output.policy.insecureBaseUri = !base_uri.isDisjointFrom(
+    DANGEROUSLY_BROAD_AND_UNSAFE_INLINE
   );
-  output.policy.insecureBaseUri = [...base_uri].some((source) =>
-    DANGEROUSLY_BROAD_AND_UNSAFE_INLINE.has(source)
-  );
-  output.policy.insecureFormAction = [...form_action].some((source) =>
-    DANGEROUSLY_BROAD.has(source)
-  );
-  output.policy.unsafeObjects = [...object_src].some((source) =>
-    DANGEROUSLY_BROAD.has(source)
-  );
+  output.policy.insecureFormAction =
+    !form_action.isDisjointFrom(DANGEROUSLY_BROAD);
+  output.policy.unsafeObjects = !object_src.isDisjointFrom(DANGEROUSLY_BROAD);
 
   // Check to see if the test passed or failed
   // If it passed, report any duplicate report-uri/report-to directives

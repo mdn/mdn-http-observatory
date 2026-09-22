@@ -177,19 +177,16 @@ export function parseCsp(cspList) {
  * @returns
  */
 function pathPartMatch(pathA, pathB) {
-  if (pathA.length === 0) {
-    return true;
-  }
-  if (pathA === "/" && pathB.length === 0) {
+  if (pathA.length === 0 || (pathA === "/" && pathB.length === 0)) {
     return true;
   }
   const exactMatch = !pathA.endsWith("/");
   const pathListA = pathA.split("/");
   const pathListB = pathB.split("/");
-  if (pathListA.length > pathListB.length) {
-    return false;
-  }
-  if (exactMatch && pathListA.length !== pathListB.length) {
+  if (
+    pathListA.length > pathListB.length ||
+    (exactMatch && pathListA.length !== pathListB.length)
+  ) {
     return false;
   }
   if (!exactMatch) {

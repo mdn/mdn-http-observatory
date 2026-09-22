@@ -159,9 +159,11 @@ export function parseCsp(cspList) {
   const finalCsp = new Map(
     [...csp].map(([directive, sources]) => [
       directive,
-      sources.length > 0
-        ? new Set([...sources].map((source) => source.source))
-        : new Set(["'none'"]),
+      new Set(
+        sources.length > 0
+          ? [...sources].map((source) => source.source)
+          : ["'none'"]
+      ),
     ])
   );
   if (duplicate_warnings.size > 0) {

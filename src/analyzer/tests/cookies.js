@@ -224,11 +224,11 @@ function containsInvalidSameSiteCookie(cookieString) {
   for (const p of parts) {
     const splitResult = p.trim().split("=");
     const key = splitResult[0];
-    const value = splitResult[1];
     if (!(key && key.trim().toLowerCase() === "samesite")) {
       continue;
     }
 
+    const value = splitResult[1];
     if (
       !value ||
       !["lax", "strict", "none"].includes(value.trim().toLowerCase())

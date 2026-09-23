@@ -78,89 +78,90 @@ export function subresourceIntegrityTest(
     let scriptsOnForeignOrigin = false;
     for (const script of scripts) {
       const scriptSrc = getAttribute(script, "src");
-      if (scriptSrc) {
-        const src = parse(scriptSrc);
-        const integrity = getAttribute(script, "integrity") || null;
-        const crossorigin = getAttribute(script, "crossorigin") || null;
+      if (!scriptSrc) {
+        continue;
+      }
 
-        let relativeOrigin = false;
-        let relativeProtocol = false;
-        let sameSecondLevelDomain;
+      const src = parse(scriptSrc);
+      const integrity = getAttribute(script, "integrity") || null;
+      const crossorigin = getAttribute(script, "crossorigin") || null;
 
-        const relativeProtocolRegex = /^(\/\/)[^/]/;
-        const fullUrlRegex = /^https?:\/\//;
+      let relativeOrigin = false;
+      let relativeProtocol = false;
+      let sameSecondLevelDomain;
 
-        if (relativeProtocolRegex.test(scriptSrc)) {
-          // relative protocol(src="//example.com/script.js")
-          relativeProtocol = true;
-          sameSecondLevelDomain = true;
-        } else if (fullUrlRegex.test(scriptSrc)) {
-          // full URL (src="https://example.com/script.js")
-          sameSecondLevelDomain =
-            src.domain === parse(requests.site.hostname).domain;
-        } else {
-          // relative URL (src="/path" etc.)
-          relativeOrigin = true;
-          sameSecondLevelDomain = true;
+      const relativeProtocolRegex = /^(\/\/)[^/]/;
+      const fullUrlRegex = /^https?:\/\//;
+
+      if (relativeProtocolRegex.test(scriptSrc)) {
+        // relative protocol(src="//example.com/script.js")
+        relativeProtocol = true;
+        sameSecondLevelDomain = true;
+      } else if (fullUrlRegex.test(scriptSrc)) {
+        // full URL (src="https://example.com/script.js")
+        sameSecondLevelDomain =
+          src.domain === parse(requests.site.hostname).domain;
+      } else {
+        // relative URL (src="/path" etc.)
+        relativeOrigin = true;
+        sameSecondLevelDomain = true;
+      }
+
+      // Check to see if it is the same origin or second level domain
+      let secureOrigin;
+      if (relativeOrigin || (sameSecondLevelDomain && !relativeProtocol)) {
+        secureOrigin = true;
+      } else {
+        secureOrigin = false;
+        scriptsOnForeignOrigin = true;
+      }
+
+      // Check if it is a secure scheme
+      let scheme = null;
+      if (!relativeProtocol && !relativeOrigin) {
+        scheme = new URL(scriptSrc).protocol;
+      }
+      let secureScheme = false;
+      if (
+        scheme === "https:" ||
+        (relativeOrigin && requests.session?.url.protocol === "https:")
+      ) {
+        secureScheme = true;
+      }
+
+      // Add it to the scripts data result, if it's not a relative URI
+      if (!secureOrigin) {
+        output.data[scriptSrc] = { crossorigin, integrity };
+
+        if (integrity && !secureScheme) {
+          output.result = onlyIfWorse(
+            Expectation.SriImplementedButExternalScriptsNotLoadedSecurely,
+            output.result,
+            goodness
+          );
+        } else if (!integrity && secureScheme) {
+          output.result = onlyIfWorse(
+            Expectation.SriNotImplementedButExternalScriptsLoadedSecurely,
+            output.result,
+            goodness
+          );
+        } else if (!integrity && !secureScheme && sameSecondLevelDomain) {
+          output.result = onlyIfWorse(
+            Expectation.SriNotImplementedAndExternalScriptsNotLoadedSecurely,
+            output.result,
+            goodness
+          );
+        } else if (!integrity && !secureScheme) {
+          output.result = onlyIfWorse(
+            Expectation.SriNotImplementedAndExternalScriptsNotLoadedSecurely,
+            output.result,
+            goodness
+          );
         }
-
-        // Check to see if it is the same origin or second level domain
-        let secureOrigin;
-        if (relativeOrigin || (sameSecondLevelDomain && !relativeProtocol)) {
-          secureOrigin = true;
-        } else {
-          secureOrigin = false;
-          scriptsOnForeignOrigin = true;
-        }
-
-        // Check if it is a secure scheme
-        let scheme = null;
-        if (!relativeProtocol && !relativeOrigin) {
-          scheme = new URL(scriptSrc).protocol;
-        }
-        let secureScheme = false;
-        if (
-          scheme === "https:" ||
-          (relativeOrigin && requests.session?.url.protocol === "https:")
-        ) {
-          secureScheme = true;
-        }
-
-        // Add it to the scripts data result, if it's not a relative URI
-        if (!secureOrigin) {
-          output.data[scriptSrc] = { crossorigin, integrity };
-
-          if (integrity && !secureScheme) {
-            output.result = onlyIfWorse(
-              Expectation.SriImplementedButExternalScriptsNotLoadedSecurely,
-              output.result,
-              goodness
-            );
-          } else if (!integrity && secureScheme) {
-            output.result = onlyIfWorse(
-              Expectation.SriNotImplementedButExternalScriptsLoadedSecurely,
-              output.result,
-              goodness
-            );
-          } else if (!integrity && !secureScheme && sameSecondLevelDomain) {
-            output.result = onlyIfWorse(
-              Expectation.SriNotImplementedAndExternalScriptsNotLoadedSecurely,
-              output.result,
-              goodness
-            );
-          } else if (!integrity && !secureScheme) {
-            output.result = onlyIfWorse(
-              Expectation.SriNotImplementedAndExternalScriptsNotLoadedSecurely,
-              output.result,
-              goodness
-            );
-          }
-        } else {
-          // Grant bonus even if they use SRI on the same origin
-          if (integrity && secureScheme && !output.result) {
-            output.result =
-              Expectation.SriImplementedAndAllScriptsLoadedSecurely;
-          }
+      } else {
+        // Grant bonus even if they use SRI on the same origin
+        if (integrity && secureScheme && !output.result) {
+          output.result = Expectation.SriImplementedAndAllScriptsLoadedSecurely;
         }
       }
     }

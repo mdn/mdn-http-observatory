@@ -47,12 +47,8 @@ if (CONFIG.sentry.dsn) {
         // @ts-expect-error
         FILTERED_STATUS_CODES.has(originalError?.statusCode) ||
         // @ts-expect-error
-        FILTERED_STATUS_CODES.has(originalError?.originalError?.status)
-      ) {
-        return null;
-      }
-      // Also check event tags for HTTP status
-      if (
+        FILTERED_STATUS_CODES.has(originalError?.originalError?.status) ||
+        // Also check event tags for HTTP status
         FILTERED_STATUS_CODES.has(Number(event.tags?.["http.status_code"] || 0))
       ) {
         return null;

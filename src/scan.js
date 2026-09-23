@@ -38,13 +38,12 @@ program
   .action(async (siteString, options) => {
     try {
       /** @type {import("./types.js").ScanOptions} */
-      const scanOptions = {};
-      if (options.headers) {
-        scanOptions.customHeaders = parseHeadersOption(options.headers);
-      }
-      if (options.sendHeadersOverHttp) {
-        scanOptions.sendHeadersOverHttp = true;
-      }
+      const scanOptions = {
+        ...(options.headers && {
+          customHeaders: parseHeadersOption(options.headers),
+        }),
+        ...(options.sendHeadersOverHttp && { sendHeadersOverHttp: true }),
+      };
       const site = Site.fromSiteString(siteString);
       const result = await scan(site, scanOptions);
       const tests = Object.fromEntries(

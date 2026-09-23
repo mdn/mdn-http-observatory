@@ -224,14 +224,16 @@ function containsInvalidSameSiteCookie(cookieString) {
   for (const p of parts) {
     const splitResult = p.trim().split("=");
     const key = splitResult[0];
+    if (!(key && key.trim().toLowerCase() === "samesite")) {
+      continue;
+    }
+
     const value = splitResult[1];
-    if (key && key.trim().toLowerCase() === "samesite") {
-      if (!value) {
-        return true;
-      }
-      if (!["lax", "strict", "none"].includes(value.trim().toLowerCase())) {
-        return true;
-      }
+    if (
+      !value ||
+      !["lax", "strict", "none"].includes(value.trim().toLowerCase())
+    ) {
+      return true;
     }
   }
   return false;

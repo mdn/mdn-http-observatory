@@ -1,5 +1,19 @@
 # Changelog
 
+## [1.7.2](https://github.com/mdn/mdn-http-observatory/compare/v1.7.1...v1.7.2) (2026-09-23)
+
+
+### Bug Fixes
+
+* **retriever:** stop reusing the HTTP redirect chain as `httpsRedirects` ([#495](https://github.com/mdn/mdn-http-observatory/issues/495)) ([8a495dd](https://github.com/mdn/mdn-http-observatory/commit/8a495dd6a2a5371554865f5186785830e9a5c51f))
+
+
+### Miscellaneous
+
+* **deps:** bump the npm-prod group with 2 updates ([#605](https://github.com/mdn/mdn-http-observatory/issues/605)) ([6713c3a](https://github.com/mdn/mdn-http-observatory/commit/6713c3aa059ab830cfb73b53b102af8a555e1972))
+* **deps:** bump the npm-prod group with 4 updates ([#610](https://github.com/mdn/mdn-http-observatory/issues/610)) ([884cc9e](https://github.com/mdn/mdn-http-observatory/commit/884cc9e34a6da550c2cd6b4252bed7bc28901238))
+* **deps:** bump the npm-prod group with 4 updates ([#615](https://github.com/mdn/mdn-http-observatory/issues/615)) ([3fd22d7](https://github.com/mdn/mdn-http-observatory/commit/3fd22d7e6462f38e58c2a4297ee03b2244c56c4d))
+
 ## [1.7.1](https://github.com/mdn/mdn-http-observatory/compare/v1.7.0...v1.7.1) (2026-09-03)
 
 

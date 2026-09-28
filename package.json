@@ -69,7 +69,7 @@
     "@fastify/helmet": "^13.0.0",
     "@fastify/postgres": "^6.0.1",
     "@fastify/static": "^10.1.0",
-    "@sentry/node": "^10.1.0",
+    "@sentry/node": "^11.0.0",
     "axios": "^1.10.0",
     "axios-cookiejar-support": "^7.0.0",
     "change-case": "^5.4.4",

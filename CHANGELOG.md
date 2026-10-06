@@ -1,5 +1,26 @@
 # Changelog
 
+## [1.7.2](https://github.com/mdn/mdn-http-observatory/compare/v1.7.1...v1.7.2) (2026-10-06)
+
+
+### Bug Fixes
+
+* **retriever:** stop reusing the HTTP redirect chain as `httpsRedirects` ([#495](https://github.com/mdn/mdn-http-observatory/issues/495)) ([8a495dd](https://github.com/mdn/mdn-http-observatory/commit/8a495dd6a2a5371554865f5186785830e9a5c51f))
+
+
+### Miscellaneous
+
+* **deps:** bump @sentry/node from 10.75.0 to 11.4.0 ([#629](https://github.com/mdn/mdn-http-observatory/issues/629)) ([093035e](https://github.com/mdn/mdn-http-observatory/commit/093035e33568f9e5a6ef85a2afb1b9c92df296e3))
+* **deps:** bump brace-expansion from 5.0.9 to 5.0.12 ([#624](https://github.com/mdn/mdn-http-observatory/issues/624)) ([c48957d](https://github.com/mdn/mdn-http-observatory/commit/c48957d2e400e21694bec8295703e07048fb7039))
+* **deps:** bump fast-uri from 3.1.7 to 3.1.8 ([#623](https://github.com/mdn/mdn-http-observatory/issues/623)) ([ec21d7a](https://github.com/mdn/mdn-http-observatory/commit/ec21d7af46361db57964f30a9caf1e3ffe8ba7b2))
+* **deps:** bump the npm-prod group with 2 updates ([#605](https://github.com/mdn/mdn-http-observatory/issues/605)) ([6713c3a](https://github.com/mdn/mdn-http-observatory/commit/6713c3aa059ab830cfb73b53b102af8a555e1972))
+* **deps:** bump the npm-prod group with 4 updates ([#610](https://github.com/mdn/mdn-http-observatory/issues/610)) ([884cc9e](https://github.com/mdn/mdn-http-observatory/commit/884cc9e34a6da550c2cd6b4252bed7bc28901238))
+* **deps:** bump the npm-prod group with 4 updates ([#615](https://github.com/mdn/mdn-http-observatory/issues/615)) ([3fd22d7](https://github.com/mdn/mdn-http-observatory/commit/3fd22d7e6462f38e58c2a4297ee03b2244c56c4d))
+* **deps:** bump the npm-prod group with 4 updates ([#626](https://github.com/mdn/mdn-http-observatory/issues/626)) ([8603499](https://github.com/mdn/mdn-http-observatory/commit/860349907581b40b5cc39a8a3984429aacc3e63d))
+* **deps:** bump tldts from 7.4.13 to 7.4.15 in the npm-prod group across 1 directory ([#618](https://github.com/mdn/mdn-http-observatory/issues/618)) ([ca1dd80](https://github.com/mdn/mdn-http-observatory/commit/ca1dd80d2758b6f15f41d1692e95bea75c19d0b8))
+* **deps:** bump tldts in the npm-prod group across 1 directory ([ca1dd80](https://github.com/mdn/mdn-http-observatory/commit/ca1dd80d2758b6f15f41d1692e95bea75c19d0b8))
+* **github:** use `.md` extension for PR template ([#622](https://github.com/mdn/mdn-http-observatory/issues/622)) ([f5770bb](https://github.com/mdn/mdn-http-observatory/commit/f5770bb3495ef34b617ea1cef66e1d22d195aad7))
+
 ## [1.7.1](https://github.com/mdn/mdn-http-observatory/compare/v1.7.0...v1.7.1) (2026-09-03)
 
 

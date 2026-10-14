@@ -85,6 +85,7 @@ export default defineConfig([
       "unicorn/no-array-sort": "off",
       "unicorn/no-array-callback-reference": "off",
       "unicorn/no-null": ["off"],
+      "unicorn/no-asterisk-prefix-in-documentation-comments": "off",
       "unicorn/switch-case-braces": "off",
       "unicorn/template-indent": ["off"],
     },

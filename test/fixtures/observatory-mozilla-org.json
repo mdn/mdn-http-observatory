@@ -134,7 +134,7 @@
       }
     },
     "cors": null,
-    "httpRedirects": [
+    "httpRoute": [
       {
         "url": "http://observatory.mozilla.org/",
         "status": 302
@@ -148,7 +148,7 @@
         "status": 200
       }
     ],
-    "httpsRedirects": [
+    "httpsRoute": [
       {
         "url": "http://observatory.mozilla.org/",
         "status": 302

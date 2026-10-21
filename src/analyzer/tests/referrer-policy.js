@@ -55,7 +55,7 @@ export function referrerPolicyTest(
 
   // Store whether the header or the meta tag were present
   output.http = httpHeaders.length > 0;
-  output.meta = equivHeaders ? equivHeaders?.length > 0 : false;
+  output.meta = equivHeaders.length > 0;
 
   // If it is both a header and a http-equiv, http-equiv has precedence (last value)
   if (output.http || output.meta) {

@@ -45,7 +45,7 @@ export function crossOriginResourcePolicyTest(
 
   // Store whether the header or the meta tag were present
   output.http = !!httpHeader;
-  output.meta = equivHeaders ? equivHeaders.length > 0 : false;
+  output.meta = !!equivHeaders?.length;
 
   // If it is both a header and a http-equiv, the header has precedence.
   /** @type {string | undefined}  */

@@ -80,6 +80,18 @@ export function subresourceIntegrityTest(
 
     let scriptsOnForeignOrigin = false;
 
+    // A protocol-relative URL (//cdn.example.com/…) inherits the page's scheme,
+    // so it only adds risk when an off-origin sub-resource is served over HTTP
+    // (an attacker could MITM the sub-resource origin) — see issue #464. It is
+    // safe whenever a visitor lands on HTTPS: no HTTP server, or the HTTP request
+    // ultimately redirects to HTTPS. A downgradeable intermediate hop
+    // (http → http → https) still lands on HTTPS and is penalized by the
+    // redirection test, so it is not docked again here.
+    const httpRedirects = requests.responses.httpRedirects;
+    const httpEnforcesHttps =
+      !requests.responses.http ||
+      httpRedirects.at(-1)?.url.protocol === "https:";
+
     for (const script of scripts) {
       const scriptSrc = getAttribute(script, "src");
       if (!scriptSrc) {
@@ -89,8 +101,8 @@ export function subresourceIntegrityTest(
       const integrity = getAttribute(script, "integrity") || null;
       const crossorigin = getAttribute(script, "crossorigin") || null;
 
-      // Protocol-relative URLs (src="//example.com/script.js") inherit the
-      // page scheme and are treated as loaded insecurely when off-origin.
+      // Protocol-relative URLs inherit the page scheme, so their security is
+      // judged by httpEnforcesHttps below; other URLs carry a concrete scheme.
       const relativeProtocol = /^(\/\/)[^/]/.test(scriptSrc);
 
       // Resolving against baseUrl covers relative and protocol-relative URLs;
@@ -111,8 +123,11 @@ export function subresourceIntegrityTest(
         scriptsOnForeignOrigin = true;
       }
 
-      const secureScheme =
-        !relativeProtocol && scriptUrl?.protocol === "https:";
+      // Protocol-relative URLs are secure only when httpEnforcesHttps; others
+      // are secure when their resolved scheme is https.
+      const secureScheme = relativeProtocol
+        ? httpEnforcesHttps
+        : scriptUrl?.protocol === "https:";
 
       // Record and score off-origin scripts; same-origin ones are trusted.
       if (!sameOrigin) {

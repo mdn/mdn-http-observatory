@@ -39,14 +39,14 @@ describe("Subresource Integrity", () => {
     );
     assert.isTrue(result.pass);
 
-    // On a different subdomain, without a protocol
-    reqs = emptyRequests("test_content_sri_cross_origin_noproto.html");
+    // On the same origin, but without a protocol
+    reqs = emptyRequests("test_content_sri_sameorigin_noproto.html");
     result = subresourceIntegrityTest(reqs);
     assert.equal(
       result.result,
-      Expectation.SriNotImplementedAndExternalScriptsNotLoadedSecurely
+      Expectation.SriNotImplementedButAllScriptsLoadedFromSecureOrigin
     );
-    assert.isFalse(result.pass);
+    assert.isTrue(result.pass);
 
     // On the same origin, but with https:// specified
     reqs = emptyRequests("test_content_sri_sameorigin_https.html");
@@ -87,8 +87,8 @@ describe("Subresource Integrity", () => {
       expected: Expectation.SriNotImplementedButExternalScriptsLoadedSecurely,
     },
     {
-      name: "scores a same-origin protocol-relative script as foreign",
-      file: "test_content_sri_sameorigin_noproto.html",
+      name: "scores a cross-origin protocol-relative script as foreign",
+      file: "test_content_sri_cross_origin_noproto.html",
       expected:
         Expectation.SriNotImplementedAndExternalScriptsNotLoadedSecurely,
     },

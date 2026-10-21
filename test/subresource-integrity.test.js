@@ -68,6 +68,18 @@ describe("Subresource Integrity", () => {
     assert.isTrue(result.pass);
   });
 
+  it("skips a src that fails to resolve instead of crashing", function () {
+    // A malformed src like "//" cannot be resolved into a URL; it is not a
+    // loadable sub-resource, so it must be skipped rather than throwing.
+    reqs = emptyRequests("test_content_sri_malformed_src.html");
+    const result = subresourceIntegrityTest(reqs);
+    assert.equal(
+      result.result,
+      Expectation.SriNotImplementedButAllScriptsLoadedFromSecureOrigin
+    );
+    assert.isTrue(result.pass);
+  });
+
   for (const { name, file, expected } of [
     {
       name: "treats a different subdomain as a distinct origin",

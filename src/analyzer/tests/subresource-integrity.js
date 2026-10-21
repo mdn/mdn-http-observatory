@@ -90,7 +90,7 @@ export function subresourceIntegrityTest(
       const crossorigin = getAttribute(script, "crossorigin") || null;
 
       // Protocol-relative URLs (src="//example.com/script.js") inherit the
-      // page scheme and are scored as foreign, even on the same origin.
+      // page scheme and are treated as loaded insecurely when off-origin.
       const relativeProtocol = /^(\/\/)[^/]/.test(scriptSrc);
 
       // Resolving against baseUrl covers relative and protocol-relative URLs;
@@ -106,7 +106,7 @@ export function subresourceIntegrityTest(
         }
       }
 
-      const sameOrigin = !relativeProtocol && scriptUrl?.origin === baseOrigin;
+      const sameOrigin = scriptUrl?.origin === baseOrigin;
       if (!sameOrigin) {
         scriptsOnForeignOrigin = true;
       }

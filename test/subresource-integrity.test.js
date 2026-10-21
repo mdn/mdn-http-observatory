@@ -89,8 +89,7 @@ describe("Subresource Integrity", () => {
     {
       name: "scores a cross-origin protocol-relative script as foreign",
       file: "test_content_sri_cross_origin_noproto.html",
-      expected:
-        Expectation.SriNotImplementedAndExternalScriptsNotLoadedSecurely,
+      expected: Expectation.SriNotImplementedButExternalScriptsLoadedSecurely,
     },
   ]) {
     it(name, function () {
@@ -169,8 +168,23 @@ describe("Subresource Integrity", () => {
   });
 
   it("checks if implemented with external scripts and no protocol", function () {
+    // When HTTP redirects to HTTPS, //cdn.example.com/script.js always resolves to https://,
+    // so protocol-relative URLs should be treated the same as https:// (issue #464).
     reqs = emptyRequests("test_content_sri_impl_external_noproto.html");
     let result = subresourceIntegrityTest(reqs);
+    assert.equal(
+      result.result,
+      Expectation.SriImplementedAndExternalScriptsLoadedSecurely
+    );
+    assert.isTrue(result.pass);
+
+    // When HTTP does NOT redirect to HTTPS, //cdn.example.com/script.js can resolve to http://
+    // on an HTTP visit, so it must still be penalised.
+    reqs = emptyRequests("test_content_sri_impl_external_noproto.html");
+    reqs.responses.httpRedirects = [
+      { url: new URL("http://mozilla.org/"), status: 200 },
+    ];
+    result = subresourceIntegrityTest(reqs);
     assert.equal(
       result.result,
       Expectation.SriImplementedButExternalScriptsNotLoadedSecurely
@@ -189,11 +203,55 @@ describe("Subresource Integrity", () => {
   });
 
   it("checks if not implemented with external scripts and no protocol", function () {
+    // When HTTP redirects to HTTPS, //cdn.example.com/script.js always resolves to https://,
+    // so it should score like https:// (-5), not like http:// (-50) (issue #464).
     reqs = emptyRequests("test_content_sri_notimpl_external_noproto.html");
     let result = subresourceIntegrityTest(reqs);
     assert.equal(
       result.result,
+      Expectation.SriNotImplementedButExternalScriptsLoadedSecurely
+    );
+    assert.isFalse(result.pass);
+
+    // When HTTP does NOT redirect to HTTPS, //cdn.example.com/script.js can resolve to http://
+    // on an HTTP visit, so it must still be penalised at -50.
+    reqs = emptyRequests("test_content_sri_notimpl_external_noproto.html");
+    reqs.responses.httpRedirects = [
+      { url: new URL("http://mozilla.org/"), status: 200 },
+    ];
+    result = subresourceIntegrityTest(reqs);
+    assert.equal(
+      result.result,
       Expectation.SriNotImplementedAndExternalScriptsNotLoadedSecurely
+    );
+    assert.isFalse(result.pass);
+
+    // When there is no HTTP server at all, //cdn.example.com/script.js can only
+    // resolve to https://, so it should score like https:// (-5) (issue #464).
+    reqs = emptyRequests("test_content_sri_notimpl_external_noproto.html");
+    reqs.responses.http = null;
+    reqs.responses.httpRedirects = [];
+    result = subresourceIntegrityTest(reqs);
+    assert.equal(
+      result.result,
+      Expectation.SriNotImplementedButExternalScriptsLoadedSecurely
+    );
+    assert.isFalse(result.pass);
+
+    // When the redirect to HTTPS goes through an intermediate HTTP hop, a normal
+    // visitor still lands on HTTPS, so //cdn.example.com/script.js resolves to
+    // https:// and scores like https:// (-5). The downgradeable hop is penalised
+    // by the redirection test, not double-counted here (issue #464).
+    reqs = emptyRequests("test_content_sri_notimpl_external_noproto.html");
+    reqs.responses.httpRedirects = [
+      { url: new URL("http://mozilla.org/"), status: 301 },
+      { url: new URL("http://www.mozilla.org/"), status: 301 },
+      { url: new URL("https://www.mozilla.org/"), status: 200 },
+    ];
+    result = subresourceIntegrityTest(reqs);
+    assert.equal(
+      result.result,
+      Expectation.SriNotImplementedButExternalScriptsLoadedSecurely
     );
     assert.isFalse(result.pass);
   });

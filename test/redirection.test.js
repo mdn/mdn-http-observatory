@@ -144,6 +144,71 @@ describe("Redirections", () => {
     assert.isFalse(res.pass);
   });
 
+  it("uses the https chain for the destination when there is no http response", function () {
+    reqs.responses.http = null;
+    reqs.responses.httpRedirects = [];
+    reqs.responses.httpsRedirects = [
+      {
+        url: new URL("https://mozilla.org/"),
+        status: 301,
+      },
+      {
+        url: new URL("https://www.mozilla.org/"),
+        status: 200,
+      },
+    ];
+
+    const res = redirectionTest(reqs);
+    assert.equal(res.result, Expectation.RedirectionNotNeededNoHttp);
+    assert.isTrue(res.pass);
+    assert.equal(res.destination, "https://www.mozilla.org/");
+    assert.deepEqual(res.route, []);
+  });
+
+  it("does not mask other checks with a preloaded redirect chain", function () {
+    const cases = [
+      {
+        name: "missing redirection",
+        httpRedirects: [
+          { url: new URL("http://cloudflare.com/"), status: 200 },
+        ],
+        expected: Expectation.RedirectionMissing,
+      },
+      {
+        name: "redirection not to https",
+        httpRedirects: [
+          { url: new URL("http://cloudflare.com/"), status: 301 },
+          { url: new URL("http://www.cloudflare.com/"), status: 200 },
+        ],
+        expected: Expectation.RedirectionNotToHttps,
+      },
+      {
+        name: "first redirection to http",
+        httpRedirects: [
+          { url: new URL("http://cloudflare.com/"), status: 301 },
+          { url: new URL("http://www.cloudflare.com/"), status: 301 },
+          { url: new URL("https://www.cloudflare.com/"), status: 200 },
+        ],
+        expected: Expectation.RedirectionNotToHttpsOnInitialRedirection,
+      },
+      {
+        name: "first redirection off host",
+        httpRedirects: [
+          { url: new URL("http://cloudflare.com/"), status: 301 },
+          { url: new URL("https://www.cloudflare.com/"), status: 200 },
+        ],
+        expected: Expectation.RedirectionOffHostFromHttp,
+      },
+    ];
+
+    for (const { name, httpRedirects, expected } of cases) {
+      reqs.responses.httpRedirects = httpRedirects;
+      const res = redirectionTest(reqs);
+      assert.equal(res.result, expected, name);
+      assert.isFalse(res.pass, name);
+    }
+  });
+
   it("checks for all redirections preloaded", function () {
     reqs.responses.httpRedirects = [
       {

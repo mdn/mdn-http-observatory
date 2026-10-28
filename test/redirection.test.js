@@ -16,7 +16,7 @@ describe("Redirections", () => {
 
   it("checks for no http but does have https", function () {
     reqs.responses.http = null;
-    reqs.responses.httpRedirects = [];
+    reqs.responses.httpRoute = [];
     const res = redirectionTest(reqs);
     assert.equal(res.result, Expectation.RedirectionNotNeededNoHttp);
     assert.isTrue(res.pass);
@@ -25,7 +25,7 @@ describe("Redirections", () => {
   it("checks for redirection missing", function () {
     // the requests object has a single, non-redirecting successful
     // http request for this test.
-    reqs.responses.httpRedirects = [
+    reqs.responses.httpRoute = [
       {
         url: new URL("http://mozilla.org"),
         status: 200,
@@ -40,7 +40,7 @@ describe("Redirections", () => {
 
   it("checks for redirection not to https", function () {
     // The requests object has only non-https redirects from http
-    reqs.responses.httpRedirects = [
+    reqs.responses.httpRoute = [
       {
         url: new URL("http://mozilla.org"),
         status: 301,
@@ -56,7 +56,7 @@ describe("Redirections", () => {
     assert.isFalse(res.pass);
 
     // Longer redirect chains should "work" as well
-    reqs.responses.httpRedirects = [
+    reqs.responses.httpRoute = [
       {
         url: new URL("http://mozilla.org"),
         status: 301,
@@ -83,7 +83,7 @@ describe("Redirections", () => {
   });
 
   it("checks for proper redirection to https with port number", function () {
-    reqs.responses.httpRedirects = [
+    reqs.responses.httpRoute = [
       {
         url: new URL("http://mozilla.org/"),
         status: 301,
@@ -104,7 +104,7 @@ describe("Redirections", () => {
   });
 
   it("checks for first redirection to http", function () {
-    reqs.responses.httpRedirects = [
+    reqs.responses.httpRoute = [
       {
         url: new URL("http://mozilla.org/"),
         status: 301,
@@ -128,7 +128,7 @@ describe("Redirections", () => {
   });
 
   it("checks for first redirection off host", function () {
-    reqs.responses.httpRedirects = [
+    reqs.responses.httpRoute = [
       {
         url: new URL("http://mozilla.org/"),
         status: 301,
@@ -145,7 +145,7 @@ describe("Redirections", () => {
   });
 
   it("checks for all redirections preloaded", function () {
-    reqs.responses.httpRedirects = [
+    reqs.responses.httpRoute = [
       {
         url: new URL("http://cloudflare.com/"),
         status: 301,

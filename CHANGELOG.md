@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.7.3](https://github.com/mdn/mdn-http-observatory/compare/v1.7.2...v1.7.3) (2026-10-30)
+
+
+### Miscellaneous
+
+* **deps:** bump the npm-prod group across 1 directory with 4 updates ([#649](https://github.com/mdn/mdn-http-observatory/issues/649)) ([ad8623c](https://github.com/mdn/mdn-http-observatory/commit/ad8623c23e6e974230a7bcffe6857e2c87fc993e))
+
 ## [1.7.2](https://github.com/mdn/mdn-http-observatory/compare/v1.7.1...v1.7.2) (2026-10-22)
 
 

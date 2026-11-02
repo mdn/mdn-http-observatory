@@ -1,5 +1,16 @@
 # Changelog
 
+## [1.7.3](https://github.com/mdn/mdn-http-observatory/compare/v1.7.2...v1.7.3) (2026-11-02)
+
+
+### Miscellaneous
+
+* **deps:** bump @sentry/node ([4df216e](https://github.com/mdn/mdn-http-observatory/commit/4df216eca2953ea2e702ceaac08b507e85025dc3))
+* **deps:** bump @sentry/node from 11.9.0 to 11.10.0 in the npm-prod group ([#652](https://github.com/mdn/mdn-http-observatory/issues/652)) ([4df216e](https://github.com/mdn/mdn-http-observatory/commit/4df216eca2953ea2e702ceaac08b507e85025dc3))
+* **deps:** bump fast-uri from 3.1.8 to 3.1.9 ([#644](https://github.com/mdn/mdn-http-observatory/issues/644)) ([e94ad79](https://github.com/mdn/mdn-http-observatory/commit/e94ad79067717eb2ff539144a13c4377a1566b4b))
+* **deps:** bump follow-redirects from 1.16.1 to 1.16.2 ([#651](https://github.com/mdn/mdn-http-observatory/issues/651)) ([548fa82](https://github.com/mdn/mdn-http-observatory/commit/548fa82634d5269bdfa1d7f5c3083c63eb60a6f0))
+* **deps:** bump the npm-prod group across 1 directory with 4 updates ([#649](https://github.com/mdn/mdn-http-observatory/issues/649)) ([ad8623c](https://github.com/mdn/mdn-http-observatory/commit/ad8623c23e6e974230a7bcffe6857e2c87fc993e))
+
 ## [1.7.2](https://github.com/mdn/mdn-http-observatory/compare/v1.7.1...v1.7.2) (2026-10-22)
 
 

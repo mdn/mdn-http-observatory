@@ -29,7 +29,7 @@ function fixture(file) {
 /**
  * @param {import("node:net").Server} server
  */
-function port(server) {
+function listeningPort(server) {
   return /** @type {import("node:net").AddressInfo} */ (server.address()).port;
 }
 
@@ -189,8 +189,10 @@ describe("TestRetriever", () => {
     ]);
     try {
       // `Site.fromSiteString()` rejects dotless hostnames.
-      const site = new Site("localhost", port(httpsServer), "/");
-      const reqs = await retrieve(site, { httpPort: port(httpServer) });
+      const site = new Site("localhost", listeningPort(httpsServer), "/");
+      const reqs = await retrieve(site, {
+        httpPort: listeningPort(httpServer),
+      });
       assert.isNotNull(reqs.responses.auto);
       assert.equal(reqs.responses.auto.status, 200);
       assert.isFalse(reqs.responses.auto.verified);

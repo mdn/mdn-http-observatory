@@ -6,8 +6,7 @@ on:
       - main
   pull_request:
 
-# No GITHUB_TOKEN permissions, as we don't use it.
-permissions: {}
+permissions: {} # No GITHUB_TOKEN permissions, as we only use it to increase the rate limit.
 
 jobs:
   test:
@@ -37,6 +36,8 @@ jobs:
           package-manager-cache: false
 
       - name: Install
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
         run: npm ci
 
       - name: Run tests
@@ -89,6 +90,8 @@ jobs:
           package-manager-cache: false
 
       - name: Install
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
         run: npm ci
 
       - name: Build tarball
@@ -133,6 +136,8 @@ jobs:
 
       - name: Install tarball
         shell: bash
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
         run: |
           TARBALL=$(ls mdn-mdn-http-observatory-*.tgz)
           # Global installs cannot read the `allowScripts` allowlist.
@@ -181,6 +186,8 @@ jobs:
           package-manager-cache: false
 
       - name: Install
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
         run: npm ci
 
       - name: Run prettier

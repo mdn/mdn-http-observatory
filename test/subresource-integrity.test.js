@@ -38,7 +38,7 @@ describe("Subresource Integrity", () => {
     );
     assert.isTrue(result.pass);
 
-    // On the same second-level domain, but without a protocol
+    // On a different subdomain, without a protocol
     reqs = emptyRequests("test_content_sri_sameorigin3.html");
     result = subresourceIntegrityTest(reqs);
     assert.equal(
@@ -47,7 +47,7 @@ describe("Subresource Integrity", () => {
     );
     assert.isFalse(result.pass);
 
-    // On the same second-level domain, but with https:// specified
+    // On the same origin, but with https:// specified
     reqs = emptyRequests("test_content_sri_sameorigin2.html");
     result = subresourceIntegrityTest(reqs);
     assert.equal(
@@ -60,6 +60,44 @@ describe("Subresource Integrity", () => {
     assert.isNotNull(reqs.responses.auto);
     reqs.responses.auto.status = 404;
     result = subresourceIntegrityTest(reqs);
+    assert.equal(
+      result.result,
+      Expectation.SriNotImplementedButAllScriptsLoadedFromSecureOrigin
+    );
+    assert.isTrue(result.pass);
+  });
+
+  for (const { name, file, expected } of [
+    {
+      name: "treats a different subdomain as a distinct origin",
+      file: "test_content_sri_cross_origin_subdomain.html",
+      expected: Expectation.SriNotImplementedButExternalScriptsLoadedSecurely,
+    },
+    {
+      name: "scores a same-origin protocol-relative script as foreign",
+      file: "test_content_sri_sameorigin_noproto.html",
+      expected:
+        Expectation.SriNotImplementedAndExternalScriptsNotLoadedSecurely,
+    },
+  ]) {
+    it(name, function () {
+      reqs = emptyRequests(file);
+      const result = subresourceIntegrityTest(reqs);
+      assert.equal(result.result, expected);
+      assert.isFalse(result.pass);
+    });
+  }
+
+  it("derives the base origin from the final redirect", function () {
+    // The www.mozilla.org script is foreign against the requested
+    // mozilla.org origin, but same-origin once the page redirects to
+    // www.mozilla.org, as the base origin follows the final served URL.
+    reqs = emptyRequests("test_content_sri_www_subdomain.html");
+    assert.isNotNull(reqs.session);
+    reqs.session.redirectHistory = [
+      { url: new URL("https://www.mozilla.org/"), status: 200 },
+    ];
+    const result = subresourceIntegrityTest(reqs);
     assert.equal(
       result.result,
       Expectation.SriNotImplementedButAllScriptsLoadedFromSecureOrigin

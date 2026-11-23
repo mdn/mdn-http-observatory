@@ -55,7 +55,6 @@ export async function retrieve(site, options = {}) {
   retrievals.responses.http = httpSession.response;
   retrievals.responses.https = httpsSession.response;
 
-  // use the http redirect chain
   retrievals.responses.httpRoute = httpSession.redirectHistory;
   retrievals.responses.httpsRoute = httpsSession.redirectHistory;
 

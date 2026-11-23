@@ -196,7 +196,7 @@ describe("TestRetriever", () => {
       assert.isNotNull(reqs.responses.auto);
       assert.equal(reqs.responses.auto.status, 200);
       assert.isFalse(reqs.responses.auto.verified);
-      assert.isNotNull(reqs.responses.http);
+      assert.equal(reqs.responses.http?.status, 200);
     } finally {
       await Promise.all(
         [httpsServer, httpServer].map((server) => {

@@ -167,11 +167,14 @@ describe("TestRetriever", () => {
         assert(requests.responses.auto);
         assert(requests.responses.auto.verified);
         assert.deepEqual(
-          requests.responses.httpRedirects.map(({ url }) => url.href),
+          requests.responses.httpRedirects.map(({ url, status }) => [
+            url.href,
+            status,
+          ]),
           [
-            `http://localhost:${httpPort}/test`,
-            `https://localhost:${httpsPort}/test`,
-            `https://localhost:${httpsPort}/test/`,
+            [`http://localhost:${httpPort}/test`, 301],
+            [`https://localhost:${httpsPort}/test`, 301],
+            [`https://localhost:${httpsPort}/test/`, 200],
           ]
         );
       } finally {

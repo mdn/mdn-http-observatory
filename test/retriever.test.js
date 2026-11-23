@@ -4,6 +4,7 @@ import http from "node:http";
 import https from "node:https";
 import path from "node:path";
 import { describe, it } from "node:test";
+import tls from "node:tls";
 
 import { assert } from "chai";
 
@@ -135,13 +136,57 @@ describe("TestRetriever", () => {
 
   it(
     "correctly uses port and path on retrieving",
-    { timeout: 10_000 },
+    { timeout: 6000 },
     async () => {
-      let site = Site.fromSiteString("generalmagic.space:8443/test");
-      const requests = await retrieve(site);
-      assert(requests.responses.auto);
-      assert(requests.responses.auto.verified);
-      assert.equal(requests.responses.httpRedirects.length, 3);
+      const cert = fixture("localhost-cert.pem");
+      const httpsServer = https.createServer(
+        { key: fixture("localhost-cert-key.pem"), cert },
+        (req, res) => {
+          if (req.url === "/test") {
+            res.writeHead(301, { Location: "/test/" }).end();
+          } else {
+            res.end("ok");
+          }
+        }
+      );
+      const httpServer = http.createServer((req, res) => {
+        res
+          .writeHead(301, {
+            Location: `https://localhost:${listeningPort(httpsServer)}${req.url}`,
+          })
+          .end();
+      });
+      await Promise.all([
+        once(httpsServer.listen(0), "listening"),
+        once(httpServer.listen(0), "listening"),
+      ]);
+      const defaultCaCerts = tls.getCACertificates("default");
+      tls.setDefaultCACertificates([...defaultCaCerts, cert.toString()]);
+      try {
+        const httpsPort = listeningPort(httpsServer);
+        const site = new Site("localhost", httpsPort, "/test");
+        const requests = await retrieve(site, {
+          httpPort: listeningPort(httpServer),
+        });
+        assert(requests.responses.auto);
+        assert(requests.responses.auto.verified);
+        assert.deepEqual(
+          requests.responses.httpRedirects.map(({ url }) => url.href),
+          [
+            `http://localhost:${listeningPort(httpServer)}/test`,
+            `https://localhost:${httpsPort}/test`,
+            `https://localhost:${httpsPort}/test/`,
+          ]
+        );
+      } finally {
+        tls.setDefaultCACertificates(defaultCaCerts);
+        await Promise.all(
+          [httpsServer, httpServer].map((server) => {
+            server.closeAllConnections();
+            return once(server.close(), "close");
+          })
+        );
+      }
     }
   );
 

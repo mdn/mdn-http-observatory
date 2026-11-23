@@ -156,10 +156,7 @@ describe("TestRetriever", () => {
           })
           .end();
       });
-      await Promise.all([
-        once(httpsServer.listen(0), "listening"),
-        once(httpServer.listen(0), "listening"),
-      ]);
+      await listen(httpsServer, httpServer);
       const defaultCaCerts = tls.getCACertificates("default");
       tls.setDefaultCACertificates([...defaultCaCerts, cert.toString()]);
       try {
@@ -180,12 +177,7 @@ describe("TestRetriever", () => {
         );
       } finally {
         tls.setDefaultCACertificates(defaultCaCerts);
-        await Promise.all(
-          [httpsServer, httpServer].map((server) => {
-            server.closeAllConnections();
-            return once(server.close(), "close");
-          })
-        );
+        await close(httpsServer, httpServer);
       }
     }
   );

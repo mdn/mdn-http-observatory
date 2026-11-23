@@ -33,6 +33,27 @@ function listeningPort(server) {
   return /** @type {import("node:net").AddressInfo} */ (server.address()).port;
 }
 
+/**
+ * @param {...import("node:net").Server} servers
+ */
+async function listen(...servers) {
+  await Promise.all(
+    servers.map((server) => once(server.listen(0), "listening"))
+  );
+}
+
+/**
+ * @param {...(http.Server | https.Server)} servers
+ */
+async function close(...servers) {
+  await Promise.all(
+    servers.map((server) => {
+      server.closeAllConnections();
+      return once(server.close(), "close");
+    })
+  );
+}
+
 describe("buildRequestHeaders", () => {
   const customHeaders = ["Authorization: Bearer secret", "X-Custom: value"];
 
@@ -183,10 +204,7 @@ describe("TestRetriever", () => {
       handler
     );
     const httpServer = http.createServer(handler);
-    await Promise.all([
-      once(httpsServer.listen(0), "listening"),
-      once(httpServer.listen(0), "listening"),
-    ]);
+    await listen(httpsServer, httpServer);
     try {
       // `Site.fromSiteString()` rejects dotless hostnames.
       const site = new Site("localhost", listeningPort(httpsServer), "/");
@@ -198,12 +216,7 @@ describe("TestRetriever", () => {
       assert.isFalse(reqs.responses.auto.verified);
       assert.equal(reqs.responses.http?.status, 200);
     } finally {
-      await Promise.all(
-        [httpsServer, httpServer].map((server) => {
-          server.closeAllConnections();
-          return once(server.close(), "close");
-        })
-      );
+      await close(httpsServer, httpServer);
     }
   });
 });

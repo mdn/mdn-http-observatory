@@ -157,20 +157,19 @@ describe("TestRetriever", () => {
           .end();
       });
       await listen(httpsServer, httpServer);
+      const httpPort = listeningPort(httpServer);
+      const httpsPort = listeningPort(httpsServer);
       const defaultCaCerts = tls.getCACertificates("default");
       tls.setDefaultCACertificates([...defaultCaCerts, cert.toString()]);
       try {
-        const httpsPort = listeningPort(httpsServer);
         const site = new Site("localhost", httpsPort, "/test");
-        const requests = await retrieve(site, {
-          httpPort: listeningPort(httpServer),
-        });
+        const requests = await retrieve(site, { httpPort });
         assert(requests.responses.auto);
         assert(requests.responses.auto.verified);
         assert.deepEqual(
           requests.responses.httpRedirects.map(({ url }) => url.href),
           [
-            `http://localhost:${listeningPort(httpServer)}/test`,
+            `http://localhost:${httpPort}/test`,
             `https://localhost:${httpsPort}/test`,
             `https://localhost:${httpsPort}/test/`,
           ]

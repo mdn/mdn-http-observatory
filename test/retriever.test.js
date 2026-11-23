@@ -174,7 +174,7 @@ describe("TestRetriever", () => {
     }
   );
 
-  it("test_retrieve_invalid_cert", { timeout: 10_000 }, async function () {
+  it("test_retrieve_invalid_cert", { timeout: 6000 }, async function () {
     const httpsServer = https.createServer(
       {
         key: fixture("expired-cert-key.pem"),

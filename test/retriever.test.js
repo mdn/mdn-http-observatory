@@ -198,10 +198,12 @@ describe("TestRetriever", () => {
       assert.isFalse(reqs.responses.auto.verified);
       assert.isNotNull(reqs.responses.http);
     } finally {
-      for (const server of [httpsServer, httpServer]) {
-        server.closeAllConnections();
-        server.close();
-      }
+      await Promise.all(
+        [httpsServer, httpServer].map((server) => {
+          server.closeAllConnections();
+          return once(server.close(), "close");
+        })
+      );
     }
   });
 });

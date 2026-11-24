@@ -17,6 +17,13 @@ import { emptyRequests } from "./helpers.js";
  */
 
 /**
+ * @typedef {object} Scenario
+ * @property {string} name
+ * @property {Case["setup"]} [setup]
+ * @property {boolean} secure
+ */
+
+/**
  * @param {Case[]} cases
  */
 function runCases(cases) {
@@ -201,16 +208,14 @@ describe("Subresource Integrity", () => {
   // A protocol-relative URL inherits the page scheme, so it is only insecure
   // when a visitor can end up on HTTP.
   describe("cross-origin protocol-relative scripts", () => {
+    /** @type {Scenario[]} */
     const httpScenarios = [
       {
         name: "HTTP redirects to HTTPS",
-        /** @type {(reqs: import("../src/types.js").Requests) => void} */
-        setup: () => {},
         secure: true,
       },
       {
         name: "no HTTP server",
-        /** @type {(reqs: import("../src/types.js").Requests) => void} */
         setup: (reqs) => {
           reqs.responses.http = null;
           reqs.responses.httpRedirects = [];
@@ -220,7 +225,6 @@ describe("Subresource Integrity", () => {
       {
         // The downgradeable hop is penalized by the redirection test instead.
         name: "HTTP redirects to HTTPS via an HTTP hop",
-        /** @type {(reqs: import("../src/types.js").Requests) => void} */
         setup: (reqs) => {
           reqs.responses.httpRedirects = [
             { url: new URL("http://mozilla.org/"), status: 301 },
@@ -232,7 +236,6 @@ describe("Subresource Integrity", () => {
       },
       {
         name: "HTTP stays on HTTP",
-        /** @type {(reqs: import("../src/types.js").Requests) => void} */
         setup: (reqs) => {
           reqs.responses.httpRedirects = [
             { url: new URL("http://mozilla.org/"), status: 200 },

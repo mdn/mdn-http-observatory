@@ -12,7 +12,7 @@ import { emptyRequests } from "./helpers.js";
  * @property {string} name
  * @property {string} file
  * @property {(reqs: import("../src/types.js").Requests) => void} [setup]
- * @property {string} expected
+ * @property {Expectation} expected
  * @property {boolean} pass
  */
 

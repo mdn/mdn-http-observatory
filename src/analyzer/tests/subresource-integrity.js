@@ -79,6 +79,8 @@ export function subresourceIntegrityTest(
     const baseOrigin = baseUrl?.origin ?? null;
 
     let scriptsOnForeignOrigin = false;
+    let scriptsOnSameOrigin = false;
+    let allSameOriginScriptsUseSri = true;
 
     // A protocol-relative URL (//cdn.example.com/…) inherits the page's scheme,
     // so it only adds risk when an off-origin sub-resource is served over HTTP
@@ -153,9 +155,9 @@ export function subresourceIntegrityTest(
           );
         }
       } else {
-        // Reward SRI on same-origin scripts too, even if not required.
-        if (integrity && secureScheme && !output.result) {
-          output.result = Expectation.SriImplementedAndAllScriptsLoadedSecurely;
+        scriptsOnSameOrigin = true;
+        if (!integrity || !secureScheme) {
+          allSameOriginScriptsUseSri = false;
         }
       }
     }
@@ -167,6 +169,9 @@ export function subresourceIntegrityTest(
         if (scriptsOnForeignOrigin) {
           output.result =
             Expectation.SriImplementedAndExternalScriptsLoadedSecurely;
+        } else if (scriptsOnSameOrigin && allSameOriginScriptsUseSri) {
+          // Reward SRI on same-origin scripts too, even if not required.
+          output.result = Expectation.SriImplementedAndAllScriptsLoadedSecurely;
         } else {
           output.result =
             Expectation.SriNotImplementedButAllScriptsLoadedFromSecureOrigin;

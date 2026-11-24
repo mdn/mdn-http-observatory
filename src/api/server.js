@@ -7,7 +7,11 @@ import simpleFormPlugin from "fastify-simple-form";
 
 // import analyzeApiV1 from "./v1/analyze/index.js";
 import { CONFIG } from "../config.js";
-import { poolOptions } from "../database/repository.js";
+import { POSTGRES_MAJOR_VERSION } from "../constants.js";
+import {
+  poolOptions,
+  selectServerMajorVersion,
+} from "../database/repository.js";
 
 import globalErrorHandler from "./global-error-handler.js";
 import analyzeApiV2 from "./v2/analyze/index.js";
@@ -71,6 +75,26 @@ if (CONFIG.sentry.dsn) {
 }
 
 /**
+ * Warns (and reports to Sentry) if the server's PostgreSQL major version differs from the expected one.
+ * @param {import("fastify").FastifyInstance} server
+ */
+async function checkPostgresVersion(server) {
+  let major;
+  try {
+    major = await selectServerMajorVersion(server.pg);
+  } catch (error) {
+    server.log.warn({ err: error }, "Failed to determine PostgreSQL version");
+    return;
+  }
+  if (major === POSTGRES_MAJOR_VERSION) {
+    return;
+  }
+  const message = `PostgreSQL server major version ${major} differs from expected ${POSTGRES_MAJOR_VERSION}`;
+  server.log.warn(message);
+  Sentry.captureMessage(message, "warning");
+}
+
+/**
  * Creates a Fastify server instance
  * @returns {Promise<import("fastify").FastifyInstance>}
  */
@@ -116,6 +140,7 @@ export async function createServer() {
   });
   server.register(pool, poolOptions);
   server.setErrorHandler(globalErrorHandler);
+  server.addHook("onReady", () => checkPostgresVersion(server));
 
   server.get("/", {}, async (_request, _reply) => {
     return "Welcome to the MDN Observatory!";

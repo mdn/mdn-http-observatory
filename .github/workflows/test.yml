@@ -15,6 +15,7 @@ jobs:
 
     services:
       postgres:
+        # Keep in sync with `POSTGRES_MAJOR_VERSION` in `src/constants.js`.
         image: postgres:18
         env:
           POSTGRES_USER: observatory

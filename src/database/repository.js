@@ -29,6 +29,17 @@ export const poolOptions = {
 };
 
 /**
+ * @param {Pick<Pool, "query">} pool
+ * @returns {Promise<number>}
+ */
+export async function selectServerMajorVersion(pool) {
+  const result = await pool.query(
+    "SELECT current_setting('server_version_num')::int AS version_num"
+  );
+  return Math.floor(result.rows[0].version_num / 10_000);
+}
+
+/**
  *
  * @returns {Pool}
  */

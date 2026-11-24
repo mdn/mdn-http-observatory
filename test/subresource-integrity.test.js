@@ -131,12 +131,6 @@ describe("Subresource Integrity", () => {
           Expectation.SriNotImplementedButAllScriptsLoadedFromSecureOrigin,
         pass: true,
       },
-      {
-        name: "with SRI, plus a cross-origin script with SRI",
-        file: "test_content_sri_impl_sameorigin_and_external.html",
-        expected: Expectation.SriImplementedAndExternalScriptsLoadedSecurely,
-        pass: true,
-      },
     ]);
   });
 
@@ -152,6 +146,12 @@ describe("Subresource Integrity", () => {
       {
         name: "with SRI over https (localhost)",
         file: "test_content_sri_impl_external_https_localhost.html",
+        expected: Expectation.SriImplementedAndExternalScriptsLoadedSecurely,
+        pass: true,
+      },
+      {
+        name: "with SRI over https, plus a same-origin script with SRI",
+        file: "test_content_sri_impl_sameorigin_and_external.html",
         expected: Expectation.SriImplementedAndExternalScriptsLoadedSecurely,
         pass: true,
       },

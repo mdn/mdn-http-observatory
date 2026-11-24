@@ -137,15 +137,31 @@ describe("Subresource Integrity", () => {
     assert.isTrue(result.pass);
   });
 
-  it("checks if implemented with same origin", function () {
-    reqs = emptyRequests("test_content_sri_impl_sameorigin.html");
-    let result = subresourceIntegrityTest(reqs);
-    assert.equal(
-      result.result,
-      Expectation.SriImplementedAndAllScriptsLoadedSecurely
-    );
-    assert.isTrue(result.pass);
-  });
+  for (const { name, file, expected } of [
+    {
+      name: "grants the bonus when all same-origin scripts use SRI",
+      file: "test_content_sri_impl_sameorigin.html",
+      expected: Expectation.SriImplementedAndAllScriptsLoadedSecurely,
+    },
+    {
+      name: "withholds the bonus when only some same-origin scripts use SRI",
+      file: "test_content_sri_impl_sameorigin_partial.html",
+      expected:
+        Expectation.SriNotImplementedButAllScriptsLoadedFromSecureOrigin,
+    },
+    {
+      name: "reports external scripts when same-origin and external scripts use SRI",
+      file: "test_content_sri_impl_sameorigin_and_external.html",
+      expected: Expectation.SriImplementedAndExternalScriptsLoadedSecurely,
+    },
+  ]) {
+    it(name, function () {
+      reqs = emptyRequests(file);
+      const result = subresourceIntegrityTest(reqs);
+      assert.equal(result.result, expected);
+      assert.isTrue(result.pass);
+    });
+  }
 
   it("checks if not implemented with external scripts and https", function () {
     reqs = emptyRequests("test_content_sri_notimpl_external_https.html");

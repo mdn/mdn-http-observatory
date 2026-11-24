@@ -1,4 +1,4 @@
-import { beforeEach, describe, it } from "node:test";
+import { describe, it } from "node:test";
 
 import { assert } from "chai";
 
@@ -7,294 +7,294 @@ import { Expectation } from "../src/types.js";
 
 import { emptyRequests } from "./helpers.js";
 
-describe("Subresource Integrity", () => {
-  /** @type {import("../src/types.js").Requests} */
-  let reqs;
-  beforeEach(() => {
-    reqs = emptyRequests("test_content_sri_no_scripts.html");
-  });
+/**
+ * @typedef {object} Case
+ * @property {string} name
+ * @property {string} file
+ * @property {(reqs: import("../src/types.js").Requests) => void} [setup]
+ * @property {string} expected
+ * @property {boolean} pass
+ */
 
-  it("checks for no scripts", function () {
-    reqs = emptyRequests("test_content_sri_no_scripts.html");
-    const result = subresourceIntegrityTest(reqs);
-    assert.equal(result.result, "sri-not-implemented-but-no-scripts-loaded");
-  });
-
-  it("checks for not html", function () {
-    reqs.resources.path = `{"foo": "bar"}`;
-    assert.isNotNull(reqs.responses.auto);
-    reqs.responses.auto.headers["content-type"] = "application/json";
-    const result = subresourceIntegrityTest(reqs);
-    assert.equal(result.result, Expectation.SriNotImplementedResponseNotHtml);
-    assert.isTrue(result.pass);
-  });
-
-  it("checks for same origin", function () {
-    // On the same origin with relative path
-    reqs = emptyRequests("test_content_sri_sameorigin_relative.html");
-    let result = subresourceIntegrityTest(reqs);
-    assert.equal(
-      result.result,
-      Expectation.SriNotImplementedButAllScriptsLoadedFromSecureOrigin
-    );
-    assert.isTrue(result.pass);
-
-    // On the same origin, but without a protocol
-    reqs = emptyRequests("test_content_sri_sameorigin_noproto.html");
-    result = subresourceIntegrityTest(reqs);
-    assert.equal(
-      result.result,
-      Expectation.SriNotImplementedButAllScriptsLoadedFromSecureOrigin
-    );
-    assert.isTrue(result.pass);
-
-    // On the same origin, but with https:// specified
-    reqs = emptyRequests("test_content_sri_sameorigin_https.html");
-    result = subresourceIntegrityTest(reqs);
-    assert.equal(
-      result.result,
-      Expectation.SriNotImplementedButAllScriptsLoadedFromSecureOrigin
-    );
-    assert.isTrue(result.pass);
-
-    // And the same, but with a 404 status code
-    assert.isNotNull(reqs.responses.auto);
-    reqs.responses.auto.status = 404;
-    result = subresourceIntegrityTest(reqs);
-    assert.equal(
-      result.result,
-      Expectation.SriNotImplementedButAllScriptsLoadedFromSecureOrigin
-    );
-    assert.isTrue(result.pass);
-  });
-
-  it("skips a src that fails to resolve instead of crashing", function () {
-    // A malformed src like "//" cannot be resolved into a URL; it is not a
-    // loadable sub-resource, so it must be skipped rather than throwing.
-    reqs = emptyRequests("test_content_sri_malformed_src.html");
-    const result = subresourceIntegrityTest(reqs);
-    assert.equal(
-      result.result,
-      Expectation.SriNotImplementedButAllScriptsLoadedFromSecureOrigin
-    );
-    assert.isTrue(result.pass);
-  });
-
-  for (const { name, file, expected } of [
-    {
-      name: "treats a different subdomain as a distinct origin",
-      file: "test_content_sri_cross_origin_subdomain.html",
-      expected: Expectation.SriNotImplementedButExternalScriptsLoadedSecurely,
-    },
-    {
-      name: "scores a cross-origin protocol-relative script as foreign",
-      file: "test_content_sri_cross_origin_noproto.html",
-      expected: Expectation.SriNotImplementedButExternalScriptsLoadedSecurely,
-    },
-  ]) {
+/**
+ * @param {Case[]} cases
+ */
+function runCases(cases) {
+  for (const { name, file, setup, expected, pass } of cases) {
     it(name, function () {
-      reqs = emptyRequests(file);
-      const result = subresourceIntegrityTest(reqs);
-      assert.equal(result.result, expected);
-      assert.isFalse(result.pass);
-    });
-  }
-
-  it("derives the base origin from the final redirect", function () {
-    // The www.mozilla.org script is foreign against the requested
-    // mozilla.org origin, but same-origin once the page redirects to
-    // www.mozilla.org, as the base origin follows the final served URL.
-    reqs = emptyRequests("test_content_sri_www_subdomain.html");
-    assert.isNotNull(reqs.session);
-    reqs.session.redirectHistory = [
-      { url: new URL("https://www.mozilla.org/"), status: 200 },
-    ];
-    const result = subresourceIntegrityTest(reqs);
-    assert.equal(
-      result.result,
-      Expectation.SriNotImplementedButAllScriptsLoadedFromSecureOrigin
-    );
-    assert.isTrue(result.pass);
-  });
-
-  it("checks if implemented with external scripts and https", function () {
-    // load from a remote site
-    reqs = emptyRequests("test_content_sri_impl_external_https1.html");
-    let result = subresourceIntegrityTest(reqs);
-    assert.equal(
-      result.result,
-      Expectation.SriImplementedAndExternalScriptsLoadedSecurely
-    );
-    assert.isTrue(result.pass);
-
-    // load from an intranet / localhost
-    reqs = emptyRequests("test_content_sri_impl_external_https2.html");
-    result = subresourceIntegrityTest(reqs);
-    assert.equal(
-      result.result,
-      Expectation.SriImplementedAndExternalScriptsLoadedSecurely
-    );
-    assert.isTrue(result.pass);
-  });
-
-  for (const { name, file, expected } of [
-    {
-      name: "grants the bonus when all same-origin scripts use SRI",
-      file: "test_content_sri_impl_sameorigin.html",
-      expected: Expectation.SriImplementedAndAllScriptsLoadedSecurely,
-    },
-    {
-      name: "withholds the bonus when only some same-origin scripts use SRI",
-      file: "test_content_sri_impl_sameorigin_partial.html",
-      expected:
-        Expectation.SriNotImplementedButAllScriptsLoadedFromSecureOrigin,
-    },
-    {
-      name: "reports external scripts when same-origin and external scripts use SRI",
-      file: "test_content_sri_impl_sameorigin_and_external.html",
-      expected: Expectation.SriImplementedAndExternalScriptsLoadedSecurely,
-    },
-  ]) {
-    it(name, function () {
-      reqs = emptyRequests(file);
-      const result = subresourceIntegrityTest(reqs);
-      assert.equal(result.result, expected);
-      assert.isTrue(result.pass);
-    });
-  }
-
-  it("checks if not implemented with external scripts and https", function () {
-    reqs = emptyRequests("test_content_sri_notimpl_external_https.html");
-    let result = subresourceIntegrityTest(reqs);
-    assert.equal(
-      result.result,
-      Expectation.SriNotImplementedButExternalScriptsLoadedSecurely
-    );
-    assert.isFalse(result.pass);
-  });
-
-  // Only protocol-relative URLs depend on HTTP enforcement.
-  for (const { name, file, expected, pass } of [
-    {
-      name: "scores an https:// script with SRI as secure when HTTP stays on HTTP",
-      file: "test_content_sri_impl_external_https1.html",
-      expected: Expectation.SriImplementedAndExternalScriptsLoadedSecurely,
-      pass: true,
-    },
-    {
-      name: "scores an https:// script without SRI as secure when HTTP stays on HTTP",
-      file: "test_content_sri_notimpl_external_https.html",
-      expected: Expectation.SriNotImplementedButExternalScriptsLoadedSecurely,
-      pass: false,
-    },
-  ]) {
-    it(name, function () {
-      reqs = emptyRequests(file);
-      reqs.responses.httpRedirects = [
-        { url: new URL("http://mozilla.org/"), status: 200 },
-      ];
+      const reqs = emptyRequests(file);
+      setup?.(reqs);
       const result = subresourceIntegrityTest(reqs);
       assert.equal(result.result, expected);
       assert.equal(result.pass, pass);
     });
   }
+}
 
-  it("checks if implemented with external scripts and http", function () {
-    reqs = emptyRequests("test_content_sri_impl_external_http.html");
-    let result = subresourceIntegrityTest(reqs);
-    assert.equal(
-      result.result,
-      Expectation.SriImplementedButExternalScriptsNotLoadedSecurely
-    );
-    assert.isFalse(result.pass);
+describe("Subresource Integrity", () => {
+  describe("without scorable scripts", () => {
+    runCases([
+      {
+        name: "no scripts",
+        file: "test_content_sri_no_scripts.html",
+        expected: Expectation.SriNotImplementedButNoScriptsLoaded,
+        pass: true,
+      },
+      {
+        name: "response is not HTML",
+        file: "test_content_sri_no_scripts.html",
+        setup: (reqs) => {
+          reqs.resources.path = `{"foo": "bar"}`;
+          assert.isNotNull(reqs.responses.auto);
+          reqs.responses.auto.headers["content-type"] = "application/json";
+        },
+        expected: Expectation.SriNotImplementedResponseNotHtml,
+        pass: true,
+      },
+      {
+        // A src like "//" cannot be resolved, so it is skipped, not thrown on.
+        name: "unresolvable src",
+        file: "test_content_sri_malformed_src.html",
+        expected:
+          Expectation.SriNotImplementedButAllScriptsLoadedFromSecureOrigin,
+        pass: true,
+      },
+    ]);
   });
 
-  it("checks if implemented with external scripts and no protocol", function () {
-    // When HTTP redirects to HTTPS, //cdn.example.com/script.js always resolves to https://,
-    // so protocol-relative URLs should be treated the same as https:// (issue #464).
-    reqs = emptyRequests("test_content_sri_impl_external_noproto.html");
-    let result = subresourceIntegrityTest(reqs);
-    assert.equal(
-      result.result,
-      Expectation.SriImplementedAndExternalScriptsLoadedSecurely
-    );
-    assert.isTrue(result.pass);
-
-    // When HTTP does NOT redirect to HTTPS, //cdn.example.com/script.js can resolve to http://
-    // on an HTTP visit, so it must still be penalised.
-    reqs = emptyRequests("test_content_sri_impl_external_noproto.html");
-    reqs.responses.httpRedirects = [
-      { url: new URL("http://mozilla.org/"), status: 200 },
-    ];
-    result = subresourceIntegrityTest(reqs);
-    assert.equal(
-      result.result,
-      Expectation.SriImplementedButExternalScriptsNotLoadedSecurely
-    );
-    assert.isFalse(result.pass);
+  describe("same-origin scripts", () => {
+    runCases([
+      {
+        name: "relative path",
+        file: "test_content_sri_sameorigin_relative.html",
+        expected:
+          Expectation.SriNotImplementedButAllScriptsLoadedFromSecureOrigin,
+        pass: true,
+      },
+      {
+        name: "protocol-relative URL",
+        file: "test_content_sri_sameorigin_noproto.html",
+        expected:
+          Expectation.SriNotImplementedButAllScriptsLoadedFromSecureOrigin,
+        pass: true,
+      },
+      {
+        name: "absolute https URL",
+        file: "test_content_sri_sameorigin_https.html",
+        expected:
+          Expectation.SriNotImplementedButAllScriptsLoadedFromSecureOrigin,
+        pass: true,
+      },
+      {
+        name: "absolute https URL on a 404 response",
+        file: "test_content_sri_sameorigin_https.html",
+        setup: (reqs) => {
+          assert.isNotNull(reqs.responses.auto);
+          reqs.responses.auto.status = 404;
+        },
+        expected:
+          Expectation.SriNotImplementedButAllScriptsLoadedFromSecureOrigin,
+        pass: true,
+      },
+      {
+        // The www.mozilla.org script is foreign to the requested mozilla.org,
+        // but same-origin with the final redirect target.
+        name: "base origin follows the final redirect",
+        file: "test_content_sri_www_subdomain.html",
+        setup: (reqs) => {
+          assert.isNotNull(reqs.session);
+          reqs.session.redirectHistory = [
+            { url: new URL("https://www.mozilla.org/"), status: 200 },
+          ];
+        },
+        expected:
+          Expectation.SriNotImplementedButAllScriptsLoadedFromSecureOrigin,
+        pass: true,
+      },
+      {
+        name: "with SRI on all scripts",
+        file: "test_content_sri_impl_sameorigin.html",
+        expected: Expectation.SriImplementedAndAllScriptsLoadedSecurely,
+        pass: true,
+      },
+      {
+        name: "with SRI on only some scripts",
+        file: "test_content_sri_impl_sameorigin_partial.html",
+        expected:
+          Expectation.SriNotImplementedButAllScriptsLoadedFromSecureOrigin,
+        pass: true,
+      },
+      {
+        name: "with SRI, plus a cross-origin script with SRI",
+        file: "test_content_sri_impl_sameorigin_and_external.html",
+        expected: Expectation.SriImplementedAndExternalScriptsLoadedSecurely,
+        pass: true,
+      },
+    ]);
   });
 
-  it("checks if not implemented with external scripts and http", function () {
-    reqs = emptyRequests("test_content_sri_notimpl_external_http.html");
-    let result = subresourceIntegrityTest(reqs);
-    assert.equal(
-      result.result,
-      Expectation.SriNotImplementedAndExternalScriptsNotLoadedSecurely
-    );
-    assert.isFalse(result.pass);
+  // Only protocol-relative URLs depend on HTTP enforcement.
+  describe("cross-origin scripts with explicit scheme", () => {
+    runCases([
+      {
+        name: "with SRI over https (remote host)",
+        file: "test_content_sri_impl_external_https_remote.html",
+        expected: Expectation.SriImplementedAndExternalScriptsLoadedSecurely,
+        pass: true,
+      },
+      {
+        name: "with SRI over https (localhost)",
+        file: "test_content_sri_impl_external_https_localhost.html",
+        expected: Expectation.SriImplementedAndExternalScriptsLoadedSecurely,
+        pass: true,
+      },
+      {
+        name: "with SRI over http",
+        file: "test_content_sri_impl_external_http.html",
+        expected: Expectation.SriImplementedButExternalScriptsNotLoadedSecurely,
+        pass: false,
+      },
+      {
+        name: "without SRI over https",
+        file: "test_content_sri_notimpl_external_https.html",
+        expected: Expectation.SriNotImplementedButExternalScriptsLoadedSecurely,
+        pass: false,
+      },
+      {
+        name: "with SRI over https, HTTP stays on HTTP",
+        file: "test_content_sri_impl_external_https_remote.html",
+        setup: (reqs) => {
+          reqs.responses.httpRedirects = [
+            { url: new URL("http://mozilla.org/"), status: 200 },
+          ];
+        },
+        expected: Expectation.SriImplementedAndExternalScriptsLoadedSecurely,
+        pass: true,
+      },
+      {
+        name: "without SRI over https, HTTP stays on HTTP",
+        file: "test_content_sri_notimpl_external_https.html",
+        setup: (reqs) => {
+          reqs.responses.httpRedirects = [
+            { url: new URL("http://mozilla.org/"), status: 200 },
+          ];
+        },
+        expected: Expectation.SriNotImplementedButExternalScriptsLoadedSecurely,
+        pass: false,
+      },
+      {
+        name: "without SRI over http",
+        file: "test_content_sri_notimpl_external_http.html",
+        expected:
+          Expectation.SriNotImplementedAndExternalScriptsNotLoadedSecurely,
+        pass: false,
+      },
+      {
+        name: "without SRI on a different subdomain",
+        file: "test_content_sri_cross_origin_subdomain.html",
+        expected: Expectation.SriNotImplementedButExternalScriptsLoadedSecurely,
+        pass: false,
+      },
+    ]);
   });
 
-  it("checks if not implemented with external scripts and no protocol", function () {
-    // When HTTP redirects to HTTPS, //cdn.example.com/script.js always resolves to https://,
-    // so it should score like https:// (-5), not like http:// (-50) (issue #464).
-    reqs = emptyRequests("test_content_sri_notimpl_external_noproto.html");
-    let result = subresourceIntegrityTest(reqs);
-    assert.equal(
-      result.result,
-      Expectation.SriNotImplementedButExternalScriptsLoadedSecurely
-    );
-    assert.isFalse(result.pass);
-
-    // When HTTP does NOT redirect to HTTPS, //cdn.example.com/script.js can resolve to http://
-    // on an HTTP visit, so it must still be penalised at -50.
-    reqs = emptyRequests("test_content_sri_notimpl_external_noproto.html");
-    reqs.responses.httpRedirects = [
-      { url: new URL("http://mozilla.org/"), status: 200 },
+  // A protocol-relative URL inherits the page scheme, so it is only insecure
+  // when a visitor can end up on HTTP.
+  describe("cross-origin protocol-relative scripts", () => {
+    const httpScenarios = [
+      {
+        name: "HTTP redirects to HTTPS",
+        /** @type {(reqs: import("../src/types.js").Requests) => void} */
+        setup: () => {},
+        secure: true,
+      },
+      {
+        name: "no HTTP server",
+        /** @type {(reqs: import("../src/types.js").Requests) => void} */
+        setup: (reqs) => {
+          reqs.responses.http = null;
+          reqs.responses.httpRedirects = [];
+        },
+        secure: true,
+      },
+      {
+        // The downgradeable hop is penalized by the redirection test instead.
+        name: "HTTP redirects to HTTPS via an HTTP hop",
+        /** @type {(reqs: import("../src/types.js").Requests) => void} */
+        setup: (reqs) => {
+          reqs.responses.httpRedirects = [
+            { url: new URL("http://mozilla.org/"), status: 301 },
+            { url: new URL("http://www.mozilla.org/"), status: 301 },
+            { url: new URL("https://www.mozilla.org/"), status: 200 },
+          ];
+        },
+        secure: true,
+      },
+      {
+        name: "HTTP stays on HTTP",
+        /** @type {(reqs: import("../src/types.js").Requests) => void} */
+        setup: (reqs) => {
+          reqs.responses.httpRedirects = [
+            { url: new URL("http://mozilla.org/"), status: 200 },
+          ];
+        },
+        secure: false,
+      },
     ];
-    result = subresourceIntegrityTest(reqs);
-    assert.equal(
-      result.result,
-      Expectation.SriNotImplementedAndExternalScriptsNotLoadedSecurely
-    );
-    assert.isFalse(result.pass);
 
-    // When there is no HTTP server at all, //cdn.example.com/script.js can only
-    // resolve to https://, so it should score like https:// (-5) (issue #464).
-    reqs = emptyRequests("test_content_sri_notimpl_external_noproto.html");
-    reqs.responses.http = null;
-    reqs.responses.httpRedirects = [];
-    result = subresourceIntegrityTest(reqs);
-    assert.equal(
-      result.result,
-      Expectation.SriNotImplementedButExternalScriptsLoadedSecurely
-    );
-    assert.isFalse(result.pass);
-
-    // When the redirect to HTTPS goes through an intermediate HTTP hop, a normal
-    // visitor still lands on HTTPS, so //cdn.example.com/script.js resolves to
-    // https:// and scores like https:// (-5). The downgradeable hop is penalised
-    // by the redirection test, not double-counted here (issue #464).
-    reqs = emptyRequests("test_content_sri_notimpl_external_noproto.html");
-    reqs.responses.httpRedirects = [
-      { url: new URL("http://mozilla.org/"), status: 301 },
-      { url: new URL("http://www.mozilla.org/"), status: 301 },
-      { url: new URL("https://www.mozilla.org/"), status: 200 },
+    const fixtures = [
+      {
+        name: "with SRI",
+        file: "test_content_sri_impl_external_noproto.html",
+        secure: {
+          expected: Expectation.SriImplementedAndExternalScriptsLoadedSecurely,
+          pass: true,
+        },
+        insecure: {
+          expected:
+            Expectation.SriImplementedButExternalScriptsNotLoadedSecurely,
+          pass: false,
+        },
+      },
+      {
+        name: "without SRI",
+        file: "test_content_sri_notimpl_external_noproto.html",
+        secure: {
+          expected:
+            Expectation.SriNotImplementedButExternalScriptsLoadedSecurely,
+          pass: false,
+        },
+        insecure: {
+          expected:
+            Expectation.SriNotImplementedAndExternalScriptsNotLoadedSecurely,
+          pass: false,
+        },
+      },
+      {
+        name: "without SRI on a different subdomain",
+        file: "test_content_sri_cross_origin_noproto.html",
+        secure: {
+          expected:
+            Expectation.SriNotImplementedButExternalScriptsLoadedSecurely,
+          pass: false,
+        },
+        insecure: {
+          expected:
+            Expectation.SriNotImplementedAndExternalScriptsNotLoadedSecurely,
+          pass: false,
+        },
+      },
     ];
-    result = subresourceIntegrityTest(reqs);
-    assert.equal(
-      result.result,
-      Expectation.SriNotImplementedButExternalScriptsLoadedSecurely
+
+    runCases(
+      fixtures.flatMap((fixture) =>
+        httpScenarios.map((scenario) => ({
+          name: `${fixture.name}, ${scenario.name}`,
+          file: fixture.file,
+          setup: scenario.setup,
+          ...(scenario.secure ? fixture.secure : fixture.insecure),
+        }))
+      )
     );
-    assert.isFalse(result.pass);
   });
 });

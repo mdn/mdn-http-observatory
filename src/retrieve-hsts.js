@@ -38,15 +38,46 @@ const dirname = path.dirname(fileURLToPath(import.meta.url));
  */
 
 /**
+ * @param {Record<string, string>} [headers]
+ * @param {number} [maxRedirects]
+ */
+const get = (headers = {}, maxRedirects = 5) =>
+  axios.get(HSTS_URL.href, { headers, maxRedirects });
+
+/**
+ * Fetch the raw list, authenticated if `GITHUB_TOKEN` is set to avoid 429s.
+ * Falls back to an unauthenticated request if the token is rejected.
+ * @returns {Promise<import("axios").AxiosResponse>}
+ */
+async function fetchHsts() {
+  const { GITHUB_TOKEN } = process.env;
+  if (!GITHUB_TOKEN) {
+    return get();
+  }
+  // Never follow redirects with the token, so it cannot reach another host.
+  return get({ Authorization: `Bearer ${GITHUB_TOKEN}` }, 0).catch((error) => {
+    if ([400, 401, 404].includes(error.response?.status)) {
+      return get();
+    }
+    throw error;
+  });
+}
+
+/**
  * Download the Google HSTS preload list
  * @returns
  */
 export async function retrieveAndStoreHsts() {
   let r;
   try {
-    r = await axios.get(HSTS_URL.href);
+    r = await fetchHsts();
   } catch (error) {
-    console.error("Error getting data:", error);
+    const status = axios.isAxiosError(error) ? error.response?.status : null;
+    console.error(
+      "Error getting data:",
+      error instanceof Error ? error.message : error,
+      status ?? ""
+    );
     return;
   }
   const data = removeJsonComments(r.data);

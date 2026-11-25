@@ -133,12 +133,12 @@ export const SCORE_TABLE = new Map([
     Expectation.CspImplementedWithUnsafeInlineInStyleSrcOnly,
     {
       description: `<p>
-      Content Security Policy (CSP) implemented with unsafe sources inside style-src. This includes <code>'unsafe-inline'</code>, <code>data:</code> or overly broad sources such as <code>https</code>. <code>'form-action'</code> is set to <code>'self'</code>, <code>'none'</code> or <code>'specific source'</code>
+      Content Security Policy (CSP) implemented with unsafe sources inside <code>style-src</code>, <code>style-src-elem</code> or <code>style-src-attr</code>. This includes <code>'unsafe-inline'</code>, <code>data:</code> or overly broad sources such as <code>https</code>. <code>'form-action'</code> is set to <code>'self'</code>, <code>'none'</code> or <code>'specific source'</code>
       </p>`,
       modifier: 0,
       recommendation: `
         <p>
-          Lock down <code>style-src</code> directive, removing <code>'unsafe-inline'</code>, <code>data:</code> and broad sources.
+          Lock down the <code>style-src</code>, <code>style-src-elem</code> and <code>style-src-attr</code> directives, removing <code>'unsafe-inline'</code>, <code>data:</code> and broad sources.
         </p>`,
     },
   ],
@@ -168,11 +168,11 @@ export const SCORE_TABLE = new Map([
     Expectation.CspImplementedWithUnsafeInline,
     {
       description: `<p>
-      Content Security Policy (CSP) implemented unsafely. This includes <code>'unsafe-inline'</code> or <code>data:</code> inside <code>script-src</code>, overly broad sources such as <code>https:</code> inside <code>object-src</code> or <code>script-src</code>, or not restricting the sources for <code>object-src</code> or <code>script-src</code>.
+      Content Security Policy (CSP) implemented unsafely. This includes <code>'unsafe-inline'</code> or <code>data:</code> inside <code>script-src</code> (or <code>script-src-elem</code> / <code>script-src-attr</code>), overly broad sources such as <code>https:</code> inside <code>object-src</code> or <code>script-src</code>, or not restricting the sources for <code>object-src</code> or <code>script-src</code>.
       </p>`,
       modifier: -20,
       recommendation: `<p>
-      Remove <code>unsafe-inline</code> and <code>data:</code> from <code>script-src</code>, overly broad sources from <code>object-src</code> and <code>script-src</code>, and ensure <code>object-src</code> and <code>script-src</code> are set.
+      Remove <code>unsafe-inline</code> and <code>data:</code> from <code>script-src</code> (including <code>script-src-elem</code> and <code>script-src-attr</code>), overly broad sources from <code>object-src</code> and <code>script-src</code>, and ensure <code>object-src</code> and <code>script-src</code> are set.
       </p>`,
     },
   ],

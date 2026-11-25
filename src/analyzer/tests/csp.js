@@ -171,9 +171,20 @@ export function contentSecurityPolicyTest(
     csp.get("script-src") || csp.get("default-src") || new Set(["*"]);
   const style_src =
     csp.get("style-src") || csp.get("default-src") || new Set(["*"]);
+  const script_src_elem = csp.get("script-src-elem") || script_src;
+  const script_src_attr = csp.get("script-src-attr") || script_src;
+  const style_src_elem = csp.get("style-src-elem") || style_src;
+  const style_src_attr = csp.get("style-src-attr") || style_src;
 
-  // Remove 'unsafe-inline' if nonce or hash are used in script-src or style-src
-  for (const sourceList of [script_src, style_src]) {
+  // Remove 'unsafe-inline' if a nonce or hash is in the same source list (CSP3 6.7.3.2)
+  for (const sourceList of [
+    script_src,
+    script_src_elem,
+    script_src_attr,
+    style_src,
+    style_src_elem,
+    style_src_attr,
+  ]) {
     if (
       startsWithNoncesHash([...sourceList]) &&
       sourceList.has("'unsafe-inline'")
@@ -186,22 +197,24 @@ export function contentSecurityPolicyTest(
   // 1. Check to make sure there's a valid nonce/hash source
   // 2. Remove any source that starts with as scheme
   // 3. Remove 'self' and 'unsafe-inline'
-  if (
-    startsWithNoncesHash([...script_src]) &&
-    script_src.has("'strict-dynamic'")
-  ) {
-    for (const source of script_src) {
-      if (
-        [...DANGEROUSLY_BROAD].some((s) => source.startsWith(s)) ||
-        source === "'self'" ||
-        source === "'unsafe-inline'"
-      ) {
-        script_src.delete(source);
+  for (const sourceList of [script_src, script_src_elem]) {
+    if (
+      startsWithNoncesHash([...sourceList]) &&
+      sourceList.has("'strict-dynamic'")
+    ) {
+      for (const source of sourceList) {
+        if (
+          [...DANGEROUSLY_BROAD].some((s) => source.startsWith(s)) ||
+          source === "'self'" ||
+          source === "'unsafe-inline'"
+        ) {
+          sourceList.delete(source);
+        }
       }
+      output.policy.strictDynamic = true;
+    } else if (sourceList.has("'strict-dynamic'") && output.result === null) {
+      output.result = Expectation.CspHeaderInvalid;
     }
-    output.policy.strictDynamic = true;
-  } else if (script_src.has("'strict-dynamic'") && output.result === null) {
-    output.result = Expectation.CspHeaderInvalid;
   }
 
   // Some checks look only at active/passive CSP directives
@@ -218,11 +231,13 @@ export function contentSecurityPolicyTest(
     ...(csp.get(directive) || csp.get("default-src") || new Set()),
   ]);
 
-  // No 'unsafe-inline' or data: in script-src
+  // No 'unsafe-inline' or data: in script-src or script-src-elem, no 'unsafe-inline' in script-src-attr
   // Also don't allow overly broad schemes such as https: in either object-src or script-src
   // Likewise, if you don't have object-src or script-src defined, then all sources are allowed
   if (
     !script_src.isDisjointFrom(DANGEROUSLY_BROAD_AND_UNSAFE_INLINE) ||
+    !script_src_elem.isDisjointFrom(DANGEROUSLY_BROAD_AND_UNSAFE_INLINE) ||
+    script_src_attr.has("'unsafe-inline'") ||
     !object_src.isDisjointFrom(DANGEROUSLY_BROAD)
   ) {
     if (output.result === null) {
@@ -267,8 +282,13 @@ export function contentSecurityPolicyTest(
     output.policy.insecureSchemePassive = true;
   }
 
-  // Don't allow 'unsafe-inline', data:, or overly broad sources in style-src
-  if (!style_src.isDisjointFrom(DANGEROUSLY_BROAD_AND_UNSAFE_INLINE)) {
+  // Don't allow 'unsafe-inline', data:, or overly broad sources in style-src or style-src-elem,
+  // nor 'unsafe-inline' in style-src-attr
+  if (
+    !style_src.isDisjointFrom(DANGEROUSLY_BROAD_AND_UNSAFE_INLINE) ||
+    !style_src_elem.isDisjointFrom(DANGEROUSLY_BROAD_AND_UNSAFE_INLINE) ||
+    style_src_attr.has("'unsafe-inline'")
+  ) {
     if (output.result === null) {
       output.result = Expectation.CspImplementedWithUnsafeInlineInStyleSrcOnly;
     }

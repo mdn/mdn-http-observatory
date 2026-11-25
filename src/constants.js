@@ -74,3 +74,6 @@ export const ALL_RESULTS = [
 export const NUM_TESTS = ALL_TESTS.length;
 
 export const ALGORITHM_VERSION = 6;
+
+/** Must match the production database and the CI `postgres` image. */
+export const POSTGRES_MAJOR_VERSION = 18;

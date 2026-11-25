@@ -3,7 +3,7 @@ import { after, before, beforeEach, describe, it } from "node:test";
 import { faker } from "@faker-js/faker";
 import { assert } from "chai";
 
-import { ALGORITHM_VERSION } from "../src/constants.js";
+import { ALGORITHM_VERSION, POSTGRES_MAJOR_VERSION } from "../src/constants.js";
 import { migrateDatabase } from "../src/database/migrate.js";
 import {
   ScanState,
@@ -17,6 +17,7 @@ import {
   selectScan,
   selectScanHostHistory,
   selectScanRecentScan,
+  selectServerMajorVersion,
   selectTestResults,
   updateScanState,
 } from "../src/database/repository.js";
@@ -529,6 +530,13 @@ describe(
         assert(check);
         assert.deepEqual(res, check);
       }
+    });
+
+    it("server matches the expected PostgreSQL major version", async () => {
+      assert.equal(
+        await selectServerMajorVersion(pool),
+        POSTGRES_MAJOR_VERSION
+      );
     });
   }
 );

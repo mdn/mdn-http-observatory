@@ -62,11 +62,11 @@ export async function urls(site, options = {}) {
 /**
  *
  * @param {Site} site
- * @param {boolean} [https]
+ * @param {boolean} https
  * @param {import("../types.js").ScanOptions} options
  * @returns
  */
-async function url(site, https = true, options = {}) {
+async function url(site, https, options = {}) {
   let port = (https ? options.httpsPort : options.httpPort) ?? undefined;
   if (site.port !== undefined) {
     const isTlsSecured = await detectTlsSupport(site);

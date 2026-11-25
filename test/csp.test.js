@@ -248,6 +248,7 @@ describe("Content Security Policy", () => {
       "default-src 'self'; script-src-elem 'nonce-abc123' 'unsafe-inline'; style-src-elem 'nonce-abc123' 'unsafe-inline'",
       "default-src 'self'; script-src-attr 'unsafe-hashes' 'sha256-hqBEA/HXB3aJU2FgOnYN8rkAgEVgyfi3Vs1j2/XMPBA=' 'unsafe-inline'; style-src-attr 'unsafe-hashes' 'sha256-hqBEA/HXB3aJU2FgOnYN8rkAgEVgyfi3Vs1j2/XMPBA=' 'unsafe-inline'",
       "default-src 'self'; script-src-attr 'none'; style-src-attr 'none'",
+      "default-src 'self'; script-src-attr 'strict-dynamic' 'unsafe-inline'",
       "default-src 'self'; script-src-elem 'nonce-abc123' 'strict-dynamic' https: 'unsafe-inline'",
     ];
 

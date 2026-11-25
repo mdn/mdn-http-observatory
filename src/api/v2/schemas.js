@@ -308,14 +308,14 @@ export class PolicyResponse {
   // @ts-expect-error - used in constructor
   unsafeInline = {
     pass: false,
-    description: `<p>Blocks execution of inline JavaScript by not allowing <code>'unsafe-inline'</code> inside <code>script-src</code></p>`,
+    description: `<p>Blocks execution of inline JavaScript by not allowing <code>'unsafe-inline'</code> inside <code>script-src</code>, <code>script-src-elem</code> or <code>script-src-attr</code></p>`,
     info: `<p>Blocking the execution of inline JavaScript provides CSP's strongest protection against cross-site scripting attacks. Moving JavaScript to external files can also help make your site more maintainable.</p>`,
   };
   /** @typedef {PolicyItem} */
   // @ts-expect-error - used in constructor
   unsafeInlineStyle = {
     pass: false,
-    description: `<p>Blocks inline styles by not allowing <code>'unsafe-inline'</code> inside <code>style-src</code></p>`,
+    description: `<p>Blocks inline styles by not allowing <code>'unsafe-inline'</code> inside <code>style-src</code>, <code>style-src-elem</code> or <code>style-src-attr</code></p>`,
     info: `<p>Blocking inline styles can help prevent attackers from modifying the contents or appearance of your page. Moving styles to external stylesheets can also help make your site more maintainable.</p>`,
   };
   /** @typedef {PolicyItem} */

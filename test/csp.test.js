@@ -24,6 +24,7 @@ describe("Content Security Policy", () => {
       "default-src 'none'; default-src 'none'", // Repeated directives not allowed
       "default-src 'none'; img-src 'self'; default-src 'none'",
       "default-src 'none'; script-src 'strict-dynamic'", // strict dynamic without hash/nonce
+      "default-src 'none'; script-src 'self'; script-src-elem 'strict-dynamic'",
       "defa",
     ];
 
@@ -130,6 +131,12 @@ describe("Content Security Policy", () => {
       "default-src 'none'; script-src 'unsafe-inline' 'unsafe-eval'",
       "default-src 'none'; script-src 'unsafe-inline' http:",
       "object-src https:; script-src 'none'",
+      "default-src 'none'; script-src 'self'; script-src-attr 'unsafe-inline'",
+      "default-src 'none'; script-src 'self'; script-src-elem 'unsafe-inline'",
+      "default-src 'none'; script-src 'self'; script-src-elem https:",
+      "default-src 'none'; script-src 'self'; script-src-elem data:",
+      "default-src 'none'; script-src 'nonce-abc123' 'strict-dynamic'; script-src-elem 'self' 'unsafe-inline'",
+      "default-src 'none'; script-src 'nonce-abc123' 'unsafe-inline'; script-src-attr 'unsafe-inline'",
     ];
 
     for (const value of values) {
@@ -177,6 +184,9 @@ describe("Content Security Policy", () => {
       "default-src 'none'; style-src 'unsafe-inline'; " +
         "script-src 'sha256-hqBEA/HXB3aJU2FgOnYN8rkAgEVgyfi3Vs1j2/XMPBB=' " +
         "'unsafe-inline'",
+      "default-src 'none'; script-src 'self'; style-src 'self'; style-src-attr 'unsafe-inline'",
+      "default-src 'none'; style-src 'self'; style-src-elem 'self' 'unsafe-inline'",
+      "default-src 'none'; style-src 'self'; style-src-elem https:",
     ];
 
     for (const value of values) {
@@ -193,6 +203,28 @@ describe("Content Security Policy", () => {
       assert.isNotNull(result["policy"]);
       assert.isTrue(result["policy"]["unsafeInlineStyle"]);
     }
+  });
+  it("unsafe inline in style-src-attr only", async () => {
+    const requests = emptyRequests();
+    setHeader(
+      requests.responses.auto,
+      "Content-Security-Policy",
+      "default-src 'self'; base-uri 'none'; img-src 'self' data:; style-src 'nonce-XXX' 'unsafe-inline' 'report-sample'; style-src-attr 'unsafe-inline' 'report-sample'; script-src 'nonce-XXX' 'report-sample'; form-action 'self'; frame-ancestors 'self'; connect-src 'none'; object-src 'none'; upgrade-insecure-requests"
+    );
+
+    const result = contentSecurityPolicyTest(requests);
+
+    assert.equal(
+      result["result"],
+      Expectation.CspImplementedWithUnsafeInlineInStyleSrcOnly
+    );
+    assert.isTrue(result["pass"]);
+    assert.isTrue(result["policy"]?.["unsafeInlineStyle"]);
+    assert.isFalse(result["policy"]?.["unsafeInline"]);
+    assert.deepEqual(result["data"]?.["style-src-attr"], [
+      "'report-sample'",
+      "'unsafe-inline'",
+    ]);
   });
   it("no unsafe", async () => {
     // See https://github.com/mozilla/http-observatory/issues/88 and
@@ -212,6 +244,11 @@ describe("Content Security Policy", () => {
       "default-src https://mozilla.org; style-src 'unsafe-inline' 'nonce-abc123' 'unsafe-inline'",
       "default-src https://mozilla.org; style-src 'unsafe-inline' " +
         "'sha256-hqBEA/HXB3aJU2FgOnYN8rkAgEVgyfi3Vs1j2/XMPBB=' 'unsafe-inline'",
+      "default-src 'self'; base-uri 'none'; img-src 'self' data:; style-src 'nonce-XXX' 'unsafe-inline' 'report-sample'; script-src 'nonce-XXX' 'report-sample'; form-action 'self'; frame-ancestors 'self'; connect-src 'none'; object-src 'none'; upgrade-insecure-requests",
+      "default-src 'self'; script-src-elem 'nonce-abc123' 'unsafe-inline'; style-src-elem 'nonce-abc123' 'unsafe-inline'",
+      "default-src 'self'; script-src-attr 'unsafe-hashes' 'sha256-hqBEA/HXB3aJU2FgOnYN8rkAgEVgyfi3Vs1j2/XMPBA=' 'unsafe-inline'; style-src-attr 'unsafe-hashes' 'sha256-hqBEA/HXB3aJU2FgOnYN8rkAgEVgyfi3Vs1j2/XMPBA=' 'unsafe-inline'",
+      "default-src 'self'; script-src-attr 'none'; style-src-attr 'none'",
+      "default-src 'self'; script-src-elem 'nonce-abc123' 'strict-dynamic' https: 'unsafe-inline'",
     ];
 
     for (const value of values) {

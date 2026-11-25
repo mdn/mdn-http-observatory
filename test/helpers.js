@@ -58,7 +58,7 @@ export function emptyRequests(httpEquivFile = null) {
   req.responses.http = structuredClone(req.responses.auto);
   req.responses.https = structuredClone(req.responses.auto);
 
-  req.responses.httpRedirects = [
+  req.responses.httpRoute = [
     {
       url: new URL("http://mozilla.org/"),
       status: 301,
@@ -72,7 +72,7 @@ export function emptyRequests(httpEquivFile = null) {
       status: 200,
     },
   ];
-  req.responses.httpsRedirects = [
+  req.responses.httpsRoute = [
     {
       url: new URL("https://mozilla.org/"),
       status: 301,
@@ -114,7 +114,7 @@ export function emptyRequests(httpEquivFile = null) {
 }
 
 /**
- * @typedef {object} SerializedRedirectEntry
+ * @typedef {object} SerializedRouteEntry
  * @property {string} url
  * @property {number} status
  */
@@ -154,6 +154,24 @@ function reconstructResponse(data) {
 }
 
 /**
+ * Reconstructs a route from serialized fixture data
+ * @param {{ responses: Record<string, unknown> }} fixtureData
+ * @param {"httpRoute" | "httpsRoute"} key
+ * @returns {import("../src/types.js").RouteEntry[]}
+ */
+function reconstructRoute(fixtureData, key) {
+  const route = fixtureData.responses[key];
+  // Fail loudly, as an empty route silently passes the redirection test.
+  if (!Array.isArray(route)) {
+    throw new TypeError(`Fixture is missing \`responses.${key}\``);
+  }
+  return route.map((/** @type {SerializedRouteEntry} */ r) => ({
+    url: new URL(r.url),
+    status: r.status,
+  }));
+}
+
+/**
  * Loads a fixture and creates a Requests object from it
  * @param {string} fixtureName - Name of fixture file (without .json extension)
  * @returns {Requests}
@@ -178,19 +196,8 @@ export function fixtureRequests(fixtureName) {
   req.responses.https = reconstructResponse(fixtureData.responses.https);
   req.responses.cors = reconstructResponse(fixtureData.responses.cors);
 
-  // Reconstruct redirect chains
-  req.responses.httpRedirects = (fixtureData.responses.httpRedirects || []).map(
-    (/** @type {SerializedRedirectEntry} */ r) => ({
-      url: new URL(r.url),
-      status: r.status,
-    })
-  );
-  req.responses.httpsRedirects = (
-    fixtureData.responses.httpsRedirects || []
-  ).map((/** @type {SerializedRedirectEntry} */ r) => ({
-    url: new URL(r.url),
-    status: r.status,
-  }));
+  req.responses.httpRoute = reconstructRoute(fixtureData, "httpRoute");
+  req.responses.httpsRoute = reconstructRoute(fixtureData, "httpsRoute");
 
   // Set resources
   req.resources.path = fixtureData.resources.path || "";

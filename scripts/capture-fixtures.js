@@ -26,15 +26,15 @@ function serializeResponse(response) {
 }
 
 /**
- * Serializes redirect chain to plain objects
- * @param {Array<{url: URL, status: number}>} redirects
+ * Serializes a route to plain objects
+ * @param {import("../src/types.js").RouteEntry[]} route
  * @returns {Array<{url: string, status: number}>}
  */
-function serializeRedirects(redirects) {
-  if (!redirects || !Array.isArray(redirects)) {
+function serializeRoute(route) {
+  if (!route || !Array.isArray(route)) {
     return [];
   }
-  return redirects.map((r) => ({
+  return route.map((r) => ({
     url: r.url.href,
     status: r.status,
   }));
@@ -70,8 +70,8 @@ async function captureFixture(domain) {
       http: serializeResponse(requests.responses.http),
       https: serializeResponse(requests.responses.https),
       cors: serializeResponse(requests.responses.cors),
-      httpRedirects: serializeRedirects(requests.responses.httpRedirects),
-      httpsRedirects: serializeRedirects(requests.responses.httpsRedirects),
+      httpRoute: serializeRoute(requests.responses.httpRoute),
+      httpsRoute: serializeRoute(requests.responses.httpsRoute),
     },
     resources: {
       path: requests.resources.path || "",

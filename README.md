@@ -42,14 +42,14 @@ Both methods return a JSON response of the following form:
 ```json
 {
   "scan": {
-    "algorithmVersion": 4,
+    "algorithmVersion": 6,
     "grade": "A+",
     "error": null,
     "score": 105,
     "statusCode": 200,
     "testsFailed": 0,
-    "testsPassed": 10,
-    "testsQuantity": 10,
+    "testsPassed": 12,
+    "testsQuantity": 12,
     "responseHeaders": {
       ...
     }
@@ -127,15 +127,15 @@ On success, a JSON object is returned, structured like this example response:
 {
   "id": 77666718,
   "details_url": "https://developer.mozilla.org/en-US/observatory/analyze?host=mdn.dev",
-  "algorithm_version": 4,
+  "algorithm_version": 6,
   "scanned_at": "2024-08-12T08:20:18.926Z",
   "error": null,
   "grade": "A+",
   "score": 105,
   "status_code": 200,
   "tests_failed": 0,
-  "tests_passed": 10,
-  "tests_quantity": 10
+  "tests_passed": 12,
+  "tests_quantity": 12
 }
 ```
 

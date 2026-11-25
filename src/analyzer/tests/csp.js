@@ -193,6 +193,11 @@ export function contentSecurityPolicyTest(
     }
   }
 
+  // 'strict-dynamic' also neutralizes 'unsafe-inline' for inline event handlers (CSP3 6.7.3.2)
+  if (csp.has("script-src-attr") && script_src_attr.has("'strict-dynamic'")) {
+    script_src_attr.delete("'unsafe-inline'");
+  }
+
   // If a script-src uses 'strict-dynamic', we need to:
   // 1. Check to make sure there's a valid nonce/hash source
   // 2. Remove any source that starts with as scheme

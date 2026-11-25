@@ -19,8 +19,6 @@
  * @property {number} status
  */
 
-export const ALGORITHM_VERSION = 4;
-
 export class Responses {
   /** @type {Response | null} */
   auto = null;

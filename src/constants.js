@@ -73,4 +73,5 @@ export const ALL_RESULTS = [
 
 export const NUM_TESTS = ALL_TESTS.length;
 
+// Identifies the scoring rubric; see REVIEWING.md for when to bump.
 export const ALGORITHM_VERSION = 6;

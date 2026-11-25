@@ -1,3 +1,8 @@
+import { once } from "node:events";
+import fs from "node:fs";
+import http from "node:http";
+import https from "node:https";
+import path from "node:path";
 import { describe, it } from "node:test";
 
 import { assert } from "chai";
@@ -8,6 +13,46 @@ import { Session } from "../src/retriever/session.js";
 import { detectTlsSupport } from "../src/retriever/url.js";
 import { Site } from "../src/site.js";
 import { Resources } from "../src/types.js";
+
+/** @type {http.RequestListener} */
+function handler(_req, res) {
+  res.end("ok");
+}
+
+/**
+ * @param {string} file
+ */
+function fixture(file) {
+  return fs.readFileSync(path.join("test", "fixtures", file));
+}
+
+/**
+ * @param {import("node:net").Server} server
+ */
+function listeningPort(server) {
+  return /** @type {import("node:net").AddressInfo} */ (server.address()).port;
+}
+
+/**
+ * @param {...import("node:net").Server} servers
+ */
+async function listen(...servers) {
+  await Promise.all(
+    servers.map((server) => once(server.listen(0), "listening"))
+  );
+}
+
+/**
+ * @param {...(http.Server | https.Server)} servers
+ */
+async function close(...servers) {
+  await Promise.all(
+    servers.map((server) => {
+      server.closeAllConnections();
+      return once(server.close(), "close");
+    })
+  );
+}
 
 describe("buildRequestHeaders", () => {
   const customHeaders = ["Authorization: Bearer secret", "X-Custom: value"];
@@ -150,11 +195,28 @@ describe("TestRetriever", () => {
     }
   );
 
-  // test site seems to have outage from time to time, disable for now
-  it("test_retrieve_invalid_cert", { timeout: 10_000 }, async function () {
-    const site = Site.fromSiteString("expired.badssl.com");
-    const reqs = await retrieve(site);
-    assert.isNotNull(reqs.responses.auto);
-    assert.isFalse(reqs.responses.auto.verified);
+  it("test_retrieve_invalid_cert", { timeout: 6000 }, async function () {
+    const httpsServer = https.createServer(
+      {
+        key: fixture("expired-cert-key.pem"),
+        cert: fixture("expired-cert.pem"),
+      },
+      handler
+    );
+    const httpServer = http.createServer(handler);
+    await listen(httpsServer, httpServer);
+    try {
+      // `Site.fromSiteString()` rejects dotless hostnames.
+      const site = new Site("localhost", listeningPort(httpsServer), "/");
+      const reqs = await retrieve(site, {
+        httpPort: listeningPort(httpServer),
+      });
+      assert.isNotNull(reqs.responses.auto);
+      assert.equal(reqs.responses.auto.status, 200);
+      assert.isFalse(reqs.responses.auto.verified);
+      assert.equal(reqs.responses.http?.status, 200);
+    } finally {
+      await close(httpsServer, httpServer);
+    }
   });
 });

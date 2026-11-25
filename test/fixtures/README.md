@@ -38,6 +38,7 @@ When you want to update test expectations to reflect current website configurati
 - `mozilla-org.json` - Response data for mozilla.org scanner tests
 - `observatory-mozilla-org.json` - Response data for observatory.mozilla.org scanner tests
 - `expired-cert.pem`, `expired-cert-key.pem` - Expired self-signed certificate for `localhost` (and its test-only private key), served by a local HTTPS server in the retriever tests
+- `localhost-cert.pem`, `localhost-cert-key.pem` - Self-signed certificate for `localhost` valid until 9999 (and its test-only private key), trusted temporarily by the retriever tests
 
 ## Fixture Contents
 
@@ -51,15 +52,20 @@ Each fixture file contains:
 - **Session URL**: Base URL used for the scanning session
 - **Metadata**: Timestamp and scan results at time of capture (for reference)
 
-## Regenerating the Expired Certificate
+## Regenerating the Certificates
 
-The certificate never needs renewal, since it is meant to be expired. To recreate it (requires OpenSSL 3.4+):
+The certificates never need renewal: one is meant to be expired, the other is valid until 9999. To recreate them (requires OpenSSL 3.4+):
 
 ```bash
 openssl req -x509 -newkey ec -pkeyopt ec_paramgen_curve:prime256v1 -nodes \
   -keyout test/fixtures/expired-cert-key.pem -out test/fixtures/expired-cert.pem \
   -subj "/CN=localhost" -addext "subjectAltName=DNS:localhost,IP:127.0.0.1,IP:::1" \
   -not_before 20200101000000Z -not_after 20200102000000Z
+
+openssl req -x509 -newkey ec -pkeyopt ec_paramgen_curve:prime256v1 -nodes \
+  -keyout test/fixtures/localhost-cert-key.pem -out test/fixtures/localhost-cert.pem \
+  -subj "/CN=localhost" -addext "subjectAltName=DNS:localhost,IP:127.0.0.1,IP:::1" \
+  -not_before 20200101000000Z -not_after 99991231235959Z
 ```
 
 ## When to Update
